@@ -91,7 +91,7 @@ export default function ShaktiPreview() {
 
         {/* Video showcase — full-bleed video, text overlay left, no overlays */}
         <GsapReveal>
-          <div className="relative left-1/2 mt-14 w-screen -translate-x-1/2 overflow-hidden">
+          <div className="relative left-1/2 mt-14 w-screen -translate-x-1/2 overflow-hidden bg-charcoal">
             {/* Full-width, full-height background video */}
             <video
               src="/videos/shakti-video.mp4"
@@ -102,18 +102,27 @@ export default function ShaktiPreview() {
               preload="metadata"
               className="h-[760px] w-full object-cover lg:h-[1080px]"
             />
+            {/* Left-side scrim — keeps text readable over bright frames, video untouched on right */}
+            <div
+              className="pointer-events-none absolute inset-0 z-[5] bg-gradient-to-r from-charcoal/85 via-charcoal/50 to-charcoal/10 sm:to-transparent"
+              aria-hidden="true"
+            />
+            <div
+              className="pointer-events-none absolute inset-x-0 bottom-0 z-[5] h-40 bg-gradient-to-t from-charcoal/60 to-transparent"
+              aria-hidden="true"
+            />
 
             {/* Text content over the video — left aligned */}
             <div className="absolute inset-0 z-10 flex items-center px-6 sm:px-10 lg:px-16">
               <div className="max-w-xl">
-                <span className="eyebrow mb-3 inline-flex items-center gap-3 text-gold-light drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)]">
+                <span className="eyebrow mb-3 inline-flex items-center gap-3 text-gold-light drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
                   <span className="hairline-gold w-8" />
                   Feel the divine energy
                 </span>
-                <h3 className="font-display text-3xl font-bold leading-tight text-white drop-shadow-[0_2px_14px_rgba(0,0,0,0.6)] lg:text-5xl">
+                <h3 className="font-display text-3xl font-bold leading-tight text-white drop-shadow-[0_3px_22px_rgba(0,0,0,0.85)] lg:text-5xl">
                   Experience the Shakti Energy
                 </h3>
-                <p className="mt-4 max-w-lg text-sm leading-relaxed text-white/85 drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)] lg:text-base">
+                <p className="mt-4 max-w-lg text-sm font-medium leading-relaxed text-white/95 drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)] lg:text-base">
                   Step into the sacred space — a glimpse of the rituals,
                   meditations and divine feminine wisdom that await you on
                   the Shakti journey.
