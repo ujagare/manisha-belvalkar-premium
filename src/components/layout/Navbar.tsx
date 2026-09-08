@@ -27,9 +27,10 @@ export default function Navbar() {
     return () => { document.body.style.overflow = ""; };
   }, [menuOpen]);
 
-  // Light hero on home — navbar always uses dark text
-  const brandMuted = false;
-  const brandActive = scrolled || !isHome; // dark text on light/scrolled
+  // Home hero is dark (charcoal + white text) — at the top, navbar uses light text;
+  // once scrolled (white bar) or on other pages, dark text.
+  const brandMuted = isHome && !scrolled;
+  const brandActive = !brandMuted;
 
   return (
     <>
@@ -39,7 +40,7 @@ export default function Navbar() {
           scrolled
             ? "bg-white/80 backdrop-blur-lg shadow-[0_1px_0_rgba(0,0,0,0.06)]"
             : isHome
-              ? "bg-transparent"
+              ? "bg-gradient-to-b from-charcoal/60 via-charcoal/25 to-transparent"
               : "bg-cream",
         )}
       >
@@ -86,14 +87,19 @@ export default function Navbar() {
                   href={item.href}
                   className={cn(
                     "relative rounded-full px-4 py-2 text-sm font-medium transition-all duration-300",
-                    active && "text-primary",
+                    active && (brandMuted ? "text-white" : "text-primary"),
                     !active && brandMuted && "text-white/75 hover:text-white",
                     !active && brandActive && "text-warmgray hover:text-charcoal",
                   )}
                 >
                   {item.label}
                   {active ? (
-                    <span className="absolute bottom-0 left-1/2 h-0.5 w-4 -translate-x-1/2 rounded-full bg-primary" />
+                    <span
+                      className={cn(
+                        "absolute bottom-0 left-1/2 h-0.5 w-4 -translate-x-1/2 rounded-full",
+                        brandMuted ? "bg-gold" : "bg-primary",
+                      )}
+                    />
                   ) : null}
                 </Link>
               );
