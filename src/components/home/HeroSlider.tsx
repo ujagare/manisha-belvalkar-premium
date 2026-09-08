@@ -36,7 +36,14 @@ const contentVariants: Variants = {
   center: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.9, delay: 0.35, ease: [0.16, 1, 0.3, 1] },
+    transition: {
+      duration: 0.9,
+      delay: 0.35,
+      ease: [0.16, 1, 0.3, 1],
+      when: "beforeChildren",
+      staggerChildren: 0.09,
+      delayChildren: 0.25,
+    },
   },
   exit: {
     opacity: 0,
@@ -45,11 +52,21 @@ const contentVariants: Variants = {
   },
 };
 
+/** Child blocks inside a slide rise in sequence (stagger reveal). */
+const itemVariants: Variants = {
+  enter: { opacity: 0, y: 26 },
+  center: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] },
+  },
+  exit: { opacity: 0, transition: { duration: 0.3 } },
+};
+
 export default function HeroSlider() {
   const [current, setCurrent] = useState(0);
-  const [paused, setPaused] = useState(false);
+  const [tabVisible, setTabVisible] = useState(true);
   const sectionRef = useRef<HTMLElement>(null);
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const { scrollY } = useScroll();
   const bgParallax = useTransform(scrollY, [0, 500], [0, -100]);
   const overlayParallax = useTransform(scrollY, [0, 500], [0, 60]);
@@ -57,29 +74,32 @@ export default function HeroSlider() {
   const slide = heroSlides[current];
 
   const goTo = useCallback((index: number) => {
-    if (index === current) return;
-    setCurrent(index);
-  }, [current]);
-
-  const next = useCallback(() => {
-    setCurrent((c) => (c + 1) % heroSlides.length);
+    setCurrent((c) => (c === index ? c : index));
   }, []);
 
-  // Auto-rotation
+  // Pause auto-rotation only when the tab is hidden.
   useEffect(() => {
-    if (paused) return;
-    timerRef.current = setInterval(next, INTERVAL_MS);
-    return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
-    };
-  }, [paused, next]);
+    const onVisibility = () => setTabVisible(!document.hidden);
+    document.addEventListener("visibilitychange", onVisibility);
+    onVisibility();
+    return () => document.removeEventListener("visibilitychange", onVisibility);
+  }, []);
+
+  // Auto-rotation — the timer re-arms on every slide change, so a manual
+  // dot click restarts the full interval instead of fighting the old one.
+  useEffect(() => {
+    if (!tabVisible) return;
+    const t = setTimeout(
+      () => setCurrent((c) => (c + 1) % heroSlides.length),
+      INTERVAL_MS,
+    );
+    return () => clearTimeout(t);
+  }, [current, tabVisible]);
 
   return (
     <section
       ref={sectionRef}
       className="relative min-h-screen overflow-hidden bg-charcoal"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
     >
       {/* ============ Background image crossfade ============ */}
       <AnimatePresence mode="wait">
@@ -149,43 +169,64 @@ export default function HeroSlider() {
               className="text-center lg:text-left"
             >
               {/* Eyebrow */}
-              <div className="eyebrow mb-6 items-center justify-center gap-4 text-gold lg:justify-start">
+              <motion.div
+                variants={itemVariants}
+                className="eyebrow mb-6 items-center justify-center gap-4 text-gold lg:justify-start"
+              >
                 <span className="hairline-gold w-12" />
                 {slide.eyebrow}
                 <span className="hairline-gold w-12 lg:block" />
-              </div>
+              </motion.div>
 
               {/* Heading */}
-              <h1 className="font-display text-5xl font-bold leading-[1.06] tracking-tight text-white sm:text-6xl lg:text-7xl">
+              <motion.h1
+                variants={itemVariants}
+                className="font-display text-5xl font-bold leading-[1.06] tracking-tight text-white sm:text-6xl lg:text-7xl"
+              >
                 <span className="block">{slide.headline}</span>
                 <span className="mt-1 block">
                   <GradientText as="span" variant="gold">
                     {slide.headlineHighlight}
                   </GradientText>
                 </span>
-              </h1>
+              </motion.h1>
 
               {/* Book name + info */}
-              <p className="mt-7 font-serif text-2xl font-medium italic text-gold sm:text-3xl">
+              <motion.p
+                variants={itemVariants}
+                className="mt-7 font-serif text-2xl font-medium italic text-gold sm:text-3xl"
+              >
                 {slide.bookTitle}
-              </p>
-              <p className="mt-3 text-sm uppercase tracking-[0.18em] text-white/50">
+              </motion.p>
+              <motion.p
+                variants={itemVariants}
+                className="mt-3 text-sm uppercase tracking-[0.18em] text-white/50"
+              >
                 {slide.bookInfo}
-              </p>
+              </motion.p>
 
               {/* Gold ornamental divider */}
-              <div className="my-7 flex items-center justify-center gap-4 lg:justify-start">
+              <motion.div
+                variants={itemVariants}
+                className="my-7 flex items-center justify-center gap-4 lg:justify-start"
+              >
                 <span className="h-px w-16 bg-gold/50" />
                 <span className="font-serif text-2xl text-gold">✦</span>
                 <span className="h-px w-16 bg-gold/50" />
-              </div>
+              </motion.div>
 
-              <p className="mx-auto max-w-xl text-base leading-relaxed text-white/65 sm:text-lg lg:mx-0">
+              <motion.p
+                variants={itemVariants}
+                className="mx-auto max-w-xl text-base leading-relaxed text-white/65 sm:text-lg lg:mx-0"
+              >
                 {slide.tagline}
-              </p>
+              </motion.p>
 
               {/* Price + CTA */}
-              <div className="mt-9 flex flex-wrap items-center justify-center gap-5 lg:justify-start">
+              <motion.div
+                variants={itemVariants}
+                className="mt-9 flex flex-wrap items-center justify-center gap-5 lg:justify-start"
+              >
                 <Button href={slide.ctaHref} size="lg" variant="gold">
                   <Sparkles className="h-4 w-4" />
                   {slide.ctaLabel}
@@ -198,7 +239,7 @@ export default function HeroSlider() {
                     </span>
                   </span>
                 ) : null}
-              </div>
+              </motion.div>
             </motion.div>
           </AnimatePresence>
 
@@ -270,49 +311,52 @@ export default function HeroSlider() {
               className="w-full"
             >
               {/* Eyebrow */}
-              <div className="eyebrow mb-8 flex items-center justify-center gap-4 text-gold">
+              <motion.div variants={itemVariants} className="eyebrow mb-8 flex items-center justify-center gap-4 text-gold">
                 <span className="hairline-gold w-12" />
                 {slide.eyebrow}
                 <span className="hairline-gold w-12" />
-              </div>
+              </motion.div>
 
               {/* Heading */}
-              <h1 className="font-display text-5xl font-bold leading-[1.06] tracking-tight text-white sm:text-6xl md:text-7xl lg:text-[5.25rem]">
+              <motion.h1
+                variants={itemVariants}
+                className="font-display text-5xl font-bold leading-[1.06] tracking-tight text-white sm:text-6xl md:text-7xl lg:text-[5.25rem]"
+              >
                 <span className="block">{slide.headline}</span>
                 <span className="mt-1 block">
                   <GradientText as="span" variant="gold">
                     {slide.headlineHighlight}
                   </GradientText>
                 </span>
-              </h1>
+              </motion.h1>
 
               {/* Gold ornamental divider */}
-              <div className="my-8 flex items-center justify-center gap-4">
+              <motion.div variants={itemVariants} className="my-8 flex items-center justify-center gap-4">
                 <span className="h-px w-16 bg-gold/50" />
                 <span className="font-serif text-2xl text-gold">✦</span>
                 <span className="h-px w-16 bg-gold/50" />
-              </div>
+              </motion.div>
 
               {/* Name */}
-              <p className="font-serif text-xl font-medium italic text-white/70 sm:text-2xl">
+              <motion.p variants={itemVariants} className="font-serif text-xl font-medium italic text-white/70 sm:text-2xl">
                 — {brand.name} —
-              </p>
+              </motion.p>
 
               {/* Tagline */}
-              <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-white/60 sm:text-lg">
+              <motion.p variants={itemVariants} className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-white/60 sm:text-lg">
                 {slide.tagline}
-              </p>
+              </motion.p>
 
               {/* CTA */}
-              <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+              <motion.div variants={itemVariants} className="mt-10 flex flex-wrap items-center justify-center gap-4">
                 <Button href={slide.ctaHref} size="lg" variant="gold">
                   <Sparkles className="h-4 w-4" />
                   {slide.ctaLabel}
                 </Button>
-              </div>
+              </motion.div>
 
               {/* Trust stats row */}
-              <div className="mt-12 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm">
+              <motion.div variants={itemVariants} className="mt-12 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm">
                 <span className="inline-flex items-center gap-1.5 text-white/50">
                   <Star className="h-4 w-4 fill-gold/60 text-gold-deep" />
                   30+ Years Experience
@@ -325,7 +369,7 @@ export default function HeroSlider() {
                   <Star className="h-4 w-4 fill-gold/60 text-gold-deep" />
                   4 Sacred Practices
                 </span>
-              </div>
+              </motion.div>
             </motion.div>
           </AnimatePresence>
         </div>
