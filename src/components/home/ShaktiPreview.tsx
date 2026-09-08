@@ -91,7 +91,7 @@ export default function ShaktiPreview() {
 
         {/* Video showcase — full-bleed video, text overlay left, no overlays */}
         <GsapReveal>
-          <div className="relative left-1/2 mt-14 w-screen -translate-x-1/2 overflow-hidden bg-charcoal">
+          <div className="relative left-1/2 mt-14 w-screen -translate-x-1/2 overflow-hidden bg-ivory">
             {/* Full-width, full-height background video */}
             <video
               src="/videos/shakti-video.mp4"
@@ -102,27 +102,18 @@ export default function ShaktiPreview() {
               preload="metadata"
               className="h-[760px] w-full object-cover lg:h-[1080px]"
             />
-            {/* Left-side scrim — keeps text readable over bright frames, video untouched on right */}
-            <div
-              className="pointer-events-none absolute inset-0 z-[5] bg-gradient-to-r from-charcoal/85 via-charcoal/50 to-charcoal/10 sm:to-transparent"
-              aria-hidden="true"
-            />
-            <div
-              className="pointer-events-none absolute inset-x-0 bottom-0 z-[5] h-40 bg-gradient-to-t from-charcoal/60 to-transparent"
-              aria-hidden="true"
-            />
 
-            {/* Text content over the video — left aligned */}
+            {/* Text content over the video — left aligned (dark text + white halo, video kept bright) */}
             <div className="absolute inset-0 z-10 flex items-center px-6 sm:px-10 lg:px-16">
               <div className="max-w-xl">
-                <span className="eyebrow mb-3 inline-flex items-center gap-3 text-gold-light drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
+                <span className="eyebrow mb-3 inline-flex items-center gap-3 text-gold-dark drop-shadow-[0_1px_10px_rgba(255,255,255,0.9)]">
                   <span className="hairline-gold w-8" />
                   Feel the divine energy
                 </span>
-                <h3 className="font-display text-3xl font-bold leading-tight text-white drop-shadow-[0_3px_22px_rgba(0,0,0,0.85)] lg:text-5xl">
+                <h3 className="font-display text-3xl font-bold leading-tight text-charcoal drop-shadow-[0_1px_16px_rgba(255,255,255,0.95)] lg:text-5xl">
                   Experience the Shakti Energy
                 </h3>
-                <p className="mt-4 max-w-lg text-sm font-medium leading-relaxed text-white/95 drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)] lg:text-base">
+                <p className="mt-4 max-w-lg text-sm font-medium leading-relaxed text-charcoal/90 drop-shadow-[0_1px_10px_rgba(255,255,255,0.9)] lg:text-base">
                   Step into the sacred space — a glimpse of the rituals,
                   meditations and divine feminine wisdom that await you on
                   the Shakti journey.
@@ -131,7 +122,7 @@ export default function ShaktiPreview() {
                 <div className="mt-8 flex flex-wrap items-center gap-3">
                   <Link
                     href="/shakti"
-                    className="inline-flex items-center gap-2 rounded-full bg-gold px-7 py-3.5 text-sm font-bold text-primary-deeper shadow-lg shadow-black/30 transition-all hover:-translate-y-0.5 hover:bg-gold-light hover:shadow-xl"
+                    className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-gold to-gold-dark px-7 py-3.5 text-sm font-bold text-primary-deeper shadow-lg shadow-gold/40 ring-1 ring-gold/50 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-gold/50 hover:brightness-105"
                   >
                     Explore Shakti
                     <ArrowRight className="h-4 w-4" />
@@ -140,7 +131,7 @@ export default function ShaktiPreview() {
                     href={brand.whatsappHref}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center gap-2 rounded-full border border-white/60 bg-black/25 px-7 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:border-gold hover:bg-gold hover:text-primary-deeper"
+                    className="inline-flex items-center gap-2 rounded-full border border-gold/50 bg-white/75 px-7 py-3.5 text-sm font-semibold text-charcoal shadow-md shadow-black/10 backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:border-gold hover:bg-gold hover:text-primary-deeper"
                   >
                     <Sparkles className="h-4 w-4" />
                     Book a Session
