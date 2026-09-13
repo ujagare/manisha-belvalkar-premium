@@ -129,7 +129,7 @@ export default function HeroSlider() {
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-screen overflow-hidden bg-cream"
+      className="relative min-h-svh overflow-hidden bg-cream"
     >
       {/* ============ Background image crossfade ============ */}
       <AnimatePresence mode="wait">
@@ -213,7 +213,7 @@ export default function HeroSlider() {
       {/* ============ Content ============ */}
       {slide.bookImage ? (
         /* ---------- Premium product slide: copy left, book right ---------- */
-        <div className="relative z-10 mx-auto grid min-h-screen max-w-7xl items-center gap-10 px-6 pb-24 pt-28 lg:grid-cols-2 lg:gap-16 lg:pb-28 lg:pt-36">
+        <div className="relative z-10 mx-auto grid min-h-svh max-w-7xl items-center gap-8 px-5 pb-16 pt-24 sm:px-6 sm:pb-24 sm:pt-28 lg:grid-cols-2 lg:gap-16 lg:px-10 lg:pb-28 lg:pt-36">
           <AnimatePresence mode="wait">
             <motion.div
               key={current}
@@ -236,7 +236,7 @@ export default function HeroSlider() {
               {/* Heading */}
               <motion.h1
                 variants={itemVariants}
-                className="text-balance font-display text-5xl font-bold leading-[1.02] tracking-[-0.035em] text-charcoal sm:text-6xl lg:text-7xl"
+                className="text-balance font-display text-[2.6rem] font-bold leading-[1.04] tracking-[-0.035em] text-charcoal sm:text-5xl lg:text-6xl xl:text-7xl"
               >
                 <span className="block">{slide.headline}</span>
                 <span className="mt-1 block">
@@ -249,13 +249,13 @@ export default function HeroSlider() {
               {/* Book name + info */}
               <motion.p
                 variants={itemVariants}
-                className="mt-7 font-serif text-2xl font-semibold italic text-primary sm:text-3xl"
+                className="mt-5 font-serif text-xl font-semibold italic text-primary sm:mt-7 sm:text-2xl lg:text-3xl"
               >
                 {slide.bookTitle}
               </motion.p>
               <motion.p
                 variants={itemVariants}
-                className="mt-3 text-sm uppercase tracking-[0.18em] text-warmgray"
+                className="mt-2 text-xs uppercase tracking-[0.18em] text-warmgray sm:mt-3 sm:text-sm"
               >
                 {slide.bookInfo}
               </motion.p>
@@ -263,16 +263,16 @@ export default function HeroSlider() {
               {/* Gold ornamental divider */}
               <motion.div
                 variants={itemVariants}
-                className="my-7 flex items-center justify-center gap-4 lg:justify-start"
+                className="my-4 flex items-center justify-center gap-4 sm:my-7 lg:justify-start"
               >
-                <span className="h-px w-16 bg-gold/50" />
+                <span className="h-px w-12 bg-gold/50 sm:w-16" />
                 <span className="font-serif text-2xl text-gold">✦</span>
-                <span className="h-px w-16 bg-gold/50" />
+                <span className="h-px w-12 bg-gold/50 sm:w-16" />
               </motion.div>
 
               <motion.p
                 variants={itemVariants}
-                className="mx-auto max-w-xl text-base leading-relaxed text-warmgray sm:text-lg lg:mx-0"
+                className="mx-auto max-w-xl text-sm leading-relaxed text-warmgray sm:text-base lg:text-lg lg:mx-0"
               >
                 {slide.tagline}
               </motion.p>
@@ -280,14 +280,14 @@ export default function HeroSlider() {
               {/* Price + CTA */}
               <motion.div
                 variants={itemVariants}
-                className="mt-9 flex flex-wrap items-center justify-center gap-5 lg:justify-start"
+                className="mt-6 flex flex-wrap items-center justify-center gap-4 sm:mt-9 sm:gap-5 lg:justify-start"
               >
-                <Button href={slide.ctaHref} size="lg" variant="primary" className="px-9 shadow-lg shadow-primary/20 hover:-translate-y-0.5">
+                <Button href={slide.ctaHref} size="lg" variant="primary" className="px-7 shadow-lg shadow-primary/20 hover:-translate-y-0.5 sm:px-9">
                   <Sparkles className="h-4 w-4" />
                   {slide.ctaLabel}
                 </Button>
                 {slide.bookPrice ? (
-                  <span className="font-display text-3xl font-bold text-charcoal">
+                  <span className="font-display text-2xl font-bold text-charcoal sm:text-3xl">
                     {slide.bookPrice}
                     <span className="ml-2 align-middle text-sm font-medium text-warmgray">
                       incl. all taxes
@@ -322,7 +322,7 @@ export default function HeroSlider() {
                 >
                   {/* Floating badge */}
                   {slide.bookBadge ? (
-                    <span className="absolute -right-3 -top-4 z-10 rotate-3 rounded-full border border-gold/40 bg-white/90 px-5 py-2 font-display text-sm font-bold text-primary shadow-lg shadow-gold/15 backdrop-blur-md">
+                    <span className="absolute -right-2 -top-3 z-10 rotate-3 rounded-full border border-gold/40 bg-white/90 px-3.5 py-1.5 font-display text-xs font-bold text-primary shadow-lg shadow-gold/15 backdrop-blur-md sm:-right-3 sm:-top-4 sm:px-5 sm:py-2 sm:text-sm">
                       ✦ {slide.bookBadge}
                     </span>
                   ) : null}
@@ -338,8 +338,8 @@ export default function HeroSlider() {
                       className={cn(
                         "h-auto object-cover",
                         slide.bookLarge
-                          ? "w-[340px] sm:w-[420px] lg:w-[580px]"
-                          : "w-[300px] sm:w-[380px] lg:w-[440px]",
+                          ? "w-[240px] sm:w-[380px] lg:w-[500px] xl:w-[580px]"
+                          : "w-[210px] sm:w-[340px] lg:w-[400px] xl:w-[440px]",
                       )}
                     />
                     {/* Spine highlight */}
@@ -357,7 +357,7 @@ export default function HeroSlider() {
         </div>
       ) : (
         /* ---------- Standard centered slide ---------- */
-        <div className="relative z-10 mx-auto flex min-h-screen max-w-3xl items-center justify-center px-6 pb-24 pt-28 text-center lg:pb-28 lg:pt-36">
+        <div className="relative z-10 mx-auto flex min-h-svh max-w-3xl items-center justify-center px-5 pb-16 pt-24 text-center sm:px-6 sm:pb-24 sm:pt-28 lg:pb-28 lg:pt-36">
           <AnimatePresence mode="wait">
             <motion.div
               key={current}
@@ -368,7 +368,7 @@ export default function HeroSlider() {
               className="w-full"
             >
               {/* Eyebrow */}
-              <motion.div variants={itemVariants} className="eyebrow mb-8 flex items-center justify-center gap-4 text-gold-deep">
+              <motion.div variants={itemVariants} className="eyebrow mb-6 flex items-center justify-center gap-4 text-gold-deep sm:mb-8">
                 <span className="hairline-gold w-12" />
                 {slide.eyebrow}
                 <span className="hairline-gold w-12" />
@@ -377,7 +377,7 @@ export default function HeroSlider() {
               {/* Heading */}
               <motion.h1
                 variants={itemVariants}
-                className="text-balance font-display text-5xl font-bold leading-[1.02] tracking-[-0.035em] text-charcoal sm:text-6xl md:text-7xl lg:text-[5.25rem]"
+                className="text-balance font-display text-[2.6rem] font-bold leading-[1.04] tracking-[-0.035em] text-charcoal sm:text-6xl md:text-7xl lg:text-[5.25rem]"
               >
                 <span className="block">{slide.headline}</span>
                 <span className="mt-1 block">
@@ -388,7 +388,7 @@ export default function HeroSlider() {
               </motion.h1>
 
               {/* Gold ornamental divider */}
-              <motion.div variants={itemVariants} className="my-8 flex items-center justify-center gap-4">
+              <motion.div variants={itemVariants} className="my-5 flex items-center justify-center gap-4 sm:my-8">
                 <span className="h-px w-16 bg-gold/50" />
                 <span className="font-serif text-2xl text-gold">✦</span>
                 <span className="h-px w-16 bg-gold/50" />
@@ -413,7 +413,7 @@ export default function HeroSlider() {
               </motion.div>
 
               {/* Trust stats row */}
-              <motion.div variants={itemVariants} className="mt-12 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm">
+              <motion.div variants={itemVariants} className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-xs sm:mt-12 sm:gap-x-8 sm:text-sm">
                 <span className="inline-flex items-center gap-1.5 text-warmgray">
                   <Star className="h-4 w-4 fill-gold/60 text-gold-deep" />
                   30+ Years Experience
@@ -433,7 +433,7 @@ export default function HeroSlider() {
       )}
 
       {/* ============ Navigation dots ============ */}
-      <div className="absolute bottom-10 left-1/2 z-20 -translate-x-1/2 flex items-center gap-3">
+      <div className="absolute bottom-5 left-1/2 z-20 -translate-x-1/2 flex items-center gap-3 sm:bottom-10">
         {heroSlides.map((_, i) => (
           <button
             key={i}
@@ -456,7 +456,7 @@ export default function HeroSlider() {
       >
         <a
           href="#about"
-          className="group inline-flex flex-col items-center gap-2 pb-6 text-[0.6rem] uppercase tracking-[0.25em] text-warmgray/60 transition-colors hover:text-primary"
+          className="group hidden flex-col items-center gap-2 pb-6 text-[0.6rem] uppercase tracking-[0.25em] text-warmgray/60 transition-colors hover:text-primary sm:inline-flex"
         >
           Scroll
           <span className="block h-9 w-px bg-gradient-to-b from-gold-deep/60 to-transparent transition-colors duration-300 group-hover:from-primary" />
