@@ -2,9 +2,7 @@
 
 import { useRef } from "react";
 import type { ReactNode } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { gsap, useGSAP } from "@/lib/gsap";
-import { splitWords, prefersReducedMotion } from "@/lib/anim";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 interface SectionHeadingProps {
@@ -21,13 +19,15 @@ interface SectionHeadingProps {
   ghost?: string;
 }
 
+const EASE = [0.16, 1, 0.3, 1] as const;
+
 /**
  * Editorial section heading with a scroll-driven three-layer parallax —
  * a giant ghost word (back), the heading (mid) and the subtitle (front)
- * drift apart as the section travels through the viewport — plus the
- * GSAP word-by-word reveal. Scroll parallax uses framer-motion
- * useScroll (same proven pattern as the hero) so it stays in sync with
- * the Lenis smooth scroll.
+ * drift apart as the section travels through the viewport — plus a
+ * Canva-style word entrance: the eyebrow, title and subtitle rise into
+ * view out of a soft blur, one after the other. Everything runs on
+ * framer-motion so it stays in sync with the Lenis smooth scroll.
  */
 export default function SectionHeading({
   eyebrow,
@@ -40,6 +40,7 @@ export default function SectionHeading({
   const scope = useRef<HTMLDivElement>(null);
   const centered = align === "center";
   const ghostWord = ghost !== undefined ? ghost : eyebrow;
+  const reduce = useReducedMotion();
 
   // Scroll progress across the viewport: 0 when the section's top enters
   // the bottom edge, 1 when its bottom leaves the top edge.
@@ -53,48 +54,16 @@ export default function SectionHeading({
   const yMid = useTransform(scrollYProgress, [0, 1], [45, -45]);
   const yFront = useTransform(scrollYProgress, [0, 1], [24, -24]);
 
-  useGSAP(
-    () => {
-      if (prefersReducedMotion()) return;
-      const h2 = scope.current?.querySelector<HTMLHeadingElement>("h2");
-      if (!h2) return;
+  const rise = (distance: number, blurPx: number) =>
+    reduce
+      ? { opacity: 0 }
+      : { opacity: 0, y: distance, filter: `blur(${blurPx}px)` };
 
-      // Word-by-word reveal (once, near viewport entry).
-      const words = splitWords(h2);
-      const tl = gsap.timeline({
-        defaults: { ease: "power3.out" },
-        scrollTrigger: {
-          trigger: scope.current,
-          start: "top 88%",
-          once: true,
-        },
-      });
-
-      if (eyebrow) {
-        tl.fromTo(
-          ".sh-eyebrow",
-          { y: 18, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.7 },
-          0,
-        );
-      }
-      tl.fromTo(
-        words,
-        { y: 44, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1, stagger: 0.02 },
-        eyebrow ? 0.15 : 0,
-      );
-      if (subtitle) {
-        tl.fromTo(
-          ".sh-sub",
-          { y: 20, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.8 },
-          "-=0.5",
-        );
-      }
-    },
-    { scope },
-  );
+  const settle = {
+    opacity: 1,
+    y: 0,
+    ...(reduce ? { filter: undefined } : { filter: "blur(0px)" }),
+  };
 
   return (
     <div
@@ -121,7 +90,11 @@ export default function SectionHeading({
       {/* Mid layer — eyebrow + heading */}
       <motion.div style={{ y: yMid }} className="relative z-10">
         {eyebrow ? (
-          <div
+          <motion.div
+            initial={rise(18, 6)}
+            whileInView={settle}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.7, ease: EASE }}
             className={cn(
               "sh-eyebrow eyebrow mb-4 flex items-center gap-4 text-gold-dark",
               centered && "justify-center",
@@ -130,24 +103,34 @@ export default function SectionHeading({
             <span className="hairline-gold w-10" />
             <span>{eyebrow}</span>
             <span className="hairline-gold w-10" />
-          </div>
+          </motion.div>
         ) : null}
-        <h2 className="font-display text-4xl font-bold leading-[1.1] tracking-tight text-charcoal sm:text-5xl">
+        <motion.h2
+          initial={rise(44, 10)}
+          whileInView={settle}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 1, delay: 0.12, ease: EASE }}
+          className="font-display text-4xl font-bold leading-[1.1] tracking-tight text-charcoal sm:text-5xl"
+        >
           {title}
-        </h2>
+        </motion.h2>
       </motion.div>
 
       {/* Front layer — subtitle, gentlest drift */}
       {subtitle ? (
         <motion.div style={{ y: yFront }} className="relative z-10">
-          <p
+          <motion.p
+            initial={rise(24, 8)}
+            whileInView={settle}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.9, delay: 0.38, ease: EASE }}
             className={cn(
               "sh-sub mt-5 text-base leading-relaxed text-warmgray sm:text-lg",
               centered && "mx-auto max-w-2xl",
             )}
           >
             {subtitle}
-          </p>
+          </motion.p>
         </motion.div>
       ) : null}
     </div>

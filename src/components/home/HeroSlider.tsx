@@ -20,24 +20,27 @@ const INTERVAL_MS = 5000;
 const SWIPE_MIN_PX = 50;
 
 const slideVariants: Variants = {
-  enter: { opacity: 0, scale: 1.12 },
+  enter: { opacity: 0, scale: 1.12, filter: "blur(6px)" },
   center: {
     opacity: 1,
     scale: 1,
+    filter: "blur(0px)",
     transition: { duration: 1.4, ease: [0.16, 1, 0.3, 1] },
   },
   exit: {
     opacity: 0,
     scale: 0.95,
+    filter: "blur(4px)",
     transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
   },
 };
 
 const contentVariants: Variants = {
-  enter: { opacity: 0, y: 30 },
+  enter: { opacity: 0, y: 30, filter: "blur(8px)" },
   center: {
     opacity: 1,
     y: 0,
+    filter: "blur(0px)",
     transition: {
       duration: 0.9,
       delay: 0.35,
@@ -50,16 +53,18 @@ const contentVariants: Variants = {
   exit: {
     opacity: 0,
     y: -20,
+    filter: "blur(4px)",
     transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] },
   },
 };
 
 /** Child blocks inside a slide rise in sequence (stagger reveal). */
 const itemVariants: Variants = {
-  enter: { opacity: 0, y: 26 },
+  enter: { opacity: 0, y: 26, filter: "blur(6px)" },
   center: {
     opacity: 1,
     y: 0,
+    filter: "blur(0px)",
     transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] },
   },
   exit: { opacity: 0, transition: { duration: 0.3 } },

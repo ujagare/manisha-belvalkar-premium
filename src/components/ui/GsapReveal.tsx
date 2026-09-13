@@ -1,8 +1,8 @@
 "use client";
 
-import { useRef } from "react";
+import { Children } from "react";
 import type { ReactNode } from "react";
-import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
+import { motion, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 interface GsapRevealProps {
@@ -14,17 +14,22 @@ interface GsapRevealProps {
   blur?: boolean;
   delay?: number;
   duration?: number;
+  /** Kept for API compatibility — easing is the house curve. */
   ease?: string;
-  /** Scroll-trigger start. Default "top 88%". */
+  /** Kept for API compatibility — reveals fire at viewport entry. */
   start?: string;
-  /** Stagger each child (children must be direct elements). */
+  /** Stagger each direct child by this many seconds. */
   stagger?: number;
-  /** Disable scroll trigger — animate on mount instead. */
+  /** Animate on mount instead of on scroll. */
   instant?: boolean;
 }
 
+const EASE = [0.16, 1, 0.3, 1] as const;
+
 /**
- * Premium GSAP-powered scroll reveal with optional blur, scale, and stagger.
+ * Canva-style premium reveal — rise + fade with optional soft blur and
+ * per-child stagger. Implemented on framer-motion so it stays perfectly
+ * in sync with the Lenis smooth scroll.
  */
 export default function GsapReveal({
   children,
@@ -35,72 +40,50 @@ export default function GsapReveal({
   blur: doBlur = false,
   delay = 0,
   duration = 0.9,
-  ease = "power3.out",
-  start,
   stagger,
   instant = false,
 }: GsapRevealProps) {
-  const el = useRef<HTMLDivElement>(null);
+  const reduce = useReducedMotion();
+  const offset = reduce ? { y: 0, x: 0, scale: 1 } : { y, x, scale: s };
+  const blurInitial = doBlur && !reduce ? { filter: "blur(8px)" } : {};
+  const shown = {
+    opacity: 1,
+    y: 0,
+    x: 0,
+    scale: 1,
+    ...(doBlur && !reduce ? { filter: "blur(0px)" } : {}),
+  };
+  const viewport = { once: true, margin: "-60px" as const };
 
-  useGSAP(
-    () => {
-      const target = el.current;
-      if (!target) return;
-
-      const vars: gsap.TweenVars = {
-        y: 0,
-        x: 0,
-        scale: 1,
-        opacity: 1,
-        duration,
-        ease,
-        delay,
-      };
-
-      if (doBlur) vars.filter = "blur(0px)";
-
-      const from: gsap.TweenVars = {
-        y,
-        x,
-        scale: s,
-        opacity: 0,
-      };
-      if (doBlur) from.filter = "blur(6px)";
-
-      if (stagger && stagger > 0) {
-        // Stagger direct children
-        const children = target.children;
-        gsap.fromTo(children, from, {
-          ...vars,
-          stagger,
-          scrollTrigger: instant
-            ? undefined
-            : { trigger: target, start: start ?? "top 88%", once: true },
-        });
-        // Also set the parent
-        gsap.set(target, { opacity: 1 });
-        return;
-      }
-
-      if (instant) {
-        gsap.fromTo(target, from, vars);
-      } else {
-        gsap.fromTo(target, from, {
-          ...vars,
-          scrollTrigger: {
-            trigger: target,
-            start: start ?? "top 88%",
-            once: true,
-          },
-        });
-      }
-    },
-    { scope: el },
-  );
+  // Stagger direct children — each gets its own rising tile.
+  if (stagger && stagger > 0 && !reduce) {
+    const kids = Children.toArray(children);
+    return (
+      <div className={cn(className)}>
+        {kids.map((kid, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, ...offset, ...blurInitial }}
+            {...(instant
+              ? { animate: shown }
+              : { whileInView: shown, viewport })}
+            transition={{ duration, delay: delay + i * stagger, ease: EASE }}
+          >
+            {kid}
+          </motion.div>
+        ))}
+      </div>
+    );
+  }
 
   return (
-    <div ref={el} className={cn(className)}>
+    <motion.div
+      className={cn(className)}
+      initial={{ opacity: 0, ...offset, ...blurInitial }}
+      {...(instant ? { animate: shown } : { whileInView: shown, viewport })}
+      transition={{ duration, delay, ease: EASE }}
+    >
       {children}
-    </div>
+    </motion.div>
   );
 }

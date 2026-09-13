@@ -19,7 +19,7 @@ const offsets: Record<NonNullable<RevealProps["direction"]>, { x: number; y: num
   none: { x: 0, y: 0 },
 };
 
-/** Scroll-triggered reveal with a soft, premium easing. */
+/** Scroll-triggered reveal — soft Canva-style blur + rise with premium easing. */
 export default function Reveal({
   children,
   delay = 0,
@@ -33,8 +33,8 @@ export default function Reveal({
   return (
     <motion.div
       className={className}
-      initial={{ opacity: 0, ...offset }}
-      whileInView={{ opacity: 1, x: 0, y: 0 }}
+      initial={{ opacity: 0, ...(reduce ? {} : { filter: "blur(8px)" }), ...offset }}
+      whileInView={{ opacity: 1, x: 0, y: 0, filter: "blur(0px)" }}
       viewport={{ once, margin: "-60px" }}
       transition={{ duration: 0.9, delay, ease: [0.16, 1, 0.3, 1] }}
     >
