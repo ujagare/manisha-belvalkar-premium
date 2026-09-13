@@ -16,6 +16,8 @@ import GradientText from "@/components/ui/GradientText";
 import { cn } from "@/lib/utils";
 
 const INTERVAL_MS = 5000;
+/** Horizontal drag distance (px) needed to flip a slide by hand. */
+const SWIPE_MIN_PX = 50;
 
 const slideVariants: Variants = {
   enter: { opacity: 0, scale: 1.12 },
@@ -107,6 +109,42 @@ export default function HeroSlider() {
     setCurrent((c) => (c === index ? c : index));
   }, []);
 
+  const step = useCallback((dir: 1 | -1) => {
+    setCurrent((c) => (c + dir + heroSlides.length) % heroSlides.length);
+  }, []);
+
+  // Finger swipe: horizontal drags past the threshold flip slides, while
+  // vertical scrolling (larger dy than dx) is left untouched.
+  const swipeStart = useRef<{ x: number; y: number } | null>(null);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    const t = e.touches[0];
+    swipeStart.current = t ? { x: t.clientX, y: t.clientY } : null;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    const start = swipeStart.current;
+    swipeStart.current = null;
+    if (!start) return;
+    const end = e.changedTouches[0];
+    if (!end) return;
+    const dx = end.clientX - start.x;
+    const dy = end.clientY - start.y;
+    if (Math.abs(dx) < SWIPE_MIN_PX || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+    step(dx < 0 ? 1 : -1);
+  };
+
+  // Keyboard support on the focused slider (Left/Right arrows).
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "ArrowRight") {
+      e.preventDefault();
+      step(1);
+    } else if (e.key === "ArrowLeft") {
+      e.preventDefault();
+      step(-1);
+    }
+  };
+
   // Pause auto-rotation only when the tab is hidden.
   useEffect(() => {
     const onVisibility = () => setTabVisible(!document.hidden);
@@ -129,7 +167,14 @@ export default function HeroSlider() {
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-[68svh] overflow-hidden bg-cream sm:min-h-svh"
+      className="relative min-h-[68svh] touch-pan-y overflow-hidden bg-cream select-none sm:min-h-svh"
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+      onKeyDown={handleKeyDown}
+      tabIndex={0}
+      role="region"
+      aria-roledescription="carousel"
+      aria-label="Featured collections"
     >
       {/* ============ Background image crossfade ============ */}
       <AnimatePresence mode="wait">
