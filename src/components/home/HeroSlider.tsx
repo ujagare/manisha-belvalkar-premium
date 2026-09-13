@@ -25,7 +25,8 @@ const slideVariants: Variants = {
     opacity: 1,
     scale: 1,
     filter: "blur(0px)",
-    transition: { duration: 1.4, ease: [0.16, 1, 0.3, 1] },
+    // Text leads: the image canvas fades in a beat behind the copy.
+    transition: { duration: 1.2, delay: 0.3, ease: [0.16, 1, 0.3, 1] },
   },
   exit: {
     opacity: 0,
@@ -42,12 +43,12 @@ const contentVariants: Variants = {
     y: 0,
     filter: "blur(0px)",
     transition: {
-      duration: 0.9,
-      delay: 0.35,
+      duration: 0.8,
+      delay: 0.05,
       ease: [0.16, 1, 0.3, 1],
       when: "beforeChildren",
-      staggerChildren: 0.09,
-      delayChildren: 0.25,
+      staggerChildren: 0.08,
+      delayChildren: 0.08,
     },
   },
   exit: {
@@ -362,7 +363,7 @@ export default function HeroSlider() {
                 initial={{ opacity: 0, y: 40, rotate: 2 }}
                 animate={{ opacity: 1, y: 0, rotate: 0 }}
                 exit={{ opacity: 0, y: -24 }}
-                transition={{ duration: 0.9, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                transition={{ duration: 0.9, delay: 0.55, ease: [0.16, 1, 0.3, 1] }}
                 className="relative"
               >
                 <motion.div
