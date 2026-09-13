@@ -29,18 +29,15 @@ export default function Navbar() {
 
   // Home hero is dark (charcoal + white text) — at the top, navbar uses light text;
   // once scrolled (white bar) or on other pages, dark text.
-  const brandMuted = isHome && !scrolled;
-  const brandActive = !brandMuted;
-
   return (
     <>
       <header
         className={cn(
           "fixed inset-x-0 top-0 z-50 transition-all duration-500",
           scrolled
-            ? "bg-white/80 backdrop-blur-lg shadow-[0_1px_0_rgba(0,0,0,0.06)]"
+            ? "bg-white/88 backdrop-blur-xl shadow-[0_1px_0_rgba(107,11,11,0.08),0_10px_35px_rgba(91,62,42,0.06)]"
             : isHome
-              ? "bg-gradient-to-b from-charcoal/60 via-charcoal/25 to-transparent"
+              ? "border-b border-gold/15 bg-cream/78 backdrop-blur-xl"
               : "bg-cream",
         )}
       >
@@ -49,8 +46,7 @@ export default function Navbar() {
           <Link
             href="/"
             className={cn(
-              "flex items-center gap-2.5 transition-colors",
-              brandActive && "hover:text-primary",
+              "flex items-center gap-2.5 text-charcoal transition-colors hover:text-primary",
             )}
           >
             <Image
@@ -59,15 +55,12 @@ export default function Navbar() {
               width={36}
               height={36}
               className={cn(
-                "h-9 w-9 rounded-full object-cover ring-1",
-                brandMuted ? "ring-white/30" : "ring-black/10",
+                "h-9 w-9 rounded-full object-cover ring-1 ring-gold/35 shadow-sm shadow-gold/10",
               )}
             />
             <span
               className={cn(
-                "flex items-baseline gap-1 font-display text-lg font-bold tracking-tight transition-colors",
-                brandMuted && "text-white",
-                brandActive && "text-charcoal",
+                "flex items-baseline gap-1 font-display text-lg font-bold tracking-tight text-charcoal transition-colors",
               )}
             >
               Manisha
@@ -87,9 +80,8 @@ export default function Navbar() {
                   href={item.href}
                   className={cn(
                     "relative rounded-full px-4 py-2 text-sm font-medium transition-all duration-300",
-                    active && (brandMuted ? "text-white" : "text-primary"),
-                    !active && brandMuted && "text-white/75 hover:text-white",
-                    !active && brandActive && "text-warmgray hover:text-charcoal",
+                    active && "bg-primary-soft/70 text-primary",
+                    !active && "text-warmgray hover:bg-white/65 hover:text-charcoal",
                   )}
                 >
                   {item.label}
@@ -97,7 +89,7 @@ export default function Navbar() {
                     <span
                       className={cn(
                         "absolute bottom-0 left-1/2 h-0.5 w-4 -translate-x-1/2 rounded-full",
-                        brandMuted ? "bg-gold" : "bg-primary",
+                        "bg-primary",
                       )}
                     />
                   ) : null}
@@ -108,10 +100,7 @@ export default function Navbar() {
                 <Link
                   href="/login"
                   className={cn(
-                    "inline-flex items-center gap-1.5 rounded-full px-5 py-2.5 text-sm font-medium shadow-md transition-all duration-300 hover:shadow-lg",
-                    brandMuted
-                      ? "bg-gold text-primary-deeper hover:bg-gold-light"
-                      : "bg-primary text-white hover:bg-primary-dark",
+                    "inline-flex items-center gap-1.5 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-primary/20 transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary-dark hover:shadow-lg hover:shadow-primary/25 active:translate-y-0",
                   )}
                 >
                   <LogIn className="h-4 w-4" />
@@ -125,9 +114,7 @@ export default function Navbar() {
             onClick={() => setMenuOpen((o) => !o)}
             className={cn(
               "relative z-50 flex h-9 w-9 items-center justify-center rounded-full transition-colors md:hidden",
-              brandMuted
-                ? "text-white hover:bg-white/10"
-                : "text-charcoal hover:bg-primary-soft",
+              "text-charcoal hover:bg-primary-soft",
             )}
             aria-label={menuOpen ? "Close menu" : "Open menu"}
           >

@@ -63,6 +63,36 @@ const itemVariants: Variants = {
   exit: { opacity: 0, transition: { duration: 0.3 } },
 };
 
+/** Layered sacred geometry that stays crisp at every viewport size. */
+function SacredGeometryBackdrop() {
+  return (
+    <div
+      className="pointer-events-none absolute -right-36 top-1/2 z-[2] aspect-square w-[min(76vw,58rem)] -translate-y-1/2 opacity-55 [mask-image:radial-gradient(circle,black_48%,transparent_74%)]"
+      aria-hidden="true"
+    >
+      <svg viewBox="0 0 800 800" className="h-full w-full animate-spin-slow text-gold-deep [animation-duration:80s] motion-reduce:animate-none">
+        <g fill="none" stroke="currentColor">
+          <circle cx="400" cy="400" r="326" strokeWidth="1" opacity=".28" />
+          <circle cx="400" cy="400" r="282" strokeWidth="1.5" opacity=".24" />
+          <circle cx="400" cy="400" r="212" strokeWidth="1" opacity=".3" />
+          <circle cx="400" cy="400" r="118" strokeWidth="1" opacity=".24" />
+          <path d="M400 100 650 550 150 550Z" strokeWidth="1.4" opacity=".34" />
+          <path d="m400 700 250-450H150Z" strokeWidth="1.4" opacity=".34" />
+          <path d="m400 156 207 368H193Z" strokeWidth=".9" opacity=".22" />
+          <path d="m400 644 207-368H193Z" strokeWidth=".9" opacity=".22" />
+          <path d="M400 214c42 54 94 75 158 64-11 64 10 116 64 158-54 42-75 94-64 158-64-11-116 10-158 64-42-54-94-75-158-64 11-64-10-116-64-158 54-42 75-94 64-158 64 11 116-10 158-64Z" strokeWidth="1.2" opacity=".26" />
+        </g>
+        {Array.from({ length: 16 }).map((_, index) => {
+          const angle = (index * Math.PI * 2) / 16;
+          const x = 400 + Math.cos(angle) * 326;
+          const y = 400 + Math.sin(angle) * 326;
+          return <circle key={index} cx={x} cy={y} r="4" fill="currentColor" opacity=".42" />;
+        })}
+      </svg>
+    </div>
+  );
+}
+
 export default function HeroSlider() {
   const [current, setCurrent] = useState(0);
   const [tabVisible, setTabVisible] = useState(true);
@@ -99,7 +129,7 @@ export default function HeroSlider() {
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-screen overflow-hidden bg-charcoal"
+      className="relative min-h-screen overflow-hidden bg-cream"
     >
       {/* ============ Background image crossfade ============ */}
       <AnimatePresence mode="wait">
@@ -112,18 +142,43 @@ export default function HeroSlider() {
           className="absolute inset-0"
           style={{ y: bgParallax }}
         >
-          <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url(${slide.image})` }}
-          />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_52%_62%_at_78%_43%,rgba(221,184,41,0.32),transparent_66%),radial-gradient(ellipse_38%_40%_at_64%_64%,rgba(180,20,20,0.13),transparent_72%),radial-gradient(ellipse_50%_46%_at_5%_92%,rgba(201,165,32,0.18),transparent_70%),linear-gradient(118deg,#fffdf8_0%,#fdf7ec_43%,#efdfc8_100%)]" />
           {/* Dark overlay gradient — deeper at bottom for readability */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/40 to-black/70" />
+          <div className="absolute inset-0 bg-[linear-gradient(105deg,rgba(255,253,248,0.96)_0%,rgba(255,253,248,0.72)_42%,rgba(255,253,248,0.03)_69%)]" />
           {/* Premium cinematic layers — ken-burns aura + vignette + gold glow */}
-          <div className="absolute inset-0 animate-ken-burns bg-[radial-gradient(ellipse_60%_50%_at_70%_45%,rgba(221,184,41,0.16),transparent_65%)]" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_75%_65%_at_50%_50%,transparent_45%,rgba(0,0,0,0.55)_100%)]" />
-          <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black/80 to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 h-56 bg-gradient-to-t from-white/80 via-cream/40 to-transparent" />
         </motion.div>
       </AnimatePresence>
+
+      <SacredGeometryBackdrop />
+
+      {/* Flowing silk and orbital lines give the light canvas ceremonial depth. */}
+      <svg
+        viewBox="0 0 1600 900"
+        preserveAspectRatio="none"
+        className="pointer-events-none absolute inset-0 z-[3] h-full w-full"
+        aria-hidden="true"
+      >
+        <defs>
+          <linearGradient id="silkCrimson" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stopColor="#8b0f0f" stopOpacity=".2" />
+            <stop offset=".55" stopColor="#d64545" stopOpacity=".12" />
+            <stop offset="1" stopColor="#b41414" stopOpacity="0" />
+          </linearGradient>
+          <linearGradient id="silkGold" x1="1" y1="0" x2="0" y2="1">
+            <stop offset="0" stopColor="#ddb829" stopOpacity=".26" />
+            <stop offset="1" stopColor="#f0d060" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+        <path d="M-120 760C150 570 310 870 620 720c170-82 275-44 430 34-310 7-422 172-725 126C116 849 4 930-120 946Z" fill="url(#silkCrimson)" />
+        <path d="M-80 807c221-146 376 82 650-30" fill="none" stroke="#c9a520" strokeOpacity=".32" strokeWidth="2" />
+        <path d="M1260-100c75 152 260 133 420 242v252c-181-123-308-95-438-271Z" fill="url(#silkCrimson)" />
+        <path d="M1212 20c132 86 252 39 420 182" fill="none" stroke="url(#silkGold)" strokeWidth="3" />
+        <path d="M822 74c220-86 493 17 588 218" fill="none" stroke="#c9a520" strokeDasharray="3 12" strokeLinecap="round" strokeOpacity=".46" />
+        <circle cx="1408" cy="292" r="6" fill="#ddb829" fillOpacity=".7" />
+        <circle cx="1284" cy="118" r="4" fill="#ddb829" fillOpacity=".55" />
+        <circle cx="1024" cy="78" r="3" fill="#ddb829" fillOpacity=".5" />
+      </svg>
 
       {/* Ambient floating gold particles (premium depth) */}
       <div className="pointer-events-none absolute inset-0 z-[2] overflow-hidden" aria-hidden="true">
@@ -138,7 +193,7 @@ export default function HeroSlider() {
         ].map((p, i) => (
           <span
             key={i}
-            className={cn("absolute rounded-full bg-gold/70 animate-float", p.s)}
+            className={cn("absolute rounded-full bg-gold/35 animate-float", p.s)}
             style={{ left: p.l, top: p.t, animationDelay: p.d }}
           />
         ))}
@@ -146,11 +201,11 @@ export default function HeroSlider() {
 
       {/* Subtle hairline grid */}
       <div
-        className="pointer-events-none absolute inset-0 z-[1] opacity-[0.04]"
+        className="pointer-events-none absolute inset-0 z-[1] opacity-[0.24]"
         style={{
           backgroundImage:
-            "linear-gradient(rgba(221,184,41,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(221,184,41,0.3) 1px, transparent 1px)",
-          backgroundSize: "100px 100px",
+            "linear-gradient(rgba(168,135,26,0.12) 1px, transparent 1px), linear-gradient(90deg, rgba(168,135,26,0.12) 1px, transparent 1px)",
+          backgroundSize: "120px 120px",
         }}
         aria-hidden="true"
       />
@@ -171,7 +226,7 @@ export default function HeroSlider() {
               {/* Eyebrow */}
               <motion.div
                 variants={itemVariants}
-                className="eyebrow mb-6 items-center justify-center gap-4 text-gold lg:justify-start"
+                className="eyebrow mb-6 items-center justify-center gap-4 text-gold-deep lg:justify-start"
               >
                 <span className="hairline-gold w-12" />
                 {slide.eyebrow}
@@ -181,11 +236,11 @@ export default function HeroSlider() {
               {/* Heading */}
               <motion.h1
                 variants={itemVariants}
-                className="font-display text-5xl font-bold leading-[1.06] tracking-tight text-white sm:text-6xl lg:text-7xl"
+                className="text-balance font-display text-5xl font-bold leading-[1.02] tracking-[-0.035em] text-charcoal sm:text-6xl lg:text-7xl"
               >
                 <span className="block">{slide.headline}</span>
                 <span className="mt-1 block">
-                  <GradientText as="span" variant="gold">
+                  <GradientText as="span" variant="crimson">
                     {slide.headlineHighlight}
                   </GradientText>
                 </span>
@@ -194,13 +249,13 @@ export default function HeroSlider() {
               {/* Book name + info */}
               <motion.p
                 variants={itemVariants}
-                className="mt-7 font-serif text-2xl font-medium italic text-gold sm:text-3xl"
+                className="mt-7 font-serif text-2xl font-semibold italic text-primary sm:text-3xl"
               >
                 {slide.bookTitle}
               </motion.p>
               <motion.p
                 variants={itemVariants}
-                className="mt-3 text-sm uppercase tracking-[0.18em] text-white/50"
+                className="mt-3 text-sm uppercase tracking-[0.18em] text-warmgray"
               >
                 {slide.bookInfo}
               </motion.p>
@@ -217,7 +272,7 @@ export default function HeroSlider() {
 
               <motion.p
                 variants={itemVariants}
-                className="mx-auto max-w-xl text-base leading-relaxed text-white/65 sm:text-lg lg:mx-0"
+                className="mx-auto max-w-xl text-base leading-relaxed text-warmgray sm:text-lg lg:mx-0"
               >
                 {slide.tagline}
               </motion.p>
@@ -227,14 +282,14 @@ export default function HeroSlider() {
                 variants={itemVariants}
                 className="mt-9 flex flex-wrap items-center justify-center gap-5 lg:justify-start"
               >
-                <Button href={slide.ctaHref} size="lg" variant="gold">
+                <Button href={slide.ctaHref} size="lg" variant="primary" className="px-9 shadow-lg shadow-primary/20 hover:-translate-y-0.5">
                   <Sparkles className="h-4 w-4" />
                   {slide.ctaLabel}
                 </Button>
                 {slide.bookPrice ? (
-                  <span className="font-display text-3xl font-bold text-white">
+                  <span className="font-display text-3xl font-bold text-charcoal">
                     {slide.bookPrice}
-                    <span className="ml-2 align-middle text-sm font-medium text-white/50">
+                    <span className="ml-2 align-middle text-sm font-medium text-warmgray">
                       incl. all taxes
                     </span>
                   </span>
@@ -246,8 +301,10 @@ export default function HeroSlider() {
           {/* Book art */}
           <div className="relative flex items-center justify-center">
             {/* Ambient gold glow */}
-            <div className="absolute left-1/2 top-1/2 h-[70%] w-[70%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gold/25 blur-[90px]" />
-            <div className="absolute left-1/2 top-1/2 h-[46%] w-[46%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/25 blur-[70px]" />
+            <div className="absolute left-1/2 top-1/2 h-[72%] w-[72%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gold/20 blur-[90px]" />
+            <div className="absolute left-1/2 top-1/2 h-[46%] w-[46%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/10 blur-[70px]" />
+            <div className="absolute bottom-[1%] left-1/2 hidden h-16 w-[78%] -translate-x-1/2 rounded-[50%] border border-gold/40 bg-[linear-gradient(180deg,rgba(255,255,255,0.92),rgba(229,208,172,0.72))] shadow-[0_22px_45px_rgba(107,11,11,0.15),inset_0_2px_0_rgba(255,255,255,0.9)] sm:block" />
+            <div className="absolute bottom-[-1%] left-1/2 hidden h-5 w-[66%] -translate-x-1/2 rounded-[50%] bg-primary/15 blur-xl sm:block" />
 
             <AnimatePresence mode="wait">
               <motion.div
@@ -265,12 +322,12 @@ export default function HeroSlider() {
                 >
                   {/* Floating badge */}
                   {slide.bookBadge ? (
-                    <span className="absolute -right-5 -top-5 z-10 rotate-3 rounded-full bg-gold px-5 py-2 font-display text-sm font-bold text-primary-deeper shadow-xl shadow-black/40">
+                    <span className="absolute -right-3 -top-4 z-10 rotate-3 rounded-full border border-gold/40 bg-white/90 px-5 py-2 font-display text-sm font-bold text-primary shadow-lg shadow-gold/15 backdrop-blur-md">
                       ✦ {slide.bookBadge}
                     </span>
                   ) : null}
 
-                  <div className="relative overflow-hidden rounded-2xl shadow-[0_50px_100px_-20px_rgba(0,0,0,0.8)] ring-1 ring-white/15">
+                  <div className="relative overflow-hidden rounded-2xl shadow-[0_40px_90px_-30px_rgba(107,11,11,0.38)] ring-1 ring-gold/15">
                     <NextImage
                       src={slide.bookImage}
                       alt={slide.bookTitle ?? "SHAKTI book"}
@@ -292,7 +349,7 @@ export default function HeroSlider() {
                   </div>
 
                   {/* Floor reflection */}
-                  <div className="mx-auto mt-2 h-10 w-3/4 rounded-[100%] bg-black/60 blur-xl" />
+                  <div className="mx-auto mt-2 h-9 w-3/4 rounded-[100%] bg-primary/15 blur-xl" />
                 </motion.div>
               </motion.div>
             </AnimatePresence>
@@ -311,7 +368,7 @@ export default function HeroSlider() {
               className="w-full"
             >
               {/* Eyebrow */}
-              <motion.div variants={itemVariants} className="eyebrow mb-8 flex items-center justify-center gap-4 text-gold">
+              <motion.div variants={itemVariants} className="eyebrow mb-8 flex items-center justify-center gap-4 text-gold-deep">
                 <span className="hairline-gold w-12" />
                 {slide.eyebrow}
                 <span className="hairline-gold w-12" />
@@ -320,11 +377,11 @@ export default function HeroSlider() {
               {/* Heading */}
               <motion.h1
                 variants={itemVariants}
-                className="font-display text-5xl font-bold leading-[1.06] tracking-tight text-white sm:text-6xl md:text-7xl lg:text-[5.25rem]"
+                className="text-balance font-display text-5xl font-bold leading-[1.02] tracking-[-0.035em] text-charcoal sm:text-6xl md:text-7xl lg:text-[5.25rem]"
               >
                 <span className="block">{slide.headline}</span>
                 <span className="mt-1 block">
-                  <GradientText as="span" variant="gold">
+                  <GradientText as="span" variant="crimson">
                     {slide.headlineHighlight}
                   </GradientText>
                 </span>
@@ -338,18 +395,18 @@ export default function HeroSlider() {
               </motion.div>
 
               {/* Name */}
-              <motion.p variants={itemVariants} className="font-serif text-xl font-medium italic text-white/70 sm:text-2xl">
+              <motion.p variants={itemVariants} className="font-serif text-xl font-medium italic text-primary sm:text-2xl">
                 — {brand.name} —
               </motion.p>
 
               {/* Tagline */}
-              <motion.p variants={itemVariants} className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-white/60 sm:text-lg">
+              <motion.p variants={itemVariants} className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-warmgray sm:text-lg">
                 {slide.tagline}
               </motion.p>
 
               {/* CTA */}
               <motion.div variants={itemVariants} className="mt-10 flex flex-wrap items-center justify-center gap-4">
-                <Button href={slide.ctaHref} size="lg" variant="gold">
+                <Button href={slide.ctaHref} size="lg" variant="primary" className="px-9 shadow-lg shadow-primary/20 hover:-translate-y-0.5">
                   <Sparkles className="h-4 w-4" />
                   {slide.ctaLabel}
                 </Button>
@@ -357,15 +414,15 @@ export default function HeroSlider() {
 
               {/* Trust stats row */}
               <motion.div variants={itemVariants} className="mt-12 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm">
-                <span className="inline-flex items-center gap-1.5 text-white/50">
+                <span className="inline-flex items-center gap-1.5 text-warmgray">
                   <Star className="h-4 w-4 fill-gold/60 text-gold-deep" />
                   30+ Years Experience
                 </span>
-                <span className="inline-flex items-center gap-1.5 text-white/50">
+                <span className="inline-flex items-center gap-1.5 text-warmgray">
                   <Star className="h-4 w-4 fill-gold/60 text-gold-deep" />
                   PhD in Tarot Reading
                 </span>
-                <span className="inline-flex items-center gap-1.5 text-white/50">
+                <span className="inline-flex items-center gap-1.5 text-warmgray">
                   <Star className="h-4 w-4 fill-gold/60 text-gold-deep" />
                   4 Sacred Practices
                 </span>
@@ -385,7 +442,7 @@ export default function HeroSlider() {
               "rounded-full transition-all duration-500",
               i === current
                 ? "h-2.5 w-10 bg-gold shadow-[0_0_12px_rgba(221,184,41,0.5)]"
-                : "h-2.5 w-2.5 bg-white/30 hover:bg-white/60",
+                : "h-2.5 w-2.5 bg-primary/20 hover:bg-primary/45",
             )}
             aria-label={`Go to slide ${i + 1}`}
           />
@@ -399,10 +456,10 @@ export default function HeroSlider() {
       >
         <a
           href="#about"
-          className="group inline-flex flex-col items-center gap-2 pb-6 text-[0.6rem] uppercase tracking-[0.25em] text-white/30 transition-colors hover:text-gold"
+          className="group inline-flex flex-col items-center gap-2 pb-6 text-[0.6rem] uppercase tracking-[0.25em] text-warmgray/60 transition-colors hover:text-primary"
         >
           Scroll
-          <span className="block h-9 w-px bg-gradient-to-b from-gold/60 to-transparent transition-colors duration-300 group-hover:from-gold" />
+          <span className="block h-9 w-px bg-gradient-to-b from-gold-deep/60 to-transparent transition-colors duration-300 group-hover:from-primary" />
         </a>
       </motion.div>
     </section>
