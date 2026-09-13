@@ -129,7 +129,7 @@ export default function HeroSlider() {
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-svh overflow-hidden bg-cream"
+      className="relative min-h-[68svh] overflow-hidden bg-cream sm:min-h-svh"
     >
       {/* ============ Background image crossfade ============ */}
       <AnimatePresence mode="wait">
@@ -213,7 +213,7 @@ export default function HeroSlider() {
       {/* ============ Content ============ */}
       {slide.bookImage ? (
         /* ---------- Premium product slide: copy left, book right ---------- */
-        <div className="relative z-10 mx-auto grid min-h-svh max-w-7xl items-center gap-8 px-5 pb-16 pt-24 sm:px-6 sm:pb-24 sm:pt-28 lg:grid-cols-2 lg:gap-16 lg:px-10 lg:pb-28 lg:pt-36">
+        <div className="relative z-10 mx-auto grid min-h-0 max-w-7xl items-center gap-5 px-5 pb-12 pt-[4.5rem] sm:min-h-svh sm:gap-8 sm:px-6 sm:pb-24 sm:pt-28 lg:grid-cols-2 lg:gap-16 lg:px-10 lg:pb-28 lg:pt-36">
           <AnimatePresence mode="wait">
             <motion.div
               key={current}
@@ -249,7 +249,7 @@ export default function HeroSlider() {
               {/* Book name + info */}
               <motion.p
                 variants={itemVariants}
-                className="mt-5 font-serif text-xl font-semibold italic text-primary sm:mt-7 sm:text-2xl lg:text-3xl"
+                className="mt-4 font-serif text-lg font-semibold italic text-primary sm:mt-7 sm:text-2xl lg:text-3xl"
               >
                 {slide.bookTitle}
               </motion.p>
@@ -263,7 +263,7 @@ export default function HeroSlider() {
               {/* Gold ornamental divider */}
               <motion.div
                 variants={itemVariants}
-                className="my-4 flex items-center justify-center gap-4 sm:my-7 lg:justify-start"
+                className="my-3 flex items-center justify-center gap-4 sm:my-7 lg:justify-start"
               >
                 <span className="h-px w-12 bg-gold/50 sm:w-16" />
                 <span className="font-serif text-2xl text-gold">✦</span>
@@ -280,7 +280,7 @@ export default function HeroSlider() {
               {/* Price + CTA */}
               <motion.div
                 variants={itemVariants}
-                className="mt-6 flex flex-wrap items-center justify-center gap-4 sm:mt-9 sm:gap-5 lg:justify-start"
+                className="mt-5 flex flex-wrap items-center justify-center gap-4 sm:mt-9 sm:gap-5 lg:justify-start"
               >
                 <Button href={slide.ctaHref} size="lg" variant="primary" className="px-7 shadow-lg shadow-primary/20 hover:-translate-y-0.5 sm:px-9">
                   <Sparkles className="h-4 w-4" />
@@ -338,8 +338,8 @@ export default function HeroSlider() {
                       className={cn(
                         "h-auto object-cover",
                         slide.bookLarge
-                          ? "w-[240px] sm:w-[380px] lg:w-[500px] xl:w-[580px]"
-                          : "w-[210px] sm:w-[340px] lg:w-[400px] xl:w-[440px]",
+                          ? "w-[190px] sm:w-[380px] lg:w-[500px] xl:w-[580px]"
+                          : "w-[165px] sm:w-[340px] lg:w-[400px] xl:w-[440px]",
                       )}
                     />
                     {/* Spine highlight */}
@@ -357,7 +357,7 @@ export default function HeroSlider() {
         </div>
       ) : (
         /* ---------- Standard centered slide ---------- */
-        <div className="relative z-10 mx-auto flex min-h-svh max-w-3xl items-center justify-center px-5 pb-16 pt-24 text-center sm:px-6 sm:pb-24 sm:pt-28 lg:pb-28 lg:pt-36">
+        <div className="relative z-10 mx-auto flex min-h-0 max-w-3xl items-center justify-center px-5 pb-12 pt-[4.5rem] text-center sm:min-h-svh sm:px-6 sm:pb-24 sm:pt-28 lg:pb-28 lg:pt-36">
           <AnimatePresence mode="wait">
             <motion.div
               key={current}
