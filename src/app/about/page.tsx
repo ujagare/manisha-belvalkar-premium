@@ -190,12 +190,13 @@ export default function AboutPage() {
                 providing clarity and direction.
               </p>
               <p className="mt-4 text-lg leading-relaxed text-warmgray">
-                As a <strong className="text-ink">Goddess Attunement</strong> practitioner,
-                she creates sacred connections with divine feminine energy.
                 Through{" "}
                 <strong className="text-ink">Soul Purpose Reading</strong>, she
                 aligns your journey with cosmic energies, empowering you to make
-                informed decisions and unlock your true potential.
+                informed decisions and unlock your true potential. As a{" "}
+                <strong className="text-ink">Goddess Attunement</strong> practitioner,
+                she creates sacred connections with divine feminine energy, 
+                offering spiritual guidance and blessings.
               </p>
               <p className="mt-4 text-lg leading-relaxed text-warmgray">
                 Whether you seek answers, alignment, or transformation, her
