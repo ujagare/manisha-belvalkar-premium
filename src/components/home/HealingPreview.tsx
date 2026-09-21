@@ -18,7 +18,7 @@ export default function HealingPreview() {
       <SacredSectionBackdrop motif="petals" className="opacity-45" />
       <div className="relative mx-auto max-w-7xl px-6 lg:px-10">
         <SectionHeading
-          eyebrow="Healing"
+          eyebrow="Energy Healing"
           title="Return to balance"
           subtitle="Gentle, powerful practices — in person or at a distance — to restore harmony across body, mind and spirit."
         />

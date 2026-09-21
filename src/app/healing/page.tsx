@@ -10,7 +10,7 @@ import GoldDivider from "@/components/ui/GoldDivider";
 import CTASection from "@/components/home/CTASection";
 
 export const metadata: Metadata = {
-  title: "Healing",
+  title: "Energy Healing",
   description:
     "From in-person sessions to distance healing, restore harmony across your body, mind and spirit.",
 };
@@ -19,7 +19,7 @@ export default function HealingPage() {
   return (
     <>
       <PageHero
-        eyebrow="Healing"
+        eyebrow="Energy Healing"
         image="/images/page-heroes/healing-hero.png"
         imageAlt="Seven luminous mineral forms resting in rippled healing sand"
         title={

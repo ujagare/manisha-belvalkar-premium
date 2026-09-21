@@ -9,9 +9,9 @@ import GoldDivider from "@/components/ui/GoldDivider";
 import CTASection from "@/components/home/CTASection";
 
 export const metadata: Metadata = {
-  title: "6 Months to Transform",
+  title: "Journey from a Woman to Goddess",
   description:
-    "A premium flagship journey of personal transformation — six months of mentoring, healing, tarot insight and empowerment.",
+    "Women Empowerment — a premium flagship journey of personal transformation: six months of mentoring, healing, tarot insight and empowerment.",
 };
 
 export default function TransformationPage() {
@@ -20,13 +20,13 @@ export default function TransformationPage() {
   return (
     <>
       <PageHero
-        eyebrow="Flagship Program"
+        eyebrow="Women Empowerment"
         image="/images/page-heroes/transformation-hero.png"
         imageAlt="Six sculptural steps rising toward warm light with a crimson thread"
         title={
           <>
-            Six months to{" "}
-            <span className="text-gold-shimmer">transform</span>
+            Journey from a Woman to{" "}
+            <span className="text-gold-shimmer">Goddess</span>
           </>
         }
         subtitle={program.description}

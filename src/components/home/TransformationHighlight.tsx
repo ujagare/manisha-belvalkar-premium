@@ -139,12 +139,12 @@ export default function TransformationHighlight() {
         <Reveal className="text-center">
           <div className="eyebrow mb-5 flex items-center justify-center gap-4 text-gold-dark">
             <span className="hairline-gold w-10" />
-            Flagship Program
+            Women Empowerment
             <span className="hairline-gold w-10" />
           </div>
           <h2 className="text-balance font-display text-4xl font-bold leading-tight tracking-tight text-charcoal sm:text-5xl">
-            Six months to{" "}
-            <span className="text-crimson-gradient">transform</span>
+            Journey from a Woman to{" "}
+            <span className="text-crimson-gradient">Goddess</span>
           </h2>
           <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-warmgray">
             {transformationProgram.description}

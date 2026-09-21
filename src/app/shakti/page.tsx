@@ -11,7 +11,7 @@ import CTASection from "@/components/home/CTASection";
 export const metadata: Metadata = {
   title: "Shakti",
   description:
-    "A sacred journey of self-discovery, empowerment and inner transformation for women.",
+    "A sacred journey of self-discovery, empowerment and inner transformation.",
 };
 
 export default function ShaktiPage() {

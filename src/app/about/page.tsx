@@ -126,8 +126,8 @@ export default function AboutPage() {
               <p className="mt-6 text-lg leading-relaxed text-white/70 sm:text-xl">
                 With over{" "}
                 <strong className="text-gold-light">30 years</strong> of
-                experience in Tarot Consultation, Soul Purpose Reading, Space
-                Clearing, and Chakra Therapy — Manisha brings unmatched
+                experience in Tarot Consultation, Soul Purpose Reading, Goddess
+                Attunement, and Chakra Therapy — Manisha brings unmatched
                 expertise and insight to guiding individuals toward clarity,
                 success, and self-empowerment.
               </p>
@@ -201,7 +201,8 @@ export default function AboutPage() {
               <p className="mt-4 text-lg leading-relaxed text-warmgray">
                 Whether you seek answers, alignment, or transformation, her
                 decades of dedication ensure a personalized and impactful
-                experience.
+                experience. Work with Manisha to illuminate your path and design
+                a life that resonates with your highest aspirations.
               </p>
             </GsapReveal>
 

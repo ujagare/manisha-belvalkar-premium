@@ -78,8 +78,8 @@ export const brand = {
   locations: [
     {
       city: "Mumbai",
-      address: "Prabhadevi, Mumbai",
-      mapsHref: "https://www.google.com/maps/search/?api=1&query=Prabhadevi+Mumbai"
+      address: "501, New Pushpanjali, Prabhadevi, Mumbai 28",
+      mapsHref: "https://www.google.com/maps/search/?api=1&query=New+Pushpanjali+Prabhadevi+Mumbai"
     },
     {
       city: "Pune",
@@ -121,7 +121,7 @@ export const heroSlides: HeroSlide[] = [
       "52 beautifully illustrated oracle cards born from Dr. Manisha's meditations with the Goddesses of the sacred 51 Shakti Peethas — daily guidance, positivity and spiritual insight in your hands.",
     ctaLabel: "Buy Now",
     ctaHref: "/checkout/product/shakti-oracle-deck",
-    bookImage: "/images/shakti-book-front.png",
+    bookImage: "/images/shakti-oracle-deck-yellow.jpg",
     bookTitle: "SHAKTI Oracle Deck",
     bookInfo: "Inspired by 51 Shakti Peethas · Guidebook included",
     bookPrice: "₹2,993",
@@ -265,7 +265,7 @@ export const services: Service[] = [
       "Guided healing sessions",
       "Ongoing support & tools",
     ],
-    image: "/images/hero-home-bg.png",
+    image: "/images/home-cards/wellbeing-program.png",
   },
 ];
 
@@ -360,12 +360,12 @@ export const products: Product[] = [
     price: 2993,
     salePrice: 3533,
     badge: "Best Seller",
-    image: "/images/shakti-book-front.png",
+    image: "/images/shakti-oracle-deck-yellow.jpg",
     details: [
-      "52 oracle cards",
-      "Information booklet included",
-      "Divine feminine wisdom",
-      "Daily guidance & affirmations",
+      "52 beautifully illustrated cards depicting the Shaktipeeth Goddesses",
+      "Information booklet with guidance on how to use the cards",
+      "Beautiful box set for the cards",
+      "Daily guidance, positivity & divine feminine wisdom",
     ],
     featured: true,
   },
@@ -691,7 +691,7 @@ export const healingIntro =
 export const healingServices: HealingService[] = [
   {
     slug: "healing-sessions",
-    title: "Energy Healing Sessions",
+    title: "Energy Healing",
     short: "In-person energy healing with Manisha.",
     description:
       "Personal healing sessions guided by Dr. Manisha Belvalkar — combining energy work, chakra alignment and intuitive insight.",
@@ -700,7 +700,7 @@ export const healingServices: HealingService[] = [
       "Chakra & aura balancing",
       "Intuitive guidance & aftercare",
     ],
-    image: "/images/manisha-portrait.jpg",
+    image: "/images/home-cards/healing-session.png",
   },
   {
     slug: "distance-healing",
@@ -713,7 +713,7 @@ export const healingServices: HealingService[] = [
       "Scheduled at your convenience",
       "Follow-up guidance included",
     ],
-    image: "/images/tarot.jpg",
+    image: "/images/home-cards/distance-healing.png",
   },
   {
     slug: "chakra-healing",
@@ -741,7 +741,7 @@ export const healingServices: HealingService[] = [
       "Emotional & spiritual restoration",
       "Sacred practices for self-healing",
     ],
-    image: "/images/candle.jpg",
+    image: "/images/home-cards/goddess-attunement.png",
   },
   {
     slug: "mind-reprogramming",
@@ -768,7 +768,7 @@ export const healingServices: HealingService[] = [
       "Daily positive-energy practices",
       "Home & space energising",
     ],
-    image: "/images/candle.jpg",
+    image: "/images/home-cards/positive-energy.png",
   },
   {
     slug: "chakra-questionnaire",
@@ -781,7 +781,7 @@ export const healingServices: HealingService[] = [
       "Personal energy report",
       "Recommended healing path",
     ],
-    image: "/images/gold-abstract.jpg",
+    image: "/images/home-cards/chakra-assessment.png",
   },
 ];
 
@@ -794,10 +794,10 @@ export interface TransformationMonth {
 
 export const transformationProgram = {
   slug: "transformation",
-  title: "Journey to Your Fullest Self",
-  tagline: "A premium flagship journey of personal transformation",
+  title: "Journey from a Woman to Goddess",
+  tagline: "Women Empowerment — a premium flagship journey of personal transformation",
   description:
-    "A guided 6-month transformation journey designed for those ready to deeply change their life. Through monthly mentoring, healing, tarot insight and empowerment practices, you will move from where you are to who you are meant to be — stepping into your power, purpose and fullest expression.",
+    "A guided 6-month transformation journey designed for women ready to deeply change their life. Through monthly mentoring, healing, tarot insight and empowerment practices, you will move from where you are to who you are meant to be — stepping into your power, purpose and fullest expression.",
   price: "By consultation",
   duration: "6-month guided program",
   months: [

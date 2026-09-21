@@ -78,7 +78,7 @@ export default async function HealingDetailPage({ params }: Props) {
             </ul>
             <div className="mt-9 flex flex-wrap gap-4">
               <Button href={`/checkout/healing/${service.slug}`} size="lg" variant="gold">
-                Book a Healing Session
+                Book an Energy Healing Session
               </Button>
               <Link
                 href="/healing"

@@ -18,7 +18,7 @@ export default function ShaktiPreview() {
         <SectionHeading
           eyebrow="Shakti"
           title="Discover Your Chakra"
-          subtitle="A sacred journey of self-discovery, empowerment and inner transformation for women."
+          subtitle="A sacred journey of self-discovery, empowerment and inner transformation."
         />
 
         <div className="mt-14 grid items-stretch gap-6 lg:grid-cols-2 lg:gap-10">
