@@ -396,17 +396,36 @@ export default function Footer() {
                   </a>
                 </li>
                 <li>
-                  <a
-                    href={brand.mapsHref}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="group flex items-start gap-3 transition-colors duration-300 hover:text-gold"
-                  >
-                    <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-gold transition-all duration-300 group-hover:border-gold group-hover:bg-gold group-hover:text-primary-deeper">
-                      <MapPin className="h-4 w-4" />
-                    </span>
-                    <span className="text-sm leading-relaxed">{brand.address}</span>
-                  </a>
+                  <div className="flex flex-col gap-2">
+                    {brand.locations ? (
+                      brand.locations.map((location, idx) => (
+                        <a
+                          key={idx}
+                          href={location.mapsHref}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="group flex items-start gap-3 transition-colors duration-300 hover:text-gold"
+                        >
+                          <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-gold transition-all duration-300 group-hover:border-gold group-hover:bg-gold group-hover:text-primary-deeper">
+                            <MapPin className="h-4 w-4" />
+                          </span>
+                          <span className="text-sm leading-relaxed">{location.address}</span>
+                        </a>
+                      ))
+                    ) : (
+                      <a
+                        href={brand.mapsHref}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="group flex items-start gap-3 transition-colors duration-300 hover:text-gold"
+                      >
+                        <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-gold transition-all duration-300 group-hover:border-gold group-hover:bg-gold group-hover:text-primary-deeper">
+                          <MapPin className="h-4 w-4" />
+                        </span>
+                        <span className="text-sm leading-relaxed">{brand.address}</span>
+                      </a>
+                    )}
+                  </div>
                 </li>
               </ul>
 

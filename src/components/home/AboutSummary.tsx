@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { ArrowRight, Award, Sparkles } from "lucide-react";
+import { ArrowRight, Sparkles } from "lucide-react";
 import { brand } from "@/lib/data";
 import Button from "@/components/ui/Button";
 import Reveal from "@/components/ui/Reveal";
@@ -42,7 +42,7 @@ export default function AboutSummary() {
                 <span className="font-semibold text-charcoal">
                   30 years of experience
                 </span>{" "}
-                in Tarot Consultation, Soul Purpose Reading, Space Clearing,
+                in Tarot Consultation, Soul Purpose Reading, Goddess Attunement,
                 and Chakra Therapy.
               </p>
               <p className="mt-4 text-base leading-relaxed text-warmgray sm:text-lg">
@@ -68,10 +68,6 @@ export default function AboutSummary() {
                 <span className="inline-flex items-center gap-2 rounded-full bg-primary-soft px-4 py-2 text-xs font-semibold uppercase tracking-wider text-primary">
                   <Sparkles className="h-3.5 w-3.5" />
                   Soul Purpose Reading
-                </span>
-                <span className="inline-flex items-center gap-2 rounded-full bg-gold-soft px-4 py-2 text-xs font-semibold uppercase tracking-wider text-gold-deep">
-                  <Award className="h-3.5 w-3.5" />
-                  Space Clearing Expert
                 </span>
               </div>
             </Reveal>

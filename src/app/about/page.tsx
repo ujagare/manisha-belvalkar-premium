@@ -29,7 +29,7 @@ import { brand, mediaItems, awards } from "@/lib/data";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "About Manisha Belvalkar — a holistic well-being coach with over 30 years of experience in Tarot Consultation, Soul Purpose Reading, Space Clearing, and Chakra Therapy.",
+    "About Manisha Belvalkar — a holistic well-being coach with over 30 years of experience in Tarot Consultation, Soul Purpose Reading, Goddess Attunement, and Chakra Therapy.",
 };
 
 const expertise = [
@@ -47,8 +47,8 @@ const expertise = [
   },
   {
     icon: HomeIcon,
-    title: "Space Clearing",
-    text: "Creates harmonious spaces that foster peace and prosperity through ancient clearing rituals.",
+    title: "Goddess Attunement",
+    text: "Connect with the divine feminine energy through sacred attunement, receiving spiritual guidance and blessings.",
     gradient: "from-primary/10 via-primary/5 to-transparent",
   },
   {
@@ -68,7 +68,7 @@ const milestones = [
   {
     year: "2000s",
     title: "Mastery & Research",
-    desc: "Over two decades of refining Tarot, Space Clearing, and Chakra Therapy — developing her unique approach.",
+    desc: "Over two decades of refining Tarot, Goddess Attunement, and Chakra Therapy — developing her unique approach.",
   },
   {
     year: "2010s",
@@ -190,8 +190,8 @@ export default function AboutPage() {
                 providing clarity and direction.
               </p>
               <p className="mt-4 text-lg leading-relaxed text-warmgray">
-                As a <strong className="text-ink">Space Clearing Expert</strong>,
-                she creates harmonious spaces that foster peace and prosperity.
+                As a <strong className="text-ink">Goddess Attunement</strong> practitioner,
+                she creates sacred connections with divine feminine energy.
                 Through{" "}
                 <strong className="text-ink">Soul Purpose Reading</strong>, she
                 aligns your journey with cosmic energies, empowering you to make

@@ -57,6 +57,8 @@ export default async function ProductsPage() {
     <>
       <PageHero
         eyebrow="Sacred Shop"
+        image="/images/page-heroes/products-hero.png"
+        imageAlt="A curated collection of handcrafted sacred tools and oracle products"
         title={
           <>
             Sacred Tools &{" "}

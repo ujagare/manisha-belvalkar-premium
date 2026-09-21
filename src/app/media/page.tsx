@@ -18,6 +18,8 @@ export default function MediaPage() {
     <>
       <PageHero
         eyebrow="Media"
+        image="/images/page-heroes/media-hero.png"
+        imageAlt="Editorial press archive with layered pages and an antique magnifying glass"
         title={
           <>
             Manisha in{" "}

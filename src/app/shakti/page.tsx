@@ -21,6 +21,8 @@ export default function ShaktiPage() {
     <>
       <PageHero
         eyebrow="Shakti"
+        image="/images/page-heroes/shakti-hero.png"
+        imageAlt="Sculptural crimson lotus with an antique gold sacred geometry halo"
         title={
           <>
             Awaken your{" "}

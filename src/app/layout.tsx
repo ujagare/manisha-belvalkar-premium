@@ -34,16 +34,17 @@ export const metadata: Metadata = {
     template: "%s | Manisha Belvalkar",
   },
   description:
-    "A holistic well-being coach with over 30 years of experience in Tarot Consultation, Soul Purpose Reading, Space Clearing, and Chakra Therapy. Guidance for the soul.",
+    "A holistic well-being coach with over 30 years of experience in Tarot Consultation, Soul Purpose Reading, Goddess Attunement, and Chakra Therapy. Guidance for the soul.",
   keywords: [
     "Manisha Belvalkar",
     "Tarot Reading",
     "Spiritual Mentor",
     "Soul Purpose Reading",
-    "Space Clearing",
+    "Goddess Attunement",
     "Chakra Therapy",
     "Holistic Well-being",
     "Mumbai",
+    "Pune",
   ],
   openGraph: {
     title: "Manisha Belvalkar — Spiritual Mentor",

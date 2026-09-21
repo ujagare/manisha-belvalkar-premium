@@ -33,6 +33,8 @@ export default async function HealingDetailPage({ params }: Props) {
     <>
       <PageHero
         eyebrow="Healing"
+        image={service.image}
+        imageAlt={service.title}
         title={
           <>
             <span className="text-gold-shimmer">{service.title}</span>

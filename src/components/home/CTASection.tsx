@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { Heart, Sparkles } from "lucide-react";
 import Button from "@/components/ui/Button";
 import Reveal from "@/components/ui/Reveal";
@@ -40,15 +39,34 @@ export default function CTASection() {
           </Reveal>
 
           <Reveal direction="right">
-            <div className="gold-border-gradient relative overflow-hidden rounded-2xl">
-              <Image
-                src="/images/candle.jpg"
-                alt="Sacred space with candle"
-                width={600}
-                height={700}
-                className="h-[500px] w-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-charcoal/40 to-transparent" />
+            <div className="relative flex min-h-[460px] items-center justify-center overflow-hidden rounded-[2rem] bg-charcoal p-10 shadow-[0_35px_90px_-35px_rgba(107,11,11,0.55)] ring-1 ring-gold/25">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_46%,rgba(221,184,41,0.18),transparent_28%),radial-gradient(circle_at_85%_10%,rgba(180,20,20,0.3),transparent_34%)]" />
+              <svg
+                viewBox="0 0 500 500"
+                className="absolute h-[125%] w-[125%] animate-spin-slow text-gold motion-reduce:animate-none"
+                style={{ animationDuration: "90s" }}
+                aria-hidden="true"
+              >
+                <g fill="none" stroke="currentColor">
+                  <circle cx="250" cy="250" r="185" opacity=".28" />
+                  <circle cx="250" cy="250" r="135" opacity=".18" />
+                  <path d="M250 65 410 342H90Z" opacity=".34" />
+                  <path d="m250 435 160-277H90Z" opacity=".34" />
+                  <circle cx="250" cy="250" r="72" strokeDasharray="3 10" opacity=".5" />
+                </g>
+              </svg>
+              <div className="relative z-10 max-w-sm text-center">
+                <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border border-gold/35 bg-gold/10 text-2xl text-gold shadow-[0_0_45px_rgba(221,184,41,0.2)]">
+                  ✦
+                </span>
+                <p className="mt-8 font-serif text-3xl font-medium italic leading-snug text-gold-light sm:text-4xl">
+                  Your next chapter begins with clarity.
+                </p>
+                <div className="mx-auto mt-8 h-px w-28 bg-gradient-to-r from-transparent via-gold to-transparent" />
+                <p className="mt-5 text-xs font-semibold uppercase tracking-[0.3em] text-white/50">
+                  Wisdom · Healing · Alignment
+                </p>
+              </div>
             </div>
           </Reveal>
         </div>

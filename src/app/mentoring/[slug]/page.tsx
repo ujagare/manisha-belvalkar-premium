@@ -33,6 +33,8 @@ export default async function MentoringDetailPage({ params }: Props) {
     <>
       <PageHero
         eyebrow="Mentoring"
+        image={area.image}
+        imageAlt={area.title}
         title={
           <>
             <span className="text-gold-shimmer">{area.title}</span>

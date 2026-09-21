@@ -17,6 +17,8 @@ export default function ContactPage() {
     <>
       <PageHero
         eyebrow="Contact"
+        image="/images/page-heroes/contact-hero.png"
+        imageAlt="A calm and welcoming private consultation space"
         title={
           <>
             Let&apos;s <span className="text-crimson-gradient">connect</span>
@@ -78,23 +80,48 @@ export default function ContactPage() {
                 </Reveal>
 
                 <Reveal delay={0.2}>
-                  <a
-                    href={brand.mapsHref}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="group relative flex items-center gap-5 overflow-hidden rounded-[24px] border border-parchment bg-gradient-to-b from-white to-cream/70 p-6 shadow-[0_8px_30px_-18px_rgba(28,25,23,0.18)] transition-all duration-500 hover:-translate-y-1 hover:border-gold/50 hover:shadow-[0_25px_50px_-25px_rgba(221,184,41,0.45)]"
-                  >
-                    <div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-gold/15 opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100" />
-                    <span className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-primary-dark text-white shadow-lg shadow-primary/25 ring-1 ring-gold/30 transition-transform duration-500 group-hover:scale-105">
-                      <MapPin className="h-5 w-5 text-gold-light" />
-                    </span>
-                    <div className="relative">
-                      <p className="text-sm text-warmgray">Address</p>
-                      <p className="font-display text-lg font-bold text-charcoal transition-colors duration-300 group-hover:text-primary">
-                        {brand.address}
-                      </p>
-                    </div>
-                  </a>
+                  <div className="space-y-4">
+                    {brand.locations ? (
+                      brand.locations.map((location, idx) => (
+                        <a
+                          key={idx}
+                          href={location.mapsHref}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="group relative flex items-center gap-5 overflow-hidden rounded-[24px] border border-parchment bg-gradient-to-b from-white to-cream/70 p-6 shadow-[0_8px_30px_-18px_rgba(28,25,23,0.18)] transition-all duration-500 hover:-translate-y-1 hover:border-gold/50 hover:shadow-[0_25px_50px_-25px_rgba(221,184,41,0.45)]"
+                        >
+                          <div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-gold/15 opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100" />
+                          <span className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-primary-dark text-white shadow-lg shadow-primary/25 ring-1 ring-gold/30 transition-transform duration-500 group-hover:scale-105">
+                            <MapPin className="h-5 w-5 text-gold-light" />
+                          </span>
+                          <div className="relative">
+                            <p className="text-sm text-warmgray">{location.city}</p>
+                            <p className="font-display text-lg font-bold text-charcoal transition-colors duration-300 group-hover:text-primary">
+                              {location.address}
+                            </p>
+                          </div>
+                        </a>
+                      ))
+                    ) : (
+                      <a
+                        href={brand.mapsHref}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="group relative flex items-center gap-5 overflow-hidden rounded-[24px] border border-parchment bg-gradient-to-b from-white to-cream/70 p-6 shadow-[0_8px_30px_-18px_rgba(28,25,23,0.18)] transition-all duration-500 hover:-translate-y-1 hover:border-gold/50 hover:shadow-[0_25px_50px_-25px_rgba(221,184,41,0.45)]"
+                      >
+                        <div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-gold/15 opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100" />
+                        <span className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-primary-dark text-white shadow-lg shadow-primary/25 ring-1 ring-gold/30 transition-transform duration-500 group-hover:scale-105">
+                          <MapPin className="h-5 w-5 text-gold-light" />
+                        </span>
+                        <div className="relative">
+                          <p className="text-sm text-warmgray">Address</p>
+                          <p className="font-display text-lg font-bold text-charcoal transition-colors duration-300 group-hover:text-primary">
+                            {brand.address}
+                          </p>
+                        </div>
+                      </a>
+                    )}
+                  </div>
                 </Reveal>
               </div>
 

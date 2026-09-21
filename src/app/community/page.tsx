@@ -20,6 +20,8 @@ export default function CommunityPage() {
     <>
       <PageHero
         eyebrow="Community"
+        image="/images/page-heroes/community-hero.png"
+        imageAlt="An intimate sacred circle arranged with handcrafted cushions and flowers"
         title={
           <>
             Growth is sweeter{" "}

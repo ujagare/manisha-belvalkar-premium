@@ -19,6 +19,8 @@ export default function CoursesPage() {
     <>
       <PageHero
         eyebrow="Courses"
+        image="/images/page-heroes/courses-hero.png"
+        imageAlt="Handcrafted study books and learning cards in warm golden light"
         title={
           <>
             Transformative <span className="text-crimson-gradient">courses</span>

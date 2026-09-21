@@ -20,6 +20,9 @@ export default function MentoringPage() {
     <>
       <PageHero
         eyebrow="Mentoring"
+        image="/images/page-heroes/mentoring-hero.png"
+        imageAlt="A warm private mentoring table with journal, tea and reflection card"
+        contentSide="right"
         title={
           <>
             Mentoring through{" "}

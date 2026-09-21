@@ -21,6 +21,8 @@ export default function TransformationPage() {
     <>
       <PageHero
         eyebrow="Flagship Program"
+        image="/images/page-heroes/transformation-hero.png"
+        imageAlt="Six sculptural steps rising toward warm light with a crimson thread"
         title={
           <>
             Six months to{" "}

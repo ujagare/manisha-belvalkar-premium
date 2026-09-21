@@ -23,11 +23,6 @@ const categories = [
     line: "Navigate life with confidence",
     services: services.filter((s) => s.category === "wellbeing"),
   },
-  {
-    title: "Space Clearing",
-    line: "Energize and heal your space",
-    services: services.filter((s) => s.category === "space-clearing"),
-  },
 ];
 
 export default function ServicesPage() {
@@ -35,6 +30,8 @@ export default function ServicesPage() {
     <>
       <PageHero
         eyebrow="Services"
+        image="/images/page-heroes/services-hero.png"
+        imageAlt="A refined collection of spiritual guidance tools on dark stone"
         title={
           <>
             Services for your{" "}

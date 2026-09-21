@@ -20,6 +20,8 @@ export default function HealingPage() {
     <>
       <PageHero
         eyebrow="Healing"
+        image="/images/page-heroes/healing-hero.png"
+        imageAlt="Seven luminous mineral forms resting in rippled healing sand"
         title={
           <>
             Return to{" "}

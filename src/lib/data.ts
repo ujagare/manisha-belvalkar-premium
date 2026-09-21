@@ -7,7 +7,7 @@
 export interface Service {
   slug: string;
   title: string;
-  category: "tarot" | "wellbeing" | "space-clearing";
+  category: "tarot" | "wellbeing";
   short: string;
   description: string;
   price: number;
@@ -67,18 +67,30 @@ export const brand = {
   heroLine: "Guidance For the Soul",
   heroAction: "Choose Yourself",
   tagline:
-    "A holistic well-being coach with over 30 years of experience in Tarot Consultation, Soul Purpose Reading, Space Clearing, and Chakra Therapy.",
+    "A holistic well-being coach with over 30 years of experience in Tarot Consultation, Soul Purpose Reading, Goddess Attunement, and Chakra Therapy.",
   quote:
     "It is your own commitment to what you want in life that determines your success.",
   phone: "+91 99222 46111",
   phoneHref: "tel:+919922246111",
   email: "manishabelvalkar@gmail.com",
   emailHref: "mailto:manishabelvalkar@gmail.com",
-  address: "501, New Pushpanjali, Prabha Devi, Mumbai 28",
+  address: "Mumbai & Pune",
+  locations: [
+    {
+      city: "Mumbai",
+      address: "Prabhadevi, Mumbai",
+      mapsHref: "https://www.google.com/maps/search/?api=1&query=Prabhadevi+Mumbai"
+    },
+    {
+      city: "Pune",
+      address: "Pune, Maharashtra",
+      mapsHref: "https://www.google.com/maps/search/?api=1&query=Pune+Maharashtra"
+    }
+  ],
   whatsappHref:
     "https://wa.me/919922246111?text=Hello%20Manisha%2C%20I%20would%20like%20to%20know%20more.",
   mapsHref:
-    "https://www.google.com/maps/search/?api=1&query=Prabha+Devi+Mumbai+28",
+    "https://www.google.com/maps/search/?api=1&query=Prabhadevi+Mumbai",
 };
 
 export interface HeroSlide {
@@ -103,7 +115,7 @@ export const heroSlides: HeroSlide[] = [
   {
     image: "/images/hero-home-bg.png",
     eyebrow: "SHAKTI Collection",
-    headline: "Awaken the",
+    headline: "Messages – Daily Guidance from the",
     headlineHighlight: "Divine Feminine",
     tagline:
       "52 beautifully illustrated oracle cards born from Dr. Manisha's meditations with the Goddesses of the sacred 51 Shakti Peethas — daily guidance, positivity and spiritual insight in your hands.",
@@ -111,8 +123,7 @@ export const heroSlides: HeroSlide[] = [
     ctaHref: "/checkout/product/shakti-oracle-deck",
     bookImage: "/images/shakti-book-front.png",
     bookTitle: "SHAKTI Oracle Deck",
-    bookInfo:
-      "Inspired by 51 Shakti Peethas · Guidebook included",
+    bookInfo: "Inspired by 51 Shakti Peethas · Guidebook included",
     bookPrice: "₹2,993",
     bookBadge: "Best Seller",
   },
@@ -172,7 +183,8 @@ export const services: Service[] = [
     slug: "soul-purpose-reading",
     title: "Soul Purpose Reading",
     category: "tarot",
-    short: "Discover the higher purpose of your journey through a profound Tarot session.",
+    short:
+      "Discover the higher purpose of your journey through a profound Tarot session.",
     description:
       "Discover the higher purpose of your journey through a profound Tarot session, unlocking insights into your soul's calling and the steps to align with it.",
     price: 24000,
@@ -189,7 +201,8 @@ export const services: Service[] = [
     slug: "tarot-consultation-30",
     title: "Tarot Consultation",
     category: "tarot",
-    short: "Quick, actionable insights into your current challenges and decisions.",
+    short:
+      "Quick, actionable insights into your current challenges and decisions.",
     description:
       "Get quick, actionable insights into your current challenges and decisions with a concise and focused Tarot reading designed to bring clarity and guidance.",
     price: 15000,
@@ -220,19 +233,20 @@ export const services: Service[] = [
     image: "/images/tarot.jpg",
   },
   {
-    slug: "space-clearing",
-    title: "Space Clearing Consultation",
-    category: "space-clearing",
-    short: "Energize and heal your space with ancient cleansing rituals.",
+    slug: "goddess-attunement",
+    title: "Goddess Attunement",
+    category: "wellbeing",
+    short: "Connect with the divine feminine energy through sacred attunement.",
     description:
-      "As a Space Clearing Expert, Manisha creates harmonious spaces that foster peace and prosperity, clearing stagnant energies and inviting positive flow.",
-    price: 0,
-    duration: "On consultation",
-    badge: "By Appointment",
+      "A powerful practice to connect with Goddess energy, align with divine feminine wisdom, and receive spiritual guidance and blessings for your journey.",
+    price: 24000,
+    duration: "90 minutes",
+    badge: "New",
     features: [
-      "Energetic audit of your space",
-      "Cleansing rituals & remedies",
-      "Guidance to maintain harmony",
+      "Sacred attunement with Goddess energy",
+      "Divine feminine connection",
+      "Spiritual guidance & blessings",
+      "Personalized practices for continued connection",
     ],
     image: "/images/candle.jpg",
   },
@@ -534,14 +548,14 @@ export interface ShaktiPillar {
 }
 
 export const shaktiIntro =
-  "Shakti is the divine feminine energy within every woman. Through mentoring, healing and sacred wisdom, Dr. Manisha Belvalkar guides women to reclaim their power, honour their journey and step into their fullest self.";
+  "Shakti is the divine feminine energy within us all. Through mentoring, healing and sacred wisdom, Dr. Manisha Belvalkar guides seekers to reclaim their power, honour their journey and step into their fullest self.";
 
 export const shaktiPillars: ShaktiPillar[] = [
   {
-    title: "Women",
+    title: "Honour Your Essence",
     tagline: "Honour your feminine essence",
     description:
-      "A sacred space designed for women — to feel seen, heard and understood as they navigate life's many roles.",
+      "A sacred space designed to feel seen, heard and understood as you navigate life's many roles.",
     image: "/images/manisha-portrait.jpg",
   },
   {
@@ -677,7 +691,7 @@ export const healingIntro =
 export const healingServices: HealingService[] = [
   {
     slug: "healing-sessions",
-    title: "Healing Sessions",
+    title: "Energy Healing Sessions",
     short: "In-person energy healing with Manisha.",
     description:
       "Personal healing sessions guided by Dr. Manisha Belvalkar — combining energy work, chakra alignment and intuitive insight.",
@@ -702,6 +716,48 @@ export const healingServices: HealingService[] = [
     image: "/images/tarot.jpg",
   },
   {
+    slug: "chakra-healing",
+    title: "Chakra Healing",
+    short: "Balance and align your energy centers.",
+    description:
+      "Deep chakra balancing to restore flow, clear blockages and harmonize your energy body — bringing vitality, clarity and peace.",
+    features: [
+      "Complete chakra assessment",
+      "Energy blockage clearing",
+      "Personalized balancing techniques",
+      "Ongoing chakra maintenance guidance",
+    ],
+    image: "/images/chakra.png",
+  },
+  {
+    slug: "goddess-healing",
+    title: "Goddess Healing",
+    short: "Healing through divine feminine energy.",
+    description:
+      "Connect with the healing power of the Goddesses — receiving divine guidance, emotional healing and spiritual support through sacred feminine energy.",
+    features: [
+      "Divine feminine energy healing",
+      "Goddess guidance & blessings",
+      "Emotional & spiritual restoration",
+      "Sacred practices for self-healing",
+    ],
+    image: "/images/candle.jpg",
+  },
+  {
+    slug: "mind-reprogramming",
+    title: "Reprogramming Your Mind (Through Guided Meditation)",
+    short: "Transform limiting beliefs through sacred meditation.",
+    description:
+      "Guided meditation practices designed to gently reprogram limiting beliefs, release mental patterns and create new pathways for positive thinking and empowered living.",
+    features: [
+      "Guided meditation sessions",
+      "Subconscious reprogramming",
+      "Release limiting beliefs",
+      "Create positive mental patterns",
+    ],
+    image: "/images/gold-abstract.jpg",
+  },
+  {
     slug: "positive-energy",
     title: "Positive Energy Giving",
     short: "Fill your space and self with positive energy.",
@@ -716,7 +772,7 @@ export const healingServices: HealingService[] = [
   },
   {
     slug: "chakra-questionnaire",
-    title: "Chakra Questionnaire",
+    title: "Chakra Assessment",
     short: "Begin with understanding your energy.",
     description:
       "A guided chakra assessment that reveals where your energy is balanced and where it needs attention — your starting point for healing.",
@@ -738,10 +794,10 @@ export interface TransformationMonth {
 
 export const transformationProgram = {
   slug: "transformation",
-  title: "6 Months to Transform",
+  title: "Journey to Your Fullest Self",
   tagline: "A premium flagship journey of personal transformation",
   description:
-    "A guided 6-month transformation journey designed for those ready to deeply change their life. Through monthly mentoring, healing, tarot insight and empowerment practices, you will move from where you are to who you are meant to be.",
+    "A guided 6-month transformation journey designed for those ready to deeply change their life. Through monthly mentoring, healing, tarot insight and empowerment practices, you will move from where you are to who you are meant to be — stepping into your power, purpose and fullest expression.",
   price: "By consultation",
   duration: "6-month guided program",
   months: [
@@ -867,7 +923,8 @@ export const communityIntro =
 export const communityPillars: CommunityPillar[] = [
   {
     title: "Sacred Circles",
-    description: "Regular group gatherings for sharing, healing and connection.",
+    description:
+      "Regular group gatherings for sharing, healing and connection.",
   },
   {
     title: "Monthly Wisdom",

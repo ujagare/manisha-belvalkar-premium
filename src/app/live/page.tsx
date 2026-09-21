@@ -20,6 +20,8 @@ export default function LivePage() {
     <>
       <PageHero
         eyebrow="Live"
+        image="/images/page-heroes/live-hero.png"
+        imageAlt="An intimate stage prepared for a live wisdom circle"
         title={
           <>
             Experience it{" "}
