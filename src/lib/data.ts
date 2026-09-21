@@ -121,7 +121,7 @@ export const heroSlides: HeroSlide[] = [
       "52 beautifully illustrated oracle cards born from Dr. Manisha's meditations with the Goddesses of the sacred 51 Shakti Peethas — daily guidance, positivity and spiritual insight in your hands.",
     ctaLabel: "Buy Now",
     ctaHref: "/checkout/product/shakti-oracle-deck",
-    bookImage: "/images/shakti-oracle-deck-yellow.jpg",
+    bookImage: "/images/shakti-book-front.png",
     bookTitle: "SHAKTI Oracle Deck",
     bookInfo: "Inspired by 51 Shakti Peethas · Guidebook included",
     bookPrice: "₹2,993",
