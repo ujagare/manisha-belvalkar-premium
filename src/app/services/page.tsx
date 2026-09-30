@@ -4,12 +4,12 @@ import PageHero from "@/components/ui/PageHero";
 import SectionHeading from "@/components/ui/SectionHeading";
 import ServiceCard from "@/components/ui/ServiceCard";
 import Reveal from "@/components/ui/Reveal";
-import CTASection from "@/components/home/CTASection";
 
 export const metadata: Metadata = {
   title: "Services",
   description:
     "Tap into the power of ancient wisdom through Tarot, Healing, and Well-being Sessions to attract good luck, positivity, and success.",
+  alternates: { canonical: "/services" },
 };
 
 const categories = [
@@ -63,7 +63,6 @@ export default function ServicesPage() {
         </section>
       ))}
 
-      <CTASection />
     </>
   );
 }

@@ -10,6 +10,7 @@ import SignOutButton from "@/components/account/SignOutButton";
 export const metadata: Metadata = {
   title: "My account",
   description: "Your profile, orders and activity with Manisha Belvalkar.",
+  robots: { index: false, follow: false },
 };
 
 export default async function AccountPage() {

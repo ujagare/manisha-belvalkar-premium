@@ -16,8 +16,12 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { type, slug } = await params;
   const item = await getCatalogItem(type as OrderItemType, slug);
+  // Sanitize: catalog titles can contain stray emoji/control chars from the
+  // admin dashboard; keep the browser tab title clean for SEO.
+  const clean = item?.title?.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, "").trim();
   return {
-    title: item ? `Checkout — ${item.title}` : "Checkout",
+    title: clean ? `Checkout — ${clean}` : "Checkout",
+    robots: { index: false, follow: false },
   };
 }
 

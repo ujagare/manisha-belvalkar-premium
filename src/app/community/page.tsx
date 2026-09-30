@@ -1,16 +1,15 @@
 import type { Metadata } from "next";
 import { HeartHandshake, Users, CalendarHeart, Sparkles } from "lucide-react";
 import { communityIntro, communityPillars, brand } from "@/lib/data";
-import PageHero from "@/components/ui/PageHero";
 import SectionHeading from "@/components/ui/SectionHeading";
 import Button from "@/components/ui/Button";
 import Reveal from "@/components/ui/Reveal";
-import CTASection from "@/components/home/CTASection";
 
 export const metadata: Metadata = {
-  title: "Community",
+  title: "Join Magic Community",
   description:
-    "Join a community of women and seekers walking the path of self-discovery, healing and empowerment.",
+    "Join Magic Community for monthly moon cycle based guidance, tips, remedies and member-only offerings.",
+  alternates: { canonical: "/community" },
 };
 
 const icons = [HeartHandshake, Sparkles, Users, CalendarHeart];
@@ -18,18 +17,38 @@ const icons = [HeartHandshake, Sparkles, Users, CalendarHeart];
 export default function CommunityPage() {
   return (
     <>
-      <PageHero
-        eyebrow="Community"
-        image="/images/page-heroes/community-hero.png"
-        imageAlt="An intimate sacred circle arranged with handcrafted cushions and flowers"
-        title={
-          <>
-            Growth is sweeter{" "}
-            <span className="text-gold-shimmer">together</span>
-          </>
-        }
-        subtitle={communityIntro}
-      />
+      <section className="relative isolate min-h-[640px] overflow-hidden bg-neutral-200 pt-24 text-white lg:min-h-[720px] lg:pt-28">
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: "url('/images/page-heroes/community-hero.png')" }}
+          aria-label="An intimate sacred circle arranged with handcrafted cushions and flowers"
+        />
+        <div className="absolute inset-0 bg-neutral-700/60" />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(82,82,82,0.92)_0%,rgba(82,82,82,0.72)_42%,rgba(82,82,82,0.22)_76%,rgba(82,82,82,0.08)_100%)]" />
+        <div className="absolute inset-y-0 left-[7%] hidden w-px bg-gradient-to-b from-transparent via-white/35 to-transparent lg:block" />
+
+        <div className="relative mx-auto flex min-h-[540px] max-w-7xl items-end px-6 pb-16 pt-20 lg:min-h-[610px] lg:items-center lg:px-10 lg:pb-20">
+          <Reveal>
+            <div className="max-w-3xl">
+              <div className="eyebrow mb-6 flex items-center gap-4 text-white/85">
+                <span className="h-px w-12 bg-gradient-to-r from-white to-transparent" />
+                Community
+              </div>
+              <h1 className="max-w-[11ch] break-words font-display text-[2.25rem] font-bold leading-[1.06] text-white drop-shadow-[0_3px_24px_rgba(0,0,0,0.35)] sm:max-w-full sm:text-6xl lg:text-[5.15rem] lg:leading-[0.98]">
+                Join Magic Community
+                <span className="block text-gold-shimmer">
+                  Growth is magical together
+                </span>
+              </h1>
+              <p className="mt-7 max-w-xl text-base leading-relaxed text-white/82 text-shadow-sm sm:text-lg">
+                {communityIntro}
+              </p>
+            </div>
+          </Reveal>
+        </div>
+
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/55 to-transparent" />
+      </section>
 
       {/* Pillars */}
       <section className="py-20 lg:py-28">
@@ -94,7 +113,6 @@ export default function CommunityPage() {
         </div>
       </section>
 
-      <CTASection />
     </>
   );
 }

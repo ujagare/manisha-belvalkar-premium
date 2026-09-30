@@ -158,9 +158,25 @@ export default function Footer() {
           className="glow-gold pointer-events-none absolute -bottom-32 -right-20 h-96 w-96"
           aria-hidden="true"
         />
-        {/* Decorative ring */}
+        <svg
+          viewBox="0 0 500 500"
+          className="pointer-events-none absolute left-1/2 top-1/2 h-[740px] w-[740px] -translate-x-1/2 -translate-y-1/2 animate-spin-slow text-gold opacity-70 drop-shadow-[0_0_34px_rgba(221,184,41,0.55)] motion-reduce:animate-none"
+          style={{ animationDuration: "95s" }}
+          aria-hidden="true"
+        >
+          <g fill="none" stroke="currentColor">
+            <circle cx="250" cy="250" r="214" strokeWidth="1.5" opacity=".72" />
+            <circle cx="250" cy="250" r="172" strokeWidth="1.35" opacity=".58" />
+            <circle cx="250" cy="250" r="116" strokeWidth="1.2" opacity=".62" />
+            <circle cx="250" cy="250" r="64" strokeWidth="1.1" opacity=".55" />
+            <path d="M250 50 420 350H80Z" strokeWidth="1.5" opacity=".82" />
+            <path d="m250 450 170-300H80Z" strokeWidth="1.5" opacity=".82" />
+            <path d="M250 116c31 40 70 56 118 48-8 48 8 87 48 118-40 31-56 70-48 118-48-8-87 8-118 48-31-40-70-56-118-48 8-48-8-87-48-118 40-31 56-70 48-118 48 8 87-8 118-48Z" strokeWidth="1.35" opacity=".66" />
+            <circle cx="250" cy="250" r="88" strokeDasharray="3 10" strokeLinecap="round" strokeWidth="1.4" opacity=".78" />
+          </g>
+        </svg>
         <div
-          className="pointer-events-none absolute left-1/2 top-1/2 h-[560px] w-[560px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/10"
+          className="pointer-events-none absolute left-1/2 top-1/2 h-[430px] w-[430px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gold/20 blur-3xl"
           aria-hidden="true"
         />
 
@@ -359,7 +375,7 @@ export default function Footer() {
                     className="group inline-flex items-center gap-1.5 text-sm text-ivory/60 transition-colors duration-300 hover:text-gold"
                   >
                     <span className="h-px w-0 bg-gold transition-all duration-300 group-hover:w-4" />
-                    Products & Sacred Tools
+                    Shop
                   </Link>
                 </li>
               </ul>

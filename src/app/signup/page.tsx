@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   title: "Create account",
   description:
     "Join Manisha Belvalkar's inner circle — book sessions, enroll in courses and receive personal guidance.",
+  robots: { index: false, follow: true },
 };
 
 export default function SignupPage() {

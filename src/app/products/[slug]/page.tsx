@@ -18,7 +18,6 @@ import { getProducts, getProductBySlug } from "@/lib/supabase/products";
 import Reveal from "@/components/ui/Reveal";
 import Button from "@/components/ui/Button";
 import GoldDivider from "@/components/ui/GoldDivider";
-import CTASection from "@/components/home/CTASection";
 import ProductCard, { categoryMeta } from "@/components/products/ProductCard";
 
 interface Props {
@@ -33,10 +32,15 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const product = await getProductBySlug(slug);
-  if (!product) return { title: "Product not found" };
+  if (!product) return { title: "Shop item not found" };
   return {
-    title: `${product.title} — Sacred Products`,
+    title: `${product.title} - Shop`,
     description: product.description,
+    alternates: { canonical: `/products/${product.slug}` },
+    openGraph: {
+      type: "website",
+      images: product.image ? [product.image] : undefined,
+    },
   };
 }
 
@@ -77,7 +81,7 @@ export default async function ProductDetailPage({ params }: Props) {
               className="inline-flex items-center gap-2 text-sm font-medium text-warmgray transition-colors hover:text-primary"
             >
               <ArrowLeft className="h-4 w-4" />
-              All products
+              All shop
             </Link>
           </Reveal>
 
@@ -231,7 +235,7 @@ export default async function ProductDetailPage({ params }: Props) {
                 href="/products"
                 className="group inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition-colors hover:text-primary-dark"
               >
-                View all products
+                View all shop
                 <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </Link>
             </Reveal>
@@ -249,7 +253,6 @@ export default async function ProductDetailPage({ params }: Props) {
 
       <GoldDivider />
 
-      <CTASection />
     </>
   );
 }

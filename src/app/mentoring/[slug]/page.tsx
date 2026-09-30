@@ -1,31 +1,49 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { Check, ArrowLeft } from "lucide-react";
 import { mentoringAreas, brand } from "@/lib/data";
 import PageHero from "@/components/ui/PageHero";
 import Button from "@/components/ui/Button";
 import Reveal from "@/components/ui/Reveal";
 import Parallax from "@/components/ui/Parallax";
-import CTASection from "@/components/home/CTASection";
 
 interface Props {
   params: Promise<{ slug: string }>;
 }
 
+const legacyMentoringRedirects: Record<string, string> = {
+  "mentoring-sessions": "tarot-mentoring",
+  purification: "clarity-alignment",
+  "self-development": "clarity-alignment",
+  "self-exploration": "clarity-alignment",
+  "healing-in-mentoring": "clarity-alignment",
+};
+
 export function generateStaticParams() {
-  return mentoringAreas.map((area) => ({ slug: area.slug }));
+  return [
+    ...mentoringAreas.map((area) => ({ slug: area.slug })),
+    ...Object.keys(legacyMentoringRedirects).map((slug) => ({ slug })),
+  ];
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const area = mentoringAreas.find((a) => a.slug === slug);
   if (!area) return {};
-  return { title: area.title, description: area.short };
+  return {
+    title: area.title,
+    description: area.short,
+    alternates: { canonical: `/mentoring/${area.slug}` },
+  };
 }
 
 export default async function MentoringDetailPage({ params }: Props) {
   const { slug } = await params;
+  if (legacyMentoringRedirects[slug]) {
+    redirect(`/mentoring/${legacyMentoringRedirects[slug]}`);
+  }
+
   const area = mentoringAreas.find((a) => a.slug === slug);
   if (!area) notFound();
 
@@ -92,7 +110,6 @@ export default async function MentoringDetailPage({ params }: Props) {
         </div>
       </section>
 
-      <CTASection />
     </>
   );
 }

@@ -14,14 +14,14 @@ import PageHero from "@/components/ui/PageHero";
 import Reveal from "@/components/ui/Reveal";
 import Button from "@/components/ui/Button";
 import GoldDivider from "@/components/ui/GoldDivider";
-import CTASection from "@/components/home/CTASection";
 import ProductGrid from "@/components/products/ProductGrid";
 import { categoryMeta } from "@/components/products/ProductCard";
 
 export const metadata: Metadata = {
-  title: "Products — Sacred Tools & Treasures",
+  title: "Shop - Sacred Tools & Rituals",
   description:
-    "Handcrafted oracle decks, books, salt frames and sacred tools created with intention by Dr. Manisha Belvalkar — for daily guidance, protection and spiritual practice.",
+    "Shop decks, books, magic salt, vastu healing frames, rituals and WhatsApp workshops by Dr. Manisha Belvalkar.",
+  alternates: { canonical: "/products" },
 };
 
 const trustPoints = [
@@ -52,20 +52,22 @@ export default async function ProductsPage() {
   // is configured) — dashboard products appear here automatically.
   const products = await getProducts();
   const featured = products.find((p) => p.featured) ?? products[0];
+  const shopProducts = products.filter(
+    (product) => product.slug !== "shakti-combo-pack",
+  );
 
   return (
     <>
       <PageHero
-        eyebrow="Sacred Shop"
+        eyebrow="Shop"
         image="/images/page-heroes/products-hero.png"
-        imageAlt="A curated collection of handcrafted sacred tools and oracle products"
+        imageAlt="A curated collection of handcrafted sacred tools and shop offerings"
         title={
           <>
-            Sacred Tools &{" "}
-            <span className="text-crimson-gradient">Treasures</span>
+            <span className="text-crimson-gradient">Shop</span>
           </>
         }
-        subtitle="Handcrafted oracle decks, books, salt frames and ritual tools — created with intention to guide, protect and transform your everyday sacred practice."
+        subtitle="Deck, Book, Magic Salt, Vastu healing Frames, Abundance Rituals, Good Luck Rituals, Good Health Rituals and WhatsApp Workshops."
       />
 
       {/* Featured product */}
@@ -173,22 +175,21 @@ export default async function ProductsPage() {
           <Reveal className="mb-14 text-center">
             <div className="eyebrow mb-4 flex items-center justify-center gap-4 text-gold-dark">
               <span className="hairline-gold w-10" />
-              {Object.keys(productCategoryLabels).length} sacred collections
+              {Object.keys(productCategoryLabels).length} shop collections
               <span className="hairline-gold w-10" />
             </div>
             <h2 className="font-display text-4xl font-bold text-charcoal sm:text-5xl">
-              Choose your{" "}
-              <span className="text-crimson-gradient">sacred tool</span>
+              Explore the{" "}
+              <span className="text-crimson-gradient">Shop</span>
             </h2>
             <p className="mx-auto mt-5 max-w-2xl text-warmgray">
-              Filter by collection — oracle decks for daily guidance, books for
-              deep wisdom, and handcrafted ritual pieces to protect and cleanse
-              your space.
+              Browse decks, books, magic salt, healing frames, rituals and guided
+              WhatsApp workshops.
             </p>
           </Reveal>
 
           <Reveal delay={0.1}>
-            <ProductGrid products={products} />
+            <ProductGrid products={shopProducts} />
           </Reveal>
         </div>
       </section>
@@ -218,7 +219,6 @@ export default async function ProductsPage() {
 
       <GoldDivider />
 
-      <CTASection />
     </>
   );
 }

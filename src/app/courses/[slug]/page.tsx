@@ -1,14 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import {
-  ArrowLeft,
-  Check,
-  MessageCircle,
-  CalendarDays,
-  UserRound,
-} from "lucide-react";
-import { courses, brand } from "@/lib/data";
+import { ArrowLeft, Check, MessageCircle, CalendarDays, UserRound } from "lucide-react";
+import { courses } from "@/lib/data";
 import Reveal from "@/components/ui/Reveal";
 import Button from "@/components/ui/Button";
 import GoldDivider from "@/components/ui/GoldDivider";
@@ -28,6 +22,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: course.title,
     description: course.description,
+    alternates: { canonical: `/courses/${course.slug}` },
+    openGraph: { images: course.image ? [course.image] : undefined },
   };
 }
 
@@ -167,18 +163,6 @@ export default async function CourseDetailPage({ params }: Props) {
               </Reveal>
             ))}
           </div>
-
-          <Reveal delay={0.2} className="mt-12 text-center">
-            <p className="text-sm text-warmgray">
-              Enrollment requires an eligibility conversation.
-            </p>
-            <div className="mt-5">
-              <Button href={brand.whatsappHref} size="lg">
-                <MessageCircle className="h-4 w-4" />
-                Start your conversation
-              </Button>
-            </div>
-          </Reveal>
         </div>
       </section>
 

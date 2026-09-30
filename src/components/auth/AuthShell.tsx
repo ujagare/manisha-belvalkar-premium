@@ -17,8 +17,8 @@ export default function AuthShell({
   subtitle: string;
 }) {
   return (
-    <section className="relative min-h-screen bg-cream">
-      <div className="mx-auto grid min-h-screen max-w-7xl lg:grid-cols-2">
+    <section className="relative min-h-[100dvh] bg-cream">
+      <div className="mx-auto grid min-h-[100dvh] max-w-7xl lg:grid-cols-2">
         {/* Brand panel */}
         <div className="relative hidden overflow-hidden lg:block">
           <Image

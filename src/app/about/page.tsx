@@ -23,13 +23,13 @@ import Parallax from "@/components/ui/Parallax";
 import TextReveal from "@/components/ui/TextReveal";
 import GoldDivider from "@/components/ui/GoldDivider";
 import Button from "@/components/ui/Button";
-import CTASection from "@/components/home/CTASection";
 import { brand, mediaItems, awards } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "About",
   description:
     "About Manisha Belvalkar — a holistic well-being coach with over 30 years of experience in Tarot Consultation, Soul Purpose Reading, Goddess Attunement, and Chakra Therapy.",
+  alternates: { canonical: "/about" },
 };
 
 const expertise = [
@@ -116,7 +116,7 @@ export default function AboutPage() {
             </GsapReveal>
 
             <GsapReveal y={40} delay={0.1}>
-              <h1 className="mt-8 font-display text-5xl font-bold leading-[1.05] text-white sm:text-6xl lg:text-7xl">
+              <h1 className="mt-8 max-w-full break-words font-display text-[2.65rem] font-bold leading-[1.05] text-white sm:text-6xl lg:text-7xl">
                 The woman behind the{" "}
                 <span className="text-gold-shimmer">wisdom</span>
               </h1>
@@ -145,7 +145,7 @@ export default function AboutPage() {
             </GsapReveal>
 
             <GsapReveal y={20} delay={0.35} className="mt-10">
-              <div className="flex items-center gap-6">
+              <div className="flex flex-wrap items-center gap-4 sm:gap-6">
                 <div className="flex items-center gap-3">
                   <GraduationCap className="h-6 w-6 text-gold" />
                   <div>
@@ -153,12 +153,12 @@ export default function AboutPage() {
                     <p className="text-xs text-white/50">Tarot Reading</p>
                   </div>
                 </div>
-                <div className="h-8 w-px bg-white/20" />
+                <div className="hidden h-8 w-px bg-white/20 sm:block" />
                 <div className="text-sm">
                   <p className="font-bold text-white">30+</p>
                   <p className="text-xs text-white/50">Years Experience</p>
                 </div>
-                <div className="h-8 w-px bg-white/20" />
+                <div className="hidden h-8 w-px bg-white/20 sm:block" />
                 <div className="text-sm">
                   <p className="font-bold text-white">∞</p>
                   <p className="text-xs text-white/50">Souls Guided</p>
@@ -206,8 +206,8 @@ export default function AboutPage() {
               </p>
             </GsapReveal>
 
-            <GsapReveal y={40} x={40} className="relative">
-              <div className="gold-border-gradient relative h-[500px] overflow-hidden rounded-3xl sm:h-[600px]">
+            <GsapReveal y={40} className="relative">
+              <div className="gold-border-gradient relative h-[420px] overflow-hidden rounded-3xl sm:h-[600px]">
                 <Image
                   src="/images/about-portrait-3.png"
                   alt="Manisha in her element"
@@ -217,7 +217,7 @@ export default function AboutPage() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-charcoal/30 via-transparent to-transparent" />
               </div>
-              <div className="absolute -bottom-6 -left-6 rounded-2xl bg-primary px-7 py-5 text-white shadow-[0_24px_60px_-18px_rgba(180,20,20,0.6)]">
+              <div className="absolute -bottom-6 left-4 rounded-2xl bg-primary px-5 py-4 text-white shadow-[0_24px_60px_-18px_rgba(180,20,20,0.6)] sm:-left-6 sm:px-7 sm:py-5">
                 <p className="font-display text-3xl font-bold text-gold">
                   PhD
                 </p>
@@ -544,7 +544,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <CTASection />
     </>
   );
 }

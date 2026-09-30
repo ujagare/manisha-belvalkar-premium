@@ -71,7 +71,7 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop nav */}
-          <nav className="hidden items-center gap-1 md:flex">
+          <nav className="hidden items-center gap-1 xl:flex">
             {navigation.map((item) => {
               const active = pathname === item.href;
               return (
@@ -113,7 +113,7 @@ export default function Navbar() {
           <button
             onClick={() => setMenuOpen((o) => !o)}
             className={cn(
-              "relative z-50 flex h-9 w-9 items-center justify-center rounded-full transition-colors md:hidden",
+              "relative z-50 flex h-9 w-9 items-center justify-center rounded-full transition-colors xl:hidden",
               "text-charcoal hover:bg-primary-soft",
             )}
             aria-label={menuOpen ? "Close menu" : "Open menu"}

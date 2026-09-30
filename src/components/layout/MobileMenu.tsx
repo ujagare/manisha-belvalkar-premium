@@ -30,7 +30,7 @@ export default function MobileMenu({ open, onClose }: MobileMenuProps) {
   return (
     <div
       ref={overlayRef}
-      className="fixed inset-0 z-40 flex flex-col bg-cream/98 backdrop-blur-xl md:hidden"
+      className="fixed inset-0 z-40 flex min-h-[100dvh] flex-col overflow-hidden bg-cream/98 backdrop-blur-xl xl:hidden"
     >
       <div className="flex h-16 items-center justify-end px-6">
         <button
@@ -42,7 +42,7 @@ export default function MobileMenu({ open, onClose }: MobileMenuProps) {
         </button>
       </div>
 
-      <nav className="flex flex-1 flex-col items-center justify-center gap-2 pb-16">
+      <nav className="flex min-h-0 flex-1 flex-col items-center justify-start gap-2 overflow-y-auto px-6 py-8 sm:justify-center sm:pb-16">
         {navigation.map((item, i) => {
           const active = pathname === item.href;
           return (

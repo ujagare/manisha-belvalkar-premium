@@ -393,14 +393,14 @@ export default function ChakraModal({ open, onClose }: ChakraModalProps) {
                       </span>
                       {statement}
                     </p>
-                    <div className="mt-3 grid grid-cols-4 gap-1.5 sm:gap-2">
+                    <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
                       {HEALING_SCALE.map((option) => (
                         <button
                           key={option.label}
                           type="button"
                           onClick={() => setHealingAnswer(i, option.points)}
                           className={cn(
-                            "rounded-full border px-1 py-2 text-xs font-semibold transition-all duration-200 sm:px-2",
+                            "min-h-10 rounded-full border px-2 py-2 text-xs font-semibold transition-all duration-200",
                             healing[i] === option.points
                               ? "border-gold-dark bg-gradient-to-r from-gold to-gold-dark text-primary-deeper shadow-sm"
                               : "border-parchment bg-cream text-warmgray hover:border-gold hover:text-charcoal",

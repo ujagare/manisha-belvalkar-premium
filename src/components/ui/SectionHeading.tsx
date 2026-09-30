@@ -79,7 +79,7 @@ export default function SectionHeading({
         <motion.div
           aria-hidden="true"
           style={{ y: yBack }}
-          className="pointer-events-none absolute inset-0 z-0 flex items-center justify-center overflow-hidden"
+          className="pointer-events-none absolute inset-0 z-0 hidden items-center justify-center overflow-hidden sm:flex"
         >
           <span className="sh-ghost select-none whitespace-nowrap font-display text-[18vw] font-bold uppercase leading-none tracking-tight text-charcoal/[0.07] sm:text-8xl">
             {ghostWord}

@@ -1,27 +1,29 @@
+import type { Metadata } from "next";
 import HeroSlider from "@/components/home/HeroSlider";
-import AboutSummary from "@/components/home/AboutSummary";
-import ShaktiPreview from "@/components/home/ShaktiPreview";
-import MentoringPreview from "@/components/home/MentoringPreview";
-import HealingPreview from "@/components/home/HealingPreview";
-import TransformationHighlight from "@/components/home/TransformationHighlight";
 import ServicesPreview from "@/components/home/ServicesPreview";
+import HomeFAQ from "@/components/home/HomeFAQ";
 import Testimonials from "@/components/home/Testimonials";
-import EcosystemPreview from "@/components/home/EcosystemPreview";
-import CTASection from "@/components/home/CTASection";
+import ChakraAssessment from "@/components/home/ChakraAssessment";
+import DistanceHealingExperience from "@/components/home/DistanceHealingExperience";
+
+export const metadata: Metadata = {
+  title: {
+    absolute: "Manisha Belvalkar — Spiritual Mentor | Guidance For the Soul",
+  },
+  description:
+    "Book a Tarot Consultation, Soul Purpose Reading, Goddess Attunement or Chakra Therapy session with Dr. Manisha Belvalkar — 30+ years of experience. Mumbai & Pune.",
+  alternates: { canonical: "/" },
+};
 
 export default function HomePage() {
   return (
     <>
       <HeroSlider />
-      <AboutSummary />
-      <ShaktiPreview />
-      <MentoringPreview />
-      <HealingPreview />
-      <TransformationHighlight />
       <ServicesPreview />
+      <DistanceHealingExperience />
+      <ChakraAssessment />
+      <HomeFAQ />
       <Testimonials />
-      <EcosystemPreview />
-      <CTASection />
     </>
   );
 }

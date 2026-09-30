@@ -5,12 +5,12 @@ import PageHero from "@/components/ui/PageHero";
 import SectionHeading from "@/components/ui/SectionHeading";
 import Button from "@/components/ui/Button";
 import Reveal from "@/components/ui/Reveal";
-import CTASection from "@/components/home/CTASection";
 
 export const metadata: Metadata = {
   title: "Live Sessions",
   description:
     "Online sessions and interactive live workshops with Dr. Manisha Belvalkar.",
+  alternates: { canonical: "/live" },
 };
 
 const icons = [Video, Calendar];
@@ -72,7 +72,6 @@ export default function LivePage() {
         </div>
       </section>
 
-      <CTASection />
     </>
   );
 }

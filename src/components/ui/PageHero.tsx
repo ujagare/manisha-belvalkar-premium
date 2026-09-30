@@ -63,7 +63,7 @@ export default function PageHero({
       <div className="absolute inset-y-0 left-[7%] hidden w-px bg-gradient-to-b from-transparent via-gold/35 to-transparent lg:block" />
 
       <div className="relative mx-auto flex min-h-[540px] max-w-7xl items-end px-6 pb-16 pt-20 lg:min-h-[610px] lg:items-center lg:px-10 lg:pb-20">
-        <div className={`max-w-2xl ${contentSide === "right" ? "lg:ml-auto lg:w-[52%]" : ""}`}>
+        <div className={`w-full max-w-2xl ${contentSide === "right" ? "lg:ml-auto lg:w-[52%]" : ""}`}>
           <motion.div
             initial={reduce ? { opacity: 0 } : { opacity: 0, y: 20, filter: "blur(6px)" }}
             animate={settle}
@@ -78,7 +78,7 @@ export default function PageHero({
             initial={reduce ? { opacity: 0 } : { opacity: 0, y: 46, filter: "blur(10px)" }}
             animate={settle}
             transition={{ duration: 1, delay: 0.22, ease: EASE }}
-            className="font-display text-5xl font-bold leading-[0.98] tracking-[-0.035em] text-white drop-shadow-[0_3px_24px_rgba(0,0,0,0.35)] sm:text-6xl lg:text-[5.15rem]"
+            className="max-w-[10.5ch] break-words font-display text-[2.25rem] font-bold leading-[1.06] text-white drop-shadow-[0_3px_24px_rgba(0,0,0,0.35)] sm:max-w-full sm:text-6xl lg:text-[5.15rem] lg:leading-[0.98]"
           >
             {title}
           </motion.h1>

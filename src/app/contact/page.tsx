@@ -10,6 +10,7 @@ import ContactForm from "@/components/ui/ContactForm";
 export const metadata: Metadata = {
   title: "Contact",
   description: "Connect with Manisha Belvalkar for Tarot, Healing, and Well-being sessions.",
+  alternates: { canonical: "/contact" },
 };
 
 export default function ContactPage() {

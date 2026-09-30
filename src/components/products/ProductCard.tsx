@@ -8,11 +8,11 @@ import { cn } from "@/lib/utils";
 export function categoryMeta(category: ProductCategory) {
   switch (category) {
     case "oracle":
-      return { icon: Sparkles, label: "Oracle & Tarot" };
+      return { icon: Sparkles, label: "Decks" };
     case "ritual":
-      return { icon: Gem, label: "Sacred Rituals" };
+      return { icon: Gem, label: "Rituals & Tools" };
     case "book":
-      return { icon: BookOpen, label: "Books" };
+      return { icon: BookOpen, label: "Books & Workshops" };
   }
 }
 

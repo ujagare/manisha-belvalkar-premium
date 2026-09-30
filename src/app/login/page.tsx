@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   title: "Sign in",
   description:
     "Sign in to book sessions, enroll in courses and manage your orders with Manisha Belvalkar.",
+  robots: { index: false, follow: true },
 };
 
 export default function LoginPage() {

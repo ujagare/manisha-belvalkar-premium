@@ -6,8 +6,8 @@ import { Skeleton } from "@/components/shadcn/skeleton";
  */
 export default function AuthLoading() {
   return (
-    <section className="relative min-h-screen bg-cream">
-      <div className="mx-auto grid min-h-screen max-w-7xl lg:grid-cols-2">
+    <section className="relative min-h-[100dvh] bg-cream">
+      <div className="mx-auto grid min-h-[100dvh] max-w-7xl lg:grid-cols-2">
         {/* Brand panel skeleton */}
         <div className="relative hidden items-end overflow-hidden bg-charcoal p-14 lg:flex">
           <div className="relative z-10 w-full">

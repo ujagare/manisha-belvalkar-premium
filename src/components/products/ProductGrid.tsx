@@ -9,10 +9,10 @@ import { cn } from "@/lib/utils";
 type FilterKey = "all" | ProductCategory;
 
 const filterLabels: Record<FilterKey, string> = {
-  all: "All Products",
-  oracle: "Oracle & Tarot",
-  book: "Books",
-  ritual: "Sacred Rituals",
+  all: "All Shop",
+  oracle: "Decks",
+  book: "Books & Workshops",
+  ritual: "Rituals & Tools",
 };
 
 /** Stable display order for category pills. */

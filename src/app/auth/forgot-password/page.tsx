@@ -5,6 +5,7 @@ import ForgotPasswordForm from "@/components/auth/ForgotPasswordForm";
 export const metadata: Metadata = {
   title: "Reset password",
   description: "Reset your password for your Manisha Belvalkar account.",
+  robots: { index: false, follow: false },
 };
 
 export default function ForgotPasswordPage() {

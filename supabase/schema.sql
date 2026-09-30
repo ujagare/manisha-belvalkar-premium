@@ -149,7 +149,7 @@ values
     'SHAKTI Oracle Deck',
     'Inspired by 51 Shakti Peethas',
     'Inspired by the sacred 51 Shakti Peethas, the Shakti Oracle Cards are a powerful tool for connecting with the divine feminine. Created from Dr. Manisha S. Belvalkar''s profound experiences and meditations with the Goddesses, this beautifully illustrated deck offers daily guidance, positivity, and spiritual insights.',
-    'oracle', 2993, 3533, 'Best Seller', '/images/shakti-book-front.png',
+    'oracle', 2993, 3533, 'Best Seller', '/images/shakti-cards-and-book.png',
     '["52 oracle cards","Information booklet included","Divine feminine wisdom","Daily guidance & affirmations"]'::jsonb,
     true, 10
   ),

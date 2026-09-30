@@ -101,17 +101,21 @@ export interface HeroSlide {
   tagline: string;
   ctaLabel: string;
   ctaHref: string;
-  /** Premium product-showcase slide: book art on the right, copy on the left. */
-  bookImage?: string;
-  bookTitle?: string;
-  bookInfo?: string;
-  bookPrice?: string;
-  bookBadge?: string;
-  /** Render the product art larger than the default book size. */
-  bookLarge?: boolean;
+  secondaryCtaLabel?: string;
+  secondaryCtaHref?: string;
+  layout: "about" | "products" | "services";
+  featureLabel: string;
+  featureValue: string;
+  supportingLabel: string;
+  supportingValue: string;
+  gallery: {
+    image: string;
+    alt: string;
+    title: string;
+  }[];
 }
 
-export const heroSlides: HeroSlide[] = [
+export const legacyHeroSlides: Record<string, unknown>[] = [
   {
     image: "/images/hero-home-bg.png",
     eyebrow: "SHAKTI Collection",
@@ -121,7 +125,7 @@ export const heroSlides: HeroSlide[] = [
       "52 beautifully illustrated oracle cards born from Dr. Manisha's meditations with the Goddesses of the sacred 51 Shakti Peethas — daily guidance, positivity and spiritual insight in your hands.",
     ctaLabel: "Buy Now",
     ctaHref: "/checkout/product/shakti-oracle-deck",
-    bookImage: "/images/shakti-book-front.png",
+    bookImage: "/images/shakti-cards-and-book.png",
     bookTitle: "SHAKTI Oracle Deck",
     bookInfo: "Inspired by 51 Shakti Peethas · Guidebook included",
     bookPrice: "₹2,993",
@@ -175,6 +179,124 @@ export const heroSlides: HeroSlide[] = [
     bookBadge: "Handcrafted",
     bookLarge: true,
   },
+];
+
+const heroSlideCatalog: HeroSlide[] = [
+  {
+    image: "/images/manisha-portrait.jpg",
+    eyebrow: "About Manisha",
+    headline: "Meet the mentor behind",
+    headlineHighlight: "sacred transformation",
+    tagline:
+      "Dr. Manisha Belvalkar brings more than three decades of Tarot, soul purpose reading, Goddess attunement and chakra work into gentle, precise guidance for modern seekers.",
+    ctaLabel: "Know Her Journey",
+    ctaHref: "/about",
+    secondaryCtaLabel: "Book a Session",
+    secondaryCtaHref: "/contact",
+    layout: "about",
+    featureLabel: "Experience",
+    featureValue: "30+ years",
+    supportingLabel: "Practices",
+    supportingValue: "Tarot, Shakti, healing",
+    gallery: [
+      {
+        image: "/images/about-portrait-1.png",
+        alt: "Dr. Manisha Belvalkar portrait",
+        title: "Spiritual mentor",
+      },
+      {
+        image: "/images/about-health-mag.jpg",
+        alt: "Published feature about Dr. Manisha Belvalkar",
+        title: "Featured voice",
+      },
+      {
+        image: "/images/about-portrait-2.png",
+        alt: "Dr. Manisha Belvalkar profile image",
+        title: "Holistic guide",
+      },
+    ],
+  },
+  {
+    image: "/images/hero-home-bg.png",
+    eyebrow: "Sacred Store",
+    headline: "Shop essentials for your",
+    headlineHighlight: "daily ritual",
+    tagline:
+      "Explore the SHAKTI oracle deck, companion guidebook, combo set and handcrafted ritual tools created to bring divine feminine wisdom into everyday practice.",
+    ctaLabel: "View Shop",
+    ctaHref: "/products",
+    secondaryCtaLabel: "Buy SHAKTI Deck",
+    secondaryCtaHref: "/checkout/product/shakti-oracle-deck",
+    layout: "products",
+    featureLabel: "Collection",
+    featureValue: "Oracle + rituals",
+    supportingLabel: "Featured",
+    supportingValue: "SHAKTI deck",
+    gallery: [
+      {
+        image: "/images/shakti-book-front.png",
+        alt: "Front cover of the SHAKTI guidebook by Dr. Manisha Belvalkar",
+        title: "SHAKTI guidebook",
+      },
+      {
+        image: "/images/shakti-cards-and-book.png",
+        alt: "SHAKTI deck and guidebook set",
+        title: "Deck + guidebook",
+      },
+      {
+        image: "/images/shakti-combo-book.png",
+        alt: "SHAKTI combo pack",
+        title: "Sacred combo",
+      },
+      {
+        image: "/images/shakti-salt-frame.png",
+        alt: "Sacred salt frame product",
+        title: "Salt frame",
+      },
+    ],
+  },
+  {
+    image: "/images/page-heroes/services-hero.png",
+    eyebrow: "Premium Services",
+    headline: "Personal guidance for",
+    headlineHighlight: "clarity and healing",
+    tagline:
+      "Choose from Tarot consultation, soul purpose reading, Goddess attunement, well-being programs and energy healing designed around your present life questions.",
+    ctaLabel: "Explore Services",
+    ctaHref: "/services",
+    secondaryCtaLabel: "Contact Manisha",
+    secondaryCtaHref: "/contact",
+    layout: "services",
+    featureLabel: "Sessions",
+    featureValue: "Tarot + healing",
+    supportingLabel: "Pathways",
+    supportingValue: "Clarity, balance, purpose",
+    gallery: [
+      {
+        image: "/images/tarot.jpg",
+        alt: "Tarot consultation cards",
+        title: "Tarot consultation",
+      },
+      {
+        image: "/images/candle.jpg",
+        alt: "Candle for sacred attunement",
+        title: "Goddess attunement",
+      },
+      {
+        image: "/images/home-cards/healing-session.png",
+        alt: "Energy healing session",
+        title: "Energy healing",
+      },
+    ],
+  },
+];
+
+// Lead with the SHAKTI collection so the real book cover is the first
+// product visual visitors see, followed by Manisha's story and services.
+export const heroSlides: HeroSlide[] = [
+  heroSlideCatalog[1]!,
+  heroSlideCatalog[0]!,
+  ...heroSlideCatalog.slice(2),
 ];
 
 /* ---------- Services ---------- */
@@ -352,15 +474,15 @@ export const courses: Course[] = [
 export const products: Product[] = [
   {
     slug: "shakti-oracle-deck",
-    title: "SHAKTI Oracle Deck",
-    subtitle: "Inspired by 51 Shakti Peethas",
+    title: "Deck",
+    subtitle: "SHAKTI Oracle Deck",
     category: "oracle",
     description:
       "Inspired by the sacred 51 Shakti Peethas, the Shakti Oracle Cards are a powerful tool for connecting with the divine feminine. Created from Dr. Manisha S. Belvalkar's profound experiences and meditations with the Goddesses, this beautifully illustrated deck offers daily guidance, positivity, and spiritual insights.",
     price: 2993,
     salePrice: 3533,
     badge: "Best Seller",
-    image: "/images/shakti-oracle-deck-yellow.jpg",
+    image: "/images/shakti-cards-and-book.png",
     details: [
       "52 beautifully illustrated cards depicting the Shaktipeeth Goddesses",
       "Information booklet with guidance on how to use the cards",
@@ -371,15 +493,15 @@ export const products: Product[] = [
   },
   {
     slug: "shakti-deck-guidebook",
-    title: "SHAKTI Deck + Guidebook",
-    subtitle: "Complete set · Cards & companion book",
+    title: "Book",
+    subtitle: "SHAKTI guidebook for daily practice",
     category: "oracle",
     description:
       "The complete SHAKTI experience — a beautifully illustrated 52-card oracle deck paired with its companion guidebook, holding the wisdom of the 51 Shakti Peethas for your daily practice. Gift-ready sacred packaging.",
     price: 2993,
     salePrice: 3533,
     badge: "Complete Set",
-    image: "/images/shakti-cards-and-book.png",
+    image: "/images/shakti-book-front.png",
     details: [
       "52 oracle cards",
       "Companion guidebook included",
@@ -389,15 +511,15 @@ export const products: Product[] = [
   },
   {
     slug: "shakti-combo-pack",
-    title: "SHAKTI Combo Pack",
-    subtitle: "Deck + Guidebook · Gift-ready packaging",
+    title: "Discounted Deck",
+    subtitle: "Special price on the SHAKTI deck set",
     category: "oracle",
     description:
       "Gift the divine — the SHAKTI Oracle Deck and guidebook presented together as one sacred combo, handcrafted with intention and blessed before it reaches your altar. A complete spiritual toolkit for daily guidance.",
     price: 2993,
     salePrice: 3533,
     badge: "Sacred Combo",
-    image: "/images/shakti-combo-book.png",
+    image: "/images/shakti-cards-and-book.png",
     details: [
       "Deck + guidebook combo",
       "Handcrafted with intention",
@@ -407,7 +529,7 @@ export const products: Product[] = [
   },
   {
     slug: "sacred-salt-frame",
-    title: "Sacred Salt Frame",
+    title: "Magic Salt",
     subtitle: "Cleanse your space with Himalayan crystal salt",
     category: "ritual",
     description:
@@ -423,13 +545,103 @@ export const products: Product[] = [
       "Altar & décor ready",
     ],
   },
+  {
+    slug: "vastu-healing-frames",
+    title: "Vastu healing Frames",
+    subtitle: "Healing frames for balanced spaces",
+    category: "ritual",
+    description:
+      "Intention-led Vastu healing frames created to support harmony, protection and energetic balance in your home or work space.",
+    price: 899,
+    salePrice: 1099,
+    badge: "Vastu",
+    image: "/images/shri-vidya-course.png",
+    details: [
+      "For home and work spaces",
+      "Created with healing intention",
+      "Supports energetic balance",
+      "Ready for sacred placement",
+    ],
+  },
+  {
+    slug: "abundance-rituals",
+    title: "Abundance Rituals",
+    subtitle: "Ritual support for prosperity and flow",
+    category: "ritual",
+    description:
+      "Guided abundance rituals designed to invite prosperity, gratitude and aligned flow into your everyday spiritual practice.",
+    price: 899,
+    salePrice: 1099,
+    badge: "Ritual",
+    image: "/images/aishwarya-siddhi-course.png",
+    details: [
+      "Prosperity-focused ritual guidance",
+      "Simple steps for home practice",
+      "Created with intention",
+      "Supports gratitude and flow",
+    ],
+  },
+  {
+    slug: "good-luck-rituals",
+    title: "Good Luck Rituals",
+    subtitle: "Ritual support for blessings and luck",
+    category: "ritual",
+    description:
+      "Good Luck Rituals created to support blessings, positivity and auspicious beginnings through focused spiritual practice.",
+    price: 899,
+    salePrice: 1099,
+    badge: "Ritual",
+    image: "/images/home-cards/positive-energy.png",
+    details: [
+      "For blessings and new beginnings",
+      "Positive intention practice",
+      "Guided ritual format",
+      "Easy to follow at home",
+    ],
+  },
+  {
+    slug: "good-health-rituals",
+    title: "Good Health Rituals",
+    subtitle: "Ritual support for wellness and balance",
+    category: "ritual",
+    description:
+      "Good Health Rituals created to support wellness, calm and energetic balance through gentle guided spiritual practice.",
+    price: 899,
+    salePrice: 1099,
+    badge: "Ritual",
+    image: "/images/home-cards/healing-session.png",
+    details: [
+      "Wellness-focused ritual guidance",
+      "Supports calm and balance",
+      "Gentle spiritual practice",
+      "Created with healing intention",
+    ],
+  },
+  {
+    slug: "whatsapp-workshops",
+    title: "WhatsApp Workshops",
+    subtitle: "Guided learning through WhatsApp",
+    category: "book",
+    description:
+      "Compact WhatsApp workshops with guided messages, images, voice notes and step-by-step spiritual practice.",
+    price: 999,
+    salePrice: 1299,
+    badge: "Workshop",
+    image: "/images/home-cards/shakti-app.png",
+    details: [
+      "Guided WhatsApp format",
+      "Texts, images and voice notes",
+      "Step-by-step practice",
+      "Easy to follow from anywhere",
+    ],
+  },
 ];
 
 /** Category labels for the product storefront. */
 export const productCategoryLabels: Record<ProductCategory, string> = {
-  book: "Books",
-  oracle: "Oracle & Tarot",
-  ritual: "Sacred Rituals",
+  book: "Books & Workshops",
+  oracle: "Decks",
+  ritual: "Rituals & Tools",
 };
 
 /** Legacy alias — older imports may still reference `books`. */
@@ -566,10 +778,10 @@ export const shaktiPillars: ShaktiPillar[] = [
     image: "/images/gold-abstract.jpg",
   },
   {
-    title: "Self Development",
-    tagline: "Grow into your fullest self",
+    title: "Self Exploration",
+    tagline: "Know your inner world",
     description:
-      "Guided practices for emotional balance, self-awareness and continuous personal evolution.",
+      "Guided reflection for emotional balance, self-awareness and a more authentic relationship with yourself.",
     image: "/images/tarot.jpg",
   },
   {
@@ -594,7 +806,7 @@ export interface MentoringArea {
 export const mentoringIntro =
   "Tarot is not fortune-telling — it is a mirror for self-exploration. Through one-on-one mentoring, Dr. Manisha Belvalkar helps you understand yourself, explore your patterns, find clarity and move toward lasting transformation.";
 
-export const mentoringAreas: MentoringArea[] = [
+export const legacyMentoringAreas: MentoringArea[] = [
   {
     slug: "mentoring-sessions",
     title: "Mentoring Sessions",
@@ -675,6 +887,51 @@ export const mentoringAreas: MentoringArea[] = [
   },
 ];
 
+export const mentoringAreas: MentoringArea[] = [
+  {
+    slug: "tarot-mentoring",
+    title: "Mentoring through Tarot",
+    short: "Use Tarot as a premium mirror for self-understanding and conscious choice.",
+    description:
+      "A focused mentoring experience where Tarot becomes a reflective language for your inner world. Understand patterns, relationships, decisions and the deeper energy behind your current questions.",
+    features: [
+      "Pattern recognition and self-awareness",
+      "Guidance on relationships, career and life direction",
+      "Empowered, conscious decision-making",
+      "Clear next steps after every session",
+    ],
+    image: "/images/tarot.jpg",
+  },
+  {
+    slug: "soul-purpose-reading",
+    title: "Soul Purpose Reading",
+    short: "Discover the higher purpose and direction of your journey.",
+    description:
+      "A deeper soul-level session designed to illuminate your gifts, karmic themes and present path. This reading helps you align your choices with the purpose your life is inviting you to live.",
+    features: [
+      "Deep insight into your soul's calling",
+      "Clarity on purpose, gifts and current lessons",
+      "Practical guidance for aligned action",
+      "Personalised remedies and reflection points",
+    ],
+    image: "/images/gold-abstract.jpg",
+  },
+  {
+    slug: "clarity-alignment",
+    title: "Evolve through Clarity and Alignment",
+    short: "A refined self-exploration pathway for inner clarity and grounded change.",
+    description:
+      "A premium mentoring pathway for those ready to evolve with intention. Through self-exploration, energetic clarity and practical alignment, you begin moving from confusion to confident direction.",
+    features: [
+      "Self exploration and values discovery",
+      "Clarity around repeating life patterns",
+      "Alignment practices for daily decisions",
+      "Support for purpose-led transformation",
+    ],
+    image: "/images/manisha-portrait.jpg",
+  },
+];
+
 /* ---------- Healing ---------- */
 export interface HealingService {
   slug: string;
@@ -688,7 +945,7 @@ export interface HealingService {
 export const healingIntro =
   "Healing is the art of returning to balance. From in-person sessions to distance healing, Dr. Manisha Belvalkar offers a range of gentle, powerful practices to restore harmony across your body, mind and spirit.";
 
-export const healingServices: HealingService[] = [
+export const legacyHealingServices: HealingService[] = [
   {
     slug: "healing-sessions",
     title: "Energy Healing",
@@ -782,6 +1039,62 @@ export const healingServices: HealingService[] = [
       "Recommended healing path",
     ],
     image: "/images/home-cards/chakra-assessment.png",
+  },
+];
+
+export const healingServices: HealingService[] = [
+  {
+    slug: "healing-sessions",
+    title: "Energy Healing",
+    short: "In-person energy healing with Manisha.",
+    description:
+      "Personal healing sessions guided by Dr. Manisha Belvalkar, combining intuitive insight, energy alignment and gentle aftercare for body, mind and spirit.",
+    features: [
+      "Personal energy assessment",
+      "Aura and energy balancing",
+      "Intuitive guidance and aftercare",
+    ],
+    image: "/images/home-cards/healing-session.png",
+  },
+  {
+    slug: "distance-healing",
+    title: "Distance Healing",
+    short: "Healing energy, wherever you are.",
+    description:
+      "Receive the same healing care remotely. Distance healing supports balance, relief and energetic calm from any location.",
+    features: [
+      "Works across any location",
+      "Scheduled at your convenience",
+      "Follow-up guidance included",
+    ],
+    image: "/images/home-cards/distance-healing.png",
+  },
+  {
+    slug: "shakti-healing",
+    title: "Shakti Healing",
+    short: "Healing through sacred divine feminine energy.",
+    description:
+      "Connect with Shakti, the divine feminine force, through a healing session designed to restore emotional strength, spiritual connection and inner support.",
+    features: [
+      "Divine feminine energy healing",
+      "Shakti guidance and blessings",
+      "Emotional and spiritual restoration",
+    ],
+    image: "/images/home-cards/goddess-attunement.png",
+  },
+  {
+    slug: "mind-reprogramming",
+    title: "Reprogramming Your Mind (Through Guided Meditation)",
+    short: "A longer guided meditation pathway to release limiting beliefs and create new inner patterns.",
+    description:
+      "A deeper guided meditation offering designed to reprogram limiting beliefs, release old mental loops and create supportive inner pathways for positive thinking, clarity and empowered living.",
+    features: [
+      "Extended guided meditation sessions",
+      "Subconscious reprogramming",
+      "Release limiting beliefs",
+      "Create positive mental patterns",
+    ],
+    image: "/images/gold-abstract.jpg",
   },
 ];
 
@@ -919,24 +1232,24 @@ export interface CommunityPillar {
 }
 
 export const communityIntro =
-  "Growth is sweeter together. Join a community of women and seekers walking the path of self-discovery, healing and empowerment — supported by Dr. Manisha Belvalkar's guidance.";
+  "Growth is magical together. Join a like-hearted circle for moon-cycle guidance, remedies, festive wisdom and member-only offerings.";
 export const communityPillars: CommunityPillar[] = [
   {
-    title: "Sacred Circles",
+    title: "Monthly Moon Cycle Based Guidance",
     description:
-      "Regular group gatherings for sharing, healing and connection.",
+      "Receive monthly guidance aligned with the moon cycle for reflection, intention and spiritual rhythm.",
   },
   {
-    title: "Monthly Wisdom",
-    description: "Exclusive insights, rituals and practices from Manisha.",
+    title: "Tips and Remedies",
+    description: "Practical spiritual tips and simple remedies shared for everyday clarity and balance.",
   },
   {
-    title: "Q&A with Manisha",
-    description: "Live question-and-answer sessions for members.",
+    title: "Members Only offerings",
+    description: "Access special offerings, updates and community-only guidance created for members.",
   },
   {
-    title: "Member-only Events",
-    description: "Priority access to workshops and live sessions.",
+    title: "Guidance for Festive Occasions",
+    description: "Receive timely guidance, rituals and remedies for important festive occasions.",
   },
 ];
 
@@ -975,9 +1288,8 @@ export const navigation = [
   { label: "Shakti", href: "/shakti" },
   { label: "Mentoring", href: "/mentoring" },
   { label: "Healing", href: "/healing" },
-  { label: "Transformation", href: "/transformation" },
   { label: "Courses", href: "/courses" },
-  { label: "Products", href: "/products" },
+  { label: "Shop", href: "/products" },
   { label: "Community", href: "/community" },
   { label: "Contact", href: "/contact" },
 ];

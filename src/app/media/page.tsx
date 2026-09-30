@@ -11,6 +11,7 @@ export const metadata: Metadata = {
   title: "Media",
   description:
     "Manisha Belvalkar in the press — interviews, features, and more.",
+  alternates: { canonical: "/media" },
 };
 
 export default function MediaPage() {

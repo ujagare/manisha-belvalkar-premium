@@ -1,0 +1,159 @@
+.scroll-stack-scroller {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: visible;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  will-change: scroll-position;
+}
+
+.scroll-stack-inner {
+  padding: 20vh 5rem 50rem;
+  min-height: 100vh;
+}
+
+.scroll-stack-card-wrapper {
+  position: relative;
+}
+
+.scroll-stack-card {
+  transform-origin: top center;
+  will-change: transform, filter;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+  height: 20rem;
+  width: 100%;
+  margin: 30px 0;
+  padding: 3rem;
+  border-radius: 40px;
+  box-sizing: border-box;
+  /* Improve mobile performance */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  position: relative;
+}
+
+.scroll-stack-end {
+  width: 100%;
+  height: 1px;
+}
+
+/* Shakti page: window-driven editorial card stack. */
+.shakti-nurture-stack {
+  height: auto;
+  overflow: visible;
+}
+
+.shakti-nurture-stack .scroll-stack-inner {
+  min-height: 100vh;
+  padding: 14vh 0 10rem;
+}
+
+.shakti-nurture-stack .scroll-stack-card {
+  height: 25rem;
+  margin: 0;
+  padding: clamp(1.75rem, 4vw, 3.25rem);
+  border: 1px solid rgba(240, 208, 96, 0.28);
+  border-radius: 1.75rem;
+  color: #fdf8f0;
+  box-shadow:
+    0 1.8rem 4.5rem rgba(56, 5, 5, 0.2),
+    inset 0 1px 0 rgba(255, 243, 196, 0.16);
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.shakti-nurture-stack .scroll-stack-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(circle at 85% 8%, rgba(240, 208, 96, 0.16), transparent 32%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.055), transparent 35%);
+}
+
+.shakti-nurture-card--1 { background-color: #5b0c12; }
+.shakti-nurture-card--2 { background-color: #68100f; }
+.shakti-nurture-card--3 { background-color: #74150f; }
+.shakti-nurture-card--4 { background-color: #48100f; }
+
+/* Native sticky mode avoids per-frame JS layout reads and releases with its parent. */
+.shakti-nurture-stack .scroll-stack-card {
+  position: sticky;
+  margin: 0 0 clamp(6rem, 18vh, 11rem);
+  transform: none;
+  filter: none;
+  will-change: auto;
+}
+
+.shakti-nurture-stack .scroll-stack-card:nth-child(1) { top: 14vh; z-index: 1; }
+.shakti-nurture-stack .scroll-stack-card:nth-child(2) { top: calc(14vh + 1rem); z-index: 2; }
+.shakti-nurture-stack .scroll-stack-card:nth-child(3) { top: calc(14vh + 2rem); z-index: 3; }
+.shakti-nurture-stack .scroll-stack-card:nth-child(4) {
+  top: calc(14vh + 3rem);
+  z-index: 4;
+  margin-bottom: 0;
+}
+
+@media (max-width: 1023px) {
+  .shakti-nurture-stack .scroll-stack-inner {
+    padding: 4rem 0 8rem;
+  }
+
+  .shakti-nurture-stack .scroll-stack-card {
+    height: 23rem;
+  }
+
+  .shakti-nurture-stack .scroll-stack-card:nth-child(1) { top: 6rem; }
+  .shakti-nurture-stack .scroll-stack-card:nth-child(2) { top: 7rem; }
+  .shakti-nurture-stack .scroll-stack-card:nth-child(3) { top: 8rem; }
+  .shakti-nurture-stack .scroll-stack-card:nth-child(4) { top: 9rem; }
+}
+
+@media (max-width: 639px) {
+  .shakti-nurture-stack .scroll-stack-inner {
+    padding-top: 2.5rem;
+    padding-bottom: 6rem;
+  }
+
+  .shakti-nurture-stack .scroll-stack-card {
+    height: 22rem;
+    border-radius: 1.25rem;
+  }
+
+  .shakti-nurture-stack .scroll-stack-card { margin-bottom: 7rem; }
+  .shakti-nurture-stack .scroll-stack-card:nth-child(1) { top: 5rem; }
+  .shakti-nurture-stack .scroll-stack-card:nth-child(2) { top: 5.75rem; }
+  .shakti-nurture-stack .scroll-stack-card:nth-child(3) { top: 6.5rem; }
+  .shakti-nurture-stack .scroll-stack-card:nth-child(4) {
+    top: 7.25rem;
+    margin-bottom: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shakti-nurture-stack.scroll-stack-scroller {
+    height: auto;
+    overflow: visible;
+  }
+
+  .shakti-nurture-stack .scroll-stack-inner {
+    display: grid;
+    gap: 1rem;
+    min-height: auto;
+    padding: 3rem 0 6rem;
+  }
+
+  .shakti-nurture-stack .scroll-stack-card {
+    margin: 0 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+}
