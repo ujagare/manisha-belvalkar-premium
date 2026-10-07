@@ -40,10 +40,32 @@ export default function Button({
   children,
   ...props
 }: ButtonProps) {
+  const isWebUrl = /^https?:\/\//.test(href);
+  const isProtocolAction = /^(mailto:|tel:)/.test(href);
+  const classes = cn(base, variants[variant], sizes[size], className);
+
+  if (isWebUrl || isProtocolAction) {
+    return (
+      <a
+        href={href}
+        className={classes}
+        {...(isWebUrl
+          ? {
+              target: props.target ?? "_blank",
+              rel: props.rel ?? "noreferrer",
+            }
+          : {})}
+        {...props}
+      >
+        {children}
+      </a>
+    );
+  }
+
   return (
     <Link
       href={href}
-      className={cn(base, variants[variant], sizes[size], className)}
+      className={classes}
       {...props}
     >
       {children}

@@ -6,6 +6,7 @@ import {
   mentoringAreas,
   products,
 } from "@/lib/data";
+import { insights } from "@/lib/insights";
 
 const BASE = "https://manishabelvalkar.com";
 
@@ -25,6 +26,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE}/media`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
     { url: `${BASE}/live`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
     { url: `${BASE}/contact`, lastModified: now, changeFrequency: "yearly", priority: 0.8 },
+    { url: `${BASE}/how-it-works`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${BASE}/faq`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${BASE}/testimonials`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${BASE}/support`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${BASE}/events`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
+    { url: `${BASE}/insights`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
+    { url: `${BASE}/editorial-policy`, lastModified: now, changeFrequency: "yearly", priority: 0.4 },
+    { url: `${BASE}/privacy-policy`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
+    { url: `${BASE}/terms-and-conditions`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
+    { url: `${BASE}/refund-cancellation-policy`, lastModified: now, changeFrequency: "yearly", priority: 0.4 },
+    { url: `${BASE}/shipping-delivery-policy`, lastModified: now, changeFrequency: "yearly", priority: 0.4 },
+    { url: `${BASE}/disclaimer`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
+    { url: `${BASE}/grievance-redressal`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
   ];
 
   const servicePages: MetadataRoute.Sitemap = services.map((s) => ({
@@ -62,6 +76,23 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
+  const eventPages: MetadataRoute.Sitemap = [
+    "online-guidance-session",
+    "live-online-workshop",
+  ].map((slug) => ({
+    url: `${BASE}/events/${slug}`,
+    lastModified: now,
+    changeFrequency: "weekly",
+    priority: 0.7,
+  }));
+
+  const insightPages: MetadataRoute.Sitemap = insights.map((article) => ({
+    url: `${BASE}/insights/${article.slug}`,
+    lastModified: now,
+    changeFrequency: "monthly",
+    priority: 0.7,
+  }));
+
   return [
     ...staticPages,
     ...servicePages,
@@ -69,5 +100,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...healingPages,
     ...mentoringPages,
     ...productPages,
+    ...eventPages,
+    ...insightPages,
   ];
 }

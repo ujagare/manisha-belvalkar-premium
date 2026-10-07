@@ -44,61 +44,6 @@ function Reveal({
   );
 }
 
-/** Inline SVG brand icons (lucide v1 removed brand logos). */
-function InstagramIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      aria-hidden="true"
-    >
-      <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
-      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-      <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
-    </svg>
-  );
-}
-
-function FacebookIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      aria-hidden="true"
-    >
-      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
-    </svg>
-  );
-}
-
-function YoutubeIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      aria-hidden="true"
-    >
-      <path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17" />
-      <path d="m10 15 5-3-5-3z" />
-    </svg>
-  );
-}
-
 /** A subtle lotus mandala drawn in gold strokes — decorative only. */
 function Mandala({ className }: { className?: string }) {
   const rotations = [0, 45, 90, 135, 180, 225, 270, 315];
@@ -296,28 +241,6 @@ export default function Footer() {
                 >
                   <MessageCircle className="h-4 w-4" />
                 </a>
-                {/* Social placeholders — replace with real profile URLs */}
-                <a
-                  href="#"
-                  aria-label="Instagram"
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-ivory/70 transition-all duration-300 hover:-translate-y-1 hover:border-gold hover:bg-gold hover:text-primary-deeper"
-                >
-                  <InstagramIcon className="h-4 w-4" />
-                </a>
-                <a
-                  href="#"
-                  aria-label="Facebook"
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-ivory/70 transition-all duration-300 hover:-translate-y-1 hover:border-gold hover:bg-gold hover:text-primary-deeper"
-                >
-                  <FacebookIcon className="h-4 w-4" />
-                </a>
-                <a
-                  href="#"
-                  aria-label="YouTube"
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-ivory/70 transition-all duration-300 hover:-translate-y-1 hover:border-gold hover:bg-gold hover:text-primary-deeper"
-                >
-                  <YoutubeIcon className="h-4 w-4" />
-                </a>
               </div>
             </Reveal>
 
@@ -456,6 +379,31 @@ export default function Footer() {
               </a>
             </Reveal>
           </div>
+
+          <nav
+            aria-label="Customer help"
+            className="mt-10 flex flex-wrap gap-x-5 gap-y-3 border-t border-white/10 pt-6 text-xs text-ivory/55"
+          >
+            <Link className="transition-colors hover:text-gold" href="/how-it-works">How it works</Link>
+            <Link className="transition-colors hover:text-gold" href="/faq">FAQ</Link>
+            <Link className="transition-colors hover:text-gold" href="/testimonials">Client experiences</Link>
+            <Link className="transition-colors hover:text-gold" href="/events">Live events</Link>
+            <Link className="transition-colors hover:text-gold" href="/insights">Insights</Link>
+            <Link className="transition-colors hover:text-gold" href="/support">Support</Link>
+          </nav>
+
+          <nav
+            aria-label="Legal information"
+            className="mt-5 flex flex-wrap gap-x-5 gap-y-3 text-xs text-ivory/55"
+          >
+            <Link className="transition-colors hover:text-gold" href="/privacy-policy">Privacy policy</Link>
+            <Link className="transition-colors hover:text-gold" href="/terms-and-conditions">Terms &amp; conditions</Link>
+            <Link className="transition-colors hover:text-gold" href="/refund-cancellation-policy">Refund &amp; cancellation</Link>
+            <Link className="transition-colors hover:text-gold" href="/shipping-delivery-policy">Shipping &amp; delivery</Link>
+            <Link className="transition-colors hover:text-gold" href="/disclaimer">Disclaimer</Link>
+            <Link className="transition-colors hover:text-gold" href="/grievance-redressal">Grievance redressal</Link>
+            <Link className="transition-colors hover:text-gold" href="/editorial-policy">Editorial policy</Link>
+          </nav>
 
           <GoldDivider className="mt-10" />
         </div>

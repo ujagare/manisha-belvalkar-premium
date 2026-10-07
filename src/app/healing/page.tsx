@@ -6,6 +6,8 @@ import PageHero from "@/components/ui/PageHero";
 import SectionHeading from "@/components/ui/SectionHeading";
 import Reveal from "@/components/ui/Reveal";
 import GoldDivider from "@/components/ui/GoldDivider";
+import DistanceHealingExperience from "@/components/home/DistanceHealingExperience";
+import ChakraAssessment from "@/components/home/ChakraAssessment";
 
 export const metadata: Metadata = {
   title: "Energy Healing",
@@ -182,6 +184,9 @@ export default function HealingPage() {
           ) : null}
         </div>
       </section>
+
+      <DistanceHealingExperience />
+      <ChakraAssessment />
 
       <GoldDivider />
     </>

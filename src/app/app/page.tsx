@@ -5,30 +5,42 @@ import PageHero from "@/components/ui/PageHero";
 import SectionHeading from "@/components/ui/SectionHeading";
 import Button from "@/components/ui/Button";
 import Reveal from "@/components/ui/Reveal";
+import LeadCaptureForm from "@/components/backend/LeadCaptureForm";
 
 export const metadata: Metadata = {
-  title: "App",
-  description: appTagline,
+  title: "SHAKTI App Coming Soon",
+  description: `${appTagline} The SHAKTI App is coming soon.`,
 };
 
 export default function AppPage() {
   return (
     <>
       <PageHero
-        eyebrow="App"
+        eyebrow="Coming Soon"
         image="/images/page-heroes/app-hero.png"
         imageAlt="SHAKTI spiritual companion app presented in a refined studio setting"
         title={
           <>
-            Your spiritual companion,{" "}
-            <span className="text-gold-shimmer">in your pocket</span>
+            The SHAKTI App is{" "}
+            <span className="text-gold-shimmer">coming soon</span>
           </>
         }
-        subtitle={appTagline}
+        subtitle="A thoughtful space for daily guidance, healing practices and sacred wisdom, designed to stay close wherever life takes you."
       />
 
       <section className="py-20 lg:py-28">
         <div className="mx-auto max-w-6xl px-6 lg:px-10">
+          <Reveal>
+            <div className="mb-14 border-y border-primary/15 bg-white/55 px-5 py-6 text-center sm:px-8">
+              <p className="font-display text-2xl font-semibold text-charcoal sm:text-3xl">
+                We are preparing something meaningful.
+              </p>
+              <p className="mx-auto mt-2 max-w-2xl text-sm leading-6 text-warmgray sm:text-base">
+                The app is currently in development. Join the launch list to be among the first to know when it becomes available.
+              </p>
+            </div>
+          </Reveal>
+
           <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
             <Reveal direction="right">
               <div className="gold-border-gradient mx-auto flex h-96 w-64 flex-col items-center justify-center rounded-[2.5rem] bg-charcoal p-8 shadow-2xl shadow-gold/10">
@@ -76,6 +88,7 @@ export default function AppPage() {
                   Get notified on launch
                 </Button>
               </div>
+              <LeadCaptureForm kind="waitlist" source="shakti-app" />
             </Reveal>
           </div>
         </div>

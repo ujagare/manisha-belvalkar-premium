@@ -5,6 +5,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import CustomCursor from "@/components/ui/CustomCursor";
 import SmoothScrollProvider from "@/components/providers/SmoothScrollProvider";
+import CartProvider from "@/components/cart/CartProvider";
 import { cn } from "@/lib/utils";
 
 const playfair = Playfair_Display({
@@ -170,12 +171,14 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(webSchema) }}
         />
-        <SmoothScrollProvider>
-          <CustomCursor />
-          <Navbar />
-          <main id="top" className="flex-1">{children}</main>
-          <Footer />
-        </SmoothScrollProvider>
+        <CartProvider>
+          <SmoothScrollProvider>
+            <CustomCursor />
+            <Navbar />
+            <main id="top" className="flex-1">{children}</main>
+            <Footer />
+          </SmoothScrollProvider>
+        </CartProvider>
       </body>
     </html>
   );

@@ -3,12 +3,16 @@ import { createClient } from "@/lib/supabase/server";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { getCatalogItem, orderTypes } from "@/lib/checkout";
 import type { OrderItemType } from "@/lib/supabase/database.types";
+import { isSameOriginRequest } from "@/lib/security";
 
 /**
  * POST /api/orders — create a purchase/booking order.
  * Requires an authenticated session (proxy + this check).
  */
 export async function POST(request: Request) {
+  if (!isSameOriginRequest(request)) {
+    return NextResponse.json({ error: "Request origin is not allowed." }, { status: 403 });
+  }
   const supabase = await createClient();
 
   const {

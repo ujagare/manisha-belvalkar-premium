@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Radio, Calendar, Video } from "lucide-react";
-import { liveEvents, brand } from "@/lib/data";
+import { liveEvents } from "@/lib/data";
+import { eventOfferings } from "@/lib/phase-two-data";
 import PageHero from "@/components/ui/PageHero";
 import SectionHeading from "@/components/ui/SectionHeading";
 import Button from "@/components/ui/Button";
@@ -58,11 +59,11 @@ export default function LivePage() {
                       {event.description}
                     </p>
                     <Button
-                      href={brand.whatsappHref}
+                      href={`/events/${eventOfferings[i]?.slug ?? ""}`}
                       className="mt-7"
                       variant="primary"
                     >
-                      Enquire for next session
+                      View experience
                     </Button>
                   </div>
                 </Reveal>

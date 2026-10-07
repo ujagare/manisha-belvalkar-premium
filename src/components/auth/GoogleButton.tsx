@@ -1,10 +1,11 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
+import { safeInternalPath } from "@/lib/redirects";
 
 /**
  * Google OAuth button. Uses Supabase's built-in Google provider —
@@ -12,9 +13,8 @@ import { cn } from "@/lib/utils";
  * URL pointing to /auth/callback.
  */
 export default function GoogleButton({ redirectTo = "/account" }: { redirectTo?: string }) {
-  const router = useRouter();
   const searchParams = useSearchParams();
-  const next = redirectTo || searchParams.get("next") || "/account";
+  const next = safeInternalPath(redirectTo || searchParams.get("next"));
 
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);

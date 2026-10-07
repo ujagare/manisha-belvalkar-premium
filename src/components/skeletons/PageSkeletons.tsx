@@ -3,11 +3,6 @@ import { cn } from "@/lib/utils";
 
 /* ============ Shared skeleton primitives ============ */
 
-/** Warm-toned skeleton block that reads on cream/ivory backgrounds. */
-function Tone({ className, ...props }: React.ComponentProps<typeof Skeleton>) {
-  return <Skeleton className={cn("bg-ink/10", className)} {...props} />;
-}
-
 /** Skeleton matching the PageHero layout. */
 export function HeroSkeleton({ dark = false }: { dark?: boolean }) {
   return (

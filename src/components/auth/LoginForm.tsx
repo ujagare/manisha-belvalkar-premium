@@ -7,6 +7,7 @@ import { Mail, Lock, Loader2, LogIn } from "lucide-react";
 import { createClient, isSupabaseConfigured } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
 import GoogleButton from "./GoogleButton";
+import { safeInternalPath } from "@/lib/redirects";
 
 /**
  * Premium login form — email/password + Google OAuth.
@@ -15,7 +16,7 @@ import GoogleButton from "./GoogleButton";
 export default function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const next = searchParams.get("next") ?? "/account";
+  const next = safeInternalPath(searchParams.get("next"));
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

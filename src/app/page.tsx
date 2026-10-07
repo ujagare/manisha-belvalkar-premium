@@ -1,10 +1,6 @@
 import type { Metadata } from "next";
-import HeroSlider from "@/components/home/HeroSlider";
-import ServicesPreview from "@/components/home/ServicesPreview";
-import HomeFAQ from "@/components/home/HomeFAQ";
-import Testimonials from "@/components/home/Testimonials";
-import ChakraAssessment from "@/components/home/ChakraAssessment";
-import DistanceHealingExperience from "@/components/home/DistanceHealingExperience";
+import HomeBelowFold from "@/components/home/HomeBelowFold";
+import ShaktiCardReading from "@/components/shakti/ShaktiCardReading";
 
 export const metadata: Metadata = {
   title: {
@@ -18,12 +14,10 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <>
-      <HeroSlider />
-      <ServicesPreview />
-      <DistanceHealingExperience />
-      <ChakraAssessment />
-      <HomeFAQ />
-      <Testimonials />
+      <div id="oracle-reading" className="scroll-mt-24">
+        <ShaktiCardReading showBuyButton />
+      </div>
+      <HomeBelowFold />
     </>
   );
 }

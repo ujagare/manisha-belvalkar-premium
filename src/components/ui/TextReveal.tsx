@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
+import { gsap, useGSAP } from "@/lib/gsap";
 import { cn } from "@/lib/utils";
 
 interface TextRevealProps {
@@ -21,7 +21,6 @@ interface TextRevealProps {
  */
 export default function TextReveal({
   text,
-  as: Tag = "div",
   className,
   trigger,
   stagger = 0.035,
@@ -83,7 +82,6 @@ export default function TextReveal({
       <span aria-hidden="true" className="inline">
         {text.split(" ").map((w, i) => {
           const isLast = i === text.split(" ").length - 1;
-          const space = isLast ? "" : "\u00A0";
           return (
             <span
               key={i}

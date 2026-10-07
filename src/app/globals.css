@@ -1,6 +1,12 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-@import "shadcn/tailwind.css";
+
+/* Keep the navbar's layered shadow out of Tailwind's arbitrary-value selector.
+   Its comma-separated value is misparsed by the current CSS build pipeline. */
+.navbar-scrolled-shadow {
+  box-shadow: 0 1px 0 rgba(107, 11, 11, 0.08),
+    0 10px 35px rgba(91, 62, 42, 0.06);
+}
 
 @custom-variant dark (&:is(.dark *));
 

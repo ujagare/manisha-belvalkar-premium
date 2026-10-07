@@ -55,6 +55,17 @@ export default async function AccountPage() {
           <SignOutButton />
         </div>
 
+        {/* Address book shortcut */}
+        <div className="mt-6 flex flex-wrap items-center justify-between gap-3 rounded-[24px] border border-parchment bg-gradient-to-b from-white to-cream/70 p-6">
+          <div>
+            <p className="font-semibold text-charcoal">Delivery addresses</p>
+            <p className="mt-1 text-sm text-warmgray">Manage the addresses used to ship your sacred shop orders.</p>
+          </div>
+          <Link href="/account/addresses" className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-2.5 text-sm font-semibold text-white hover:brightness-110">
+            Manage addresses →
+          </Link>
+        </div>
+
         {/* Orders */}
         <div className="mt-12">
           <h2 className="font-display text-2xl font-bold text-charcoal">
@@ -70,8 +81,9 @@ export default async function AccountPage() {
           ) : orders.length ? (
             <div className="mt-6 space-y-4">
               {orders.map((order) => (
-                <div
+                <Link
                   key={order.id}
+                  href={`/account/orders/${order.id}`}
                   className="group flex flex-wrap items-center justify-between gap-4 rounded-[24px] border border-parchment bg-gradient-to-b from-white to-cream/70 p-5 shadow-[0_8px_30px_-18px_rgba(28,25,23,0.18)] transition-all duration-500 hover:border-gold/50 hover:shadow-[0_20px_45px_-25px_rgba(221,184,41,0.4)]"
                 >
                   <div className="min-w-0 flex-1">
@@ -110,7 +122,7 @@ export default async function AccountPage() {
                       {order.status}
                     </span>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           ) : (

@@ -45,6 +45,23 @@ export interface ProfileUpdateInput {
 /** A purchase/booking order as returned to the UI. */
 export type UserOrder = Order;
 
+/** A saved customer delivery/shipping address as returned to the UI. */
+export type UserAddress = Database["public"]["Tables"]["addresses"]["Row"];
+
+/** Input accepted when creating/updating a saved address. */
+export interface AddressInput {
+  id?: string;
+  label?: string;
+  recipient_name: string;
+  phone: string;
+  line1: string;
+  line2?: string | null;
+  city: string;
+  state: string;
+  postal_code: string;
+  country_code?: string;
+}
+
 /** Row shape accepted when inserting an order. */
 export type OrderInsert = Database["public"]["Tables"]["orders"]["Insert"];
 

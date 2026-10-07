@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, Home, Sparkles, SunMedium } from "lucide-react";
+import { ArrowRight, Sparkles, SunMedium } from "lucide-react";
 import { services } from "@/lib/data";
 import SectionHeading from "@/components/ui/SectionHeading";
 import Reveal from "@/components/ui/Reveal";

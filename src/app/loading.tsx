@@ -1,5 +1,4 @@
 import {
-  HeroSkeleton,
   SectionHeadingSkeleton,
   CardGridSkeleton,
   QuoteSkeleton,

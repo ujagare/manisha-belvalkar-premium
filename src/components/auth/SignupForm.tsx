@@ -7,6 +7,7 @@ import { Mail, Lock, User, Loader2, UserPlus } from "lucide-react";
 import { createClient, isSupabaseConfigured } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
 import GoogleButton from "./GoogleButton";
+import { safeInternalPath } from "@/lib/redirects";
 
 /**
  * Premium sign-up form — name + email/password (+ Google OAuth).
@@ -15,7 +16,7 @@ import GoogleButton from "./GoogleButton";
 export default function SignupForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const next = searchParams.get("next") ?? "/account";
+  const next = safeInternalPath(searchParams.get("next"));
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -164,6 +165,17 @@ export default function SignupForm() {
       </div>
 
       <GoogleButton redirectTo={next} />
+
+      <p className="mt-5 text-center text-xs leading-5 text-warmgray/80">
+        By creating an account, you agree to our{" "}
+        <Link href="/terms-and-conditions" className="font-medium text-primary hover:underline">
+          Terms &amp; conditions
+        </Link>{" "}
+        and acknowledge our{" "}
+        <Link href="/privacy-policy" className="font-medium text-primary hover:underline">
+          Privacy policy
+        </Link>.
+      </p>
 
       <p className="mt-8 text-center text-sm text-warmgray">
         Already have an account?{" "}

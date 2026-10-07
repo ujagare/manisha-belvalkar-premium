@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, MessageCircle, Moon, Sparkles } from "lucide-react";
+import { ArrowRight, MessageCircle, Moon } from "lucide-react";
 import Reveal from "@/components/ui/Reveal";
 import SacredSectionBackdrop from "@/components/home/SacredSectionBackdrop";
 
@@ -145,6 +145,13 @@ export default function HomeFAQ() {
                 </article>
               </Reveal>
             ))}
+          </div>
+
+          <div className="mt-8 flex justify-end lg:col-start-2">
+            <Link href="/faq" className="group inline-flex items-center gap-2 text-sm font-semibold text-gold-light transition-colors hover:text-gold">
+              Browse all questions
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Link>
           </div>
         </div>
       </div>

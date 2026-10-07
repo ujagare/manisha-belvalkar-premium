@@ -18,6 +18,7 @@ import { getProducts, getProductBySlug } from "@/lib/supabase/products";
 import Reveal from "@/components/ui/Reveal";
 import Button from "@/components/ui/Button";
 import GoldDivider from "@/components/ui/GoldDivider";
+import AddToCartButton from "@/components/cart/AddToCartButton";
 import ProductCard, { categoryMeta } from "@/components/products/ProductCard";
 
 interface Props {
@@ -172,6 +173,7 @@ export default async function ProductDetailPage({ params }: Props) {
               {/* CTAs */}
               <Reveal delay={0.2}>
                 <div className="mt-8 flex flex-wrap gap-4">
+                  <AddToCartButton product={{ slug: product.slug, title: product.title, image: product.image, price: product.price }} />
                   <Button
                     href={`/checkout/product/${product.slug}`}
                     size="lg"
@@ -198,7 +200,7 @@ export default async function ProductDetailPage({ params }: Props) {
                     What&apos;s inside
                   </h2>
                   <ul className="mt-5 space-y-3">
-                    {product.details.map((detail, i) => (
+                    {product.details.map((detail) => (
                       <li key={detail} className="flex items-start gap-3">
                         <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary-soft text-primary">
                           <Check className="h-3.5 w-3.5" />

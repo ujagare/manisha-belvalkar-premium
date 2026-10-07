@@ -6,7 +6,7 @@ import { ArrowRight, Sparkles, Star } from "lucide-react";
 import { brand } from "@/lib/data";
 import Button from "@/components/ui/Button";
 import GradientText from "@/components/ui/GradientText";
-import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
+import { gsap, useGSAP } from "@/lib/gsap";
 
 /**
  * Centered elegant light hero — inspired by the original Wix layout.

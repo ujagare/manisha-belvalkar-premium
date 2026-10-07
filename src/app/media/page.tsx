@@ -89,11 +89,13 @@ export default function MediaPage() {
                       ) : null}
                       <div className="mt-7">
                         <Button
-                          href={item.id === "success-today" ? "https://www.manishabelvalkar.com" : `https://www.manishabelvalkar.com`}
+                          href={item.href}
+                          target="_blank"
+                          rel="noreferrer"
                           variant="outline"
                           size="sm"
                         >
-                          Read the full feature
+                          View the feature
                         </Button>
                       </div>
                     </div>

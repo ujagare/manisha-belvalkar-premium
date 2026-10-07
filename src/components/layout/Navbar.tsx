@@ -4,16 +4,18 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { LogIn, Menu, X } from "lucide-react";
+import { LogIn, Menu, ShoppingBag, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { navigation } from "@/lib/data";
 import MobileMenu from "./MobileMenu";
+import { useCart } from "@/components/cart/CartProvider";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
   const isHome = pathname === "/";
+  const { itemCount } = useCart();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 36);
@@ -35,7 +37,7 @@ export default function Navbar() {
         className={cn(
           "fixed inset-x-0 top-0 z-50 transition-all duration-500",
           scrolled
-            ? "bg-white/88 backdrop-blur-xl shadow-[0_1px_0_rgba(107,11,11,0.08),0_10px_35px_rgba(91,62,42,0.06)]"
+            ? "navbar-scrolled-shadow bg-white/88 backdrop-blur-xl"
             : isHome
               ? "border-b border-gold/15 bg-cream/78 backdrop-blur-xl"
               : "bg-cream",
@@ -79,7 +81,7 @@ export default function Navbar() {
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    "relative rounded-full px-4 py-2 text-sm font-medium transition-all duration-300",
+                    "relative rounded-full px-3 py-2 text-[0.82rem] font-medium transition-all duration-300",
                     active && "bg-primary-soft/70 text-primary",
                     !active && "text-warmgray hover:bg-white/65 hover:text-charcoal",
                   )}
@@ -96,7 +98,11 @@ export default function Navbar() {
                 </Link>
               );
             })}
-            <li className="ml-3 list-none">
+            <Link href="/cart" className="relative ml-2 inline-flex h-10 w-10 items-center justify-center rounded-full border border-parchment bg-white text-charcoal hover:border-gold hover:text-primary" aria-label={`Cart with ${itemCount} items`}>
+              <ShoppingBag className="h-4 w-4" />
+              {itemCount > 0 ? <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-bold text-white">{itemCount > 99 ? "99+" : itemCount}</span> : null}
+            </Link>
+            <li className="ml-1 list-none">
                 <Link
                   href="/login"
                   className={cn(
@@ -110,6 +116,8 @@ export default function Navbar() {
           </nav>
 
           {/* Mobile toggle — desktop pe nahi dikhta */}
+          <div className="flex items-center gap-2 xl:hidden">
+            <Link href="/cart" className="relative flex h-9 w-9 items-center justify-center rounded-full text-charcoal hover:bg-primary-soft" aria-label={`Cart with ${itemCount} items`}><ShoppingBag className="h-5 w-5" />{itemCount > 0 ? <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[9px] font-bold text-white">{itemCount}</span> : null}</Link>
           <button
             onClick={() => setMenuOpen((o) => !o)}
             className={cn(
@@ -124,6 +132,7 @@ export default function Navbar() {
               <Menu className="h-5 w-5" />
             )}
           </button>
+          </div>
         </div>
       </header>
 

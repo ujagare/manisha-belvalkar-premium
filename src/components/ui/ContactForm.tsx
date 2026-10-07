@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { Heart } from "lucide-react";
 import { brand } from "@/lib/data";
 
@@ -12,13 +13,41 @@ export default function ContactForm() {
     email: "",
     message: "",
   });
+  const [consent, setConsent] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [reference, setReference] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
+    setIsSubmitting(true);
+    try {
+      const response = await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          kind: "enquiry",
+          ...form,
+          consent,
+          sourcePath: window.location.pathname,
+        }),
+      });
+      const result = await response.json().catch(() => null);
+      if (!response.ok) {
+        setError(result?.error?.message ?? "Could not save your enquiry. Please try again.");
+        return;
+      }
+      setReference(result.reference ?? null);
     const body = encodeURIComponent(
-      `Name: ${form.name}\nPhone: ${form.phone}\nEmail: ${form.email}\n\nMessage:\n${form.message}`,
+        `Reference: ${result.reference ?? "pending"}\nName: ${form.name}\nPhone: ${form.phone}\nEmail: ${form.email}\n\nMessage:\n${form.message}`,
     );
-    window.open(`https://wa.me/919922246111?text=${body}`, "_blank");
+      window.open(`https://wa.me/919922246111?text=${body}`, "_blank", "noopener,noreferrer");
+    } catch {
+      setError("Could not save your enquiry. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const fieldClasses =
@@ -95,16 +124,35 @@ export default function ContactForm() {
           onChange={(e) => setForm({ ...form, message: e.target.value })}
         />
       </div>
+      <label className="flex items-start gap-3 text-xs leading-5 text-warmgray">
+        <input
+          type="checkbox"
+          required
+          checked={consent}
+          onChange={(event) => setConsent(event.target.checked)}
+          className="mt-1 h-4 w-4 accent-[var(--color-primary)]"
+        />
+        <span>I consent to my details being stored and used to respond to this enquiry.</span>
+      </label>
+      {error ? <p role="alert" className="text-sm text-primary">{error}</p> : null}
+      {reference ? <p role="status" className="text-sm text-green-700">Enquiry saved. Reference: {reference}</p> : null}
       <button
         type="submit"
+        disabled={isSubmitting || !consent}
         className="group inline-flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-primary to-primary-dark px-8 py-4 text-sm font-bold text-white shadow-lg shadow-primary/25 transition-all duration-300 hover:shadow-xl hover:shadow-primary/40 hover:brightness-110"
       >
         <Heart className="h-4 w-4 text-gold-light transition-transform duration-300 group-hover:scale-110" />
-        Send Message
+        {isSubmitting ? "Saving…" : "Send on WhatsApp"}
       </button>
       <p className="text-center text-xs text-warmgray/70">
         Your message opens in {brand.name}&apos;s WhatsApp — the fastest way to
         connect.
+      </p>
+      <p className="text-center text-xs leading-5 text-warmgray/60">
+        Your details are used to respond to this enquiry. Read our{" "}
+        <Link href="/privacy-policy" className="font-medium text-primary hover:underline">
+          Privacy policy
+        </Link>.
       </p>
     </form>
   );

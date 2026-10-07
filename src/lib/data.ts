@@ -52,6 +52,7 @@ export interface MediaItem {
   excerpt: string;
   quote?: string;
   image?: string;
+  href: string;
 }
 
 export interface Testimonial {
@@ -291,13 +292,8 @@ const heroSlideCatalog: HeroSlide[] = [
   },
 ];
 
-// Lead with the SHAKTI collection so the real book cover is the first
-// product visual visitors see, followed by Manisha's story and services.
-export const heroSlides: HeroSlide[] = [
-  heroSlideCatalog[1]!,
-  heroSlideCatalog[0]!,
-  ...heroSlideCatalog.slice(2),
-];
+// Lead with Manisha's story, followed by the SHAKTI collection and services.
+export const heroSlides: HeroSlide[] = heroSlideCatalog;
 
 /* ---------- Services ---------- */
 export const services: Service[] = [
@@ -658,6 +654,7 @@ export const mediaItems: MediaItem[] = [
     quote:
       "As within, so without. This statement is completely accurate when it comes to Tarot reading — our outer reality reflects our inner world.",
     image: "/images/about-success-today.jpg",
+    href: "/images/about-success-today.jpg",
   },
   {
     id: "citadel",
@@ -668,6 +665,7 @@ export const mediaItems: MediaItem[] = [
     quote:
       "When people come to me with their problems, I hold a space where they can open their hearts and receive unconditional support.",
     image: "/images/about-article-scanned.jpg",
+    href: "/images/about-article-scanned.jpg",
   },
   {
     id: "health-mag",
@@ -678,6 +676,7 @@ export const mediaItems: MediaItem[] = [
     quote:
       "Healing begins when we return to balance — across the body, mind and spirit.",
     image: "/images/about-health-mag.jpg",
+    href: "/images/about-health-mag.jpg",
   },
 ];
 
@@ -1285,6 +1284,8 @@ export const disclaimer = [
 
 export const navigation = [
   { label: "Home", href: "/" },
+  { label: "About", href: "/about" },
+  { label: "Services", href: "/services" },
   { label: "Shakti", href: "/shakti" },
   { label: "Mentoring", href: "/mentoring" },
   { label: "Healing", href: "/healing" },

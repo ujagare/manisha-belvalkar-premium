@@ -3,6 +3,7 @@ import { ArrowUpRight, BookOpen, Sparkles, Gem } from "lucide-react";
 import type { Product, ProductCategory } from "@/lib/data";
 import { formatINR } from "@/lib/utils";
 import { cn } from "@/lib/utils";
+import AddToCartButton from "@/components/cart/AddToCartButton";
 
 /** Category chip icon + label. */
 export function categoryMeta(category: ProductCategory) {
@@ -108,7 +109,7 @@ export default function ProductCard({ product, className }: ProductCardProps) {
           </span>
         </div>
 
-        <div className="mt-5 flex items-center gap-2.5 border-t border-parchment/70 pt-5">
+        <div className="mt-5 flex flex-wrap items-center gap-2.5 border-t border-parchment/70 pt-5">
           <Link
             href={`/checkout/product/${product.slug}`}
             className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-full bg-gradient-to-r from-primary to-primary-dark px-4 py-3 text-sm font-bold text-white shadow-lg shadow-primary/25 transition-all duration-300 hover:shadow-xl hover:shadow-primary/40 hover:brightness-110"
@@ -116,6 +117,7 @@ export default function ProductCard({ product, className }: ProductCardProps) {
             <Sparkles className="h-4 w-4 text-gold-light" />
             Buy Now
           </Link>
+          <AddToCartButton compact product={{ slug: product.slug, title: product.title, image: product.image, price: product.price }} />
           <Link
             href={`/products/${product.slug}`}
             className="inline-flex items-center justify-center gap-1 rounded-full border border-parchment bg-white px-4 py-3 text-sm font-semibold text-charcoal transition-all duration-300 hover:border-gold hover:text-primary"

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import {
   Sparkles,
   Gift,
@@ -8,6 +9,7 @@ import {
   ArrowUpRight,
 } from "lucide-react";
 import { productCategoryLabels } from "@/lib/data";
+import type { ProductCategory } from "@/lib/data";
 import { formatINR } from "@/lib/utils";
 import { getProducts } from "@/lib/supabase/products";
 import PageHero from "@/components/ui/PageHero";
@@ -15,6 +17,7 @@ import Reveal from "@/components/ui/Reveal";
 import Button from "@/components/ui/Button";
 import GoldDivider from "@/components/ui/GoldDivider";
 import ProductGrid from "@/components/products/ProductGrid";
+import ShopSearch from "@/components/products/ShopSearch";
 import { categoryMeta } from "@/components/products/ProductCard";
 
 export const metadata: Metadata = {
@@ -23,6 +26,10 @@ export const metadata: Metadata = {
     "Shop decks, books, magic salt, vastu healing frames, rituals and WhatsApp workshops by Dr. Manisha Belvalkar.",
   alternates: { canonical: "/products" },
 };
+
+interface SearchParams {
+  searchParams: Promise<{ q?: string; category?: string }>;
+}
 
 const trustPoints = [
   {
@@ -47,14 +54,25 @@ const trustPoints = [
   },
 ];
 
-export default async function ProductsPage() {
+export default async function ProductsPage({ searchParams }: SearchParams) {
+  const { q, category } = await searchParams;
+  const query = (q ?? "").trim().toLowerCase();
+  const cat = (category ?? "").trim();
+
   // DB-backed catalog (falls back to the static catalog until Supabase
   // is configured) — dashboard products appear here automatically.
   const products = await getProducts();
   const featured = products.find((p) => p.featured) ?? products[0];
-  const shopProducts = products.filter(
-    (product) => product.slug !== "shakti-combo-pack",
-  );
+
+  const shopProducts = products
+    .filter((product) => product.slug !== "shakti-combo-pack")
+    .filter((product) => !cat || product.category === cat)
+    .filter((product) =>
+      !query ||
+      product.title.toLowerCase().includes(query) ||
+      (product.subtitle ?? "").toLowerCase().includes(query) ||
+      product.description.toLowerCase().includes(query),
+    );
 
   return (
     <>
@@ -188,9 +206,51 @@ export default async function ProductsPage() {
             </p>
           </Reveal>
 
-          <Reveal delay={0.1}>
-            <ProductGrid products={shopProducts} />
+          <Reveal className="mb-10">
+            <div className="mx-auto flex max-w-3xl flex-wrap items-center justify-center gap-2.5">
+              {(Object.keys(productCategoryLabels) as ProductCategory[]).map((c) => (
+                <Link
+                  key={c}
+                  href={`/collections/${c}`}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-parchment bg-white px-5 py-2.5 text-sm font-medium text-warmgray shadow-sm transition-all hover:-translate-y-0.5 hover:border-gold hover:shadow-md hover:text-charcoal"
+                >
+                  {productCategoryLabels[c]}
+                  <ArrowUpRight className="h-3.5 w-3.5 text-gold-dark" />
+                </Link>
+              ))}
+            </div>
           </Reveal>
+
+          <Reveal className="mb-10">
+            <ShopSearch defaultValue={q} />
+          </Reveal>
+
+          {query || cat ? (
+            <Reveal className="mb-8">
+              <p className="text-center text-warmgray">
+                {query ? <>Results for <strong className="text-charcoal">“{(q ?? "").trim()}”</strong> · </> : null}
+                {cat ? <strong className="text-charcoal">{productCategoryLabels[cat as ProductCategory] ?? cat}</strong> : null}
+                <strong className="text-primary"> {shopProducts.length}</strong>{" "}
+                {shopProducts.length === 1 ? "item" : "items"}
+              </p>
+            </Reveal>
+          ) : null}
+
+          {shopProducts.length ? (
+            <Reveal delay={0.1}>
+              <ProductGrid key={`${cat}:${query}`} products={shopProducts} />
+            </Reveal>
+          ) : (
+            <Reveal delay={0.1}>
+              <div className="mx-auto max-w-xl rounded-[28px] border border-parchment bg-white p-10 text-center">
+                <p className="text-lg text-warmgray">No products matched your search.</p>
+                <p className="mt-2 text-sm text-warmgray/70">Try a different keyword or explore all collections.</p>
+                <Link href="/products" className="mt-6 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white hover:brightness-110">
+                  Clear search
+                </Link>
+              </div>
+            </Reveal>
+          )}
         </div>
       </section>
 

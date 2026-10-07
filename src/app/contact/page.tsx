@@ -6,6 +6,7 @@ import Reveal from "@/components/ui/Reveal";
 import Button from "@/components/ui/Button";
 import GoldDivider from "@/components/ui/GoldDivider";
 import ContactForm from "@/components/ui/ContactForm";
+import HomeFAQ from "@/components/home/HomeFAQ";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -157,6 +158,8 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
+
+      <HomeFAQ />
 
       {/* Disclaimer */}
       <section className="bg-ivory py-12">

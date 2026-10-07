@@ -1,4 +1,4 @@
-import { HeroSkeleton, SectionHeadingSkeleton } from "@/components/skeletons/PageSkeletons";
+import { HeroSkeleton } from "@/components/skeletons/PageSkeletons";
 import { Skeleton } from "@/components/shadcn/skeleton";
 
 export default function MediaLoading() {
