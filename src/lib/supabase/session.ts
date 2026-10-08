@@ -174,3 +174,47 @@ export async function getShipmentForOrder(orderId: string) {
   const { data } = await supabase.from("shipments").select("*").eq("order_id", orderId).maybeSingle();
   return data;
 }
+
+/** Fetch the signed-in user's course enrollments (for the My Courses library), newest first. */
+export async function getMyEnrollments(limit = 50) {
+  const supabase = await createClient();
+  const user = await getCurrentUser();
+  if (!user) return [];
+  const { data } = await supabase
+    .from("course_enrollments")
+    .select("course_slug, status, enrolled_at, created_at")
+    .eq("user_id", user.id)
+    .order("enrolled_at", { ascending: false })
+    .order("created_at", { ascending: false })
+    .limit(limit);
+  return data ?? [];
+}
+
+/** Fetch the signed-in user's service/healing/mentoring bookings (newest first). */
+export async function getMyBookings(limit = 50) {
+  const supabase = await createClient();
+  const user = await getCurrentUser();
+  if (!user) return [];
+  const { data } = await supabase
+    .from("bookings")
+    .select("*")
+    .eq("user_id", user.id)
+    .order("created_at", { ascending: false })
+    .limit(limit);
+  return data ?? [];
+}
+
+/** Update one of the signed-in user's bookings (cancel / reschedule). Returns true on success. */
+export async function updateMyBooking(
+  id: string,
+  patch: { status?: string; requested_start?: string | null },
+): Promise<boolean> {
+  const supabase = await createClient();
+  const user = await getCurrentUser();
+  if (!user) return false;
+  const update: { updated_at: string; status?: string; requested_start?: string | null } = { updated_at: new Date().toISOString() };
+  if (patch.status) update.status = patch.status;
+  if (patch.requested_start !== undefined) update.requested_start = patch.requested_start;
+  const { error } = await supabase.from("bookings").update(update).eq("id", id).eq("user_id", user.id);
+  return !error;
+}

@@ -19,6 +19,22 @@ export interface Service {
   mostBooked?: boolean;
 }
 
+export interface CourseLesson {
+  id: string;
+  title: string;
+  duration: string;
+  description?: string;
+  /** Optional pre-recorded video/src. Leave empty until a real file is added. */
+  videoUrl?: string;
+  /** Free/preview lesson watchable before enrolling. */
+  free?: boolean;
+}
+
+export interface CourseModule {
+  module: string;
+  lessons: CourseLesson[];
+}
+
 export interface Course {
   slug: string;
   title: string;
@@ -27,6 +43,10 @@ export interface Course {
   highlights: string[];
   suitableFor: string[];
   image: string;
+  /** Optional price in INR — when set, the course is buyable online. */
+  price?: number;
+  /** Optional recorded curriculum shown on the detail page and in the player. */
+  curriculum?: CourseModule[];
 }
 
 export type ProductCategory = "book" | "oracle" | "ritual";
@@ -406,6 +426,32 @@ export const courses: Course[] = [
       "Devotees wanting to deepen their sadhana",
     ],
     image: "/images/aishwarya-siddhi-course.png",
+    curriculum: [
+      {
+        module: "Foundations of Abundance",
+        lessons: [
+          { id: "welcome", title: "Welcome & How This Course Works", duration: "12 min", free: true },
+          { id: "lakshmi-intro", title: "Meeting Goddess Mahalakshmi", duration: "18 min" },
+          { id: "abundance-mindset", title: "Abundance Mindset Basics", duration: "22 min" },
+        ],
+      },
+      {
+        module: "Sacred Practices",
+        lessons: [
+          { id: "yantra-setup", title: "Setting up Your Yantra", duration: "25 min" },
+          { id: "mantra", title: "The Mahalakshmi Mantra — Pronunciation & Meaning", duration: "30 min" },
+          { id: "daily-ritual", title: "Your Daily Ritual Routine", duration: "20 min" },
+        ],
+      },
+      {
+        module: "Carrying Your Practice Forward",
+        lessons: [
+          { id: "diwali-practice", title: "Deepening the Sadhana into Diwali", duration: "28 min" },
+          { id: "journal", title: "Reflection & Abundance Journaling", duration: "15 min" },
+          { id: "closing", title: "Closing Blessings & Next Steps", duration: "10 min" },
+        ],
+      },
+    ],
   },
   {
     slug: "shri-vidya",
@@ -425,6 +471,24 @@ export const courses: Course[] = [
       "Those ready for deep inner work",
     ],
     image: "/images/shri-vidya-course.png",
+    curriculum: [
+      {
+        module: "The Sacred Path of Shri Vidya",
+        lessons: [
+          { id: "introduction", title: "Introduction to Shri Vidya", duration: "20 min", free: true },
+          { id: "sri-yantra", title: "The Sacred Geometry of Sri Yantra", duration: "28 min" },
+          { id: "tripura-sundari", title: "Connecting with Goddess Tripura Sundari", duration: "24 min" },
+        ],
+      },
+      {
+        module: "Practice & Integration",
+        lessons: [
+          { id: "meditation", title: "Sri Yantra Meditation Practice", duration: "32 min" },
+          { id: "material-success", title: "Shri Vidya for Material & Spiritual Success", duration: "26 min" },
+          { id: "deepening", title: "Deepening the Inner Connection", duration: "30 min" },
+        ],
+      },
+    ],
   },
   {
     slug: "advanced-chakra",

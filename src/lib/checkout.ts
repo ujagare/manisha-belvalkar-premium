@@ -1,4 +1,4 @@
-import { services, courses, healingServices } from "@/lib/data";
+import { services, courses, healingServices, mentoringAreas } from "@/lib/data";
 import type { OrderItemType } from "@/lib/supabase/database.types";
 import { getProductBySlug } from "@/lib/supabase/products";
 
@@ -89,8 +89,23 @@ export async function getCatalogItem(
     };
   }
 
+  if (type === "mentoring") {
+    const m = mentoringAreas.find((x) => x.slug === slug);
+    if (!m) return null;
+    return {
+      type,
+      slug: m.slug,
+      title: m.title,
+      description: m.description,
+      image: m.image,
+      price: null,
+      priceLabel: "By consultation",
+      href: itemHref(type, m.slug),
+    };
+  }
+
   return null;
 }
 
 /** Valid order types (matches the orders.item_type check constraint). */
-export const orderTypes: OrderItemType[] = ["service", "course", "product", "healing"];
+export const orderTypes: OrderItemType[] = ["service", "course", "product", "healing", "mentoring"];

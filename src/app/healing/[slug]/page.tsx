@@ -7,6 +7,7 @@ import PageHero from "@/components/ui/PageHero";
 import Button from "@/components/ui/Button";
 import Reveal from "@/components/ui/Reveal";
 import Parallax from "@/components/ui/Parallax";
+import SessionBookingForm from "@/components/services/SessionBookingForm";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -106,6 +107,15 @@ export default async function HealingDetailPage({ params }: Props) {
               </Link>
             </div>
           </Reveal>
+        </div>
+      </section>
+
+      {/* Session booking */}
+      <section className="py-20 lg:py-24">
+        <div className="mx-auto max-w-6xl px-6 lg:px-10">
+          <div className="mx-auto max-w-3xl">
+            <SessionBookingForm type="healing" slug={service.slug} title={service.title} />
+          </div>
         </div>
       </section>
 

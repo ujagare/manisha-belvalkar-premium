@@ -7,7 +7,7 @@ import PageHero from "@/components/ui/PageHero";
 import Button from "@/components/ui/Button";
 import Reveal from "@/components/ui/Reveal";
 import Parallax from "@/components/ui/Parallax";
-import BookingRequestForm from "@/components/backend/BookingRequestForm";
+import SessionBookingForm from "@/components/services/SessionBookingForm";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -107,8 +107,16 @@ export default async function MentoringDetailPage({ params }: Props) {
                 All mentoring areas
               </Link>
             </div>
-            <BookingRequestForm type="mentoring" slug={area.slug} />
           </Reveal>
+        </div>
+      </section>
+
+      {/* Session booking */}
+      <section className="pb-20 lg:pb-24">
+        <div className="mx-auto max-w-6xl px-6 lg:px-10">
+          <div className="mx-auto max-w-3xl">
+            <SessionBookingForm type="mentoring" slug={area.slug} title={area.title} />
+          </div>
         </div>
       </section>
 

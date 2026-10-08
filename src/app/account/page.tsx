@@ -66,6 +66,28 @@ export default async function AccountPage() {
           </Link>
         </div>
 
+        {/* My Courses shortcut */}
+        <div className="mt-6 flex flex-wrap items-center justify-between gap-3 rounded-[24px] border border-parchment bg-gradient-to-b from-white to-cream/70 p-6">
+          <div>
+            <p className="font-semibold text-charcoal">My courses</p>
+            <p className="mt-1 text-sm text-warmgray">Open your enrolled courses and continue your learning.</p>
+          </div>
+          <Link href="/account/courses" className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-2.5 text-sm font-semibold text-white hover:brightness-110">
+            Open my courses →
+          </Link>
+        </div>
+
+        {/* My Bookings shortcut */}
+        <div className="mt-6 flex flex-wrap items-center justify-between gap-3 rounded-[24px] border border-parchment bg-gradient-to-b from-white to-cream/70 p-6">
+          <div>
+            <p className="font-semibold text-charcoal">My sessions &amp; bookings</p>
+            <p className="mt-1 text-sm text-warmgray">Healing aur mentoring session requests track karein.</p>
+          </div>
+          <Link href="/account/bookings" className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-2.5 text-sm font-semibold text-white hover:brightness-110">
+            View bookings →
+          </Link>
+        </div>
+
         {/* Orders */}
         <div className="mt-12">
           <h2 className="font-display text-2xl font-bold text-charcoal">

@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Check, MessageCircle, CalendarDays, UserRound } from "lucide-react";
+import { ArrowLeft, Check, MessageCircle, CalendarDays, UserRound, PlayCircle, Lock, Clock3 } from "lucide-react";
 import { courses } from "@/lib/data";
+import { formatINR } from "@/lib/utils";
 import Reveal from "@/components/ui/Reveal";
 import Button from "@/components/ui/Button";
 import GoldDivider from "@/components/ui/GoldDivider";
@@ -67,10 +68,22 @@ export default async function CourseDetailPage({ params }: Props) {
               </Reveal>
               <Reveal delay={0.25}>
                 <div className="mt-8 flex flex-wrap gap-4">
-                  <Button href={`/checkout/course/${course.slug}`} size="lg" variant="gold">
-                    <MessageCircle className="h-4 w-4" />
-                    Enroll Now
-                  </Button>
+                  {course.price ? (
+                    <Button href={`/checkout/course/${course.slug}`} size="lg" variant="gold">
+                      <Check className="h-4 w-4" />
+                      Get this course · {formatINR(course.price)}
+                    </Button>
+                  ) : (
+                    <Button href={`/checkout/course/${course.slug}`} size="lg" variant="gold">
+                      <MessageCircle className="h-4 w-4" />
+                      Enroll Now
+                    </Button>
+                  )}
+                  {course.curriculum?.some((m) => m.lessons.some((l) => l.free)) ? (
+                    <Button href={`/learn/${course.slug}/${course.curriculum.flatMap(m=>m.lessons).find(l=>l.free)!.id}`} size="lg" variant="outline">
+                      Preview free lesson
+                    </Button>
+                  ) : null}
                   <Button href="/contact" size="lg" variant="outline">
                     Ask about this course
                   </Button>
@@ -139,6 +152,68 @@ export default async function CourseDetailPage({ params }: Props) {
           </div>
         </div>
       </section>
+
+      {/* Curriculum (engine for recorded learning) */}
+      {course.curriculum && course.curriculum.length ? (
+        <section className="py-20 lg:py-24">
+          <div className="mx-auto max-w-4xl px-6 lg:px-10">
+            <Reveal className="text-center">
+              <div className="eyebrow mb-4 text-gold-dark">Course curriculum</div>
+              <h2 className="font-display text-4xl font-bold text-charcoal">
+                What you&apos;ll <span className="text-crimson-gradient">learn</span>
+              </h2>
+              <p className="mx-auto mt-4 max-w-2xl text-warmgray">
+                Clean, structured modules you can follow at your own pace. Free lessons are watchable before you decide.
+              </p>
+            </Reveal>
+
+            <div className="mt-12 space-y-6">
+              {course.curriculum.map((module, mi) => (
+                <Reveal key={module.module} delay={mi * 0.06}>
+                  <div className="overflow-hidden rounded-[24px] border border-parchment bg-white">
+                    <div className="flex items-center justify-between gap-4 border-b border-parchment bg-cream/50 px-6 py-4">
+                      <h3 className="font-display text-lg font-bold text-charcoal">{module.module}</h3>
+                      <span className="shrink-0 text-xs font-semibold uppercase tracking-wider text-warmgray">
+                        {module.lessons.length} {module.lessons.length === 1 ? "lesson" : "lessons"}
+                      </span>
+                    </div>
+                    <ul className="divide-y divide-parchment/60">
+                      {module.lessons.map((lesson) => (
+                        <li key={lesson.id} className="flex items-center gap-4 px-6 py-4">
+                          {lesson.free ? (
+                            <Link href={`/learn/${course.slug}/${lesson.id}`} className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary-soft text-primary transition hover:bg-primary hover:text-white" aria-label={`Play ${lesson.title}`}>
+                              <PlayCircle className="h-5 w-5" />
+                            </Link>
+                          ) : (
+                            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-ink/5 text-warmgray" aria-hidden="true">
+                              <Lock className="h-5 w-5" />
+                            </span>
+                          )}
+                          <div className="min-w-0 flex-1">
+                            <p className="truncate font-medium text-charcoal">{lesson.title}</p>
+                            {lesson.description ? <p className="mt-0.5 text-sm text-warmgray">{lesson.description}</p> : null}
+                          </div>
+                          <span className="flex shrink-0 items-center gap-1 text-xs text-warmgray">
+                            <Clock3 className="h-3.5 w-3.5" /> {lesson.duration}
+                          </span>
+                          {lesson.free ? <span className="shrink-0 rounded-full bg-gold-soft px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-gold-deep">Free</span> : null}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+
+            {course.curriculum.some((m) => m.lessons.some((l) => l.free)) ? (
+              <p className="mt-10 text-center text-sm text-warmgray">
+                Locked content unlocks after you enroll.
+                {course.price ? <Link href={`/checkout/course/${course.slug}`} className="ml-1 font-semibold text-primary underline underline-offset-2">Get the course for {formatINR(course.price)}</Link> : null}
+              </p>
+            ) : null}
+          </div>
+        </section>
+      ) : null}
 
       {/* Suitable for */}
       <section className="bg-mist py-20 lg:py-24">

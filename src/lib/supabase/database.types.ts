@@ -339,6 +339,105 @@ export type Database = {
           },
         ];
       };
+      /** A user's enrollment in a course (My Courses library). */
+      course_enrollments: {
+        Row: {
+          id: string;
+          user_id: string;
+          order_id: string | null;
+          course_slug: string;
+          cohort_id: string | null;
+          status: string;
+          enrolled_at: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          order_id?: string | null;
+          course_slug: string;
+          cohort_id?: string | null;
+          status?: string;
+          enrolled_at?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          order_id?: string | null;
+          course_slug?: string;
+          cohort_id?: string | null;
+          status?: string;
+          enrolled_at?: string | null;
+          created_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "course_enrollments_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      /** A healing/mentoring service session booking request. */
+      bookings: {
+        Row: {
+          id: string;
+          user_id: string;
+          order_id: string | null;
+          offering_type: string;
+          offering_slug: string;
+          format: string;
+          requested_start: string | null;
+          timezone: string;
+          notes: string | null;
+          meeting_url: string | null;
+          status: string;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          order_id?: string | null;
+          offering_type: string;
+          offering_slug: string;
+          format?: string;
+          requested_start?: string | null;
+          timezone?: string;
+          notes?: string | null;
+          meeting_url?: string | null;
+          status?: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          order_id?: string | null;
+          offering_type?: string;
+          offering_slug?: string;
+          format?: string;
+          requested_start?: string | null;
+          timezone?: string;
+          notes?: string | null;
+          meeting_url?: string | null;
+          status?: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "bookings_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       /** Public storefront catalog — readable by all, writable via dashboard. */
       products: {
         Row: {
@@ -413,10 +512,12 @@ export type AddressInsert = Database["public"]["Tables"]["addresses"]["Insert"];
 export type Shipment = Database["public"]["Tables"]["shipments"]["Row"];
 export type OrderItemRow = Database["public"]["Tables"]["order_items"]["Row"];
 export type PaymentRow = Database["public"]["Tables"]["payments"]["Row"];
+export type CourseEnrollmentRow = Database["public"]["Tables"]["course_enrollments"]["Row"];
+export type BookingRow = Database["public"]["Tables"]["bookings"]["Row"];
 export type ProductRow = Database["public"]["Tables"]["products"]["Row"];
 
 /** Supported purchasable item kinds. */
-export type OrderItemType = "service" | "course" | "product" | "healing";
+export type OrderItemType = "service" | "course" | "product" | "healing" | "mentoring";
 
 /** Order lifecycle status. */
 export type OrderStatus = "pending" | "confirmed" | "completed" | "cancelled";
