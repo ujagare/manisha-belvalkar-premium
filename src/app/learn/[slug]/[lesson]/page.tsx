@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { courses } from "@/lib/data";
 import { flattenLessons } from "@/lib/course-content";
 import CoursePlayer from "@/components/course/CoursePlayer";
+import { getCurrentUser, getMyCourseProgress, hasCourseAccess } from "@/lib/supabase/session";
 
 interface Props {
   params: Promise<{ slug: string; lesson: string }>;
@@ -26,6 +27,12 @@ export default async function LessonPage({ params }: Props) {
   const { slug, lesson } = await params;
   const course = courses.find((c) => c.slug === slug);
   if (!course) notFound();
-  if (!flattenLessons(course).some((l) => l.id === lesson)) notFound();
-  return <CoursePlayer course={course} initialLessonId={lesson} />;
+  const selectedLesson = flattenLessons(course).find((item) => item.id === lesson);
+  if (!selectedLesson) notFound();
+  const user = await getCurrentUser();
+  const fullAccess = user ? await hasCourseAccess(slug) : false;
+  if (!selectedLesson.free && !user) redirect(`/login?next=${encodeURIComponent(`/learn/${slug}/${lesson}`)}`);
+  if (!selectedLesson.free && !fullAccess) redirect(`/courses/${slug}?access=required`);
+  const progress = fullAccess ? await getMyCourseProgress(slug) : [];
+  return <CoursePlayer course={course} initialLessonId={lesson} hasFullAccess={fullAccess} initialProgress={progress} />;
 }

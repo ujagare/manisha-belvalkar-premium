@@ -180,7 +180,7 @@ export default async function ProductDetailPage({ params }: Props) {
                     variant="gold"
                   >
                     <Package className="h-4 w-4" />
-                    Buy Now — Secure Order
+                    Buy Now — WhatsApp Order
                   </Button>
                   <Button href="/contact" size="lg" variant="outline">
                     <MessageCircle className="h-4 w-4" />
@@ -188,7 +188,7 @@ export default async function ProductDetailPage({ params }: Props) {
                   </Button>
                 </div>
                 <p className="mt-3 text-xs text-warmgray">
-                  Sign in required at checkout · WhatsApp confirmation after order
+                  No sign-in required · Final confirmation on WhatsApp
                 </p>
               </Reveal>
 

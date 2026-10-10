@@ -1157,7 +1157,7 @@ export const healingServices: HealingService[] = [
       "Release limiting beliefs",
       "Create positive mental patterns",
     ],
-    image: "/images/gold-abstract.jpg",
+    image: "/images/mind-reprogramming.jpg",
   },
 ];
 

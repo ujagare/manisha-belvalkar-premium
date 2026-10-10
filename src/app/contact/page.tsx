@@ -6,6 +6,7 @@ import Reveal from "@/components/ui/Reveal";
 import Button from "@/components/ui/Button";
 import GoldDivider from "@/components/ui/GoldDivider";
 import ContactForm from "@/components/ui/ContactForm";
+import { isServerConfigured } from "@/lib/env";
 import HomeFAQ from "@/components/home/HomeFAQ";
 
 export const metadata: Metadata = {
@@ -151,7 +152,7 @@ export default function ContactPage() {
                   <p className="mt-2 text-sm leading-relaxed text-warmgray">
                     Fill in the form below, and Manisha will get back to you.
                   </p>
-                  <ContactForm />
+                  <ContactForm manualMode={!isServerConfigured()} />
                 </div>
               </div>
             </Reveal>

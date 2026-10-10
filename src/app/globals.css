@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import "tailwindcss" source("../");
 @import "tw-animate-css";
 
 /* Keep the navbar's layered shadow out of Tailwind's arbitrary-value selector.

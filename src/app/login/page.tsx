@@ -15,10 +15,10 @@ export default function LoginPage() {
     <AuthShell
       title={
         <>
-          Welcome <span className="text-crimson-gradient">back</span>
+          Welcome <span className="font-serif font-medium italic text-primary">back.</span>
         </>
       }
-      subtitle="Sign in to book sessions, enroll in courses, and continue your journey."
+      subtitle="Sign in to manage your sessions, courses and private healing journey."
     >
       <Suspense>
         <LoginForm />

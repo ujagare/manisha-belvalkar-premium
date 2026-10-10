@@ -381,6 +381,34 @@ export type Database = {
           },
         ];
       };
+      /** Per-user progress for recorded course lessons. */
+      course_lesson_progress: {
+        Row: {
+          user_id: string;
+          course_slug: string;
+          lesson_id: string;
+          completed: boolean;
+          watched_seconds: number;
+          last_watched_at: string;
+          completed_at: string | null;
+        };
+        Insert: {
+          user_id: string;
+          course_slug: string;
+          lesson_id: string;
+          completed?: boolean;
+          watched_seconds?: number;
+          last_watched_at?: string;
+          completed_at?: string | null;
+        };
+        Update: {
+          completed?: boolean;
+          watched_seconds?: number;
+          last_watched_at?: string;
+          completed_at?: string | null;
+        };
+        Relationships: [];
+      };
       /** A healing/mentoring service session booking request. */
       bookings: {
         Row: {
@@ -437,6 +465,45 @@ export type Database = {
             referencedColumns: ["id"];
           },
         ];
+      };
+      distance_healing_cases: {
+        Row: {
+          id: string; order_id: string; user_id: string;
+          submission_method: "website" | "whatsapp" | null;
+          intention: string | null; source_photo_path: string | null;
+          result_photo_path: string | null; music_path: string | null;
+          status: "awaiting_submission" | "submitted" | "in_progress" | "ready" | "delivered" | "completed" | "cancelled";
+          submitted_at: string | null; processing_started_at: string | null;
+          ready_at: string | null; delivered_at: string | null; completed_at: string | null;
+          retention_delete_after: string | null; staff_notes: string | null;
+          created_at: string; updated_at: string;
+        };
+        Insert: {
+          id?: string; order_id: string; user_id: string;
+          submission_method?: "website" | "whatsapp" | null;
+          intention?: string | null; source_photo_path?: string | null;
+          result_photo_path?: string | null; music_path?: string | null;
+          status?: "awaiting_submission" | "submitted" | "in_progress" | "ready" | "delivered" | "completed" | "cancelled";
+          submitted_at?: string | null; processing_started_at?: string | null;
+          ready_at?: string | null; delivered_at?: string | null; completed_at?: string | null;
+          retention_delete_after?: string | null; staff_notes?: string | null;
+          created_at?: string; updated_at?: string;
+        };
+        Update: {
+          submission_method?: "website" | "whatsapp" | null; intention?: string | null;
+          source_photo_path?: string | null; result_photo_path?: string | null; music_path?: string | null;
+          status?: "awaiting_submission" | "submitted" | "in_progress" | "ready" | "delivered" | "completed" | "cancelled";
+          submitted_at?: string | null; processing_started_at?: string | null;
+          ready_at?: string | null; delivered_at?: string | null; completed_at?: string | null;
+          retention_delete_after?: string | null; staff_notes?: string | null; updated_at?: string;
+        };
+        Relationships: [];
+      };
+      distance_healing_feedback: {
+        Row: { id: string; case_id: string; user_id: string; rating: number; message: string; publication_consent: "private" | "anonymous" | "first_name"; created_at: string };
+        Insert: { id?: string; case_id: string; user_id: string; rating: number; message: string; publication_consent?: "private" | "anonymous" | "first_name"; created_at?: string };
+        Update: Record<string, never>;
+        Relationships: [];
       };
       /** Public storefront catalog — readable by all, writable via dashboard. */
       products: {
@@ -513,7 +580,10 @@ export type Shipment = Database["public"]["Tables"]["shipments"]["Row"];
 export type OrderItemRow = Database["public"]["Tables"]["order_items"]["Row"];
 export type PaymentRow = Database["public"]["Tables"]["payments"]["Row"];
 export type CourseEnrollmentRow = Database["public"]["Tables"]["course_enrollments"]["Row"];
+export type CourseLessonProgressRow = Database["public"]["Tables"]["course_lesson_progress"]["Row"];
 export type BookingRow = Database["public"]["Tables"]["bookings"]["Row"];
+export type DistanceHealingCase = Database["public"]["Tables"]["distance_healing_cases"]["Row"];
+export type DistanceHealingFeedback = Database["public"]["Tables"]["distance_healing_feedback"]["Row"];
 export type ProductRow = Database["public"]["Tables"]["products"]["Row"];
 
 /** Supported purchasable item kinds. */

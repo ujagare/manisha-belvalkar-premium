@@ -159,6 +159,7 @@ export default function RootLayout({
       )}
     >
       <body className="grain min-h-screen flex flex-col" suppressHydrationWarning>
+        <a href="#main-content" className="sr-only fixed left-4 top-4 z-50 rounded-lg bg-charcoal px-4 py-3 font-semibold text-white focus:not-sr-only focus:outline-2 focus:outline-offset-2 focus:outline-gold">Skip to main content</a>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
@@ -175,7 +176,7 @@ export default function RootLayout({
           <SmoothScrollProvider>
             <CustomCursor />
             <Navbar />
-            <main id="top" className="flex-1">{children}</main>
+            <main id="main-content" className="flex-1" tabIndex={-1}>{children}</main>
             <Footer />
           </SmoothScrollProvider>
         </CartProvider>

@@ -4,9 +4,10 @@ import { useState } from "react";
 import Link from "next/link";
 import { Heart } from "lucide-react";
 import { brand } from "@/lib/data";
+import { contactWhatsAppMessage, manualReference, whatsappUrl } from "@/lib/manual-flow";
 
 /** Premium contact form that opens WhatsApp with a pre-filled message. */
-export default function ContactForm() {
+export default function ContactForm({ manualMode = false }: { manualMode?: boolean }) {
   const [form, setForm] = useState({
     name: "",
     phone: "",
@@ -22,7 +23,20 @@ export default function ContactForm() {
     e.preventDefault();
     setError(null);
     setIsSubmitting(true);
+    const openWhatsApp = (nextReference: string, saved: boolean) => {
+      setReference(nextReference);
+      window.open(
+        whatsappUrl(contactWhatsAppMessage({ reference: nextReference, ...form })),
+        "_blank",
+        "noopener,noreferrer",
+      );
+      if (!saved) setError("This enquiry is not saved online yet. Please send the prepared message on WhatsApp.");
+    };
     try {
+      if (manualMode) {
+        openWhatsApp(manualReference("ENQUIRY"), false);
+        return;
+      }
       const response = await fetch("/api/leads", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -35,16 +49,12 @@ export default function ContactForm() {
       });
       const result = await response.json().catch(() => null);
       if (!response.ok) {
-        setError(result?.error?.message ?? "Could not save your enquiry. Please try again.");
+        openWhatsApp(manualReference("ENQUIRY"), false);
         return;
       }
-      setReference(result.reference ?? null);
-    const body = encodeURIComponent(
-        `Reference: ${result.reference ?? "pending"}\nName: ${form.name}\nPhone: ${form.phone}\nEmail: ${form.email}\n\nMessage:\n${form.message}`,
-    );
-      window.open(`https://wa.me/919922246111?text=${body}`, "_blank", "noopener,noreferrer");
+      openWhatsApp(result.reference ?? manualReference("ENQUIRY"), true);
     } catch {
-      setError("Could not save your enquiry. Please try again.");
+      openWhatsApp(manualReference("ENQUIRY"), false);
     } finally {
       setIsSubmitting(false);
     }
@@ -135,14 +145,14 @@ export default function ContactForm() {
         <span>I consent to my details being stored and used to respond to this enquiry.</span>
       </label>
       {error ? <p role="alert" className="text-sm text-primary">{error}</p> : null}
-      {reference ? <p role="status" className="text-sm text-green-700">Enquiry saved. Reference: {reference}</p> : null}
+      {reference ? <p role="status" className="text-sm text-green-700">Request prepared. Reference: {reference}</p> : null}
       <button
         type="submit"
         disabled={isSubmitting || !consent}
         className="group inline-flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-primary to-primary-dark px-8 py-4 text-sm font-bold text-white shadow-lg shadow-primary/25 transition-all duration-300 hover:shadow-xl hover:shadow-primary/40 hover:brightness-110"
       >
         <Heart className="h-4 w-4 text-gold-light transition-transform duration-300 group-hover:scale-110" />
-        {isSubmitting ? "Saving…" : "Send on WhatsApp"}
+        {isSubmitting ? "Preparing…" : "Prepare WhatsApp message"}
       </button>
       <p className="text-center text-xs text-warmgray/70">
         Your message opens in {brand.name}&apos;s WhatsApp — the fastest way to

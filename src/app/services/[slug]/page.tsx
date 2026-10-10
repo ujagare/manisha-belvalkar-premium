@@ -9,6 +9,7 @@ import Reveal from "@/components/ui/Reveal";
 import Button from "@/components/ui/Button";
 import GoldDivider from "@/components/ui/GoldDivider";
 import ServiceCard from "@/components/ui/ServiceCard";
+import InternalSubmenu from "@/components/layout/InternalSubmenu";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -36,9 +37,20 @@ export default async function ServiceDetailPage({ params }: Props) {
   if (!service) notFound();
 
   const others = services.filter((s) => s.slug !== slug).slice(0, 3);
+  const submenuItems = services.map((item) => ({
+    href: `/services/${item.slug}`,
+    label: item.title,
+  }));
 
   return (
     <>
+      <InternalSubmenu
+        activeHref={`/services/${service.slug}`}
+        backHref="/services"
+        backLabel="All services"
+        items={submenuItems}
+        label="Services"
+      />
       <section className="relative overflow-hidden bg-ivory pb-16 pt-32 lg:pb-20 lg:pt-40">
         <div className="glow-gold absolute -right-32 -top-32 h-[400px] w-[400px]" />
         <div className="relative mx-auto max-w-7xl px-6 lg:px-10">

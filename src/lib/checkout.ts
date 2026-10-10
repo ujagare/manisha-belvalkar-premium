@@ -1,6 +1,8 @@
 import { services, courses, healingServices, mentoringAreas } from "@/lib/data";
 import type { OrderItemType } from "@/lib/supabase/database.types";
 import { getProductBySlug } from "@/lib/supabase/products";
+import { isServerConfigured } from "@/lib/env";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 /**
  * Unified purchasable item view used by the login-gated checkout.
@@ -77,14 +79,28 @@ export async function getCatalogItem(
   if (type === "healing") {
     const h = healingServices.find((x) => x.slug === slug);
     if (!h) return null;
+    let price: number | null = null;
+    if (isServerConfigured()) {
+      const admin = createAdminClient();
+      const { data } = await admin
+        .from("offerings")
+        .select("amount_subunits,payment_mode")
+        .eq("type", "healing")
+        .eq("slug", h.slug)
+        .eq("is_active", true)
+        .maybeSingle();
+      if (data?.payment_mode === "full" && data.amount_subunits && data.amount_subunits > 0) {
+        price = data.amount_subunits / 100;
+      }
+    }
     return {
       type,
       slug: h.slug,
       title: h.title,
       description: h.description,
       image: h.image,
-      price: null,
-      priceLabel: "By consultation",
+      price,
+      priceLabel: price ? `₹${price.toLocaleString("en-IN")}` : "Price setup pending",
       href: itemHref(type, h.slug),
     };
   }

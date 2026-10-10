@@ -73,7 +73,7 @@ const stats = [
 
 export default function AboutPage() {
   return (
-    <main className="overflow-hidden bg-[#fbf8f2] pt-16 text-charcoal">
+    <div className="overflow-hidden bg-[#fbf8f2] pt-16 text-charcoal">
       <section className="relative min-h-[calc(100dvh-4rem)] border-b border-primary/15">
         <div className="mx-auto grid min-h-[calc(100dvh-4rem)] max-w-[90rem] lg:grid-cols-[0.8fr_1.2fr]">
           <div className="relative order-2 min-h-[24rem] overflow-hidden bg-white sm:min-h-[28rem] lg:order-1 lg:m-12 lg:min-h-0 lg:rounded-[1.5rem]">
@@ -368,6 +368,6 @@ export default function AboutPage() {
           </GsapReveal>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

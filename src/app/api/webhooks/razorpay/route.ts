@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { apiError, apiSuccess } from "@/lib/api";
 import { verifyWebhookSignature } from "@/lib/razorpay";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { DISTANCE_HEALING_SLUG, ensureDistanceHealingCase } from "@/lib/distance-healing";
 
 export const runtime = "nodejs";
 
@@ -15,6 +16,9 @@ async function activateFulfilment(admin: ReturnType<typeof createAdminClient>, p
       user_id: order.user_id, order_id: order.id, offering_type: order.item_type,
       offering_slug: order.item_slug, format: "online", timezone: "Asia/Kolkata", status: "requested",
     }, { onConflict: "order_id" });
+  }
+  if (order.item_type === "healing" && order.item_slug === DISTANCE_HEALING_SLUG) {
+    await ensureDistanceHealingCase(order.id, order.user_id);
   }
   if (order.item_type === "course") {
     await admin.from("course_enrollments").upsert({

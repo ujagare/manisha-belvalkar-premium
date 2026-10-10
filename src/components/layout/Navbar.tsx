@@ -4,7 +4,17 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { LogIn, Menu, ShoppingBag, X } from "lucide-react";
+import {
+  BookOpen,
+  Compass,
+  HeartPulse,
+  LogIn,
+  Menu,
+  ShoppingBag,
+  Sparkles,
+  Store,
+  X,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { navigation } from "@/lib/data";
 import MobileMenu from "./MobileMenu";
@@ -16,6 +26,14 @@ export default function Navbar() {
   const pathname = usePathname();
   const isHome = pathname === "/";
   const { itemCount } = useCart();
+
+  const mobileNavigation = [
+    { label: "Shakti", href: "/shakti", icon: Sparkles },
+    { label: "Mentoring", href: "/mentoring", icon: Compass },
+    { label: "Healing", href: "/healing", icon: HeartPulse },
+    { label: "Courses", href: "/courses", icon: BookOpen },
+    { label: "Shop", href: "/products", icon: Store },
+  ];
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 36);
@@ -137,6 +155,36 @@ export default function Navbar() {
       </header>
 
       <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
+
+      {!menuOpen ? (
+        <nav
+          aria-label="Mobile navigation"
+          className="fixed inset-x-0 bottom-0 z-40 border-t border-gold/20 bg-cream/95 px-2 pb-[max(0.35rem,env(safe-area-inset-bottom))] pt-1.5 shadow-[0_-12px_35px_rgba(62,38,25,0.08)] backdrop-blur-xl xl:hidden"
+        >
+          <div className="mx-auto grid max-w-md grid-cols-5 items-end">
+            {mobileNavigation.map((item) => {
+              const active =
+                pathname === item.href || pathname.startsWith(`${item.href}/`);
+              const Icon = item.icon;
+
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  aria-current={active ? "page" : undefined}
+                  className={cn(
+                    "flex min-h-12 flex-col items-center justify-center gap-0.5 rounded-xl px-1 text-[0.65rem] font-semibold transition-colors active:bg-primary-soft",
+                    active ? "text-primary" : "text-warmgray",
+                  )}
+                >
+                  <Icon className="h-[1.15rem] w-[1.15rem]" aria-hidden="true" />
+                  <span>{item.label}</span>
+                </Link>
+              );
+            })}
+          </div>
+        </nav>
+      ) : null}
     </>
   );
 }

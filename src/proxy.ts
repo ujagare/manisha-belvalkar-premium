@@ -49,7 +49,8 @@ export default async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // --- Protected: require authentication -------------------------------
-  if (!user && (pathname.startsWith("/checkout") || pathname.startsWith("/account") || pathname.startsWith("/admin"))) {
+  const protectedCheckout = pathname.startsWith("/checkout") && !pathname.startsWith("/checkout/product/");
+  if (!user && (protectedCheckout || pathname.startsWith("/account") || pathname.startsWith("/admin"))) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
     url.searchParams.set("next", pathname + request.nextUrl.search);

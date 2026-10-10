@@ -3,44 +3,12 @@ import Link from "next/link";
 import {
   ArrowUpRight,
   Check,
-  HeartHandshake,
-  ImageUp,
   LockKeyhole,
   MessageCircle,
-  Music2,
   Quote,
   ShieldCheck,
-  Sparkles,
   Star,
 } from "lucide-react";
-import { brand } from "@/lib/data";
-
-const steps = [
-  {
-    number: "01",
-    title: "Book your session",
-    text: "Choose Distance Healing and complete your booking online or with our team on WhatsApp.",
-    icon: HeartHandshake,
-  },
-  {
-    number: "02",
-    title: "Share your photograph",
-    text: "After booking, upload one recent, clear photograph with your healing intention.",
-    icon: ImageUp,
-  },
-  {
-    number: "03",
-    title: "Receive healing support",
-    text: "Dr. Manisha works with your photograph through a focused, private healing process.",
-    icon: Sparkles,
-  },
-  {
-    number: "04",
-    title: "Receive and reflect",
-    text: "Your photograph and healing music are shared with you, followed by a private feedback invitation.",
-    icon: Music2,
-  },
-];
 
 const healingFeedback = [
   {
@@ -56,10 +24,6 @@ const healingFeedback = [
     role: "Healing client, Pune",
   },
 ];
-
-const whatsappUrl = `${brand.whatsappHref.split("?")[0]}?text=${encodeURIComponent(
-  "Hello Manisha, I would like to book a Distance Healing session. Please guide me with the booking, payment and photograph submission process.",
-)}`;
 
 export default function DistanceHealingExperience() {
   return (
@@ -116,7 +80,7 @@ export default function DistanceHealingExperience() {
             </p>
 
             <div className="mt-8 grid gap-3 sm:grid-cols-2">
-              {["Book online or on WhatsApp", "Photograph shared privately", "Healing music included", "Feedback and aftercare included"].map(
+              {["Payment verified before submission", "Photograph shared privately", "Healing music included", "Feedback and aftercare included"].map(
                 (item) => (
                   <div key={item} className="flex items-center gap-3 text-sm font-medium text-ink">
                     <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary text-white">
@@ -137,44 +101,16 @@ export default function DistanceHealingExperience() {
                 <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
               </Link>
               <Link
-                href={whatsappUrl}
-                target="_blank"
-                rel="noopener noreferrer"
+                href="/checkout/healing/distance-healing"
                 className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-primary/25 bg-transparent px-7 py-3 text-sm font-semibold text-primary transition duration-300 hover:border-primary hover:bg-primary-soft focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold active:translate-y-px"
               >
                 <MessageCircle className="h-4 w-4" aria-hidden="true" />
-                Continue on WhatsApp
+                Pay first, then use WhatsApp
               </Link>
             </div>
             <p className="mt-4 max-w-xl text-xs leading-5 text-warmgray">
               Distance Healing supports spiritual wellbeing and personal reflection. It does not replace medical diagnosis, treatment or emergency care.
             </p>
-          </div>
-        </div>
-
-        <div className="mt-24 border-t border-primary/15 pt-12 lg:mt-28 lg:pt-14">
-          <div className="grid gap-10 lg:grid-cols-[0.7fr_1.3fr] lg:gap-16">
-            <div>
-              <p className="text-sm font-semibold text-primary">How your session unfolds</p>
-              <h3 className="mt-3 max-w-md font-display text-3xl leading-tight text-charcoal sm:text-4xl">
-                Four thoughtful steps, with clarity at every stage
-              </h3>
-            </div>
-            <ol className="grid gap-x-8 gap-y-8 sm:grid-cols-2">
-              {steps.map((step) => {
-                const Icon = step.icon;
-                return (
-                  <li key={step.number} className="group border-t border-parchment pt-5">
-                    <div className="flex items-center justify-between">
-                      <span className="font-serif text-lg font-semibold text-primary">{step.number}</span>
-                      <Icon className="h-5 w-5 text-gold-deep" strokeWidth={1.7} aria-hidden="true" />
-                    </div>
-                    <h4 className="mt-6 text-base font-semibold text-charcoal">{step.title}</h4>
-                    <p className="mt-2 text-sm leading-6 text-warmgray">{step.text}</p>
-                  </li>
-                );
-              })}
-            </ol>
           </div>
         </div>
 

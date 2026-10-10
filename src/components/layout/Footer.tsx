@@ -91,7 +91,7 @@ export default function Footer() {
   const yMandala = useTransform(scrollYProgress, [0, 1], [60, -20]);
 
   return (
-    <footer className="relative overflow-hidden bg-charcoal text-ivory/80">
+    <footer className="relative overflow-hidden bg-charcoal pb-20 text-ivory/80 xl:pb-0">
       {/* ================= CTA band ================= */}
       <section className="relative overflow-hidden bg-gradient-to-br from-primary-deeper via-primary to-primary-dark">
         {/* Gold glows */}
@@ -125,7 +125,7 @@ export default function Footer() {
           aria-hidden="true"
         />
 
-        <div className="relative mx-auto max-w-4xl px-6 py-14 text-center lg:py-16">
+        <div className="relative mx-auto max-w-4xl px-6 py-7 text-center lg:py-9">
           <Reveal>
             <div className="eyebrow mb-5 flex items-center justify-center gap-4 text-gold-light">
               <span className="hairline-gold w-12" />
@@ -137,7 +137,7 @@ export default function Footer() {
           </Reveal>
 
           <Reveal delay={0.1}>
-            <h2 className="font-display text-3xl font-bold leading-[1.1] tracking-tight text-white sm:text-4xl lg:text-5xl">
+            <h2 className="font-display text-2xl font-bold leading-[1.1] tracking-tight text-white sm:text-3xl lg:text-4xl">
               It is your own commitment
               <br />
               <span className="font-serif font-medium italic text-gold-light">
@@ -159,14 +159,14 @@ export default function Footer() {
                 href={brand.whatsappHref}
                 target="_blank"
                 rel="noreferrer"
-                className="group inline-flex items-center gap-2 rounded-full bg-gold px-8 py-4 text-sm font-semibold text-primary-deeper shadow-[0_16px_40px_-12px_rgba(221,184,41,0.7)] transition-all duration-500 hover:-translate-y-0.5 hover:bg-gold-light hover:shadow-[0_20px_50px_-12px_rgba(221,184,41,0.9)]"
+                className="group inline-flex items-center gap-2 rounded-full bg-gold px-6 py-3 text-sm font-semibold text-primary-deeper shadow-[0_16px_40px_-12px_rgba(221,184,41,0.7)] transition-all duration-500 hover:-translate-y-0.5 hover:bg-gold-light hover:shadow-[0_20px_50px_-12px_rgba(221,184,41,0.9)]"
               >
                 <MessageCircle className="h-4 w-4" />
                 Book a Session
               </a>
               <a
                 href="/contact"
-                className="inline-flex items-center gap-2 rounded-full border border-white/40 px-8 py-4 text-sm font-semibold text-white backdrop-blur transition-all duration-500 hover:-translate-y-0.5 hover:border-gold hover:bg-white/10"
+                className="inline-flex items-center gap-2 rounded-full border border-white/40 px-6 py-3 text-sm font-semibold text-white backdrop-blur transition-all duration-500 hover:-translate-y-0.5 hover:border-gold hover:bg-white/10"
               >
                 <Heart className="h-4 w-4 text-gold-light" />
                 Ask a Question
@@ -205,10 +205,10 @@ export default function Footer() {
           aria-hidden="true"
         />
 
-        <div className="relative mx-auto max-w-7xl px-6 pb-8 pt-12 lg:px-10 lg:pt-14">
-          <div className="grid gap-10 lg:grid-cols-12 lg:gap-8">
+        <div className="relative mx-auto max-w-7xl px-6 pb-6 pt-9 lg:px-10 lg:pt-11">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-12 lg:gap-6">
             {/* Brand column */}
-            <Reveal className="lg:col-span-4" delay={0}>
+            <Reveal className="lg:col-span-3" delay={0}>
               <Link
                 href="/"
                 className="flex items-center gap-3 font-display text-3xl font-bold tracking-tight text-white transition-colors hover:text-gold-light"
@@ -225,13 +225,13 @@ export default function Footer() {
                   Belvalkar
                 </span>
               </Link>
-              <p className="mt-2 text-sm leading-relaxed text-ivory/50">
+              <p className="mt-1.5 text-sm leading-relaxed text-ivory/50">
                 Guiding souls toward clarity, success, and self-empowerment
                 through Tarot, Healing, and Well-being.
               </p>
 
               {/* Socials */}
-              <div className="mt-5 flex items-center gap-3">
+              <div className="mt-3 flex items-center gap-3">
                 <a
                   href={brand.whatsappHref}
                   target="_blank"
@@ -245,11 +245,11 @@ export default function Footer() {
             </Reveal>
 
             {/* Navigate */}
-            <Reveal className="lg:col-span-2" delay={0.1}>
-              <h4 className="mb-4 font-serif text-lg font-semibold text-white">
+            <Reveal className="lg:col-span-3" delay={0.1}>
+              <h4 className="mb-3 font-serif text-lg font-semibold text-white">
                 Navigate
               </h4>
-              <ul className="space-y-2.5">
+              <ul className="grid grid-cols-2 gap-x-8 gap-y-1.5">
                 {navigation.map((item) => (
                   <li key={item.href}>
                     <Link
@@ -266,10 +266,10 @@ export default function Footer() {
 
             {/* Offerings */}
             <Reveal className="lg:col-span-3" delay={0.2}>
-              <h4 className="mb-4 font-serif text-lg font-semibold text-white">
+              <h4 className="mb-3 font-serif text-lg font-semibold text-white">
                 Offerings
               </h4>
-              <ul className="space-y-2.5">
+              <ul className="space-y-1.5">
                 {services.slice(0, 3).map((s) => (
                   <li key={s.slug}>
                     <Link
@@ -306,10 +306,10 @@ export default function Footer() {
 
             {/* Contact */}
             <Reveal className="lg:col-span-3" delay={0.3}>
-              <h4 className="mb-4 font-serif text-lg font-semibold text-white">
+              <h4 className="mb-3 font-serif text-lg font-semibold text-white">
                 Connect
               </h4>
-              <ul className="space-y-3">
+              <ul className="space-y-2">
                 <li>
                   <a
                     href={brand.phoneHref}
@@ -372,7 +372,7 @@ export default function Footer() {
                 href={brand.whatsappHref}
                 target="_blank"
                 rel="noreferrer"
-                className="group mt-5 inline-flex items-center gap-2 rounded-full border border-gold/40 px-6 py-3 text-sm font-medium text-gold transition-all duration-300 hover:bg-gold hover:text-primary-deeper"
+                className="group mt-3 inline-flex items-center gap-2 rounded-full border border-gold/40 px-6 py-3 text-sm font-medium text-gold transition-all duration-300 hover:bg-gold hover:text-primary-deeper"
               >
                 Start your journey
                 <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -382,7 +382,7 @@ export default function Footer() {
 
           <nav
             aria-label="Customer help"
-            className="mt-10 flex flex-wrap gap-x-5 gap-y-3 border-t border-white/10 pt-6 text-xs text-ivory/55"
+            className="mt-7 flex flex-wrap justify-center gap-x-6 gap-y-1.5 border-t border-white/10 pt-4 text-xs text-ivory/55"
           >
             <Link className="transition-colors hover:text-gold" href="/how-it-works">How it works</Link>
             <Link className="transition-colors hover:text-gold" href="/faq">FAQ</Link>
@@ -394,7 +394,7 @@ export default function Footer() {
 
           <nav
             aria-label="Legal information"
-            className="mt-5 flex flex-wrap gap-x-5 gap-y-3 text-xs text-ivory/55"
+            className="mt-3 flex flex-wrap justify-center gap-x-6 gap-y-1.5 text-xs text-ivory/55"
           >
             <Link className="transition-colors hover:text-gold" href="/privacy-policy">Privacy policy</Link>
             <Link className="transition-colors hover:text-gold" href="/terms-and-conditions">Terms &amp; conditions</Link>
@@ -405,12 +405,12 @@ export default function Footer() {
             <Link className="transition-colors hover:text-gold" href="/editorial-policy">Editorial policy</Link>
           </nav>
 
-          <GoldDivider className="mt-10" />
+          <GoldDivider className="mt-6" />
         </div>
       </div>
 
       {/* ================= Bottom bar ================= */}
-      <div className="relative border-t border-white/10 px-6 py-4 lg:px-10">
+      <div className="relative border-t border-white/10 px-6 py-3 lg:px-10">
         <div className="mx-auto flex max-w-7xl flex-col items-center gap-4 text-xs text-ivory/40 sm:flex-row sm:justify-between">
           <p>
             &copy; {year} {brand.name}. All rights reserved.

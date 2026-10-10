@@ -40,8 +40,8 @@ export default function GoogleButton({ redirectTo = "/account" }: { redirectTo?:
         onClick={handleGoogle}
         disabled={isPending}
         className={cn(
-          "flex w-full items-center justify-center gap-3 rounded-full border border-parchment bg-white py-3 text-sm font-semibold text-charcoal shadow-sm transition-all duration-300",
-          "hover:border-gold/60 hover:shadow-md disabled:cursor-not-allowed disabled:opacity-60",
+          "flex h-13 w-full items-center justify-center gap-3 rounded-full border border-parchment bg-white/90 text-sm font-semibold text-charcoal shadow-sm transition-[border-color,background-color,transform,box-shadow] duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]",
+          "hover:-translate-y-0.5 hover:border-gold hover:bg-white hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-gold disabled:cursor-not-allowed disabled:translate-y-0 disabled:opacity-60",
         )}
       >
         {isPending ? (
@@ -66,10 +66,10 @@ export default function GoogleButton({ redirectTo = "/account" }: { redirectTo?:
             />
           </svg>
         )}
-        {isPending ? "Redirecting…" : "Continue with Google"}
+        {isPending ? "Redirecting…" : "Sign in with Google"}
       </button>
       {error ? (
-        <p className="mt-3 text-center text-xs text-primary">{error}</p>
+        <p role="alert" className="mt-3 text-center text-xs text-primary">{error}</p>
       ) : null}
     </div>
   );

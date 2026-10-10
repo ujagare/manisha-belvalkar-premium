@@ -190,6 +190,37 @@ export async function getMyEnrollments(limit = 50) {
   return data ?? [];
 }
 
+/** Confirm that the signed-in user owns an active entitlement for a course. */
+export async function hasCourseAccess(courseSlug: string): Promise<boolean> {
+  const supabase = await createClient();
+  const user = await getCurrentUser();
+  if (!user) return false;
+  const { data } = await supabase
+    .from("course_enrollments")
+    .select("id")
+    .eq("user_id", user.id)
+    .eq("course_slug", courseSlug)
+    .in("status", ["active", "completed"])
+    .limit(1)
+    .maybeSingle();
+  return Boolean(data);
+}
+
+/** Progress rows used by the learning library and recorded-course player. */
+export async function getMyCourseProgress(courseSlug?: string) {
+  const supabase = await createClient();
+  const user = await getCurrentUser();
+  if (!user) return [];
+  let query = supabase
+    .from("course_lesson_progress")
+    .select("course_slug,lesson_id,completed,watched_seconds,last_watched_at,completed_at")
+    .eq("user_id", user.id)
+    .order("last_watched_at", { ascending: false });
+  if (courseSlug) query = query.eq("course_slug", courseSlug);
+  const { data } = await query;
+  return data ?? [];
+}
+
 /** Fetch the signed-in user's service/healing/mentoring bookings (newest first). */
 export async function getMyBookings(limit = 50) {
   const supabase = await createClient();

@@ -8,6 +8,8 @@ import Button from "@/components/ui/Button";
 import Reveal from "@/components/ui/Reveal";
 import Parallax from "@/components/ui/Parallax";
 import SessionBookingForm from "@/components/services/SessionBookingForm";
+import { isServerConfigured } from "@/lib/env";
+import InternalSubmenu from "@/components/layout/InternalSubmenu";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -50,6 +52,16 @@ export default async function MentoringDetailPage({ params }: Props) {
 
   return (
     <>
+      <InternalSubmenu
+        activeHref={`/mentoring/${area.slug}`}
+        backHref="/mentoring"
+        backLabel="All mentoring"
+        items={mentoringAreas.map((item) => ({
+          href: `/mentoring/${item.slug}`,
+          label: item.title,
+        }))}
+        label="Mentoring"
+      />
       <PageHero
         eyebrow="Mentoring"
         image={area.image}
@@ -115,7 +127,7 @@ export default async function MentoringDetailPage({ params }: Props) {
       <section className="pb-20 lg:pb-24">
         <div className="mx-auto max-w-6xl px-6 lg:px-10">
           <div className="mx-auto max-w-3xl">
-            <SessionBookingForm type="mentoring" slug={area.slug} title={area.title} />
+            <SessionBookingForm type="mentoring" slug={area.slug} title={area.title} manualMode={!isServerConfigured()} />
           </div>
         </div>
       </section>

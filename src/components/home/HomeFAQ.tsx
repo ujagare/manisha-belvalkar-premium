@@ -77,7 +77,7 @@ export default function HomeFAQ() {
               </div>
 
               <div className="mt-10 overflow-hidden rounded-[2rem] border border-gold/25 bg-white/[0.08] shadow-[0_35px_90px_-45px_rgba(0,0,0,0.75)] backdrop-blur-xl">
-                <div className="relative min-h-[320px] bg-[url('/images/candle.jpg')] bg-cover bg-center">
+                <div className="relative min-h-[320px] bg-cover bg-center" style={{ backgroundImage: "url(/images/candle.jpg)" }}>
                   <div className="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/45 to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-7">
                     <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-gold-light backdrop-blur-md">

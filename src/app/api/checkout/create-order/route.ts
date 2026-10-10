@@ -19,12 +19,23 @@ export async function POST(request: Request) {
     }
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return apiError("UNAUTHORIZED", "Please sign in to continue.", 401);
-    if (!(await consumeRateLimit(request, "checkout", 8, 600, user.id))) {
+    const body = await readJsonObject(request);
+
+    // Guest checkout: allow an order without an account as long as a valid
+    // contact email is supplied. Signed-in users are unaffected.
+    const guestEmail =
+      typeof body.guestEmail === "string" && /.+@.+\..+/.test(body.guestEmail.trim())
+        ? body.guestEmail.trim().slice(0, 320)
+        : null;
+    const guestName =
+      typeof body.guestName === "string" ? body.guestName.trim().slice(0, 100) : null;
+    if (!user && !guestEmail) {
+      return apiError("UNAUTHORIZED", "Please sign in or enter your email to continue.", 401);
+    }
+    const rateKey = user?.id ?? guestEmail!;
+    if (!(await consumeRateLimit(request, "checkout", 8, 600, rateKey))) {
       return apiError("RATE_LIMITED", "Too many checkout attempts. Please try again shortly.", 429);
     }
-
-    const body = await readJsonObject(request);
     const cartItems = Array.isArray(body.items) ? body.items : null;
     const requestedItems = cartItems
       ? cartItems.slice(0, 20).map((raw) => {
@@ -52,6 +63,16 @@ export async function POST(request: Request) {
     // Optional delivery address: either an existing saved address (id) or a
     // one-time address object. Physical orders should carry a valid address.
     const addressBody = body.address && typeof body.address === "object" ? body.address as Record<string, unknown> : null;
+    const customerDetailsBody = body.customerDetails && typeof body.customerDetails === "object" ? body.customerDetails as Record<string, unknown> : null;
+    const customerDetails = customerDetailsBody
+      ? {
+          phone: typeof customerDetailsBody.phone === "string" ? customerDetailsBody.phone.trim().slice(0, 20) : "",
+          preferred_language: typeof customerDetailsBody.preferredLanguage === "string" ? customerDetailsBody.preferredLanguage.trim().slice(0, 40) : "",
+          preferred_contact: typeof customerDetailsBody.preferredContact === "string" ? customerDetailsBody.preferredContact.trim().slice(0, 40) : "",
+          experience_level: typeof customerDetailsBody.experienceLevel === "string" ? customerDetailsBody.experienceLevel.trim().slice(0, 80) : "",
+          learning_goal: typeof customerDetailsBody.learningGoal === "string" ? customerDetailsBody.learningGoal.trim().slice(0, 1000) : "",
+        }
+      : null;
     const savedAddressId = typeof addressBody?.savedAddressId === "string" ? addressBody.savedAddressId.trim() : null;
     const pendingAddress = addressBody && !savedAddressId
       ? {
@@ -78,22 +99,29 @@ export async function POST(request: Request) {
 
     // Resolve the chosen delivery address to an address_id (saved or new).
     let addressId: string | null = null;
-    if (savedAddressId) {
+    if (savedAddressId && user) {
       const { data: saved } = await admin.from("addresses").select("id").eq("id", savedAddressId).eq("user_id", user.id).maybeSingle();
       if (!saved) return apiError("NOT_FOUND", "Selected address could not be verified.", 404);
       addressId = saved.id;
     } else if (pendingAddress && pendingAddress.recipient_name && pendingAddress.phone && pendingAddress.line1 && pendingAddress.city && pendingAddress.state && /^[0-9]{3,6}([-\s]?[0-9]{1,3})?$/.test(pendingAddress.postal_code)) {
-      const { data: created, error: addrError } = await admin.from("addresses").insert({ user_id: user.id, ...pendingAddress }).select("id").single();
+      const { data: created, error: addrError } = await admin.from("addresses").insert({ user_id: user?.id ?? null, ...pendingAddress }).select("id").single();
       if (addrError || !created) throw new Error(`Address insert failed: ${addrError?.message ?? "unknown"}`);
       addressId = created.id;
     }
+    if (requestedItems.some((item) => item.type === "product") && !addressId) {
+      return apiError("BAD_REQUEST", "A complete delivery address is required for physical products.", 422);
+    }
+    if (requestedItems.some((item) => item.type === "course") && (!customerDetails?.phone || customerDetails.learning_goal.length < 20)) {
+      return apiError("BAD_REQUEST", "Phone number and learning goals are required for course enrollment.", 422);
+    }
 
-    const { data: existing } = await admin
+    let existingQuery = admin
       .from("orders")
       .select("id,gateway_order_id,amount_subunits,currency")
-      .eq("user_id", user.id)
-      .eq("idempotency_key", idempotencyKey)
-      .maybeSingle();
+      .eq("user_id", user?.id ?? null)
+      .eq("idempotency_key", idempotencyKey);
+    if (!user && guestEmail) existingQuery = existingQuery.eq("guest_email", guestEmail);
+    const { data: existing } = await existingQuery.maybeSingle();
     if (existing?.gateway_order_id) {
       return apiSuccess({
         orderId: existing.id,
@@ -107,7 +135,9 @@ export async function POST(request: Request) {
     const { data: order, error: orderError } = await admin
       .from("orders")
       .insert({
-        user_id: user.id,
+        user_id: user?.id ?? null,
+        guest_email: guestEmail,
+        guest_name: guestName,
         item_type: primary.type,
         item_slug: primary.slug,
         item_title: orderTitle,
@@ -130,6 +160,7 @@ export async function POST(request: Request) {
       title: item!.title,
       quantity: requested.quantity,
       unit_amount_subunits: Math.round(item!.price! * 100),
+      metadata: item!.type === "course" && customerDetails ? customerDetails : {},
     })));
     if (itemsError) throw new Error(`Order items insert failed: ${itemsError.message}`);
 
@@ -137,7 +168,7 @@ export async function POST(request: Request) {
       amount: amountSubunits,
       currency: "INR",
       receipt: order.id.slice(0, 40),
-      notes: { internal_order_id: order.id, user_id: user.id, item_count: String(totalQuantity) },
+      notes: { internal_order_id: order.id, user_id: user?.id ?? "guest", item_count: String(totalQuantity) },
     });
     const { error: updateError } = await admin.from("orders").update({ gateway_order_id: gatewayOrder.id }).eq("id", order.id);
     if (updateError) throw new Error(`Order gateway update failed: ${updateError.message}`);

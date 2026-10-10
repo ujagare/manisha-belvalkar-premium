@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { notFound } from "next/navigation";
-import { ArrowLeft, Clock, Sparkles } from "lucide-react";
+import { notFound, redirect } from "next/navigation";
+import { ArrowLeft, BookOpenCheck, CalendarCheck, Check, Headphones, LockKeyhole, PackageCheck, Sparkles, Truck } from "lucide-react";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
-import { requireUser } from "@/lib/supabase/session";
+import { isPaymentsConfigured, isServerConfigured } from "@/lib/env";
+import { getCurrentUser, getMyAddresses } from "@/lib/supabase/session";
 import { getCatalogItem, orderTypes } from "@/lib/checkout";
 import CheckoutForm from "@/components/checkout/CheckoutForm";
 import type { OrderItemType } from "@/lib/supabase/database.types";
@@ -37,60 +38,93 @@ export default async function CheckoutPage({ params }: Props) {
   const item = await getCatalogItem(type as OrderItemType, slug);
   if (!item) notFound();
 
-  // Server-side auth check (proxy also guards, but never trust only one).
-  const user = await requireUser(`/checkout/${type}/${slug}`);
+  // Guest checkout: an account is optional (contact email collected in the
+  // form below). Re-check the session so signed-in users are prefilled.
+  const user = await getCurrentUser();
+  const isDistanceHealing = type === "healing" && slug === "distance-healing";
+  if ((type === "course" || isDistanceHealing) && isServerConfigured() && !user) {
+    redirect(`/login?next=${encodeURIComponent(`/checkout/${type}/${slug}`)}`);
+  }
+  const addresses = user && type === "product" ? await getMyAddresses() : [];
 
   const configured = isSupabaseConfigured();
+  const isCourse = type === "course";
+  const manualMode = !isServerConfigured() || (type === "product" && !user);
+  const paymentUnavailable = isDistanceHealing && (!isPaymentsConfigured() || !item.price);
+  const reassuranceItems = isCourse
+    ? [
+        { icon: CalendarCheck, title: "Personal onboarding", copy: "Schedule confirmed with you" },
+        { icon: BookOpenCheck, title: "Guided learning", copy: "Program materials and support" },
+        { icon: Headphones, title: "Human support", copy: "Direct updates from our team" },
+      ]
+    : [
+        { icon: LockKeyhole, title: manualMode ? "Personal confirmation" : "Secure payment", copy: manualMode ? "Completed with the team on WhatsApp" : "Encrypted Razorpay checkout" },
+        { icon: PackageCheck, title: "Careful packing", copy: "Prepared for safe dispatch" },
+        { icon: Truck, title: "Order updates", copy: "Shared by email and phone" },
+      ];
 
   return (
-    <section className="relative overflow-hidden bg-ivory pb-20 pt-32 lg:pt-40">
-      <div className="glow-gold absolute -right-32 -top-32 h-[400px] w-[400px]" />
-      <div className="glow-crimson absolute -bottom-32 -left-32 h-[380px] w-[380px]" />
+    <div className="relative min-h-screen overflow-hidden bg-[#f8f3e9] pb-20 pt-28 lg:pb-28 lg:pt-36">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[30rem] bg-[radial-gradient(circle_at_78%_10%,rgba(221,184,41,0.16),transparent_33%),radial-gradient(circle_at_10%_20%,rgba(180,20,20,0.08),transparent_28%)]" />
 
-      <div className="relative mx-auto max-w-5xl px-6 lg:px-10">
+      <div className="relative mx-auto max-w-6xl px-5 sm:px-8 lg:px-10">
         <Link
           href={item.href}
-          className="inline-flex items-center gap-2 text-sm font-medium text-warmgray transition-colors hover:text-primary"
+          className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-warmgray transition-colors hover:text-primary"
         >
           <ArrowLeft className="h-4 w-4" />
           Back to {item.title}
         </Link>
 
-        <div className="mt-8 grid gap-10 lg:grid-cols-5 lg:gap-14">
-          {/* Item summary */}
-          <div className="lg:col-span-3">
-            <div className="flex items-start gap-6">
+        <div className="mt-7 flex items-center gap-3 text-xs font-medium text-warmgray">
+          <span className="text-primary">{isCourse ? "Program" : "Bag"}</span><span className="h-px w-8 bg-gold/60" /><span className="font-semibold text-charcoal">{isCourse ? "Learner details" : "Details & payment"}</span><span className="h-px w-8 bg-parchment" /><span>Confirmation</span>
+        </div>
+
+        <div className="mt-10 grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_30rem] lg:gap-16">
+          <section>
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-gold-deep">{manualMode ? "Personal confirmation" : "Secure checkout"}</p>
+            <h1 className="mt-3 max-w-xl text-balance font-display text-4xl font-semibold leading-[1.08] tracking-[-0.025em] text-charcoal sm:text-5xl">{isCourse ? "Begin with a thoughtful introduction." : "Complete your order with confidence."}</h1>
+            <p className="mt-4 max-w-xl text-pretty text-base leading-7 text-warmgray">{isCourse ? "Tell us a little about your goals so we can confirm the right format, schedule, and next steps for your learning journey." : manualMode ? "Review your selection, add delivery details, and send the prepared request on WhatsApp. No payment is taken on this website." : "Review your selection, add delivery details, and pay securely. Our team will confirm your order and delivery details after payment."}</p>
+
+            <article className="mt-10 overflow-hidden rounded-[1.75rem] bg-[#201b18] text-white shadow-[0_28px_70px_-40px_rgba(62,38,25,0.65)]">
+              <div className="grid sm:grid-cols-[13rem_1fr]">
+                <div className="relative min-h-64 bg-[#342823] sm:min-h-[22rem]">
               {item.image ? (
-                <div className="gold-border-gradient relative h-36 w-28 shrink-0 overflow-hidden rounded-xl">
                   <Image
                     src={item.image}
                     alt={item.title}
-                    width={300}
-                    height={400}
-                    className="h-full w-full object-cover"
+                    fill
+                    sizes="(max-width: 640px) 100vw, 208px"
+                    className="object-cover"
                   />
-                </div>
               ) : (
-                <div className="flex h-36 w-28 shrink-0 items-center justify-center rounded-xl bg-primary-soft">
-                  <Sparkles className="h-8 w-8 text-primary" />
-                </div>
+                  <div className="flex h-full min-h-64 items-center justify-center"><Sparkles className="h-10 w-10 text-gold" /></div>
               )}
-              <div>
-                <div className="eyebrow mb-2 text-gold-dark">{type}</div>
-                <h1 className="font-display text-3xl font-bold leading-tight text-charcoal sm:text-4xl">
-                  {item.title}
-                </h1>
+                </div>
+                <div className="flex flex-col justify-between p-7 sm:p-8">
+                  <div>
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-gold-light">Your selection</p>
+                    <h2 className="mt-3 font-display text-3xl font-semibold leading-tight">{item.title}</h2>
                 {item.subtitle ? (
-                  <p className="mt-1 font-serif text-lg italic text-gold-dark">{item.subtitle}</p>
+                      <p className="mt-2 font-serif text-lg italic text-gold-light/85">{item.subtitle}</p>
                 ) : null}
-                <div className="mt-4 flex items-center gap-2 text-sm text-warmgray">
-                  <Clock className="h-4 w-4 text-gold" />
-                  {item.priceLabel}
+                    <p className="mt-5 line-clamp-4 text-sm leading-6 text-white/65">{item.description}</p>
+                  </div>
+                  <div className="mt-8 flex items-end justify-between border-t border-white/10 pt-5">
+                    <span className="text-xs text-white/50">{item.price ? "Program fee, including taxes" : "Enrollment"}</span>
+                    <span className="font-display text-2xl font-semibold text-gold-light">{item.priceLabel}</span>
+                  </div>
                 </div>
               </div>
+            </article>
+
+            <div className="mt-8 grid gap-4 sm:grid-cols-3">
+              {reassuranceItems.map(({ icon: Icon, title, copy }) => (
+                <div key={title} className="border-l border-gold/40 pl-4"><Icon className="h-5 w-5 text-primary" /><h3 className="mt-3 text-sm font-semibold text-charcoal">{title}</h3><p className="mt-1 text-xs leading-5 text-warmgray">{copy}</p></div>
+              ))}
             </div>
 
-            <p className="mt-8 leading-relaxed text-warmgray">{item.description}</p>
+            <div className="mt-10 flex items-start gap-3 rounded-2xl bg-white/65 p-5 text-sm leading-6 text-warmgray ring-1 ring-parchment/80"><Check className="mt-0.5 h-4 w-4 shrink-0 text-gold-deep" /><p>{isCourse ? "After you submit, our team reviews your goals and contacts you to confirm suitability, program fee, schedule, and onboarding." : "Need help before ordering? Contact us on WhatsApp. Our team can assist with product and delivery questions."}</p></div>
 
             {!configured ? (
               <div className="mt-8 rounded-2xl border border-gold/40 bg-gold-soft p-5 text-sm text-gold-deep">
@@ -99,33 +133,30 @@ export default async function CheckoutPage({ params }: Props) {
                 tab order recording chalu hoga.
               </div>
             ) : null}
-          </div>
+          </section>
 
-          {/* Checkout card */}
-          <div className="lg:col-span-2">
-            <div className="relative overflow-hidden rounded-[28px] border border-parchment bg-gradient-to-b from-white to-cream/70 p-8 shadow-[0_10px_40px_-20px_rgba(28,25,23,0.18)]">
-              <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-gold/15 blur-3xl" />
-              <div className="relative">
-                <h2 className="font-display text-xl font-bold text-charcoal">Confirm booking</h2>
-                <p className="mt-2 text-sm leading-relaxed text-warmgray">
-                  Create an order for this {type}. Manisha&apos;s team confirms
-                  scheduling &amp; payment on WhatsApp.
-                </p>
-                <div className="mt-7">
-                  <CheckoutForm
+          <aside className="lg:sticky lg:top-28">
+            <div className="rounded-[1.75rem] bg-white p-6 shadow-[0_24px_70px_-38px_rgba(62,38,25,0.45)] ring-1 ring-parchment sm:p-8">
+                  {paymentUnavailable ? (
+                    <div className="rounded-2xl border border-gold/40 bg-gold-soft/70 p-5 text-sm leading-6 text-gold-deep">
+                      <strong>Payment setup required.</strong> Distance Healing accepts photographs only after a verified online payment. Configure Razorpay and set the active offering price in Supabase before opening bookings.
+                    </div>
+                  ) : <CheckoutForm
                     type={item.type}
                     slug={item.slug}
                     itemTitle={item.title}
+                    price={item.price}
                     priceLabel={item.priceLabel}
-                    userEmail={user.email ?? ""}
-                    userName={user.fullName}
-                  />
-                </div>
-              </div>
+                    userEmail={user?.email ?? ''}
+                    userName={user?.fullName ?? null}
+                    addresses={addresses}
+                    manualMode={manualMode}
+                    strictPayment={isDistanceHealing}
+                  />}
             </div>
-          </div>
+          </aside>
         </div>
       </div>
-    </section>
+    </div>
   );
 }

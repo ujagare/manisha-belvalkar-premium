@@ -4,6 +4,7 @@ import { fetchRazorpayPayment, verifyCheckoutSignature } from "@/lib/razorpay";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { isSameOriginRequest } from "@/lib/security";
+import { DISTANCE_HEALING_SLUG, ensureDistanceHealingCase } from "@/lib/distance-healing";
 
 export const runtime = "nodejs";
 
@@ -27,7 +28,7 @@ export async function POST(request: Request) {
     }
 
     const admin = createAdminClient();
-    const { data: order } = await admin.from("orders").select("id,user_id,gateway_order_id,amount_subunits,currency").eq("id", internalOrderId).eq("user_id", user.id).maybeSingle();
+    const { data: order } = await admin.from("orders").select("id,user_id,gateway_order_id,amount_subunits,currency,item_type,item_slug").eq("id", internalOrderId).eq("user_id", user.id).maybeSingle();
     if (!order || order.gateway_order_id !== razorpayOrderId) return apiError("NOT_FOUND", "Order not found.", 404);
     if (!verifyCheckoutSignature(order.gateway_order_id, paymentId, signature)) {
       return apiError("FORBIDDEN", "Payment verification failed.", 403);
@@ -51,7 +52,27 @@ export async function POST(request: Request) {
       updated_at: new Date().toISOString(),
     }).eq("id", order.id);
 
-    return apiSuccess({ orderId: order.id, paymentStatus: paid ? "paid" : "authorized" });
+    // Grant recorded-course access immediately after verified capture. The
+    // webhook repeats this idempotently as a reliable server-to-server backup.
+    if (paid && order.item_type === "course") {
+      await admin.from("course_enrollments").upsert({
+        user_id: order.user_id,
+        order_id: order.id,
+        course_slug: order.item_slug,
+        status: "active",
+        enrolled_at: new Date().toISOString(),
+      }, { onConflict: "order_id" });
+    }
+
+    const isDistanceHealing = paid && order.item_type === "healing" && order.item_slug === DISTANCE_HEALING_SLUG;
+    if (isDistanceHealing) await ensureDistanceHealingCase(order.id, order.user_id);
+
+    return apiSuccess({
+      orderId: order.id,
+      paymentStatus: paid ? "paid" : "authorized",
+      learningUrl: paid && order.item_type === "course" ? `/learn/${order.item_slug}` : null,
+      healingUrl: isDistanceHealing ? `/distance-healing/${order.id}` : null,
+    });
   } catch (error) {
     console.error("[payments:verify]", { traceId, error });
     return apiError("INTERNAL_ERROR", "Could not verify payment.", 500, { traceId });

@@ -6,6 +6,7 @@ import SectionHeading from "@/components/ui/SectionHeading";
 import Button from "@/components/ui/Button";
 import Reveal from "@/components/ui/Reveal";
 import LeadCaptureForm from "@/components/backend/LeadCaptureForm";
+import { isServerConfigured } from "@/lib/env";
 
 export const metadata: Metadata = {
   title: "SHAKTI App Coming Soon",
@@ -88,7 +89,7 @@ export default function AppPage() {
                   Get notified on launch
                 </Button>
               </div>
-              <LeadCaptureForm kind="waitlist" source="shakti-app" />
+              <LeadCaptureForm kind="waitlist" source="shakti-app" manualMode={!isServerConfigured()} />
             </Reveal>
           </div>
         </div>

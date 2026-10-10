@@ -3,10 +3,12 @@
 import { useState, useTransition, useMemo } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Loader2, LockKeyhole, MapPin } from "lucide-react";
+import { Loader2, LockKeyhole, MapPin, MessageCircle } from "lucide-react";
 import { useCart } from "./CartProvider";
 import { formatINR } from "@/lib/utils";
 import type { UserAddress } from "@/lib/supabase/models";
+import { cartWhatsAppMessage, manualReference, whatsappUrl } from "@/lib/manual-flow";
+import { cartState } from "@/lib/cart";
 
 declare global { interface Window { Razorpay?: new (options: Record<string, unknown>) => { open: () => void } } }
 
@@ -24,11 +26,13 @@ async function loadRazorpay() {
 
 const NEW_ADDRESS = "new";
 
-export default function CartCheckoutForm({ userEmail, userName, addresses }: { userEmail: string; userName: string | null; addresses: UserAddress[] }) {
+export default function CartCheckoutForm({ userEmail, userName, addresses, manualMode }: { userEmail: string; userName: string | null; addresses: UserAddress[]; manualMode: boolean }) {
   const router = useRouter();
   const { items, ready, subtotal, clearCart } = useCart();
   const [accepted, setAccepted] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [guestName, setGuestName] = useState(userName ?? "");
+  const [guestEmail, setGuestEmail] = useState(userEmail);
   const [idempotencyKey] = useState(() => crypto.randomUUID().replaceAll("-", ""));
   // Address selection state
   const [selectedAddress, setSelectedAddress] = useState<string>(addresses.length ? addresses[0].id : NEW_ADDRESS);
@@ -56,8 +60,29 @@ export default function CartCheckoutForm({ userEmail, userName, addresses }: { u
     return null;
   }, [selectedAddress, showNew, addresses, newAddress]);
 
+  const selectedSavedAddress = addresses.find((address) => address.id === selectedAddress);
+
+  function manualAddress() {
+    if (selectedSavedAddress) return `${selectedSavedAddress.recipient_name}, ${selectedSavedAddress.line1}${selectedSavedAddress.line2 ? `, ${selectedSavedAddress.line2}` : ""}, ${selectedSavedAddress.city}, ${selectedSavedAddress.state} ${selectedSavedAddress.postal_code}, Phone: ${selectedSavedAddress.phone}`;
+    return `${newAddress.recipient_name}, ${newAddress.line1}${newAddress.line2 ? `, ${newAddress.line2}` : ""}, ${newAddress.city}, ${newAddress.state} ${newAddress.postal_code}, Phone: ${newAddress.phone}`;
+  }
+
   function pay() {
     setError(null);
+    if (manualMode) {
+      if (!guestName.trim() || !guestEmail.trim() || !/^\S+@\S+\.\S+$/.test(guestEmail.trim())) {
+        setError("Enter your name and a valid email address.");
+        return;
+      }
+      if (!selectedSavedAddress && (!newAddress.recipient_name.trim() || !newAddress.phone.trim() || !newAddress.line1.trim() || !newAddress.city.trim() || !newAddress.state.trim() || !/^[1-9][0-9]{5}$/.test(newAddress.postal_code.trim()))) {
+        setError("Enter a complete delivery address and valid 6-digit PIN code.");
+        return;
+      }
+      const reference = manualReference("ORDER");
+      window.open(whatsappUrl(cartWhatsAppMessage({ reference, items, subtotalLabel: formatINR(subtotal), name: guestName.trim(), email: guestEmail.trim(), address: manualAddress() })), "_blank", "noopener,noreferrer");
+      setError(`Order ${reference} is prepared but not saved online. Please send the WhatsApp message to confirm it.`);
+      return;
+    }
     startTransition(async () => {
       const response = await fetch("/api/checkout/create-order", {
         method: "POST",
@@ -107,10 +132,13 @@ export default function CartCheckoutForm({ userEmail, userName, addresses }: { u
   }
 
   if (!ready) return <div className="h-52 animate-pulse rounded-3xl bg-parchment/60" />;
-  if (!items.length) return <div className="rounded-3xl border border-parchment bg-white p-8 text-center"><p className="text-warmgray">Your cart is empty.</p><Link href="/products" className="mt-5 inline-flex rounded-full bg-primary px-6 py-3 font-semibold text-white">Return to shop</Link></div>;
+  if (cartState(items) === "empty") return <div className="rounded-3xl border border-parchment bg-white p-8 text-center"><p className="text-warmgray">Your cart is empty.</p><Link href="/products" className="mt-5 inline-flex rounded-full bg-primary px-6 py-3 font-semibold text-white">Return to shop</Link></div>;
 
   return <div className="rounded-[28px] border border-parchment bg-white p-7 shadow-xl sm:p-9">
-    <div className="flex items-center justify-between border-b border-parchment pb-5"><span className="text-warmgray">Signed in as</span><span className="max-w-[60%] truncate font-semibold">{userEmail}</span></div>
+    {manualMode ? <div className="mb-5 rounded-xl bg-gold-soft/70 px-4 py-3 text-xs leading-5 text-gold-deep ring-1 ring-gold/30"><strong>Personal confirmation:</strong> This order will be prepared for WhatsApp. The team will confirm availability, shipping, final amount, and payment instructions.</div> : null}
+    {userEmail ? <div className="flex items-center justify-between border-b border-parchment pb-5"><span className="text-warmgray">Signed in as</span><span className="max-w-[60%] truncate font-semibold">{userEmail}</span></div> : (
+      <div className="grid gap-3 border-b border-parchment pb-5 sm:grid-cols-2"><div><label htmlFor="cart-name" className="mb-1 block text-xs font-medium text-charcoal">Full name</label><input id="cart-name" value={guestName} onChange={(event) => setGuestName(event.target.value)} autoComplete="name" className="w-full rounded-lg border border-parchment bg-ivory/50 px-3 py-2 text-sm outline-none focus:border-gold" /></div><div><label htmlFor="cart-email" className="mb-1 block text-xs font-medium text-charcoal">Email</label><input id="cart-email" type="email" value={guestEmail} onChange={(event) => setGuestEmail(event.target.value)} autoComplete="email" className="w-full rounded-lg border border-parchment bg-ivory/50 px-3 py-2 text-sm outline-none focus:border-gold" /></div></div>
+    )}
     <div className="mt-5 space-y-3">{items.map((item) => <div key={item.slug} className="flex justify-between gap-4 text-sm"><span>{item.title} × {item.quantity}</span><span className="font-semibold">{formatINR(item.price * item.quantity)}</span></div>)}</div>
     <div className="mt-6 flex justify-between border-t border-parchment pt-5 text-lg"><span>Total</span><span className="font-display text-2xl font-bold text-primary">{formatINR(subtotal)}</span></div>
 
@@ -171,12 +199,14 @@ export default function CartCheckoutForm({ userEmail, userName, addresses }: { u
           ))}
         </div>
       )}
-      <p className="mt-3 text-[11px] leading-5 text-warmgray/70">Used to ship physical orders (decks, books, rituals). You can save addresses in <Link href="/account/addresses" className="font-semibold text-primary underline">My Account</Link>.</p>
+      <p className="mt-3 text-[11px] leading-5 text-warmgray/70">Used to ship physical orders (decks, books, rituals).{userEmail ? <> You can save addresses in <Link href="/account/addresses" className="font-semibold text-primary underline">My Account</Link>.</> : null}</p>
     </div>
 
     <label className="mt-6 flex items-start gap-3 rounded-2xl bg-ivory p-4 text-xs leading-5 text-warmgray"><input type="checkbox" checked={accepted} onChange={(event) => setAccepted(event.target.checked)} className="mt-1 h-4 w-4 accent-[var(--color-primary)]" /><span>I agree to the <Link href="/terms-and-conditions" target="_blank" className="font-semibold text-primary underline">Terms</Link>, <Link href="/refund-cancellation-policy" target="_blank" className="font-semibold text-primary underline">refund policy</Link> and <Link href="/privacy-policy" target="_blank" className="font-semibold text-primary underline">privacy policy</Link>.</span></label>
     {error ? <p className="mt-5 rounded-xl bg-primary-soft p-4 text-sm text-primary" role="alert">{error}</p> : null}
+    {manualMode ? <button type="button" onClick={pay} disabled={!accepted} className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-6 py-3.5 font-bold text-white disabled:cursor-not-allowed disabled:opacity-50"><MessageCircle className="h-4 w-4" />Prepare WhatsApp order</button> : (
     <button type="button" onClick={pay} disabled={!accepted || pending} className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-6 py-3.5 font-bold text-white disabled:cursor-not-allowed disabled:opacity-50">{pending ? <Loader2 className="h-4 w-4 animate-spin" /> : <LockKeyhole className="h-4 w-4" />}{pending ? "Opening secure payment…" : "Pay securely"}</button>
-    <p className="mt-4 text-center text-xs text-warmgray">Final prices are verified securely on the server.</p>
+    )}
+    <p className="mt-4 text-center text-xs text-warmgray">{manualMode ? "No payment is taken on this website. Your request is confirmed personally on WhatsApp." : "Final prices are verified securely on the server."}</p>
   </div>;
 }

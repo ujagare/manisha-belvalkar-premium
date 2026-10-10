@@ -303,14 +303,14 @@ export default function ShaktiCardReading({ showBuyButton = false }: { showBuyBu
     <section ref={sectionRef} aria-label="Shakti oracle card reading" className={`relative isolate overflow-hidden bg-[#260b0a] text-white ${sectionHeight}`}>
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_72%_45%,rgba(153,42,29,0.94)_0%,rgba(70,16,13,0.94)_39%,rgba(25,7,7,1)_78%)]" />
 
-      {showBuyButton ? (
-        <h1 className="text-gold-shimmer absolute left-1/2 top-24 z-50 -translate-x-1/2 whitespace-nowrap text-center font-display text-5xl font-semibold leading-none tracking-[-0.045em] sm:top-28 sm:text-6xl lg:top-24 lg:text-7xl">
+      {showBuyButton && phase === "idle" ? (
+        <h1 className="text-gold-shimmer absolute left-1/2 top-20 z-30 -translate-x-1/2 whitespace-nowrap text-center font-display text-4xl font-semibold leading-none tracking-[-0.04em] sm:top-24 sm:text-6xl lg:top-24 lg:text-7xl">
           SHAKTI
         </h1>
       ) : null}
 
       <div className={`relative mx-auto max-w-[100rem] ${sectionHeight}`}>
-        <header className={`${phase === "idle" ? "absolute" : "hidden"} left-1/2 ${showBuyButton ? "top-[9.5rem] sm:top-[12rem]" : "top-[7.5rem] sm:top-[8.5rem]"} z-40 w-[calc(100%-3rem)] -translate-x-1/2 text-center lg:left-[8%] lg:top-[54%] lg:w-[42%] lg:max-w-[40rem] lg:-translate-x-0 lg:-translate-y-1/2`}>
+        <header className={`${phase === "idle" ? "absolute" : "hidden"} left-1/2 ${showBuyButton ? "top-[11.5rem] sm:top-[12rem]" : "top-[7.5rem] sm:top-[8.5rem]"} z-40 w-[calc(100%-3rem)] -translate-x-1/2 text-center lg:left-[8%] lg:top-[54%] lg:w-[42%] lg:max-w-[40rem] lg:-translate-x-0 lg:-translate-y-1/2`}>
           <div className="relative mx-auto h-72 w-fit max-w-full sm:h-[28rem] lg:h-[44rem]">
             {showBuyButton ? (
               <div className="pointer-events-none absolute left-1/2 top-[34%] block aspect-[1172/1342] w-full -translate-x-1/2 -translate-y-1/2 drop-shadow-[0_0_30px_rgba(238,198,50,0.5)]" aria-hidden="true">
