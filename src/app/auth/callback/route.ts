@@ -18,7 +18,11 @@ export async function GET(request: Request) {
     if (!error) {
       const forwardedHost = request.headers.get("x-forwarded-host");
       const isLocalEnv = process.env.NODE_ENV === "development";
-      const base = isLocalEnv && forwardedHost ? `https://${forwardedHost}` : origin;
+      // Local development runs over plain HTTP. Forcing HTTPS here makes the
+      // OAuth callback land on https://localhost:3000 and causes
+      // ERR_SSL_PROTOCOL_ERROR. Only use the forwarded host in production,
+      // where the public deployment is served over HTTPS.
+      const base = !isLocalEnv && forwardedHost ? `https://${forwardedHost}` : origin;
       return NextResponse.redirect(`${base}${next}`);
     }
   }

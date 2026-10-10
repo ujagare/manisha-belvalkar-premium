@@ -304,14 +304,14 @@ export default function ShaktiCardReading({ showBuyButton = false }: { showBuyBu
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_72%_45%,rgba(153,42,29,0.94)_0%,rgba(70,16,13,0.94)_39%,rgba(25,7,7,1)_78%)]" />
 
       {showBuyButton && phase === "idle" ? (
-        <h1 className="text-gold-shimmer absolute left-1/2 top-20 z-30 -translate-x-1/2 whitespace-nowrap text-center font-display text-4xl font-semibold leading-none tracking-[-0.04em] sm:top-24 sm:text-6xl lg:top-24 lg:text-7xl">
+        <h1 className="absolute left-1/2 top-20 z-30 -translate-x-1/2 whitespace-nowrap text-center font-serif text-4xl font-medium leading-none tracking-[0.14em] text-[#e8c96a] sm:top-24 sm:text-6xl sm:tracking-[0.1em] lg:top-24 lg:text-7xl">
           SHAKTI
         </h1>
       ) : null}
 
       <div className={`relative mx-auto max-w-[100rem] ${sectionHeight}`}>
-        <header className={`${phase === "idle" ? "absolute" : "hidden"} left-1/2 ${showBuyButton ? "top-[11.5rem] sm:top-[12rem]" : "top-[7.5rem] sm:top-[8.5rem]"} z-40 w-[calc(100%-3rem)] -translate-x-1/2 text-center lg:left-[8%] lg:top-[54%] lg:w-[42%] lg:max-w-[40rem] lg:-translate-x-0 lg:-translate-y-1/2`}>
-          <div className="relative mx-auto h-72 w-fit max-w-full sm:h-[28rem] lg:h-[44rem]">
+        <header className={`${phase === "idle" ? "absolute" : "hidden"} left-1/2 ${showBuyButton ? "top-[8rem] sm:top-[12rem]" : "top-[5rem] sm:top-[8.5rem]"} z-40 w-[calc(100%-3rem)] -translate-x-1/2 text-center lg:left-[8%] lg:top-[54%] lg:w-[42%] lg:max-w-[40rem] lg:-translate-x-0 lg:-translate-y-1/2`}>
+          <div className="relative mx-auto h-[22rem] w-fit max-w-full sm:h-[28rem] lg:h-[44rem]">
             {showBuyButton ? (
               <div className="pointer-events-none absolute left-1/2 top-[34%] block aspect-[1172/1342] w-full -translate-x-1/2 -translate-y-1/2 drop-shadow-[0_0_30px_rgba(238,198,50,0.5)]" aria-hidden="true">
                 <div className="animate-spin-slow relative h-full w-full motion-reduce:animate-none">
@@ -331,7 +331,7 @@ export default function ShaktiCardReading({ showBuyButton = false }: { showBuyBu
               width={1042}
               height={1509}
               priority
-              sizes="(max-width: 640px) 230px, (max-width: 1024px) 310px, 490px"
+              sizes="(max-width: 640px) 280px, (max-width: 1024px) 310px, 490px"
               className="relative z-10 h-full w-auto max-w-full object-contain drop-shadow-[0_22px_52px_rgba(221,184,41,0.38)]"
             />
           </div>
@@ -373,15 +373,15 @@ export default function ShaktiCardReading({ showBuyButton = false }: { showBuyBu
                     disabled={phase !== "choosing"}
                     onClick={(event) => chooseCard(index, event.currentTarget)}
                     aria-label={`Choose face-down card ${index + 1} of ${CARD_COUNT}`}
-                    className="reading-deck-card group absolute left-1/2 top-1/2 aspect-[1060/1484] w-[4.75rem] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-[0.42rem] border border-[#f5d85d]/55 bg-[#8b1c10] shadow-[0_14px_24px_rgba(0,0,0,0.48)] will-change-transform enabled:cursor-pointer enabled:hover:brightness-125 enabled:hover:shadow-[0_18px_36px_rgba(238,198,50,0.4)] sm:w-[6.5rem] lg:w-[7.25rem]"
+                    className="reading-deck-card group absolute left-1/2 top-1/2 aspect-[1060/1484] w-11 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-[0.3rem] border border-[#f5d85d]/55 bg-[#8b1c10] shadow-[0_9px_16px_rgba(0,0,0,0.48)] will-change-transform enabled:cursor-pointer enabled:hover:brightness-125 enabled:hover:shadow-[0_18px_36px_rgba(238,198,50,0.4)] sm:w-[6.5rem] lg:w-[7.25rem]"
                   >
-                    <Image src="/images/shakti-cards/card_back-cover.png" alt="" fill sizes="(max-width: 640px) 66px, 94px" className="object-cover" />
+                    <Image src="/images/shakti-cards/card_back-cover.png" alt="" fill sizes="(max-width: 640px) 44px, 94px" className="object-cover" />
                     <span className="absolute inset-0 bg-gradient-to-br from-white/15 via-transparent to-black/15 opacity-0 transition-opacity duration-300 group-enabled:group-hover:opacity-100" />
                   </button>
                 ))}
 
                 {phase === "idle" && (
-                  <div className="absolute left-1/2 top-[58%] w-[8.75rem] -translate-x-1/2 -translate-y-1/2 sm:top-[60%] sm:w-[12.5rem] lg:left-[72%] lg:top-[43%] lg:w-[16rem]">
+                  <div className="absolute left-1/2 top-[58%] w-28 -translate-x-1/2 -translate-y-1/2 sm:top-[60%] sm:w-[12.5rem] lg:left-[72%] lg:top-[43%] lg:w-[16rem]">
                     <div className="pointer-events-none absolute left-1/2 top-1/2 h-[19rem] w-[19rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(240,198,51,0.19),rgba(180,20,20,0.07)_45%,transparent_70%)] blur-sm sm:h-[24rem] sm:w-[24rem]" />
                     <div className="absolute -left-[42%] top-[8%] hidden aspect-[1060/1484] w-full -rotate-[17deg] overflow-hidden rounded-xl border border-gold/25 opacity-35 shadow-[0_26px_55px_rgba(0,0,0,0.48)] sm:block">
                       <Image src="/images/shakti-cards/card_back-cover.png" alt="" fill sizes="224px" className="object-cover" />
@@ -393,7 +393,7 @@ export default function ShaktiCardReading({ showBuyButton = false }: { showBuyBu
                     <div className="absolute inset-0 translate-x-3.5 translate-y-2.5 rounded-xl border border-gold/25 bg-[#52130e]" />
                     <div className="absolute inset-0 translate-x-2 translate-y-1.5 rounded-xl border border-gold/35 bg-[#761b10]" />
                     <div className="relative aspect-[1060/1484] overflow-hidden rounded-xl border border-gold-light/80 shadow-[0_38px_75px_rgba(0,0,0,0.75),0_0_55px_rgba(221,184,41,0.22)] transition-transform duration-700 hover:-translate-y-1">
-                      <Image src="/images/shakti-cards/card_back-cover.png" alt="Shakti card deck cover" fill sizes="168px" priority className="object-cover" />
+                      <Image src="/images/shakti-cards/card_back-cover.png" alt="Shakti card deck cover" fill sizes="(max-width: 639px) 112px, (max-width: 1023px) 200px, 256px" priority className="object-cover" />
                       <span className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/12 to-transparent" />
                     </div>
                     <div className="pointer-events-none absolute left-1/2 top-[calc(100%+1.2rem)] h-3 w-48 -translate-x-1/2 rounded-[50%] bg-black/50 blur-md" />
