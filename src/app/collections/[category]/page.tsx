@@ -67,7 +67,7 @@ export default async function CategoryPage({ params }: Props) {
     <>
       <PageHero
         eyebrow="Sacred Shop · Collection"
-        image="/images/page-heroes/products-hero.webp"
+        image="/images/shakti-cards-and-book.webp"
         imageAlt={`${label} collection`}
         title={<span className="text-crimson-gradient">{label}</span>}
         subtitle={categorySubtitle[category]}

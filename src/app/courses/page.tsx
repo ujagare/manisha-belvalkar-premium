@@ -61,7 +61,10 @@ export default function CoursesPage() {
         imageAlt="Handcrafted study books and learning cards in warm golden light"
         title={
           <>
-            Transformative <span className="text-crimson-gradient">courses</span>
+            <span className="block whitespace-nowrap text-[2rem] min-[380px]:text-[2.25rem] sm:text-inherit">
+              Transformative
+            </span>
+            <span className="block text-crimson-gradient">courses</span>
           </>
         }
         subtitle="Choose the learning format that fits your season: private one-to-one study, in-person group workshops, live Zoom workshops, or guided WhatsApp practice."

@@ -78,8 +78,9 @@ export default async function ProductsPage({ searchParams }: SearchParams) {
     <>
       <PageHero
         eyebrow="Shop"
-        image="/images/page-heroes/products-hero.webp"
-        imageAlt="A curated collection of handcrafted sacred tools and shop offerings"
+        image="/images/page-heroes/products-premium-hero.webp"
+        imageAlt="Shakti Oracle Cards with their companion guidebook"
+        imagePosition="62% center"
         title={
           <>
             <span className="text-crimson-gradient">Shop</span>

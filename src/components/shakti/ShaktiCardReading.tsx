@@ -100,13 +100,13 @@ function SideOrnament({ className }: { className: string }) {
 export default function ShaktiCardReading({ showBuyButton = false }: { showBuyButton?: boolean }) {
   const sectionHeight = showBuyButton
     ? "min-h-[58rem] sm:min-h-[76rem] lg:min-h-[60rem]"
-    : "min-h-[70rem] sm:min-h-[72rem] lg:min-h-[48rem]";
+    : "min-h-[46rem] sm:min-h-[72rem] lg:min-h-[48rem]";
   const tableHeight = showBuyButton
     ? "h-[52rem] sm:h-[69rem] lg:h-[54rem]"
-    : "h-[64rem] sm:h-[65rem] lg:h-[42rem]";
+    : "h-[40rem] sm:h-[65rem] lg:h-[42rem]";
   const revealHeight = showBuyButton
     ? "min-h-[50rem] sm:min-h-[68rem] lg:min-h-[54rem]"
-    : "min-h-[62rem] sm:min-h-[64rem] lg:min-h-[42rem]";
+    : "min-h-[54rem] sm:min-h-[64rem] lg:min-h-[42rem]";
   const sectionRef = useRef<HTMLElement>(null);
   const tableRef = useRef<HTMLDivElement>(null);
   const deckOrderRef = useRef<number[]>(Array.from({ length: CARD_COUNT }, (_, index) => index + 1));

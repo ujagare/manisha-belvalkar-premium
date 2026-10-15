@@ -95,17 +95,17 @@ export const brand = {
   phoneHref: "tel:+919922246111",
   email: "manishabelvalkar@gmail.com",
   emailHref: "mailto:manishabelvalkar@gmail.com",
-  address: "Mumbai & Pune",
+  address: "Erandavane, Pune & Prabhadevi, Mumbai",
   locations: [
     {
-      city: "Mumbai",
-      address: "501, New Pushpanjali, Prabhadevi, Mumbai 28",
-      mapsHref: "https://www.google.com/maps/search/?api=1&query=New+Pushpanjali+Prabhadevi+Mumbai"
+      city: "Pune",
+      address: "Erandavane, Pune",
+      mapsHref: "https://www.google.com/maps/search/?api=1&query=Erandavane+Pune"
     },
     {
-      city: "Pune",
-      address: "Pune, Maharashtra",
-      mapsHref: "https://www.google.com/maps/search/?api=1&query=Pune+Maharashtra"
+      city: "Mumbai",
+      address: "Prabhadevi, Mumbai",
+      mapsHref: "https://www.google.com/maps/search/?api=1&query=Prabhadevi+Mumbai"
     }
   ],
   whatsappHref:
@@ -615,7 +615,7 @@ export const products: Product[] = [
     price: 899,
     salePrice: 1099,
     badge: "Vastu",
-    image: "/images/shri-vidya-course.webp",
+    image: "/images/vastu-healing-frame.jpeg",
     details: [
       "For home and work spaces",
       "Created with healing intention",

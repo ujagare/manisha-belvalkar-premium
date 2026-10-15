@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Phone, Mail, MapPin, MessageCircle } from "lucide-react";
-import { brand, disclaimer } from "@/lib/data";
+import { brand } from "@/lib/data";
 import PageHero from "@/components/ui/PageHero";
 import Reveal from "@/components/ui/Reveal";
 import Button from "@/components/ui/Button";
@@ -162,20 +162,6 @@ export default function ContactPage() {
       </section>
 
       <HomeFAQ />
-
-      {/* Disclaimer */}
-      <section className="bg-ivory py-12">
-        <div className="mx-auto max-w-7xl px-6 lg:px-10">
-          <div className="text-xs leading-relaxed text-warmgray/60">
-            <p className="mb-2 font-medium text-warmgray">Disclaimer</p>
-            {disclaimer.map((p, i) => (
-              <p key={i} className="mb-1">
-                {p}
-              </p>
-            ))}
-          </div>
-        </div>
-      </section>
 
       <GoldDivider />
     </>

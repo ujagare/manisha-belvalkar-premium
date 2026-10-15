@@ -45,7 +45,10 @@ function toProduct(row: ProductRow): Product {
     price: Number(row.price),
     salePrice: row.sale_price != null ? Number(row.sale_price) : undefined,
     badge: row.badge ?? undefined,
-    image: row.image ?? "/images/spiritual-golden-texture.webp",
+    image:
+      row.slug === "vastu-healing-frames"
+        ? "/images/vastu-healing-frame.jpeg"
+        : (row.image ?? "/images/spiritual-golden-texture.webp"),
     details: Array.isArray(row.details)
       ? row.details.filter((d): d is string => typeof d === "string")
       : [],
