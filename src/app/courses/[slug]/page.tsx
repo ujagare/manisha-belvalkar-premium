@@ -7,6 +7,7 @@ import { formatINR } from "@/lib/utils";
 import Reveal from "@/components/ui/Reveal";
 import Button from "@/components/ui/Button";
 import GoldDivider from "@/components/ui/GoldDivider";
+import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -62,7 +63,9 @@ export default async function CourseDetailPage({ params }: Props) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(courseSchema) }}
-      />      <section className="relative overflow-hidden bg-ivory pb-16 pt-32 lg:pb-24 lg:pt-40">
+      />
+      <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Courses", path: "/courses" }, { name: course.title, path: `/courses/${course.slug}` }]} />
+      <section className="relative overflow-hidden bg-ivory pb-16 pt-32 lg:pb-24 lg:pt-40">
         <div className="glow-gold absolute -right-32 -top-32 h-[420px] w-[420px]" />
         <div className="glow-crimson absolute -bottom-32 -left-32 h-[380px] w-[380px]" />
 

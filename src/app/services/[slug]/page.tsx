@@ -10,6 +10,7 @@ import Button from "@/components/ui/Button";
 import GoldDivider from "@/components/ui/GoldDivider";
 import ServiceCard from "@/components/ui/ServiceCard";
 import InternalSubmenu from "@/components/layout/InternalSubmenu";
+import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -73,6 +74,7 @@ export default async function ServiceDetailPage({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
       />
+      <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Services", path: "/services" }, { name: service.title, path: `/services/${service.slug}` }]} />
       <InternalSubmenu
         activeHref={`/services/${service.slug}`}
         backHref="/services"

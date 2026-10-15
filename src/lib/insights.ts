@@ -19,6 +19,8 @@ export interface InsightArticle {
   takeaway: string;
   relatedHref: string;
   relatedLabel: string;
+  datePublished: string;
+  dateModified: string;
 }
 
 export const insightCategories: Array<"All" | InsightCategory> = [
@@ -61,6 +63,8 @@ export const insights: InsightArticle[] = [
     takeaway: "The right starting point is the offering that fits your current question, preferred level of support, and practical boundaries.",
     relatedHref: "/how-it-works",
     relatedLabel: "See how bookings work",
+    datePublished: "2026-10-07",
+    dateModified: "2026-10-16",
   },
   {
     slug: "chakra-reflection-without-self-diagnosis",
@@ -93,6 +97,8 @@ export const insights: InsightArticle[] = [
     takeaway: "Chakra reflection is most helpful when it expands curiosity, respects uncertainty, and stays connected to everyday care.",
     relatedHref: "/healing",
     relatedLabel: "Explore wellbeing offerings",
+    datePublished: "2026-10-07",
+    dateModified: "2026-10-16",
   },
   {
     slug: "preparing-for-a-tarot-consultation",
@@ -125,6 +131,8 @@ export const insights: InsightArticle[] = [
     takeaway: "Come with a theme, ask open questions, keep your agency, and carry forward only what supports considered action.",
     relatedHref: "/services/tarot-consultation-60",
     relatedLabel: "View Tarot consultation",
+    datePublished: "2026-10-07",
+    dateModified: "2026-10-16",
   },
   {
     slug: "building-a-simple-daily-reflection-practice",
@@ -157,6 +165,8 @@ export const insights: InsightArticle[] = [
     takeaway: "Make the practice small enough to repeat and useful enough to return to: notice, name, and choose one next step.",
     relatedHref: "/products",
     relatedLabel: "Explore reflective tools",
+    datePublished: "2026-10-07",
+    dateModified: "2026-10-16",
   },
 ];
 

@@ -37,6 +37,16 @@ export const metadata: Metadata = {
   },
   description:
     "A holistic well-being coach with over 30 years of experience in Tarot Consultation, Soul Purpose Reading, Goddess Attunement, and Chakra Therapy. Guidance for the soul.",
+  authors: [{ name: "Dr. Manisha Belvalkar", url: "/about" }],
+  creator: "Dr. Manisha Belvalkar",
+  publisher: "Manisha Belvalkar",
+  category: "Spiritual wellbeing",
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+    other: process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION
+      ? { "msvalidate.01": process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION }
+      : undefined,
+  },
   keywords: [
     "Manisha Belvalkar",
     "Tarot Reading",
@@ -191,19 +201,7 @@ export default function RootLayout({
           </SmoothScrollProvider>
         </CartProvider>
       </body>
-      <Script
-        src="https://www.googletagmanager.com/gtag/js?id=G-E9FMJKLSXK"
-        strategy="afterInteractive"
-      />
-      <Script id="google-analytics" strategy="afterInteractive">
-        {`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'G-E9FMJKLSXK');
-        `}
-      </Script>
-      <Script id="google-tag-manager" strategy="afterInteractive">
+      <Script id="google-tag-manager" strategy="lazyOnload">
         {`
           (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
           new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],

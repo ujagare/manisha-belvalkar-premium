@@ -432,7 +432,7 @@ export default function ShaktiCardReading({ showBuyButton = false }: { showBuyBu
                     <div className="absolute inset-0 translate-x-3.5 translate-y-2.5 rounded-xl border border-gold/25 bg-[#52130e]" />
                     <div className="absolute inset-0 translate-x-2 translate-y-1.5 rounded-xl border border-gold/35 bg-[#761b10]" />
                     <div className="relative aspect-[1060/1484] overflow-hidden rounded-xl border border-gold-light/80 shadow-[0_38px_75px_rgba(0,0,0,0.75),0_0_55px_rgba(221,184,41,0.22)] transition-transform duration-700 hover:-translate-y-1">
-                      <Image src="/images/shakti-cards/card-back-cover.webp" alt="Shakti card deck cover" fill sizes="(max-width: 639px) 112px, (max-width: 1023px) 200px, 256px" priority className="object-cover" />
+                      <Image src="/images/shakti-cards/card-back-cover.webp" alt="Shakti card deck cover" fill sizes="(max-width: 639px) 112px, (max-width: 1023px) 200px, 256px" className="object-cover" />
                       <span className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/12 to-transparent" />
                     </div>
                     <div className="pointer-events-none absolute left-1/2 top-[calc(100%+1.2rem)] h-3 w-48 -translate-x-1/2 rounded-[50%] bg-black/50 blur-md" />
@@ -472,7 +472,7 @@ export default function ShaktiCardReading({ showBuyButton = false }: { showBuyBu
                 <div className="revealed-card relative mx-auto w-full max-w-[9rem] [perspective:1200px] sm:max-w-[18rem] lg:max-w-[21rem]">
                   <div className="absolute -inset-9 rounded-[3rem] bg-gold/20 blur-3xl" />
                   <div className="relative aspect-[1060/1484] overflow-hidden rounded-2xl border border-gold-light/70 bg-gold-soft shadow-[0_45px_100px_rgba(0,0,0,0.7),0_0_55px_rgba(221,184,41,0.22)]">
-                    <Image src={shaktiCardImagePath(cardNumber)} alt={`Your selected Shakti card, card ${cardNumber}`} fill sizes="(max-width: 1023px) 288px, 336px" priority className="object-cover" />
+                    <Image src={shaktiCardImagePath(cardNumber)} alt={`Your selected Shakti card, card ${cardNumber}`} fill sizes="(max-width: 640px) 144px, (max-width: 1023px) 288px, 336px" className="object-cover" />
                   </div>
                 </div>
 

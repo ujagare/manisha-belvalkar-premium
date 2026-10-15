@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { notFound, redirect } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import {
   ArrowLeft,
   CalendarDays,
@@ -17,6 +17,7 @@ import { healingServices } from "@/lib/data";
 import SessionBookingForm from "@/components/services/SessionBookingForm";
 import InternalSubmenu from "@/components/layout/InternalSubmenu";
 import { isServerConfigured } from "@/lib/env";
+import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -50,13 +51,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function HealingDetailPage({ params }: Props) {
   const { slug } = await params;
-  if (legacyHealingRedirects[slug]) redirect(`/healing/${legacyHealingRedirects[slug]}`);
+  if (legacyHealingRedirects[slug]) permanentRedirect(`/healing/${legacyHealingRedirects[slug]}`);
 
   const service = healingServices.find((item) => item.slug === slug);
   if (!service) notFound();
 
   return (
     <>
+      <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Healing", path: "/healing" }, { name: service.title, path: `/healing/${service.slug}` }]} />
       <InternalSubmenu
         activeHref={`/healing/${service.slug}`}
         backHref="/healing"

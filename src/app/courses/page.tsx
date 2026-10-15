@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, Check, Sparkles } from "lucide-react";
 import { courses } from "@/lib/data";
 import PageHero from "@/components/ui/PageHero";
@@ -109,19 +110,9 @@ export default function CoursesPage() {
                   >
                     <div className="pointer-events-none absolute -right-20 -top-20 h-60 w-60 rounded-full bg-gold/20 opacity-70 blur-3xl transition-opacity duration-700 group-hover:opacity-100" />
                     <div className="relative h-64 overflow-hidden bg-ivory">
-                      <div
-                        className="absolute inset-0 scale-125 bg-cover bg-center opacity-50 blur-2xl"
-                        style={{ backgroundImage: `url('${course.image}')` }}
-                        aria-hidden="true"
-                      />
+                      <Image src={course.image} alt="" fill sizes="(max-width: 1024px) 92vw, 46vw" className="scale-125 object-cover opacity-50 blur-2xl" aria-hidden="true" />
                       <div className="absolute inset-0 bg-gradient-to-b from-charcoal/10 via-transparent to-cream/60" />
-                      <div
-                        className="absolute inset-0 bg-contain bg-center p-5 transition-transform duration-1000 ease-out group-hover:scale-[1.05]"
-                        style={{
-                          backgroundImage: `url('${course.image}')`,
-                          backgroundRepeat: "no-repeat",
-                        }}
-                      />
+                      <Image src={course.image} alt={course.title} fill sizes="(max-width: 1024px) 92vw, 46vw" className="object-contain p-5 transition-transform duration-1000 ease-out group-hover:scale-[1.05]" />
                       <span className="absolute bottom-4 left-5 inline-flex items-center gap-2 rounded-full border border-white/40 bg-charcoal/50 px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-white backdrop-blur-md">
                         <Sparkles className="h-3 w-3 text-gold-light" />
                         {tab.eyebrow}

@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowDown, ArrowUpRight, Check, Sparkles } from "lucide-react";
 import Reveal from "@/components/ui/Reveal";
+import ViewportVideo from "@/components/ui/ViewportVideo";
 import { appFeatures, transformationProgram } from "@/lib/data";
 
 const pathways = [
@@ -65,17 +66,12 @@ export function ShaktiIntro() {
 
         <Reveal direction="left" delay={0.12} className="relative min-h-[25rem] overflow-hidden sm:min-h-[34rem] lg:min-h-[38rem]">
           <div className="absolute inset-0 bg-[#5d120d]">
-            <video
+            <ViewportVideo
+              src="/videos/shakti-video.mp4"
               className="h-full w-full object-cover"
-              autoPlay
-              muted
-              loop
-              playsInline
               poster="/images/page-heroes/shakti-hero.webp"
-              aria-label="Shakti divine feminine visual"
-            >
-              <source src="/videos/shakti-video.mp4" type="video/mp4" />
-            </video>
+              ariaLabel="Shakti divine feminine visual"
+            />
             <div className="pointer-events-none absolute inset-y-0 left-0 hidden w-24 bg-gradient-to-r from-[#210806] to-transparent lg:block" />
             <div className="pointer-events-none absolute inset-3 border border-gold/25" />
           </div>

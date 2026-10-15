@@ -30,6 +30,7 @@ export default function CustomCursor() {
       if (dotRef.current) {
         dotRef.current.style.transform = `translate(${mx}px, ${my}px) translate(-50%, -50%)`;
       }
+      if (!raf) raf = requestAnimationFrame(loop);
     };
 
     const loop = () => {
@@ -38,15 +39,18 @@ export default function CustomCursor() {
       if (ringRef.current) {
         ringRef.current.style.transform = `translate(${rx}px, ${ry}px) translate(-50%, -50%)`;
       }
-      raf = requestAnimationFrame(loop);
+      if (Math.abs(mx - rx) > 0.1 || Math.abs(my - ry) > 0.1) {
+        raf = requestAnimationFrame(loop);
+      } else {
+        raf = 0;
+      }
     };
 
     window.addEventListener("mousemove", onMove, { passive: true });
-    raf = requestAnimationFrame(loop);
 
     return () => {
       window.removeEventListener("mousemove", onMove);
-      cancelAnimationFrame(raf);
+      if (raf) cancelAnimationFrame(raf);
       document.body.classList.remove("has-custom-cursor");
     };
   }, []);

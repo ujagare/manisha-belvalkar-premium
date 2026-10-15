@@ -1,4 +1,4 @@
-import { redirect } from "next/navigation";
+import { permanentRedirect } from "next/navigation";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -7,5 +7,5 @@ interface Props {
 /** /books/[slug] was renamed to the Products storefront. */
 export default async function BookRedirectPage({ params }: Props) {
   const { slug } = await params;
-  redirect(`/products/${slug}`);
+  permanentRedirect(`/products/${slug}`);
 }

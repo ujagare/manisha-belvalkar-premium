@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowUpRight, Clock3 } from "lucide-react";
 import { getInsight, insights } from "@/lib/insights";
+import { BreadcrumbJsonLd, JsonLd } from "@/components/seo/JsonLd";
 
 const BASE = "https://manishabelvalkar.com";
 
@@ -19,7 +20,7 @@ export async function generateMetadata({ params }: PageProps<"/insights/[slug]">
     title: article.title,
     description: article.description,
     alternates: { canonical: `/insights/${article.slug}` },
-    openGraph: { type: "article", title: article.title, description: article.description, url: `${BASE}/insights/${article.slug}`, images: [{ url: article.image, alt: article.imageAlt }] },
+    openGraph: { type: "article", title: article.title, description: article.description, url: `${BASE}/insights/${article.slug}`, publishedTime: article.datePublished, modifiedTime: article.dateModified, authors: [`${BASE}/about`], images: [{ url: article.image, alt: article.imageAlt }] },
   };
 }
 
@@ -36,12 +37,15 @@ export default async function InsightArticlePage({ params }: PageProps<"/insight
     author: { "@type": "Person", name: "Dr. Manisha Belvalkar", url: `${BASE}/about` },
     publisher: { "@type": "Organization", name: "Manisha Belvalkar", url: BASE },
     mainEntityOfPage: `${BASE}/insights/${article.slug}`,
+    datePublished: article.datePublished,
+    dateModified: article.dateModified,
     inLanguage: "en-IN",
   };
 
   return (
     <article className="bg-cream pb-20 pt-28 lg:pb-28 lg:pt-36">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, "\\u003c") }} />
+      <JsonLd data={schema} />
+      <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Insights", path: "/insights" }, { name: article.title, path: `/insights/${article.slug}` }]} />
       <header className="mx-auto max-w-5xl px-6 lg:px-10">
         <Link href="/insights" className="inline-flex items-center gap-2 text-sm font-semibold text-primary transition hover:-translate-x-1"><ArrowLeft className="h-4 w-4" />All insights</Link>
         <div className="mt-10 flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-[0.18em] text-gold-deep"><span>{article.category}</span><span className="h-1 w-1 rotate-45 bg-gold" /><span className="inline-flex items-center gap-1.5 normal-case tracking-normal text-warmgray"><Clock3 className="h-3.5 w-3.5" />{article.readTime}</span></div>

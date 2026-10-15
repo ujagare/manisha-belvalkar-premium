@@ -2,11 +2,9 @@
 
 import { useEffect } from "react";
 import type { ReactNode } from "react";
-import Lenis from "lenis";
-import { gsap, ScrollTrigger } from "@/lib/gsap";
 
 /** Module-level handle so overlays (modals) can pause smooth scrolling. */
-let lenisInstance: Lenis | null = null;
+let lenisInstance: import("lenis").default | null = null;
 
 /** Pause Lenis's virtual scroll (call while a modal is open). */
 export function stopLenis() {
@@ -28,40 +26,59 @@ export default function SmoothScrollProvider({
   children: ReactNode;
 }) {
   useEffect(() => {
-    const lenis = new Lenis({
-      duration: 1.15,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true,
-      touchMultiplier: 1.4,
-    });
-    lenisInstance = lenis;
+    if (window.matchMedia("(pointer: coarse)").matches) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    // Keep ScrollTrigger in sync with Lenis's virtual scroll.
-    lenis.on("scroll", ScrollTrigger.update);
-    const raf = (time: number) => lenis.raf(time * 1000);
-    gsap.ticker.add(raf);
-    gsap.ticker.lagSmoothing(0);
+    let disposed = false;
+    let raf = 0;
+    let onClick: ((event: MouseEvent) => void) | undefined;
 
-    // Glide for in-page anchors.
-    const onClick = (e: MouseEvent) => {
-      const anchor = (e.target as HTMLElement | null)?.closest?.(
-        'a[href^="#"]',
-      ) as HTMLAnchorElement | null;
-      if (!anchor) return;
-      const hash = anchor.getAttribute("href");
-      if (!hash || hash === "#") return;
-      const target = document.querySelector(hash);
-      if (!target) return;
-      e.preventDefault();
-      lenis.scrollTo(target as HTMLElement, { offset: -80 });
-      history.replaceState(null, "", hash);
+    const initialize = async () => {
+      const { default: Lenis } = await import("lenis");
+      if (disposed) return;
+
+      const lenis = new Lenis({
+        duration: 1.15,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        smoothWheel: true,
+      });
+      lenisInstance = lenis;
+
+      const frame = (time: number) => {
+        lenis.raf(time);
+        raf = requestAnimationFrame(frame);
+      };
+      raf = requestAnimationFrame(frame);
+
+      onClick = (event: MouseEvent) => {
+        const anchor = (event.target as HTMLElement | null)?.closest?.(
+          'a[href^="#"]',
+        ) as HTMLAnchorElement | null;
+        const hash = anchor?.getAttribute("href");
+        if (!hash || hash === "#") return;
+        const target = document.querySelector(hash);
+        if (!target) return;
+        event.preventDefault();
+        lenis.scrollTo(target as HTMLElement, { offset: -80 });
+        history.replaceState(null, "", hash);
+      };
+      document.addEventListener("click", onClick);
     };
-    document.addEventListener("click", onClick);
+
+    const idleWindow = window as typeof window & {
+      requestIdleCallback?: (callback: () => void, options?: { timeout: number }) => number;
+      cancelIdleCallback?: (id: number) => void;
+    };
+    const idleId = idleWindow.requestIdleCallback?.(() => void initialize(), { timeout: 2500 });
+    const timerId = idleId === undefined ? window.setTimeout(() => void initialize(), 1500) : undefined;
 
     return () => {
-      document.removeEventListener("click", onClick);
-      gsap.ticker.remove(raf);
-      lenis.destroy();
+      disposed = true;
+      if (idleId !== undefined) idleWindow.cancelIdleCallback?.(idleId);
+      if (timerId !== undefined) window.clearTimeout(timerId);
+      if (onClick) document.removeEventListener("click", onClick);
+      cancelAnimationFrame(raf);
+      lenisInstance?.destroy();
       lenisInstance = null;
     };
   }, []);

@@ -8,6 +8,7 @@ import SectionHeading from "@/components/ui/SectionHeading";
 import GsapReveal from "@/components/ui/GsapReveal";
 import ChakraModal from "@/components/home/ChakraModal";
 import { brand } from "@/lib/data";
+import ViewportVideo from "@/components/ui/ViewportVideo";
 
 export default function ShaktiPreview() {
   const [quizOpen, setQuizOpen] = useState(false);
@@ -142,13 +143,10 @@ export default function ShaktiPreview() {
               <circle cx="914" cy="212" r="5" fill="#c9a520" fillOpacity=".48" />
             </svg>
             {/* Full-width, full-height background video */}
-            <video
+            <ViewportVideo
               src="/videos/shakti-video.mp4"
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="metadata"
+              poster="/images/page-heroes/shakti-hero.webp"
+              ariaLabel="Shakti rituals and meditation experience"
               className="relative z-[2] h-[400px] w-full object-contain object-right sm:h-[460px] lg:h-[560px]"
             />
 

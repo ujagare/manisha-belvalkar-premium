@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowUpRight, BookOpen, Sparkles, Gem } from "lucide-react";
 import type { Product, ProductCategory } from "@/lib/data";
 import { formatINR } from "@/lib/utils";
@@ -43,9 +44,12 @@ export default function ProductCard({ product, className }: ProductCardProps) {
         className="relative block aspect-[4/3] overflow-hidden bg-gradient-to-b from-ivory to-cream"
         aria-label={product.title}
       >
-        <div
-          className="h-full w-full bg-contain bg-center bg-no-repeat p-10 transition-transform duration-1000 ease-out group-hover:scale-[1.06] sm:p-12"
-          style={{ backgroundImage: `url('${product.image}')` }}
+        <Image
+          src={product.image}
+          alt={product.title}
+          fill
+          sizes="(max-width: 640px) 92vw, (max-width: 1024px) 44vw, 30vw"
+          className="object-contain p-10 transition-transform duration-1000 ease-out group-hover:scale-[1.06] sm:p-12"
         />
         {/* Warm gold aura that blooms on hover */}
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_50%_100%,rgba(221,184,41,0.35),transparent_70%)] opacity-0 transition-opacity duration-700 group-hover:opacity-100" />

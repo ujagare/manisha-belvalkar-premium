@@ -9,9 +9,10 @@ import {
 import { insights } from "@/lib/insights";
 
 const BASE = "https://manishabelvalkar.com";
+const SITE_UPDATED = new Date("2026-10-16T00:00:00.000Z");
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const now = new Date();
+  const now = SITE_UPDATED;
 
   const staticPages: MetadataRoute.Sitemap = [
     { url: `${BASE}/`, lastModified: now, changeFrequency: "weekly", priority: 1 },
@@ -22,6 +23,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE}/healing`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE}/courses`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
     { url: `${BASE}/products`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
+    { url: `${BASE}/collections/oracle`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
+    { url: `${BASE}/collections/book`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
+    { url: `${BASE}/collections/ritual`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
     { url: `${BASE}/community`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
     { url: `${BASE}/media`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
     { url: `${BASE}/live`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
@@ -88,7 +92,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const insightPages: MetadataRoute.Sitemap = insights.map((article) => ({
     url: `${BASE}/insights/${article.slug}`,
-    lastModified: now,
+    lastModified: new Date(article.dateModified),
     changeFrequency: "monthly",
     priority: 0.7,
   }));

@@ -8,6 +8,12 @@
     0 10px 35px rgba(91, 62, 42, 0.06);
 }
 
+/* Skip off-screen rendering work while reserving space to prevent CLS. */
+.content-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 900px;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme {

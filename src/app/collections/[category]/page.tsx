@@ -8,6 +8,7 @@ import { getProducts } from "@/lib/supabase/products";
 import PageHero from "@/components/ui/PageHero";
 import Reveal from "@/components/ui/Reveal";
 import ProductGrid from "@/components/products/ProductGrid";
+import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 
 const CATEGORIES: ProductCategory[] = ["oracle", "book", "ritual"];
 
@@ -65,6 +66,7 @@ export default async function CategoryPage({ params }: Props) {
 
   return (
     <>
+      <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Shop", path: "/products" }, { name: label, path: `/collections/${category}` }]} />
       <PageHero
         eyebrow="Sacred Shop · Collection"
         image="/images/shakti-cards-and-book.webp"

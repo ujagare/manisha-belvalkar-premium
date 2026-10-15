@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import {
   ArrowLeft,
@@ -20,6 +21,7 @@ import Button from "@/components/ui/Button";
 import GoldDivider from "@/components/ui/GoldDivider";
 import AddToCartButton from "@/components/cart/AddToCartButton";
 import ProductCard, { categoryMeta } from "@/components/products/ProductCard";
+import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -95,6 +97,7 @@ export default async function ProductDetailPage({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
       />
+      <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Shop", path: "/products" }, { name: product.title, path: `/products/${product.slug}` }]} />
       <section className="relative overflow-hidden bg-ivory pb-16 pt-32 lg:pb-24 lg:pt-40">
         <div className="glow-gold absolute -right-32 -top-32 h-[420px] w-[420px]" />
         <div className="glow-crimson absolute -bottom-32 -left-32 h-[380px] w-[380px]" />
@@ -115,10 +118,9 @@ export default async function ProductDetailPage({ params }: Props) {
             <div className="lg:sticky lg:top-28 lg:self-start">
               <Reveal direction="right">
                 <div className="gold-border-gradient relative overflow-hidden rounded-3xl">
-                  <div
-                    className="h-[380px] w-full bg-cover bg-center sm:h-[500px]"
-                    style={{ backgroundImage: `url('${product.image}')` }}
-                  />
+                  <div className="relative h-[380px] w-full sm:h-[500px]">
+                    <Image src={product.image} alt={product.title} fill priority sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" />
+                  </div>
                   <div className="absolute inset-0 bg-gradient-to-t from-charcoal/45 to-transparent" />
                   {product.badge ? (
                     <span className="absolute left-6 top-6 rounded-full bg-primary px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-white shadow-lg">

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound, redirect } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { Check, ArrowLeft } from "lucide-react";
 import { mentoringAreas, brand } from "@/lib/data";
 import PageHero from "@/components/ui/PageHero";
@@ -10,6 +10,7 @@ import Parallax from "@/components/ui/Parallax";
 import SessionBookingForm from "@/components/services/SessionBookingForm";
 import { isServerConfigured } from "@/lib/env";
 import InternalSubmenu from "@/components/layout/InternalSubmenu";
+import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -44,7 +45,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function MentoringDetailPage({ params }: Props) {
   const { slug } = await params;
   if (legacyMentoringRedirects[slug]) {
-    redirect(`/mentoring/${legacyMentoringRedirects[slug]}`);
+    permanentRedirect(`/mentoring/${legacyMentoringRedirects[slug]}`);
   }
 
   const area = mentoringAreas.find((a) => a.slug === slug);
@@ -52,6 +53,7 @@ export default async function MentoringDetailPage({ params }: Props) {
 
   return (
     <>
+      <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Mentoring", path: "/mentoring" }, { name: area.title, path: `/mentoring/${area.slug}` }]} />
       <InternalSubmenu
         activeHref={`/mentoring/${area.slug}`}
         backHref="/mentoring"
