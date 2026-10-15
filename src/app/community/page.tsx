@@ -8,9 +8,9 @@ import LeadCaptureForm from "@/components/backend/LeadCaptureForm";
 import { isServerConfigured } from "@/lib/env";
 
 export const metadata: Metadata = {
-  title: "Join Magic Community",
+  title: "Magic Community — Monthly Spiritual Guidance",
   description:
-    "Join Magic Community for monthly moon cycle based guidance, tips, remedies and member-only offerings.",
+    "Join the Magic Community by Dr. Manisha Belvalkar for monthly moon-cycle guidance, spiritual tips, remedies and member-only offerings.",
   alternates: { canonical: "/community" },
 };
 
@@ -22,7 +22,7 @@ export default function CommunityPage() {
       <section className="relative isolate min-h-[640px] overflow-hidden bg-neutral-200 pt-24 text-white lg:min-h-[720px] lg:pt-28">
         <div
           className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: "url('/images/page-heroes/community-hero.png')" }}
+          style={{ backgroundImage: "url('/images/page-heroes/community-hero.webp')" }}
           aria-label="An intimate sacred circle arranged with handcrafted cushions and flowers"
         />
         <div className="absolute inset-0 bg-neutral-700/60" />

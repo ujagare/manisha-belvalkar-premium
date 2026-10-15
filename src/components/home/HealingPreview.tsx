@@ -9,10 +9,10 @@ import HomeImageCard from "@/components/home/HomeImageCard";
 import SacredSectionBackdrop from "@/components/home/SacredSectionBackdrop";
 
 const healingImages: Record<string, string> = {
-  "healing-sessions": "/images/home-cards/healing-session.png",
-  "distance-healing": "/images/home-cards/distance-healing.png",
-  "positive-energy": "/images/home-cards/positive-energy.png",
-  "chakra-questionnaire": "/images/home-cards/chakra-assessment.png",
+  "healing-sessions": "/images/home-cards/healing-session.webp",
+  "distance-healing": "/images/home-cards/distance-healing.webp",
+  "positive-energy": "/images/home-cards/positive-energy.webp",
+  "chakra-questionnaire": "/images/home-cards/chakra-assessment.webp",
 };
 
 export default function HealingPreview() {

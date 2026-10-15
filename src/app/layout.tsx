@@ -32,7 +32,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL("https://manishabelvalkar.com"),
   title: {
-    default: "Manisha Belvalkar — Spiritual Mentor | Guidance For the Soul",
+    default: "Manisha Belvalkar — Tarot Reading & Spiritual Healing in Mumbai",
     template: "%s | Manisha Belvalkar",
   },
   description:
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
     locale: "en_IN",
     images: [
       {
-        url: "/images/manisha-portrait.jpg",
+        url: "/images/manisha-portrait.webp",
         width: 1200,
         height: 1800,
         alt: "Dr. Manisha Belvalkar — Spiritual Mentor",
@@ -70,7 +70,7 @@ export const metadata: Metadata = {
     title: "Manisha Belvalkar — Spiritual Mentor",
     description:
       "Guidance For the Soul. Tarot, Healing, and Well-being sessions.",
-    images: ["/images/manisha-portrait.jpg"],
+    images: ["/images/manisha-portrait.webp"],
   },
   robots: {
     index: true,
@@ -90,7 +90,7 @@ const personSchema = {
   "@type": "Person",
   name: "Dr. Manisha Belvalkar",
   url: "https://manishabelvalkar.com",
-  image: "https://manishabelvalkar.com/images/manisha-portrait.jpg",
+  image: "https://manishabelvalkar.com/images/manisha-portrait.webp",
   jobTitle: "Spiritual Mentor & Holistic Well-being Coach",
   description:
     "A holistic well-being coach with over 30 years of experience in Tarot Consultation, Soul Purpose Reading, Goddess Attunement, and Chakra Therapy.",
@@ -126,7 +126,7 @@ const orgSchema = {
   "@type": "ProfessionalService",
   name: "Manisha Belvalkar — Guidance For the Soul",
   url: "https://manishabelvalkar.com",
-  image: "https://manishabelvalkar.com/images/manisha-portrait.jpg",
+  image: "https://manishabelvalkar.com/images/manisha-portrait.webp",
   telephone: "+91-9922246111",
   email: "manishabelvalkar@gmail.com",
   priceRange: "₹899 - ₹25,000",
@@ -160,6 +160,15 @@ export default function RootLayout({
       )}
     >
       <body className="grain min-h-screen flex flex-col" suppressHydrationWarning>
+        <noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-WBZVC9Q4"
+            height="0"
+            width="0"
+            className="hidden invisible"
+            title="Google Tag Manager"
+          />
+        </noscript>
         <a href="#main-content" className="sr-only fixed left-4 top-4 z-50 rounded-lg bg-charcoal px-4 py-3 font-semibold text-white focus:not-sr-only focus:outline-2 focus:outline-offset-2 focus:outline-gold">Skip to main content</a>
         <script
           type="application/ld+json"
@@ -192,6 +201,15 @@ export default function RootLayout({
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
           gtag('config', 'G-E9FMJKLSXK');
+        `}
+      </Script>
+      <Script id="google-tag-manager" strategy="afterInteractive">
+        {`
+          (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-WBZVC9Q4');
         `}
       </Script>
     </html>

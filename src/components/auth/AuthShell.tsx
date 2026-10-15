@@ -27,7 +27,7 @@ export default function AuthShell({
       <div className="relative mx-auto grid min-h-[calc(100dvh-4rem)] max-w-[1600px] lg:grid-cols-[.92fr_1.08fr]">
         <div className="relative hidden min-h-[calc(100dvh-4rem)] overflow-hidden lg:block">
           <Image
-            src="/images/login-hero-bg.jpg"
+            src="/images/login-hero-bg.webp"
             alt="Manisha Belvalkar"
             fill
             priority
@@ -82,8 +82,8 @@ export default function AuthShell({
               aria-label="Manisha Belvalkar home"
             >
               <Image
-                src="/images/Logo.png"
-                alt=""
+                src="/images/manisha-belvalkar-logo.webp"
+                alt="Manisha Belvalkar logo"
                 width={44}
                 height={44}
                 className="h-11 w-11 rounded-full object-cover ring-1 ring-gold/40"

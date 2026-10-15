@@ -15,17 +15,17 @@ export default function ServicesPreview() {
   ];
   const visuals = {
     "tarot-consultation-60": {
-      image: "/images/home-cards/tarot-consultation.png",
+      image: "/images/home-cards/tarot-consultation.webp",
       icon: Sparkles,
       label: "Tarot",
     },
     "well-being-program": {
-      image: "/images/home-cards/wellbeing-program.png",
+      image: "/images/home-cards/wellbeing-program.webp",
       icon: SunMedium,
       label: "Well-being",
     },
     "goddess-attunement": {
-      image: "/images/home-cards/goddess-attunement.png",
+      image: "/images/home-cards/goddess-attunement.webp",
       icon: Sparkles,
       label: "Divine Feminine",
     },

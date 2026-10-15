@@ -3,13 +3,15 @@ import { apiError, apiSuccess } from "@/lib/api";
 import { verifyWebhookSignature } from "@/lib/razorpay";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { DISTANCE_HEALING_SLUG, ensureDistanceHealingCase } from "@/lib/distance-healing";
+import { orderConfirmationEmail, sendEmail } from "@/lib/resend";
+import { formatINR } from "@/lib/utils";
 
 export const runtime = "nodejs";
 
 type RazorpayEntity = { id?: string; order_id?: string; payment_id?: string; status?: string; amount?: number; currency?: string; method?: string };
 
 async function activateFulfilment(admin: ReturnType<typeof createAdminClient>, providerOrderId: string) {
-  const { data: order } = await admin.from("orders").select("id,user_id,item_type,item_slug").eq("gateway_order_id", providerOrderId).maybeSingle();
+  const { data: order } = await admin.from("orders").select("id,user_id,item_type,item_slug,item_title,amount,amount_subunits,guest_email,guest_name").eq("gateway_order_id", providerOrderId).maybeSingle();
   if (!order) return;
   if (order.item_type === "service" || order.item_type === "healing") {
     await admin.from("bookings").upsert({
@@ -25,6 +27,20 @@ async function activateFulfilment(admin: ReturnType<typeof createAdminClient>, p
       user_id: order.user_id, order_id: order.id, course_slug: order.item_slug,
       status: "active", enrolled_at: new Date().toISOString(),
     }, { onConflict: "order_id" });
+  }
+  // Guest orders are only captured here (the browser verify route needs a
+  // signed-in user) — send their confirmation email, best-effort.
+  if (order.guest_email) {
+    const { subject, html } = orderConfirmationEmail({
+      name: order.guest_name ?? order.guest_email.split("@")[0],
+      email: order.guest_email,
+      orderRef: order.id.slice(0, 8),
+      items: order.item_title,
+      totalLabel: order.amount_subunits != null ? formatINR(order.amount_subunits / 100) : order.amount != null ? formatINR(order.amount) : "—",
+      itemType: order.item_type,
+    });
+    const result = await sendEmail({ to: order.guest_email, subject, html });
+    console.log(`[webhook:email] order=${order.id.slice(0,8)}`, result.ok ? "sent" : `skipped: ${result.error}`);
   }
 }
 

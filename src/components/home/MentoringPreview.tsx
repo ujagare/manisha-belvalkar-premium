@@ -8,17 +8,17 @@ import HomeImageCard from "@/components/home/HomeImageCard";
 
 const mentoringVisuals = [
   {
-    image: "/images/page-heroes/mentoring-hero.png",
+    image: "/images/page-heroes/mentoring-hero.webp",
     icon: Sparkles,
     position: "left center",
   },
   {
-    image: "/images/home-cards/tarot-consultation.png",
+    image: "/images/home-cards/tarot-consultation.webp",
     icon: ScrollText,
     position: "center",
   },
   {
-    image: "/images/home-cards/positive-energy.png",
+    image: "/images/home-cards/positive-energy.webp",
     icon: Flame,
     position: "center",
   },

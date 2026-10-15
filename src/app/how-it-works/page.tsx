@@ -8,7 +8,7 @@ export const metadata: Metadata = { title: "How It Works", description: "From ch
 
 export default function HowItWorksPage() {
   return <>
-    <PageHero eyebrow="Your journey" image="/images/page-heroes/transformation-hero.png" imageAlt="A quiet path representing a considered personal journey" title={<>A clear path from <span className="text-gold-shimmer">intention to action</span></>} subtitle="Know exactly what happens before, during, and after a booking or order request." />
+    <PageHero eyebrow="Your journey" image="/images/page-heroes/transformation-hero.webp" imageAlt="A quiet path representing a considered personal journey" title={<>A clear path from <span className="text-gold-shimmer">intention to action</span></>} subtitle="Know exactly what happens before, during, and after a booking or order request." />
     <section className="bg-ivory py-20 lg:py-28"><div className="mx-auto max-w-6xl px-6 lg:px-10">
       <div className="space-y-0 border-y border-parchment">{journeySteps.map((step) => <article key={step.number} className="group grid gap-5 border-b border-parchment py-9 last:border-b-0 sm:grid-cols-[5rem_1fr_auto] sm:items-center sm:gap-8"><span className="font-serif text-3xl italic text-gold/70">{step.number}</span><div><h2 className="font-display text-2xl font-bold text-charcoal sm:text-3xl">{step.title}</h2><p className="mt-3 max-w-[66ch] leading-7 text-warmgray">{step.description}</p></div><span className="hidden h-px w-16 bg-gradient-to-r from-gold/70 to-transparent transition-all group-hover:w-24 lg:block" aria-hidden="true" /></article>)}</div>
     </div></section>

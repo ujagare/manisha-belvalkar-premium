@@ -13,7 +13,16 @@ export const serverEnv = {
   razorpayKeyId: () => read("NEXT_PUBLIC_RAZORPAY_KEY_ID") ?? read("RAZORPAY_KEY_ID"),
   razorpayKeySecret: () => read("RAZORPAY_KEY_SECRET"),
   razorpayWebhookSecret: () => read("RAZORPAY_WEBHOOK_SECRET"),
+  resendApiKey: () => read("RESEND_API_KEY"),
+  resendFromEmail: () => read("RESEND_FROM_EMAIL"),
 };
+
+export function isEmailConfigured() {
+  return Boolean(
+    serverEnv.resendApiKey() &&
+      serverEnv.resendFromEmail(),
+  );
+}
 
 export function isPaymentsConfigured() {
   return Boolean(

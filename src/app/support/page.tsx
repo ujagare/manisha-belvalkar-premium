@@ -16,7 +16,7 @@ const topics = [
 
 export default function SupportPage() {
   return <>
-    <PageHero eyebrow="Customer care" image="/images/page-heroes/contact-hero.png" imageAlt="A calm desk ready to help with a customer question" title={<>Support that keeps your <span className="text-gold-shimmer">next step clear</span></>} subtitle="Find the right answer, check your request, or contact the team with the details needed to help quickly." />
+    <PageHero eyebrow="Customer care" image="/images/page-heroes/contact-hero.webp" imageAlt="A calm desk ready to help with a customer question" title={<>Support that keeps your <span className="text-gold-shimmer">next step clear</span></>} subtitle="Find the right answer, check your request, or contact the team with the details needed to help quickly." />
     <section className="bg-ivory py-20 lg:py-28"><div className="mx-auto max-w-7xl px-6 lg:px-10">
       <div className="grid gap-6 md:grid-cols-2">{topics.map(({ icon: Icon, title, text, href }) => <Link key={title} href={href} className="group grid gap-5 rounded-[26px] border border-parchment bg-white p-7 transition hover:-translate-y-1 hover:border-gold/50 hover:shadow-[0_24px_60px_-38px_rgba(221,184,41,0.65)] sm:grid-cols-[3.5rem_1fr]"><span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary-soft text-primary transition group-hover:bg-primary group-hover:text-white"><Icon className="h-6 w-6" /></span><div><h2 className="font-display text-2xl font-bold text-charcoal">{title}</h2><p className="mt-2 leading-7 text-warmgray">{text}</p></div></Link>)}</div>
 

@@ -42,8 +42,37 @@ export default async function ServiceDetailPage({ params }: Props) {
     label: item.title,
   }));
 
+  const serviceSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: service.title,
+    description: service.description,
+    image: service.image
+      ? [`https://manishabelvalkar.com${service.image}`]
+      : undefined,
+    provider: {
+      "@type": "Person",
+      name: "Dr. Manisha Belvalkar",
+      url: "https://manishabelvalkar.com",
+    },
+    areaServed: ["Mumbai", "Pune", "India"],
+    offers: service.price > 0
+      ? {
+          "@type": "Offer",
+          price: service.price,
+          priceCurrency: "INR",
+          availability: "https://schema.org/InStock",
+          url: `https://manishabelvalkar.com/services/${service.slug}`,
+        }
+      : undefined,
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
+      />
       <InternalSubmenu
         activeHref={`/services/${service.slug}`}
         backHref="/services"

@@ -11,7 +11,7 @@ export default function ChakraArt({ className }: { className?: string }) {
       className={`relative overflow-hidden rounded-2xl ${className ?? ""}`}
     >
       <Image
-        src="/images/shakti-book-front.png"
+        src="/images/shakti-book-front.webp"
         alt="Shakti Book"
         fill
         className="object-cover"

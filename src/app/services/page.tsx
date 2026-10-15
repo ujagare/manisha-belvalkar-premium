@@ -24,9 +24,10 @@ import {
 import { formatINR } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: "Services",
+  title: "Tarot Consultation & Spiritual Healing Services in Mumbai & Pune",
   description:
-    "Explore personal Tarot consultations, soul-purpose guidance, healing sessions and transformational mentoring with Manisha Belvalkar.",
+    "Book a personal Tarot consultation, soul purpose reading, Goddess attunement, chakra therapy or transformational mentoring session with Dr. Manisha Belvalkar — 30+ years of experience in Mumbai & Pune.",
+  alternates: { canonical: "/services" },
 };
 
 const pathways = [
@@ -157,7 +158,7 @@ export default function ServicesPage() {
 
           <div className="relative min-h-[520px] lg:min-h-full">
             <Image
-              src="/images/page-heroes/services-hero.png"
+              src="/images/page-heroes/services-hero.webp"
               alt="Manisha Belvalkar's private guidance, healing and mentoring services"
               fill
               preload
@@ -498,7 +499,7 @@ export default function ServicesPage() {
           <div className="mx-auto grid max-w-7xl overflow-hidden bg-[#eee3d2] lg:grid-cols-2">
             <div className="relative min-h-[520px] lg:min-h-[650px]">
               <Image
-                src="/images/manisha-wix.jpg"
+                src="/images/manisha-wix.webp"
                 alt="Manisha Belvalkar"
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"

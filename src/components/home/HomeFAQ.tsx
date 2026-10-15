@@ -51,7 +51,7 @@ export default function HomeFAQ() {
       <SacredSectionBackdrop motif="petals" className="opacity-[0.12]" />
       <div
         className="absolute inset-0 bg-cover bg-center opacity-25"
-        style={{ backgroundImage: "url('/images/page-heroes/mentoring-hero.png')" }}
+        style={{ backgroundImage: "url('/images/page-heroes/mentoring-hero.webp')" }}
         aria-hidden="true"
       />
       <div className="absolute inset-0 bg-[linear-gradient(115deg,rgba(28,25,23,0.98)_0%,rgba(44,28,24,0.92)_46%,rgba(107,11,11,0.72)_100%)]" />
@@ -77,7 +77,7 @@ export default function HomeFAQ() {
               </div>
 
               <div className="mt-10 overflow-hidden rounded-[2rem] border border-gold/25 bg-white/[0.08] shadow-[0_35px_90px_-45px_rgba(0,0,0,0.75)] backdrop-blur-xl">
-                <div className="relative min-h-[320px] bg-cover bg-center" style={{ backgroundImage: "url(/images/candle.jpg)" }}>
+                <div className="relative min-h-[320px] bg-cover bg-center" style={{ backgroundImage: "url(/images/healing-candle-therapy.webp)" }}>
                   <div className="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/45 to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-7">
                     <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-gold-light backdrop-blur-md">

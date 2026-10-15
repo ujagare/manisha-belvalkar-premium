@@ -41,6 +41,12 @@ yarn-error.log*
 .env*
 !.env.example
 
+# local design/asset backups
+*.orig
+
+# browser test artifacts
+.playwright-mcp/
+
 # vercel
 .vercel
 

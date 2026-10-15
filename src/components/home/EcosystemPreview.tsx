@@ -20,7 +20,7 @@ export default function EcosystemPreview() {
           <GsapReveal y={50}>
             <HomeImageCard
               href="/app"
-              image="/images/home-cards/shakti-app.png"
+              image="/images/home-cards/shakti-app.webp"
               alt={appName}
               eyebrow="App"
               title={appName}
@@ -34,7 +34,7 @@ export default function EcosystemPreview() {
           <GsapReveal delay={0.1} y={50}>
             <HomeImageCard
               href="/community"
-              image="/images/page-heroes/community-hero.png"
+              image="/images/page-heroes/community-hero.webp"
               alt="Community"
               eyebrow="Community"
               title="Sacred circles"
@@ -48,7 +48,7 @@ export default function EcosystemPreview() {
           <GsapReveal delay={0.2} y={50}>
             <HomeImageCard
               href="/live"
-              image="/images/page-heroes/live-hero.png"
+              image="/images/page-heroes/live-hero.webp"
               alt="Live Sessions"
               eyebrow="Live"
               title="Live sessions"

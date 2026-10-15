@@ -143,6 +143,44 @@ export default function ShaktiCardReading({ showBuyButton = false }: { showBuyBu
     { scope: sectionRef, dependencies: [phase], revertOnUpdate: true },
   );
 
+  // One authored entrance for the idle hero: the wordmark condenses in,
+  // the attendant deck crossfades up, then the CTA row settles last.
+  useGSAP(
+    () => {
+      if (phase !== "idle") return;
+      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const t = reduced ? 0.01 : 1;
+
+      // Hide before the fromTo runs so the entrance never flashes.
+      gsap.set([".home-hero-wordmark", ".home-hero-deck", ".home-hero-cta"], {
+        autoAlpha: 0,
+        ...(reduced ? {} : { y: 0 }),
+      });
+
+      gsap
+        .timeline({ defaults: { ease: "expo.out" } })
+        .fromTo(
+          ".home-hero-wordmark",
+          { autoAlpha: 0, y: 12, letterSpacing: "0.28em", filter: "blur(6px)" },
+          { autoAlpha: 1, y: 0, letterSpacing: "0.14em", filter: "blur(0px)", duration: t * 1.1 },
+          0.05,
+        )
+        .fromTo(
+          ".home-hero-deck",
+          { autoAlpha: 0 },
+          { autoAlpha: 1, duration: reduced ? 0.01 : 0.7 },
+          "-=0.45",
+        )
+        .fromTo(
+          ".home-hero-cta",
+          { autoAlpha: 0, y: 12 },
+          { autoAlpha: 1, y: 0, duration: t * 0.6 },
+          "-=0.3",
+        );
+    },
+    { scope: sectionRef, dependencies: [phase], revertOnUpdate: true },
+  );
+
   const spreadPosition = (index: number, width: number, height: number) => {
     const mobile = width < 640;
     const columns = mobile ? 13 : 26;
@@ -304,7 +342,7 @@ export default function ShaktiCardReading({ showBuyButton = false }: { showBuyBu
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_72%_45%,rgba(153,42,29,0.94)_0%,rgba(70,16,13,0.94)_39%,rgba(25,7,7,1)_78%)]" />
 
       {showBuyButton && phase === "idle" ? (
-        <h1 className="absolute left-1/2 top-20 z-30 -translate-x-1/2 whitespace-nowrap text-center font-serif text-4xl font-medium leading-none tracking-[0.14em] text-[#e8c96a] sm:top-24 sm:text-6xl sm:tracking-[0.1em] lg:top-24 lg:text-7xl">
+        <h1 className="home-hero-wordmark absolute left-1/2 top-20 z-30 -translate-x-1/2 whitespace-nowrap text-center font-serif text-4xl font-medium leading-none tracking-[0.14em] text-[#e8c96a] sm:top-24 sm:text-6xl sm:tracking-[0.1em] lg:top-24 lg:text-7xl">
           SHAKTI
         </h1>
       ) : null}
@@ -316,8 +354,8 @@ export default function ShaktiCardReading({ showBuyButton = false }: { showBuyBu
               <div className="pointer-events-none absolute left-1/2 top-[34%] block aspect-[1172/1342] w-full -translate-x-1/2 -translate-y-1/2 drop-shadow-[0_0_30px_rgba(238,198,50,0.5)]" aria-hidden="true">
                 <div className="animate-spin-slow relative h-full w-full motion-reduce:animate-none">
                   <Image
-                    src="/images/devi-chakra-rotating.png"
-                    alt=""
+                    src="/images/devi-chakra-mandala.webp"
+                    alt="Devi chakra mandala"
                     fill
                     sizes="580px"
                     className="object-contain"
@@ -326,7 +364,7 @@ export default function ShaktiCardReading({ showBuyButton = false }: { showBuyBu
               </div>
             ) : null}
             <Image
-              src={showBuyButton ? "/images/devi-foreground.png" : "/images/shakti-symbol.png"}
+              src={showBuyButton ? "/images/devi-healing-goddess.webp" : "/images/shakti-symbol.webp"}
               alt={showBuyButton ? "Devi Shakti" : "Shakti"}
               width={1042}
               height={1509}
@@ -375,31 +413,31 @@ export default function ShaktiCardReading({ showBuyButton = false }: { showBuyBu
                     aria-label={`Choose face-down card ${index + 1} of ${CARD_COUNT}`}
                     className="reading-deck-card group absolute left-1/2 top-1/2 aspect-[1060/1484] w-11 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-[0.3rem] border border-[#f5d85d]/55 bg-[#8b1c10] shadow-[0_9px_16px_rgba(0,0,0,0.48)] will-change-transform enabled:cursor-pointer enabled:hover:brightness-125 enabled:hover:shadow-[0_18px_36px_rgba(238,198,50,0.4)] sm:w-[6.5rem] lg:w-[7.25rem]"
                   >
-                    <Image src="/images/shakti-cards/card_back-cover.png" alt="" fill sizes="(max-width: 640px) 44px, 94px" className="object-cover" />
+                    <Image src="/images/shakti-cards/card-back-cover.webp" alt="Shakti oracle card back design" fill sizes="(max-width: 640px) 44px, 94px" className="object-cover" />
                     <span className="absolute inset-0 bg-gradient-to-br from-white/15 via-transparent to-black/15 opacity-0 transition-opacity duration-300 group-enabled:group-hover:opacity-100" />
                   </button>
                 ))}
 
                 {phase === "idle" && (
-                  <div className="absolute left-1/2 top-[58%] w-28 -translate-x-1/2 -translate-y-1/2 sm:top-[60%] sm:w-[12.5rem] lg:left-[72%] lg:top-[43%] lg:w-[16rem]">
+                  <div className="home-hero-deck absolute left-1/2 top-[58%] w-28 -translate-x-1/2 -translate-y-1/2 sm:top-[60%] sm:w-[12.5rem] lg:left-[72%] lg:top-[43%] lg:w-[16rem]">
                     <div className="pointer-events-none absolute left-1/2 top-1/2 h-[19rem] w-[19rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(240,198,51,0.19),rgba(180,20,20,0.07)_45%,transparent_70%)] blur-sm sm:h-[24rem] sm:w-[24rem]" />
                     <div className="absolute -left-[42%] top-[8%] hidden aspect-[1060/1484] w-full -rotate-[17deg] overflow-hidden rounded-xl border border-gold/25 opacity-35 shadow-[0_26px_55px_rgba(0,0,0,0.48)] sm:block">
-                      <Image src="/images/shakti-cards/card_back-cover.png" alt="" fill sizes="224px" className="object-cover" />
+                      <Image src="/images/shakti-cards/card-back-cover.webp" alt="Shakti oracle card back design" fill sizes="224px" className="object-cover" />
                     </div>
                     <div className="absolute -right-[42%] top-[8%] hidden aspect-[1060/1484] w-full rotate-[17deg] overflow-hidden rounded-xl border border-gold/25 opacity-35 shadow-[0_26px_55px_rgba(0,0,0,0.48)] sm:block">
-                      <Image src="/images/shakti-cards/card_back-cover.png" alt="" fill sizes="224px" className="object-cover" />
+                      <Image src="/images/shakti-cards/card-back-cover.webp" alt="Shakti oracle card back design" fill sizes="224px" className="object-cover" />
                     </div>
                     <div className="absolute inset-0 translate-x-5 translate-y-4 rounded-xl border border-gold/20 bg-[#30100d] shadow-[0_24px_34px_rgba(0,0,0,0.34)]" />
                     <div className="absolute inset-0 translate-x-3.5 translate-y-2.5 rounded-xl border border-gold/25 bg-[#52130e]" />
                     <div className="absolute inset-0 translate-x-2 translate-y-1.5 rounded-xl border border-gold/35 bg-[#761b10]" />
                     <div className="relative aspect-[1060/1484] overflow-hidden rounded-xl border border-gold-light/80 shadow-[0_38px_75px_rgba(0,0,0,0.75),0_0_55px_rgba(221,184,41,0.22)] transition-transform duration-700 hover:-translate-y-1">
-                      <Image src="/images/shakti-cards/card_back-cover.png" alt="Shakti card deck cover" fill sizes="(max-width: 639px) 112px, (max-width: 1023px) 200px, 256px" priority className="object-cover" />
+                      <Image src="/images/shakti-cards/card-back-cover.webp" alt="Shakti card deck cover" fill sizes="(max-width: 639px) 112px, (max-width: 1023px) 200px, 256px" priority className="object-cover" />
                       <span className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/12 to-transparent" />
                     </div>
                     <div className="pointer-events-none absolute left-1/2 top-[calc(100%+1.2rem)] h-3 w-48 -translate-x-1/2 rounded-[50%] bg-black/50 blur-md" />
                     <div className="pointer-events-none absolute left-1/2 top-[calc(100%+1.65rem)] h-px w-56 -translate-x-1/2 bg-gradient-to-r from-transparent via-gold/55 to-transparent" />
                     <div className="pointer-events-none absolute left-1/2 top-[calc(100%+1.45rem)] h-2 w-2 -translate-x-1/2 rotate-45 border border-gold/60 bg-[#4b120f]" />
-                    <div className="absolute left-1/2 top-[calc(100%+3.25rem)] z-20 flex -translate-x-1/2 flex-col items-center gap-3">
+                    <div className="home-hero-cta absolute left-1/2 top-[calc(100%+3.25rem)] z-20 flex -translate-x-1/2 flex-col items-center gap-3">
                       <button
                         type="button"
                         onClick={startShuffle}

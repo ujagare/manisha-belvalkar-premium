@@ -8,9 +8,9 @@ import Button from "@/components/ui/Button";
 import Reveal from "@/components/ui/Reveal";
 
 export const metadata: Metadata = {
-  title: "Live Sessions",
+  title: "Live Online Sessions & Tarot Workshops",
   description:
-    "Online sessions and interactive live workshops with Dr. Manisha Belvalkar.",
+    "Join online guidance sessions and interactive live workshops with Dr. Manisha Belvalkar — Tarot, healing and spiritual growth from anywhere in India.",
   alternates: { canonical: "/live" },
 };
 
@@ -21,7 +21,7 @@ export default function LivePage() {
     <>
       <PageHero
         eyebrow="Live"
-        image="/images/page-heroes/live-hero.png"
+        image="/images/page-heroes/live-hero.webp"
         imageAlt="An intimate stage prepared for a live wisdom circle"
         title={
           <>

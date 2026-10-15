@@ -10,8 +10,9 @@ import { isServerConfigured } from "@/lib/env";
 import HomeFAQ from "@/components/home/HomeFAQ";
 
 export const metadata: Metadata = {
-  title: "Contact",
-  description: "Connect with Manisha Belvalkar for Tarot, Healing, and Well-being sessions.",
+  title: "Contact Dr. Manisha Belvalkar — Book a Session",
+  description:
+    "Book a Tarot consultation, healing or well-being session with Dr. Manisha Belvalkar. Call +91 99222 46111 or send a message — Mumbai, Pune & online sessions.",
   alternates: { canonical: "/contact" },
 };
 
@@ -20,7 +21,7 @@ export default function ContactPage() {
     <>
       <PageHero
         eyebrow="Contact"
-        image="/images/page-heroes/contact-hero.png"
+        image="/images/page-heroes/contact-hero.webp"
         imageAlt="A calm and welcoming private consultation space"
         title={
           <>

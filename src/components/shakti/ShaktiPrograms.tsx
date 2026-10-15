@@ -13,7 +13,7 @@ const programs = [
     title: "Goddess Invocation Sadhana",
     description:
       "A 52-day sacred practice rooted in the chanting of seed mantras and guided invocation rituals. The journey helps you build a living relationship with Goddess energy through devotion, discipline and daily inner listening.",
-    image: "/images/page-heroes/shakti-hero.png",
+    image: "/images/page-heroes/shakti-hero.webp",
     imageAlt: "A crimson and antique-gold lotus altar representing Goddess invocation",
     features: [
       "Guided chanting of sacred seed mantras",
@@ -29,7 +29,7 @@ const programs = [
     title: "Shakti Transformation Journey",
     description:
       "A six-month guided experience for transcending limiting beliefs and creating deep, lasting transformation. Through self-exploration, mentoring and aligned practices, you begin living from a clearer and more empowered inner foundation.",
-    image: "/images/shakti-transformation-journey.png",
+    image: "/images/shakti-transformation-journey.webp",
     imageAlt: "Goddess Shakti standing before a sacred mandala in a transformational divine feminine artwork",
     features: [
       "Recognise and transcend limiting beliefs",

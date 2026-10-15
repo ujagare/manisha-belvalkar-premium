@@ -194,7 +194,7 @@ export default function ChakraAssessment() {
 
         <div className="grid overflow-hidden rounded-[1.75rem] border border-gold/25 bg-white shadow-[0_38px_100px_-55px_rgba(92,19,14,0.42)] lg:min-h-[38rem] lg:grid-cols-[0.78fr_1.22fr] lg:rounded-[2.25rem]">
           <div className="relative min-h-[22rem] overflow-hidden bg-[#24110e] lg:min-h-full">
-            <Image src="/images/chakra.png" alt="The seven chakra energy centres" fill sizes="(max-width: 1024px) 100vw, 40vw" className="object-cover object-center opacity-90" />
+            <Image src="/images/chakra-energy-diagram.webp" alt="The seven chakra energy centres" fill sizes="(max-width: 1024px) 100vw, 40vw" className="object-cover object-center opacity-90" />
             <div className="absolute inset-0 bg-gradient-to-t from-[#24110e] via-[#24110e]/15 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-[#24110e]/38" />
             <div className="absolute inset-x-7 bottom-7 text-white sm:inset-x-10 sm:bottom-9">
               <div className="flex items-center gap-3 text-gold-light">

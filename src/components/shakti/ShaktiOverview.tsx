@@ -71,7 +71,7 @@ export function ShaktiIntro() {
               muted
               loop
               playsInline
-              poster="/images/page-heroes/shakti-hero.png"
+              poster="/images/page-heroes/shakti-hero.webp"
               aria-label="Shakti divine feminine visual"
             >
               <source src="/videos/shakti-video.mp4" type="video/mp4" />
@@ -124,7 +124,7 @@ export function ShaktiOracleCollection() {
       <div className="relative mx-auto grid max-w-7xl gap-14 lg:grid-cols-[0.95fr_1.05fr] lg:items-center lg:gap-24">
         <Reveal direction="right" className="relative min-h-[32rem] sm:min-h-[42rem]">
           <div className="absolute inset-[8%_5%_2%_14%] rounded-[45%_45%_2rem_2rem] bg-[#6f100d] shadow-[0_42px_100px_-45px_rgba(91,20,13,0.75)]" />
-          <Image src="/images/shakti-cards-and-book.png" alt="SHAKTI Oracle Deck with its companion guidebook" fill sizes="(max-width: 1024px) 100vw, 48vw" className="object-contain drop-shadow-[0_32px_38px_rgba(80,20,12,0.26)]" />
+          <Image src="/images/shakti-cards-and-book.webp" alt="SHAKTI Oracle Deck with its companion guidebook" fill sizes="(max-width: 1024px) 100vw, 48vw" className="object-contain drop-shadow-[0_32px_38px_rgba(80,20,12,0.26)]" />
           <div className="absolute bottom-4 left-0 border border-gold/30 bg-[#fffaf2]/90 px-5 py-4 shadow-xl backdrop-blur-md sm:left-5">
             <p className="text-[0.6rem] font-bold uppercase tracking-[0.24em] text-gold-deep">Complete sacred set</p>
             <p className="mt-1 font-display text-3xl font-semibold text-primary">₹2,993</p>

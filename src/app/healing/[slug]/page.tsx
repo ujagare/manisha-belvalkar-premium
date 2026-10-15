@@ -79,7 +79,7 @@ export default async function HealingDetailPage({ params }: Props) {
                   <div className="relative h-[22rem] overflow-hidden bg-charcoal sm:h-[28rem] lg:h-[30rem]">
                     <Image
                       src={service.image}
-                      alt=""
+                      alt={`${service.title} healing session background`}
                       fill
                       priority
                       sizes="(max-width: 1535px) 100vw, 52vw"

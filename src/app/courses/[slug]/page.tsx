@@ -33,9 +33,36 @@ export default async function CourseDetailPage({ params }: Props) {
   const course = courses.find((c) => c.slug === slug);
   if (!course) notFound();
 
+  const courseSchema = {
+    "@context": "https://schema.org",
+    "@type": "Course",
+    name: course.title,
+    description: course.description,
+    image: course.image
+      ? [`https://manishabelvalkar.com${course.image}`]
+      : undefined,
+    provider: {
+      "@type": "Person",
+      name: "Dr. Manisha Belvalkar",
+      url: "https://manishabelvalkar.com",
+    },
+    offers: course.price
+      ? {
+          "@type": "Offer",
+          price: course.price,
+          priceCurrency: "INR",
+          availability: "https://schema.org/InStock",
+          url: `https://manishabelvalkar.com/courses/${course.slug}`,
+        }
+      : undefined,
+  };
+
   return (
     <>
-      <section className="relative overflow-hidden bg-ivory pb-16 pt-32 lg:pb-24 lg:pt-40">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(courseSchema) }}
+      />      <section className="relative overflow-hidden bg-ivory pb-16 pt-32 lg:pb-24 lg:pt-40">
         <div className="glow-gold absolute -right-32 -top-32 h-[420px] w-[420px]" />
         <div className="glow-crimson absolute -bottom-32 -left-32 h-[380px] w-[380px]" />
 

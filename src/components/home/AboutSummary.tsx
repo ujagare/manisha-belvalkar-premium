@@ -102,7 +102,7 @@ export default function AboutSummary() {
                 <div className="absolute inset-0 rounded-t-[11rem] rounded-b-[1.5rem] bg-gradient-to-b from-gold via-gold-light to-gold-deep" />
                 <div className="relative h-[540px] w-full overflow-hidden rounded-t-[10rem] rounded-b-[1.25rem]">
                   <Image
-                    src="/images/manisha-wix.jpg"
+                    src="/images/manisha-wix.webp"
                     alt="Manisha Belvalkar — spiritual mentor"
                     width={1100}
                     height={1653}

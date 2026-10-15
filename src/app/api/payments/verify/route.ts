@@ -5,6 +5,8 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { isSameOriginRequest } from "@/lib/security";
 import { DISTANCE_HEALING_SLUG, ensureDistanceHealingCase } from "@/lib/distance-healing";
+import { orderConfirmationEmail, sendEmail } from "@/lib/resend";
+import { formatINR } from "@/lib/utils";
 
 export const runtime = "nodejs";
 
@@ -28,7 +30,7 @@ export async function POST(request: Request) {
     }
 
     const admin = createAdminClient();
-    const { data: order } = await admin.from("orders").select("id,user_id,gateway_order_id,amount_subunits,currency,item_type,item_slug").eq("id", internalOrderId).eq("user_id", user.id).maybeSingle();
+    const { data: order } = await admin.from("orders").select("id,user_id,gateway_order_id,amount_subunits,amount,currency,item_type,item_slug,item_title").eq("id", internalOrderId).eq("user_id", user.id).maybeSingle();
     if (!order || order.gateway_order_id !== razorpayOrderId) return apiError("NOT_FOUND", "Order not found.", 404);
     if (!verifyCheckoutSignature(order.gateway_order_id, paymentId, signature)) {
       return apiError("FORBIDDEN", "Payment verification failed.", 403);
@@ -66,6 +68,20 @@ export async function POST(request: Request) {
 
     const isDistanceHealing = paid && order.item_type === "healing" && order.item_slug === DISTANCE_HEALING_SLUG;
     if (isDistanceHealing) await ensureDistanceHealingCase(order.id, order.user_id);
+
+    // Send the customer an order/anonymous confirmation email (best-effort —
+    // a send failure must never fail the verification response).
+    if (paid && user?.email) {
+      const { subject, html } = orderConfirmationEmail({
+        name: user.user_metadata?.name ?? user.email.split("@")[0],
+        email: user.email,
+        orderRef: order.id.slice(0, 8),
+        items: order.item_title,
+        totalLabel: order.amount_subunits != null ? formatINR(order.amount_subunits / 100) : order.amount != null ? formatINR(order.amount) : "—",
+        itemType: order.item_type,
+      });
+      await sendEmail({ to: user.email, subject, html });
+    }
 
     return apiSuccess({
       orderId: order.id,

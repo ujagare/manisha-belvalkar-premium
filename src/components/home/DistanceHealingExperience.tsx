@@ -39,7 +39,7 @@ export default function DistanceHealingExperience() {
           <div className="relative mx-auto w-full max-w-xl lg:mx-0">
             <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-parchment shadow-[0_32px_80px_-38px_rgba(107,11,11,0.42)]">
               <Image
-                src="/images/home-cards/distance-healing.png"
+                src="/images/home-cards/distance-healing.webp"
                 alt="A calm Distance Healing session from the comfort of home"
                 fill
                 sizes="(max-width: 1024px) 92vw, 42vw"

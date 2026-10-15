@@ -12,14 +12,14 @@ import LeadCaptureForm from "@/components/backend/LeadCaptureForm";
 import { isServerConfigured } from "@/lib/env";
 
 export const metadata: Metadata = {
-  title: "Shakti",
+  title: "Shakti Oracle Deck & Divine Feminine Healing",
   description:
-    "Discover Shakti: divine feminine wisdom, the 52-card Shakti Oracle inspired by 51 Shakti Peethas, Goddess Invocation Sadhana, healing, and a six-month transformation journey with Dr. Manisha Belvalkar.",
+    "Discover Shakti: divine feminine wisdom, the 52-card Shakti Oracle inspired by 51 Shakti Peethas, Goddess Invocation Sadhana, healing and a six-month transformation journey with Dr. Manisha Belvalkar.",
   alternates: { canonical: "/shakti" },
   openGraph: {
     title: "Shakti — Divine Feminine Wisdom & Transformation",
     description: "Oracle wisdom, sacred practice, healing and a guided six-month journey with Dr. Manisha Belvalkar.",
-    images: ["/images/page-heroes/shakti-hero.png"],
+    images: ["/images/page-heroes/shakti-hero.webp"],
   },
 };
 

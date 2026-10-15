@@ -69,8 +69,32 @@ export default async function ProductDetailPage({ params }: Props) {
     .concat(all.filter((p) => p.slug !== product.slug && p.category !== product.category))
     .slice(0, 3);
 
+  const productSchema = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.title,
+    description: product.description,
+    image: product.image
+      ? [`https://manishabelvalkar.com${product.image}`]
+      : undefined,
+    category: product.category,
+    sku: product.slug,
+    brand: { "@type": "Brand", name: "Manisha Belvalkar" },
+    offers: {
+      "@type": "Offer",
+      price: product.price,
+      priceCurrency: "INR",
+      availability: "https://schema.org/InStock",
+      url: `https://manishabelvalkar.com/products/${product.slug}`,
+    },
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+      />
       <section className="relative overflow-hidden bg-ivory pb-16 pt-32 lg:pb-24 lg:pt-40">
         <div className="glow-gold absolute -right-32 -top-32 h-[420px] w-[420px]" />
         <div className="glow-crimson absolute -bottom-32 -left-32 h-[380px] w-[380px]" />

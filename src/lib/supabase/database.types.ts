@@ -73,6 +73,8 @@ export type Database = {
           gateway_order_id: string | null;
           idempotency_key: string | null;
           address_id: string | null;
+          guest_email: string | null;
+          guest_name: string | null;
           created_at: string;
           updated_at: string;
         };
@@ -91,6 +93,8 @@ export type Database = {
           gateway_order_id?: string | null;
           idempotency_key?: string | null;
           address_id?: string | null;
+          guest_email?: string | null;
+          guest_name?: string | null;
           created_at?: string;
           updated_at?: string;
         };
@@ -109,6 +113,8 @@ export type Database = {
           gateway_order_id?: string | null;
           idempotency_key?: string | null;
           address_id?: string | null;
+          guest_email?: string | null;
+          guest_name?: string | null;
           created_at?: string;
           updated_at?: string;
         };

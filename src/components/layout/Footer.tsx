@@ -214,7 +214,7 @@ export default function Footer() {
                 className="flex items-center gap-3 font-display text-3xl font-bold tracking-tight text-white transition-colors hover:text-gold-light"
               >
                 <Image
-                  src="/images/Logo.png"
+                  src="/images/manisha-belvalkar-logo.webp"
                   alt="Manisha Belvalkar"
                   width={48}
                   height={48}

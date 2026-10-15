@@ -10,9 +10,9 @@ import DistanceHealingExperience from "@/components/home/DistanceHealingExperien
 import ChakraAssessment from "@/components/home/ChakraAssessment";
 
 export const metadata: Metadata = {
-  title: "Energy Healing",
+  title: "Energy Healing & Distance Healing in Mumbai & Pune",
   description:
-    "Energy Healing, Distance Healing, Shakti Healing, and guided mind reprogramming with Dr. Manisha Belvalkar.",
+    "Energy healing, distance healing, Shakti healing, chakra balancing and guided mind reprogramming with Dr. Manisha Belvalkar — 30+ years of experience. Mumbai & Pune.",
   alternates: { canonical: "/healing" },
 };
 
@@ -28,7 +28,7 @@ export default function HealingPage() {
     <>
       <PageHero
         eyebrow="Energy Healing"
-        image="/images/page-heroes/healing-hero.png"
+        image="/images/page-heroes/healing-hero.webp"
         imageAlt="Seven luminous mineral forms resting in rippled healing sand"
         title={
           <>

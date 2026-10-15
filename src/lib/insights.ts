@@ -36,7 +36,7 @@ export const insights: InsightArticle[] = [
     description: "A grounded way to match your present question with the kind of support you are seeking.",
     category: "Preparation",
     readTime: "6 min read",
-    image: "/images/page-heroes/services-hero.png",
+    image: "/images/page-heroes/services-hero.webp",
     imageAlt: "A quiet consultation space prepared for reflection",
     introduction: "A useful session begins before the appointment. Being clear about what you want to explore helps you choose an offering with realistic expectations and arrive ready to participate in the process.",
     sections: [
@@ -68,7 +68,7 @@ export const insights: InsightArticle[] = [
     description: "Use chakra language as a reflective framework without turning it into a diagnosis or promise.",
     category: "Foundations",
     readTime: "7 min read",
-    image: "/images/chakra.png",
+    image: "/images/chakra-energy-diagram.webp",
     imageAlt: "Colourful chakra-inspired artwork used as a reflective symbol",
     introduction: "Chakra traditions offer a symbolic vocabulary for noticing themes in our lives. The most responsible way to work with that vocabulary is as an invitation to reflect—not as a medical test, fixed label, or explanation for every difficulty.",
     sections: [
@@ -100,7 +100,7 @@ export const insights: InsightArticle[] = [
     description: "Thoughtful questions, realistic expectations, and a simple way to retain what feels useful.",
     category: "Preparation",
     readTime: "5 min read",
-    image: "/images/tarot.jpg",
+    image: "/images/tarot.webp",
     imageAlt: "Tarot cards arranged on a cloth for a consultation",
     introduction: "You do not need special knowledge to attend a Tarot consultation. A little preparation can help the conversation stay focused and make it easier to distinguish meaningful reflection from the pressure to find certainty.",
     sections: [
@@ -132,7 +132,7 @@ export const insights: InsightArticle[] = [
     description: "A quiet ten-minute rhythm for noticing, writing, and choosing one intentional next step.",
     category: "Everyday practice",
     readTime: "4 min read",
-    image: "/images/candle.jpg",
+    image: "/images/healing-candle-therapy.webp",
     imageAlt: "A lit candle beside a journal in a calm room",
     introduction: "A sustainable practice does not need to be elaborate. Consistency is often easier when the ritual is short, specific, and flexible enough to fit an ordinary day.",
     sections: [

@@ -70,7 +70,7 @@ export default function Navbar() {
             )}
           >
             <Image
-              src="/images/Logo.png"
+              src="/images/manisha-belvalkar-logo.webp"
               alt="Manisha Belvalkar"
               width={36}
               height={36}

@@ -8,9 +8,9 @@ import Reveal from "@/components/ui/Reveal";
 import GoldDivider from "@/components/ui/GoldDivider";
 
 export const metadata: Metadata = {
-  title: "Courses",
+  title: "Tarot, Chakra & Spiritual Courses in Mumbai & Pune",
   description:
-    "Premium spiritual learning pathways with Dr Manisha Belvalkar: one-to-one courses, group workshops, Zoom workshops, and WhatsApp workshops.",
+    "Learn Tarot reading, chakra therapy and Goddess attunement with Dr. Manisha Belvalkar. One-to-one courses, group workshops, Zoom and WhatsApp workshops — beginner to advanced.",
   alternates: { canonical: "/courses" },
 };
 
@@ -57,7 +57,7 @@ export default function CoursesPage() {
     <>
       <PageHero
         eyebrow="Courses"
-        image="/images/page-heroes/courses-hero.png"
+        image="/images/page-heroes/courses-hero.webp"
         imageAlt="Handcrafted study books and learning cards in warm golden light"
         title={
           <>

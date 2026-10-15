@@ -8,9 +8,9 @@ import Button from "@/components/ui/Button";
 import { Newspaper, Quote } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Media",
+  title: "Media & Press — Manisha Belvalkar",
   description:
-    "Manisha Belvalkar in the press — interviews, features, and more.",
+    "Dr. Manisha Belvalkar in the press — interviews, features, articles on Tarot, healing and spiritual wellbeing.",
   alternates: { canonical: "/media" },
 };
 
@@ -19,7 +19,7 @@ export default function MediaPage() {
     <>
       <PageHero
         eyebrow="Media"
-        image="/images/page-heroes/media-hero.png"
+        image="/images/page-heroes/media-hero.webp"
         imageAlt="Editorial press archive with layered pages and an antique magnifying glass"
         title={
           <>

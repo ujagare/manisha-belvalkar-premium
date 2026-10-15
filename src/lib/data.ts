@@ -138,7 +138,7 @@ export interface HeroSlide {
 
 export const legacyHeroSlides: Record<string, unknown>[] = [
   {
-    image: "/images/hero-home-bg.png",
+    image: "/images/manisha-homepage-background.webp",
     eyebrow: "SHAKTI Collection",
     headline: "Messages – Daily Guidance from the",
     headlineHighlight: "Divine Feminine",
@@ -146,14 +146,14 @@ export const legacyHeroSlides: Record<string, unknown>[] = [
       "52 beautifully illustrated oracle cards born from Dr. Manisha's meditations with the Goddesses of the sacred 51 Shakti Peethas — daily guidance, positivity and spiritual insight in your hands.",
     ctaLabel: "Buy Now",
     ctaHref: "/checkout/product/shakti-oracle-deck",
-    bookImage: "/images/shakti-cards-and-book.png",
+    bookImage: "/images/shakti-cards-and-book.webp",
     bookTitle: "SHAKTI Oracle Deck",
     bookInfo: "Inspired by 51 Shakti Peethas · Guidebook included",
     bookPrice: "₹2,993",
     bookBadge: "Best Seller",
   },
   {
-    image: "/images/hero-home-bg.png",
+    image: "/images/manisha-homepage-background.webp",
     eyebrow: "SHAKTI Collection",
     headline: "Deck & Guidebook",
     headlineHighlight: "Together",
@@ -161,7 +161,7 @@ export const legacyHeroSlides: Record<string, unknown>[] = [
       "The complete SHAKTI experience — a beautifully illustrated 52-card oracle deck paired with its companion guidebook, holding the wisdom of the 51 Shakti Peethas for your daily practice.",
     ctaLabel: "Buy Now",
     ctaHref: "/checkout/product/shakti-oracle-deck",
-    bookImage: "/images/shakti-cards-and-book.png",
+    bookImage: "/images/shakti-cards-and-book.webp",
     bookTitle: "SHAKTI Deck + Guidebook",
     bookInfo: "Complete set · Cards & companion book",
     bookPrice: "₹2,993",
@@ -169,7 +169,7 @@ export const legacyHeroSlides: Record<string, unknown>[] = [
     bookLarge: true,
   },
   {
-    image: "/images/hero-home-bg.png",
+    image: "/images/manisha-homepage-background.webp",
     eyebrow: "SHAKTI Collection",
     headline: "The Sacred",
     headlineHighlight: "Combo",
@@ -177,7 +177,7 @@ export const legacyHeroSlides: Record<string, unknown>[] = [
       "Gift the divine — the SHAKTI Oracle Deck and guidebook presented together as one sacred combo, handcrafted with intention and blessed before it reaches your altar.",
     ctaLabel: "Buy Now",
     ctaHref: "/checkout/product/shakti-oracle-deck",
-    bookImage: "/images/shakti-combo-book.png",
+    bookImage: "/images/shakti-combo-book.webp",
     bookTitle: "SHAKTI Combo Pack",
     bookInfo: "Deck + Guidebook · Gift-ready packaging",
     bookPrice: "₹2,993",
@@ -185,7 +185,7 @@ export const legacyHeroSlides: Record<string, unknown>[] = [
     bookLarge: true,
   },
   {
-    image: "/images/hero-home-bg.png",
+    image: "/images/manisha-homepage-background.webp",
     eyebrow: "Sacred Rituals",
     headline: "Cleanse & Protect",
     headlineHighlight: "Your Space",
@@ -193,7 +193,7 @@ export const legacyHeroSlides: Record<string, unknown>[] = [
       "A handcrafted Himalayan crystal salt frame infused with intention — place it near your entrance, altar or meditation corner to hold your space calm, clear and protected.",
     ctaLabel: "Buy Now",
     ctaHref: "/checkout/product/sacred-salt-frame",
-    bookImage: "/images/shakti-salt-frame.png",
+    bookImage: "/images/shakti-salt-frame.webp",
     bookTitle: "Sacred Salt Frame",
     bookInfo: "Himalayan crystal salt · Handcrafted",
     bookPrice: "₹899",
@@ -204,7 +204,7 @@ export const legacyHeroSlides: Record<string, unknown>[] = [
 
 const heroSlideCatalog: HeroSlide[] = [
   {
-    image: "/images/manisha-portrait.jpg",
+    image: "/images/manisha-portrait.webp",
     eyebrow: "About Manisha",
     headline: "Meet the mentor behind",
     headlineHighlight: "sacred transformation",
@@ -221,24 +221,24 @@ const heroSlideCatalog: HeroSlide[] = [
     supportingValue: "Tarot, Shakti, healing",
     gallery: [
       {
-        image: "/images/about-portrait-1.png",
+        image: "/images/manisha-portrait-healer.webp",
         alt: "Dr. Manisha Belvalkar portrait",
         title: "Spiritual mentor",
       },
       {
-        image: "/images/about-health-mag.jpg",
+        image: "/images/manisha-health-magazine.webp",
         alt: "Published feature about Dr. Manisha Belvalkar",
         title: "Featured voice",
       },
       {
-        image: "/images/about-portrait-2.png",
+        image: "/images/manisha-portrait-meditation.webp",
         alt: "Dr. Manisha Belvalkar profile image",
         title: "Holistic guide",
       },
     ],
   },
   {
-    image: "/images/hero-home-bg.png",
+    image: "/images/manisha-homepage-background.webp",
     eyebrow: "Sacred Store",
     headline: "Shop essentials for your",
     headlineHighlight: "daily ritual",
@@ -255,29 +255,29 @@ const heroSlideCatalog: HeroSlide[] = [
     supportingValue: "SHAKTI deck",
     gallery: [
       {
-        image: "/images/shakti-book-front.png",
+        image: "/images/shakti-book-front.webp",
         alt: "Front cover of the SHAKTI guidebook by Dr. Manisha Belvalkar",
         title: "SHAKTI guidebook",
       },
       {
-        image: "/images/shakti-cards-and-book.png",
+        image: "/images/shakti-cards-and-book.webp",
         alt: "SHAKTI deck and guidebook set",
         title: "Deck + guidebook",
       },
       {
-        image: "/images/shakti-combo-book.png",
+        image: "/images/shakti-combo-book.webp",
         alt: "SHAKTI combo pack",
         title: "Sacred combo",
       },
       {
-        image: "/images/shakti-salt-frame.png",
+        image: "/images/shakti-salt-frame.webp",
         alt: "Sacred salt frame product",
         title: "Salt frame",
       },
     ],
   },
   {
-    image: "/images/page-heroes/services-hero.png",
+    image: "/images/page-heroes/services-hero.webp",
     eyebrow: "Premium Services",
     headline: "Personal guidance for",
     headlineHighlight: "clarity and healing",
@@ -294,17 +294,17 @@ const heroSlideCatalog: HeroSlide[] = [
     supportingValue: "Clarity, balance, purpose",
     gallery: [
       {
-        image: "/images/tarot.jpg",
+        image: "/images/tarot.webp",
         alt: "Tarot consultation cards",
         title: "Tarot consultation",
       },
       {
-        image: "/images/candle.jpg",
+        image: "/images/healing-candle-therapy.webp",
         alt: "Candle for sacred attunement",
         title: "Goddess attunement",
       },
       {
-        image: "/images/home-cards/healing-session.png",
+        image: "/images/home-cards/healing-session.webp",
         alt: "Energy healing session",
         title: "Energy healing",
       },
@@ -333,7 +333,7 @@ export const services: Service[] = [
       "Actionable steps to align with your purpose",
       "Personalized guidance & remedies",
     ],
-    image: "/images/tarot.jpg",
+    image: "/images/tarot.webp",
   },
   {
     slug: "tarot-consultation-30",
@@ -350,7 +350,7 @@ export const services: Service[] = [
       "Clarity on a specific challenge",
       "Empowered decision-making guidance",
     ],
-    image: "/images/tarot.jpg",
+    image: "/images/tarot.webp",
   },
   {
     slug: "tarot-consultation-60",
@@ -368,7 +368,7 @@ export const services: Service[] = [
       "Holistic guidance & remedies",
       "Clear answers to complex questions",
     ],
-    image: "/images/tarot.jpg",
+    image: "/images/tarot.webp",
   },
   {
     slug: "goddess-attunement",
@@ -386,7 +386,7 @@ export const services: Service[] = [
       "Spiritual guidance & blessings",
       "Personalized practices for continued connection",
     ],
-    image: "/images/candle.jpg",
+    image: "/images/healing-candle-therapy.webp",
   },
   {
     slug: "well-being-program",
@@ -403,7 +403,7 @@ export const services: Service[] = [
       "Guided healing sessions",
       "Ongoing support & tools",
     ],
-    image: "/images/home-cards/wellbeing-program.png",
+    image: "/images/home-cards/wellbeing-program.webp",
   },
 ];
 
@@ -425,7 +425,7 @@ export const courses: Course[] = [
       "Those drawn to Goddess Lakshmi's energy",
       "Devotees wanting to deepen their sadhana",
     ],
-    image: "/images/aishwarya-siddhi-course.png",
+    image: "/images/aishwarya-siddhi-program.webp",
     curriculum: [
       {
         module: "Foundations of Abundance",
@@ -470,7 +470,7 @@ export const courses: Course[] = [
       "Practitioners of mantra & meditation",
       "Those ready for deep inner work",
     ],
-    image: "/images/shri-vidya-course.png",
+    image: "/images/shri-vidya-course.webp",
     curriculum: [
       {
         module: "The Sacred Path of Shri Vidya",
@@ -507,7 +507,7 @@ export const courses: Course[] = [
       "Those experiencing energy blocks",
       "Practitioners wanting advanced tools",
     ],
-    image: "/images/advanced-chakra-course.jpg",
+    image: "/images/chakra-healing-course.webp",
   },
   {
     slug: "personalized-wellbeing",
@@ -526,7 +526,7 @@ export const courses: Course[] = [
       "Those who prefer private guidance",
       "Anyone ready to commit to self-growth",
     ],
-    image: "/images/personalized-wellbeing-course.jpg",
+    image: "/images/personalized-wellbeing-course.webp",
   },
 ];
 
@@ -542,7 +542,7 @@ export const products: Product[] = [
     price: 2993,
     salePrice: 3533,
     badge: "Best Seller",
-    image: "/images/shakti-cards-and-book.png",
+    image: "/images/shakti-cards-and-book.webp",
     details: [
       "52 beautifully illustrated cards depicting the Shaktipeeth Goddesses",
       "Information booklet with guidance on how to use the cards",
@@ -561,7 +561,7 @@ export const products: Product[] = [
     price: 2993,
     salePrice: 3533,
     badge: "Complete Set",
-    image: "/images/shakti-book-front.png",
+    image: "/images/shakti-book-front.webp",
     details: [
       "52 oracle cards",
       "Companion guidebook included",
@@ -579,7 +579,7 @@ export const products: Product[] = [
     price: 2993,
     salePrice: 3533,
     badge: "Sacred Combo",
-    image: "/images/shakti-cards-and-book.png",
+    image: "/images/shakti-cards-and-book.webp",
     details: [
       "Deck + guidebook combo",
       "Handcrafted with intention",
@@ -597,7 +597,7 @@ export const products: Product[] = [
     price: 899,
     salePrice: 1099,
     badge: "Handcrafted",
-    image: "/images/shakti-salt-frame.png",
+    image: "/images/shakti-salt-frame.webp",
     details: [
       "Authentic Himalayan crystal salt",
       "Handcrafted with intention",
@@ -615,7 +615,7 @@ export const products: Product[] = [
     price: 899,
     salePrice: 1099,
     badge: "Vastu",
-    image: "/images/shri-vidya-course.png",
+    image: "/images/shri-vidya-course.webp",
     details: [
       "For home and work spaces",
       "Created with healing intention",
@@ -633,7 +633,7 @@ export const products: Product[] = [
     price: 899,
     salePrice: 1099,
     badge: "Ritual",
-    image: "/images/aishwarya-siddhi-course.png",
+    image: "/images/aishwarya-siddhi-program.webp",
     details: [
       "Prosperity-focused ritual guidance",
       "Simple steps for home practice",
@@ -651,7 +651,7 @@ export const products: Product[] = [
     price: 899,
     salePrice: 1099,
     badge: "Ritual",
-    image: "/images/home-cards/positive-energy.png",
+    image: "/images/home-cards/positive-energy.webp",
     details: [
       "For blessings and new beginnings",
       "Positive intention practice",
@@ -669,7 +669,7 @@ export const products: Product[] = [
     price: 899,
     salePrice: 1099,
     badge: "Ritual",
-    image: "/images/home-cards/healing-session.png",
+    image: "/images/home-cards/healing-session.webp",
     details: [
       "Wellness-focused ritual guidance",
       "Supports calm and balance",
@@ -687,7 +687,7 @@ export const products: Product[] = [
     price: 999,
     salePrice: 1299,
     badge: "Workshop",
-    image: "/images/home-cards/shakti-app.png",
+    image: "/images/home-cards/shakti-app.webp",
     details: [
       "Guided WhatsApp format",
       "Texts, images and voice notes",
@@ -717,8 +717,8 @@ export const mediaItems: MediaItem[] = [
       "A conversation with Dr. Manisha Belvalkar on her journey, her work, and how Tarot reveals the connection between our inner world and outer reality.",
     quote:
       "As within, so without. This statement is completely accurate when it comes to Tarot reading — our outer reality reflects our inner world.",
-    image: "/images/about-success-today.jpg",
-    href: "/images/about-success-today.jpg",
+    image: "/images/manisha-success-story.webp",
+    href: "/images/manisha-success-story.webp",
   },
   {
     id: "citadel",
@@ -728,8 +728,8 @@ export const mediaItems: MediaItem[] = [
       "A profile on Manisha's three decades of spiritual practice — from her early exploration of esoteric tools to becoming one of the most trusted Tarot mentors in Mumbai.",
     quote:
       "When people come to me with their problems, I hold a space where they can open their hearts and receive unconditional support.",
-    image: "/images/about-article-scanned.jpg",
-    href: "/images/about-article-scanned.jpg",
+    image: "/images/manisha-article-press.webp",
+    href: "/images/manisha-article-press.webp",
   },
   {
     id: "health-mag",
@@ -739,8 +739,8 @@ export const mediaItems: MediaItem[] = [
       "An exploration of energy healing and Chakra Therapy — and how balancing the body's energy centres supports holistic well-being.",
     quote:
       "Healing begins when we return to balance — across the body, mind and spirit.",
-    image: "/images/about-health-mag.jpg",
-    href: "/images/about-health-mag.jpg",
+    image: "/images/manisha-health-magazine.webp",
+    href: "/images/manisha-health-magazine.webp",
   },
 ];
 
@@ -756,7 +756,7 @@ export const awards: Award[] = [
     title: "International Excellence Award",
     description:
       "Receiving the International Excellence Award for Tarot Reading from actor Sonu Sood — an honour recognising her mastery and years of dedicated service.",
-    image: "/images/about-portrait-1.png",
+    image: "/images/manisha-portrait-healer.webp",
   },
 ];
 
@@ -831,28 +831,28 @@ export const shaktiPillars: ShaktiPillar[] = [
     tagline: "Honour your feminine essence",
     description:
       "A sacred space designed to feel seen, heard and understood as you navigate life's many roles.",
-    image: "/images/manisha-portrait.jpg",
+    image: "/images/manisha-portrait.webp",
   },
   {
     title: "Empowerment",
     tagline: "Reclaim your inner power",
     description:
       "Practical mentoring that helps you own your voice, set loving boundaries and lead your life with confidence.",
-    image: "/images/gold-abstract.jpg",
+    image: "/images/spiritual-golden-texture.webp",
   },
   {
     title: "Self Exploration",
     tagline: "Know your inner world",
     description:
       "Guided reflection for emotional balance, self-awareness and a more authentic relationship with yourself.",
-    image: "/images/tarot.jpg",
+    image: "/images/tarot.webp",
   },
   {
     title: "Divine Support",
     tagline: "Walk with the divine feminine",
     description:
       "Connect with the energy of the Goddesses through Shakti rituals, oracle wisdom and sacred guidance.",
-    image: "/images/candle.jpg",
+    image: "/images/healing-candle-therapy.webp",
   },
 ];
 
@@ -881,7 +881,7 @@ export const legacyMentoringAreas: MentoringArea[] = [
       "Clarity on your current life questions",
       "Actionable next steps & accountability",
     ],
-    image: "/images/manisha-portrait.jpg",
+    image: "/images/manisha-portrait.webp",
   },
   {
     slug: "tarot-mentoring",
@@ -894,7 +894,7 @@ export const legacyMentoringAreas: MentoringArea[] = [
       "Guidance on relationships & career",
       "Empowered, conscious decision-making",
     ],
-    image: "/images/tarot.jpg",
+    image: "/images/tarot.webp",
   },
   {
     slug: "purification",
@@ -907,7 +907,7 @@ export const legacyMentoringAreas: MentoringArea[] = [
       "Emotional weight & pattern release",
       "Renewal and fresh-start guidance",
     ],
-    image: "/images/candle.jpg",
+    image: "/images/healing-candle-therapy.webp",
   },
   {
     slug: "self-development",
@@ -920,7 +920,7 @@ export const legacyMentoringAreas: MentoringArea[] = [
       "Habit & mindset transformation",
       "Personal growth road-mapping",
     ],
-    image: "/images/hero-home-bg.png",
+    image: "/images/manisha-homepage-background.webp",
   },
   {
     slug: "self-exploration",
@@ -933,7 +933,7 @@ export const legacyMentoringAreas: MentoringArea[] = [
       "Life purpose exploration",
       "Authentic living practices",
     ],
-    image: "/images/gold-abstract.jpg",
+    image: "/images/spiritual-golden-texture.webp",
   },
   {
     slug: "healing-in-mentoring",
@@ -946,7 +946,7 @@ export const legacyMentoringAreas: MentoringArea[] = [
       "Compassionate, non-judgemental space",
       "Tools for continued self-healing",
     ],
-    image: "/images/books.jpg",
+    image: "/images/manisha-spiritual-books.webp",
   },
 ];
 
@@ -963,7 +963,7 @@ export const mentoringAreas: MentoringArea[] = [
       "Empowered, conscious decision-making",
       "Clear next steps after every session",
     ],
-    image: "/images/tarot.jpg",
+    image: "/images/tarot.webp",
   },
   {
     slug: "soul-purpose-reading",
@@ -977,7 +977,7 @@ export const mentoringAreas: MentoringArea[] = [
       "Practical guidance for aligned action",
       "Personalised remedies and reflection points",
     ],
-    image: "/images/gold-abstract.jpg",
+    image: "/images/spiritual-golden-texture.webp",
   },
   {
     slug: "clarity-alignment",
@@ -991,7 +991,7 @@ export const mentoringAreas: MentoringArea[] = [
       "Alignment practices for daily decisions",
       "Support for purpose-led transformation",
     ],
-    image: "/images/manisha-portrait.jpg",
+    image: "/images/manisha-portrait.webp",
   },
 ];
 
@@ -1020,7 +1020,7 @@ export const legacyHealingServices: HealingService[] = [
       "Chakra & aura balancing",
       "Intuitive guidance & aftercare",
     ],
-    image: "/images/home-cards/healing-session.png",
+    image: "/images/home-cards/healing-session.webp",
   },
   {
     slug: "distance-healing",
@@ -1033,7 +1033,7 @@ export const legacyHealingServices: HealingService[] = [
       "Scheduled at your convenience",
       "Follow-up guidance included",
     ],
-    image: "/images/home-cards/distance-healing.png",
+    image: "/images/home-cards/distance-healing.webp",
   },
   {
     slug: "chakra-healing",
@@ -1047,7 +1047,7 @@ export const legacyHealingServices: HealingService[] = [
       "Personalized balancing techniques",
       "Ongoing chakra maintenance guidance",
     ],
-    image: "/images/chakra.png",
+    image: "/images/chakra-energy-diagram.webp",
   },
   {
     slug: "goddess-healing",
@@ -1061,7 +1061,7 @@ export const legacyHealingServices: HealingService[] = [
       "Emotional & spiritual restoration",
       "Sacred practices for self-healing",
     ],
-    image: "/images/home-cards/goddess-attunement.png",
+    image: "/images/home-cards/goddess-attunement.webp",
   },
   {
     slug: "mind-reprogramming",
@@ -1075,7 +1075,7 @@ export const legacyHealingServices: HealingService[] = [
       "Release limiting beliefs",
       "Create positive mental patterns",
     ],
-    image: "/images/gold-abstract.jpg",
+    image: "/images/spiritual-golden-texture.webp",
   },
   {
     slug: "positive-energy",
@@ -1088,7 +1088,7 @@ export const legacyHealingServices: HealingService[] = [
       "Daily positive-energy practices",
       "Home & space energising",
     ],
-    image: "/images/home-cards/positive-energy.png",
+    image: "/images/home-cards/positive-energy.webp",
   },
   {
     slug: "chakra-questionnaire",
@@ -1101,7 +1101,7 @@ export const legacyHealingServices: HealingService[] = [
       "Personal energy report",
       "Recommended healing path",
     ],
-    image: "/images/home-cards/chakra-assessment.png",
+    image: "/images/home-cards/chakra-assessment.webp",
   },
 ];
 
@@ -1117,7 +1117,7 @@ export const healingServices: HealingService[] = [
       "Aura and energy balancing",
       "Intuitive guidance and aftercare",
     ],
-    image: "/images/home-cards/healing-session.png",
+    image: "/images/home-cards/healing-session.webp",
   },
   {
     slug: "distance-healing",
@@ -1130,7 +1130,7 @@ export const healingServices: HealingService[] = [
       "Scheduled at your convenience",
       "Follow-up guidance included",
     ],
-    image: "/images/home-cards/distance-healing.png",
+    image: "/images/home-cards/distance-healing.webp",
   },
   {
     slug: "shakti-healing",
@@ -1143,7 +1143,7 @@ export const healingServices: HealingService[] = [
       "Shakti guidance and blessings",
       "Emotional and spiritual restoration",
     ],
-    image: "/images/home-cards/goddess-attunement.png",
+    image: "/images/home-cards/goddess-attunement.webp",
   },
   {
     slug: "mind-reprogramming",
@@ -1157,7 +1157,7 @@ export const healingServices: HealingService[] = [
       "Release limiting beliefs",
       "Create positive mental patterns",
     ],
-    image: "/images/mind-reprogramming.jpg",
+    image: "/images/mind-reprogramming.webp",
   },
 ];
 
@@ -1241,7 +1241,7 @@ export const onlineCourses: OnlineCourse[] = [
       "Practice readings with feedback",
       "Certificate on completion",
     ],
-    image: "/images/tarot.jpg",
+    image: "/images/tarot.webp",
   },
   {
     slug: "angel-course",
@@ -1256,7 +1256,7 @@ export const onlineCourses: OnlineCourse[] = [
       "Meditations for connection",
       "Daily guidance rituals",
     ],
-    image: "/images/gold-abstract.jpg",
+    image: "/images/spiritual-golden-texture.webp",
   },
 ];
 

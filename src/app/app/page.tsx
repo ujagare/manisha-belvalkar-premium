@@ -18,7 +18,7 @@ export default function AppPage() {
     <>
       <PageHero
         eyebrow="Coming Soon"
-        image="/images/page-heroes/app-hero.png"
+        image="/images/page-heroes/app-hero.webp"
         imageAlt="SHAKTI spiritual companion app presented in a refined studio setting"
         title={
           <>

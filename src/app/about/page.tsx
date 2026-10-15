@@ -13,9 +13,9 @@ import GsapReveal from "@/components/ui/GsapReveal";
 import { awards, brand } from "@/lib/data";
 
 export const metadata: Metadata = {
-  title: "About",
+  title: "About Dr. Manisha Belvalkar — Spiritual Mentor with 30+ Years Experience",
   description:
-    "Meet Dr. Manisha Belvalkar, a holistic well-being coach with over 30 years of experience in Tarot, Soul Purpose Reading, Goddess Attunement and Chakra Therapy.",
+    "Meet Dr. Manisha Belvalkar, a holistic well-being coach with over 30 years of experience in Tarot consultation, Soul Purpose Reading, Goddess Attunement and Chakra Therapy in Mumbai & Pune.",
   alternates: { canonical: "/about" },
 };
 
@@ -78,7 +78,7 @@ export default function AboutPage() {
         <div className="mx-auto grid min-h-[calc(100dvh-4rem)] max-w-[90rem] lg:grid-cols-[0.8fr_1.2fr]">
           <div className="relative order-2 min-h-[24rem] overflow-hidden bg-white sm:min-h-[28rem] lg:order-1 lg:m-12 lg:min-h-0 lg:rounded-[1.5rem]">
             <Image
-              src="/images/manisha-about-hero.jpg"
+              src="/images/manisha-about-hero.webp"
               alt="Dr. Manisha Belvalkar seated with her Tarot cards"
               fill
               priority
@@ -146,7 +146,7 @@ export default function AboutPage() {
             <div className="relative mx-auto w-full max-w-lg lg:mx-0">
               <div className="relative aspect-[4/5] overflow-hidden rounded-[1.5rem]">
                 <Image
-                  src="/images/manisha-about-practice.jpg"
+                  src="/images/manisha-about-practice.webp"
                   alt="Manisha Belvalkar during a Tarot reading"
                   fill
                   sizes="(max-width: 1024px) 100vw, 42vw"
@@ -271,7 +271,7 @@ export default function AboutPage() {
             <GsapReveal y={28}>
               <figure className="group relative min-h-[34rem] overflow-hidden rounded-[1.5rem] sm:min-h-[42rem] lg:min-h-[48rem]">
                 <Image
-                  src="/images/manisha-wix.jpg"
+                  src="/images/manisha-wix.webp"
                   alt="Manisha Belvalkar in a personal portrait"
                   fill
                   sizes="(max-width: 1024px) 100vw, 58vw"
@@ -300,7 +300,7 @@ export default function AboutPage() {
               <GsapReveal y={24} delay={0.06}>
                 <figure className="group relative min-h-[22rem] overflow-hidden rounded-[1.5rem] lg:min-h-[23.25rem]">
                   <Image
-                    src="/images/about-success-today.jpg"
+                    src="/images/manisha-success-story.webp"
                     alt="Manisha Belvalkar featured as founder of Shakti Portal"
                     fill
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 38vw"
@@ -314,7 +314,7 @@ export default function AboutPage() {
               <GsapReveal y={24} delay={0.1}>
                 <figure className="group relative min-h-[22rem] overflow-hidden rounded-[1.5rem] lg:min-h-[23.25rem]">
                   <Image
-                    src="/images/about-health-mag.jpg"
+                    src="/images/manisha-health-magazine.webp"
                     alt="Manisha Belvalkar receiving professional recognition on stage"
                     fill
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 38vw"
@@ -337,7 +337,7 @@ export default function AboutPage() {
           <GsapReveal y={28}>
             <div className="relative aspect-[4/5] overflow-hidden rounded-[1.5rem]">
               <Image
-                src="/images/about-portrait-1.png"
+                src="/images/manisha-portrait-healer.webp"
                 alt={awards[0]?.title ?? "Manisha Belvalkar receiving an award"}
                 fill
                 sizes="(max-width: 1024px) 100vw, 40vw"

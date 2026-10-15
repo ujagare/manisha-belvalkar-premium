@@ -4,8 +4,8 @@ import { BookOpenText } from "lucide-react";
 import InsightExplorer from "@/components/insights/InsightExplorer";
 
 export const metadata: Metadata = {
-  title: "Insights & Resources",
-  description: "Grounded guides for spiritual reflection, session preparation, chakra awareness, Tarot consultations, and everyday wellbeing practices.",
+  title: "Spiritual Insights — Tarot, Chakra & Wellbeing Guides",
+  description: "Grounded guides for spiritual reflection, session preparation, chakra awareness, Tarot consultations, and everyday wellbeing practices by Dr. Manisha Belvalkar.",
   alternates: { canonical: "/insights" },
 };
 

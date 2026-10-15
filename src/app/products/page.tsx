@@ -21,9 +21,9 @@ import ShopSearch from "@/components/products/ShopSearch";
 import { categoryMeta } from "@/components/products/ProductCard";
 
 export const metadata: Metadata = {
-  title: "Shop - Sacred Tools & Rituals",
+  title: "Shakti Oracle Deck, Rituals & Sacred Products",
   description:
-    "Shop decks, books, magic salt, vastu healing frames, rituals and WhatsApp workshops by Dr. Manisha Belvalkar.",
+    "Buy the Shakti Oracle deck, guidebook, magic salt, vastu healing frames, abundance rituals and WhatsApp workshops by Dr. Manisha Belvalkar. Ships across India.",
   alternates: { canonical: "/products" },
 };
 
@@ -78,7 +78,7 @@ export default async function ProductsPage({ searchParams }: SearchParams) {
     <>
       <PageHero
         eyebrow="Shop"
-        image="/images/page-heroes/products-hero.png"
+        image="/images/page-heroes/products-hero.webp"
         imageAlt="A curated collection of handcrafted sacred tools and shop offerings"
         title={
           <>

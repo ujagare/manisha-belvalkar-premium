@@ -28,7 +28,7 @@ export default function ShaktiPreview() {
               <div className="gold-border-gradient absolute inset-0" />
               <div className="absolute inset-[3px] overflow-hidden rounded-[20px]">
                 <Image
-                  src="/images/chakra.png"
+                  src="/images/chakra-energy-diagram.webp"
                   alt="The seven chakras"
                   fill
                   sizes="(max-width: 1024px) 100vw, 50vw"
@@ -56,7 +56,7 @@ export default function ShaktiPreview() {
             >
               <div
                 className="absolute inset-0 bg-cover bg-center opacity-[0.05] transition-all duration-700 group-hover:scale-105 group-hover:opacity-[0.12]"
-                style={{ backgroundImage: "url(/images/candle.jpg)" }}
+                style={{ backgroundImage: "url(/images/healing-candle-therapy.webp)" }}
               />
               <div className="pointer-events-none absolute -right-14 -top-14 h-44 w-44 rounded-full bg-gold/10 blur-2xl transition-all duration-700 group-hover:scale-125" />
 

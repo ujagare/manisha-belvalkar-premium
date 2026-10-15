@@ -3,6 +3,9 @@ import { consumeRateLimit } from "@/lib/rate-limit";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { isSameOriginRequest } from "@/lib/security";
+import { sendEmail } from "@/lib/resend/client";
+import { enquiryAdminEmail } from "@/lib/resend/templates";
+import { brand } from "@/lib/data";
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const phonePattern = /^[+()\d\s-]{7,20}$/;
@@ -36,7 +39,14 @@ export async function POST(request: Request) {
         source_path: textValue(body.sourcePath, 200) || null, consented_at: new Date().toISOString(),
       }).select("id").single();
       if (error) throw error;
-      return apiSuccess({ reference: data.id.slice(0, 8) }, 201);
+      // Notify the studio by email (best-effort — never fails the request).
+      const reference = data.id.slice(0, 8);
+      const { subject, html } = enquiryAdminEmail({
+        name, email: email || null, phone: phone || null, message, reference,
+        sourcePath: textValue(body.sourcePath, 200) || null,
+      });
+      await sendEmail({ to: brand.email, subject, html });
+      return apiSuccess({ reference }, 201);
     }
     if (kind === "waitlist") {
       if (!email && !phone) return apiError("BAD_REQUEST", "Email or phone is required.", 422);
