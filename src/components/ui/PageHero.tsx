@@ -30,7 +30,7 @@ export default function PageHero({
   const settle = { opacity: 1, y: 0, ...(reduce ? {} : { filter: "blur(0px)" }) };
 
   return (
-    <section className="relative isolate min-h-[640px] overflow-hidden bg-charcoal pt-24 text-white lg:min-h-[720px] lg:pt-28">
+    <section className="hero-single-tone relative isolate min-h-[640px] overflow-hidden bg-charcoal pt-24 text-white lg:min-h-[720px] lg:pt-28">
       {image ? (
         <motion.div
           initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 1.04 }}

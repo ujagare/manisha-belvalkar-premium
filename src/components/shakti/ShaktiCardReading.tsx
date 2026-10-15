@@ -100,14 +100,14 @@ function SideOrnament({ className }: { className: string }) {
 
 export default function ShaktiCardReading({ showBuyButton = false }: { showBuyButton?: boolean }) {
   const sectionHeight = showBuyButton
-    ? "min-h-[47rem] sm:min-h-[76rem] lg:min-h-[60rem]"
-    : "min-h-[46rem] sm:min-h-[72rem] lg:min-h-[48rem]";
+    ? "h-[50rem] sm:h-auto sm:min-h-[76rem] lg:min-h-[60rem]"
+    : "h-[46rem] sm:h-auto sm:min-h-[72rem] lg:min-h-[48rem]";
   const tableHeight = showBuyButton
-    ? "h-[41rem] sm:h-[69rem] lg:h-[54rem]"
+    ? "h-[44rem] sm:h-[69rem] lg:h-[54rem]"
     : "h-[40rem] sm:h-[65rem] lg:h-[42rem]";
   const revealHeight = showBuyButton
-    ? "min-h-[50rem] sm:min-h-[68rem] lg:min-h-[54rem]"
-    : "min-h-[54rem] sm:min-h-[64rem] lg:min-h-[42rem]";
+    ? "h-[calc(50rem-3.5rem)] sm:h-auto sm:min-h-[68rem] lg:min-h-[54rem]"
+    : "h-[calc(46rem-3.5rem)] sm:h-auto sm:min-h-[64rem] lg:min-h-[42rem]";
   const sectionRef = useRef<HTMLElement>(null);
   const tableRef = useRef<HTMLDivElement>(null);
   const deckOrderRef = useRef<number[]>(Array.from({ length: CARD_COUNT }, (_, index) => index + 1));
@@ -349,8 +349,8 @@ export default function ShaktiCardReading({ showBuyButton = false }: { showBuyBu
       ) : null}
 
       <div className={`relative mx-auto max-w-[100rem] ${sectionHeight}`}>
-        <header className={`${phase === "idle" ? "absolute" : "hidden"} left-1/2 ${showBuyButton ? "top-[6.5rem] sm:top-[12rem]" : "top-[5rem] sm:top-[8.5rem]"} z-40 w-[calc(100%-3rem)] -translate-x-1/2 text-center lg:left-[8%] lg:top-[54%] lg:w-[42%] lg:max-w-[40rem] lg:-translate-x-0 lg:-translate-y-1/2`}>
-          <div className={`relative mx-auto w-fit max-w-full sm:h-[28rem] lg:h-[44rem] ${showBuyButton ? "h-[19rem]" : "h-[22rem]"}`}>
+        <header className={`${phase === "idle" ? "absolute" : "hidden"} left-1/2 ${showBuyButton ? "top-[8rem] sm:top-[12rem]" : "top-[5rem] sm:top-[8.5rem]"} z-40 w-[calc(100%-3rem)] -translate-x-1/2 text-center lg:left-[8%] lg:top-[54%] lg:w-[42%] lg:max-w-[40rem] lg:-translate-x-0 lg:-translate-y-1/2`}>
+          <div className="relative mx-auto h-[22rem] w-fit max-w-full sm:h-[28rem] lg:h-[44rem]">
             {showBuyButton ? (
               <div className="pointer-events-none absolute left-1/2 top-[34%] block aspect-[1172/1342] w-full -translate-x-1/2 -translate-y-1/2 drop-shadow-[0_0_30px_rgba(238,198,50,0.5)]" aria-hidden="true">
                 <div className="animate-spin-slow relative h-full w-full motion-reduce:animate-none">
@@ -420,7 +420,7 @@ export default function ShaktiCardReading({ showBuyButton = false }: { showBuyBu
                 ))}
 
                 {phase === "idle" && (
-                  <div className={`home-hero-deck absolute left-1/2 -translate-x-1/2 -translate-y-1/2 sm:top-[60%] sm:w-[12.5rem] lg:left-[72%] lg:top-[43%] lg:w-[16rem] ${showBuyButton ? "top-[74%] w-24" : "top-[58%] w-28"}`}>
+                  <div className={`home-hero-deck absolute left-1/2 -translate-x-1/2 -translate-y-1/2 sm:top-[60%] sm:w-[12.5rem] lg:left-[72%] lg:top-[43%] lg:w-[16rem] ${showBuyButton ? "top-[69%] w-24" : "top-[58%] w-28"}`}>
                     <div className="pointer-events-none absolute left-1/2 top-1/2 h-[19rem] w-[19rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(240,198,51,0.19),rgba(180,20,20,0.07)_45%,transparent_70%)] blur-sm sm:h-[24rem] sm:w-[24rem]" />
                     <div className="absolute -left-[42%] top-[8%] hidden aspect-[1060/1484] w-full -rotate-[17deg] overflow-hidden rounded-xl border border-gold/25 opacity-35 shadow-[0_26px_55px_rgba(0,0,0,0.48)] sm:block">
                       <Image src="/images/shakti-cards/card-back-cover.webp" alt="Shakti oracle card back design" fill sizes="224px" className="object-cover" />
@@ -468,8 +468,8 @@ export default function ShaktiCardReading({ showBuyButton = false }: { showBuyBu
             </>
           ) : (
             cardNumber && selectedGuidance && (
-              <div className={`mx-auto grid max-w-6xl items-center gap-12 px-5 py-14 sm:px-8 lg:grid-cols-[0.82fr_1.18fr] lg:gap-20 lg:py-16 ${revealHeight}`}>
-                <div className="revealed-card relative mx-auto w-full max-w-[18rem] [perspective:1200px] lg:max-w-[21rem]">
+              <div className={`mx-auto grid max-w-6xl -translate-y-3 content-center items-center gap-2 px-5 py-7 sm:translate-y-0 sm:gap-12 sm:px-8 sm:py-14 lg:grid-cols-[0.82fr_1.18fr] lg:gap-20 lg:py-16 ${revealHeight}`}>
+                <div className="revealed-card relative mx-auto w-full max-w-[9rem] [perspective:1200px] sm:max-w-[18rem] lg:max-w-[21rem]">
                   <div className="absolute -inset-9 rounded-[3rem] bg-gold/20 blur-3xl" />
                   <div className="relative aspect-[1060/1484] overflow-hidden rounded-2xl border border-gold-light/70 bg-gold-soft shadow-[0_45px_100px_rgba(0,0,0,0.7),0_0_55px_rgba(221,184,41,0.22)]">
                     <Image src={shaktiCardImagePath(cardNumber)} alt={`Your selected Shakti card, card ${cardNumber}`} fill sizes="(max-width: 1023px) 288px, 336px" priority className="object-cover" />
@@ -477,17 +477,17 @@ export default function ShaktiCardReading({ showBuyButton = false }: { showBuyBu
                 </div>
 
                 <div className="reading-copy text-center lg:text-left">
-                  <p className="font-serif text-lg italic tracking-[0.1em] text-gold-light/80">The card you chose</p>
-                  <h3 className="mt-4 text-balance font-display text-4xl font-semibold leading-tight tracking-[-0.035em] text-white sm:text-5xl">{selectedGuidance.title}</h3>
-                  <div className="my-7 h-px bg-gradient-to-r from-transparent via-gold/55 to-transparent lg:from-gold/55 lg:via-gold/20" />
-                  <p className="text-pretty text-base leading-8 text-white/70 sm:text-lg">{selectedGuidance.message}</p>
-                  <blockquote className="mt-8 border-y border-gold/20 py-5 font-serif text-xl italic leading-relaxed text-gold-light sm:text-2xl">“{selectedGuidance.affirmation}”</blockquote>
-                  <div className="mt-9 flex flex-col items-center gap-4 sm:flex-row sm:justify-center lg:justify-start">
-                    <button type="button" onClick={resetReading} className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-white/[0.05] px-6 py-3 text-sm font-medium text-white transition duration-300 hover:border-gold/80 hover:bg-white/[0.09]">
+                  <p className="font-serif text-sm italic tracking-[0.1em] text-gold-light/80 sm:text-lg">The card you chose</p>
+                  <h3 className="mt-2 text-balance font-display text-2xl font-semibold leading-tight tracking-[-0.035em] text-white sm:mt-4 sm:text-5xl">{selectedGuidance.title}</h3>
+                  <div className="my-3 h-px bg-gradient-to-r from-transparent via-gold/55 to-transparent sm:my-7 lg:from-gold/55 lg:via-gold/20" />
+                  <p className="text-pretty text-sm leading-6 text-white/70 sm:text-lg sm:leading-8">{selectedGuidance.message}</p>
+                  <blockquote className="mt-3 border-y border-gold/20 py-3 font-serif text-base italic leading-relaxed text-gold-light sm:mt-8 sm:py-5 sm:text-2xl">“{selectedGuidance.affirmation}”</blockquote>
+                  <div className="mt-4 flex flex-col items-center gap-2 sm:mt-9 sm:flex-row sm:justify-center sm:gap-4 lg:justify-start">
+                    <button type="button" onClick={resetReading} className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-white/[0.05] px-5 py-2.5 text-xs font-medium text-white transition duration-300 hover:border-gold/80 hover:bg-white/[0.09] sm:px-6 sm:py-3 sm:text-sm">
                       <RotateCcw className="h-4 w-4" aria-hidden="true" />
                       Shuffle again
                     </button>
-                    <Link href="/contact" className="group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-gold to-gold-dark px-6 py-3 text-sm font-semibold text-primary-deeper transition duration-300 hover:from-gold-light hover:to-gold">
+                    <Link href="/contact" className="group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-gold to-gold-dark px-5 py-2.5 text-xs font-semibold text-primary-deeper transition duration-300 hover:from-gold-light hover:to-gold sm:px-6 sm:py-3 sm:text-sm">
                       Book a personal reading
                       <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
                     </Link>

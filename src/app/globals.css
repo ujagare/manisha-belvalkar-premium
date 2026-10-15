@@ -209,6 +209,15 @@ html.lenis body {
   color: transparent;
 }
 
+/* Hero headlines use a calm, consistent gold tone instead of gradient fill. */
+.hero-single-tone .text-gold-shimmer {
+  background: none;
+  -webkit-background-clip: initial;
+  background-clip: initial;
+  -webkit-text-fill-color: #e8c96a;
+  color: #e8c96a;
+}
+
 /* Crimson-to-deep gradient text */
 .text-crimson-gradient {
   background: linear-gradient(135deg, #b41414 0%, #8b0f0f 55%, #d64545 120%);

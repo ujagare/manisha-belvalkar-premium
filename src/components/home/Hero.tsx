@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 import { ArrowRight, Sparkles, Star } from "lucide-react";
 import { brand } from "@/lib/data";
 import Button from "@/components/ui/Button";
-import GradientText from "@/components/ui/GradientText";
 import { gsap, useGSAP } from "@/lib/gsap";
 
 /**
@@ -102,9 +101,7 @@ export default function Hero() {
         >
           <span className="block">Guidance For</span>
           <span className="mt-1 block">
-            <GradientText as="span" variant="gold">
-              the Soul
-            </GradientText>
+            <span className="text-gold-dark">the Soul</span>
           </span>
         </motion.h1>
 

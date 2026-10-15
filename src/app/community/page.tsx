@@ -19,7 +19,7 @@ const icons = [HeartHandshake, Sparkles, Users, CalendarHeart];
 export default function CommunityPage() {
   return (
     <>
-      <section className="relative isolate min-h-[640px] overflow-hidden bg-neutral-200 pt-24 text-white lg:min-h-[720px] lg:pt-28">
+      <section className="hero-single-tone relative isolate min-h-[640px] overflow-hidden bg-neutral-200 pt-24 text-white lg:min-h-[720px] lg:pt-28">
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: "url('/images/page-heroes/community-hero.webp')" }}
