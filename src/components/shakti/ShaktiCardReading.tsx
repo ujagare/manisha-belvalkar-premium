@@ -4,11 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRef, useState } from "react";
 import { ArrowRight, RotateCcw, ShoppingBag } from "lucide-react";
+import { SHAKTI_CARD_COUNT, shaktiCardImagePath } from "@/lib/shakti-card-assets";
 import { gsap, useGSAP } from "@/lib/gsap";
 
 type ReadingPhase = "idle" | "shuffling" | "choosing" | "revealing" | "revealed";
 
-const CARD_COUNT = 52;
+const CARD_COUNT = SHAKTI_CARD_COUNT;
 
 const guidance = [
   {
@@ -99,10 +100,10 @@ function SideOrnament({ className }: { className: string }) {
 
 export default function ShaktiCardReading({ showBuyButton = false }: { showBuyButton?: boolean }) {
   const sectionHeight = showBuyButton
-    ? "min-h-[58rem] sm:min-h-[76rem] lg:min-h-[60rem]"
+    ? "min-h-[47rem] sm:min-h-[76rem] lg:min-h-[60rem]"
     : "min-h-[46rem] sm:min-h-[72rem] lg:min-h-[48rem]";
   const tableHeight = showBuyButton
-    ? "h-[52rem] sm:h-[69rem] lg:h-[54rem]"
+    ? "h-[41rem] sm:h-[69rem] lg:h-[54rem]"
     : "h-[40rem] sm:h-[65rem] lg:h-[42rem]";
   const revealHeight = showBuyButton
     ? "min-h-[50rem] sm:min-h-[68rem] lg:min-h-[54rem]"
@@ -348,8 +349,8 @@ export default function ShaktiCardReading({ showBuyButton = false }: { showBuyBu
       ) : null}
 
       <div className={`relative mx-auto max-w-[100rem] ${sectionHeight}`}>
-        <header className={`${phase === "idle" ? "absolute" : "hidden"} left-1/2 ${showBuyButton ? "top-[8rem] sm:top-[12rem]" : "top-[5rem] sm:top-[8.5rem]"} z-40 w-[calc(100%-3rem)] -translate-x-1/2 text-center lg:left-[8%] lg:top-[54%] lg:w-[42%] lg:max-w-[40rem] lg:-translate-x-0 lg:-translate-y-1/2`}>
-          <div className="relative mx-auto h-[22rem] w-fit max-w-full sm:h-[28rem] lg:h-[44rem]">
+        <header className={`${phase === "idle" ? "absolute" : "hidden"} left-1/2 ${showBuyButton ? "top-[6.5rem] sm:top-[12rem]" : "top-[5rem] sm:top-[8.5rem]"} z-40 w-[calc(100%-3rem)] -translate-x-1/2 text-center lg:left-[8%] lg:top-[54%] lg:w-[42%] lg:max-w-[40rem] lg:-translate-x-0 lg:-translate-y-1/2`}>
+          <div className={`relative mx-auto w-fit max-w-full sm:h-[28rem] lg:h-[44rem] ${showBuyButton ? "h-[19rem]" : "h-[22rem]"}`}>
             {showBuyButton ? (
               <div className="pointer-events-none absolute left-1/2 top-[34%] block aspect-[1172/1342] w-full -translate-x-1/2 -translate-y-1/2 drop-shadow-[0_0_30px_rgba(238,198,50,0.5)]" aria-hidden="true">
                 <div className="animate-spin-slow relative h-full w-full motion-reduce:animate-none">
@@ -411,7 +412,7 @@ export default function ShaktiCardReading({ showBuyButton = false }: { showBuyBu
                     disabled={phase !== "choosing"}
                     onClick={(event) => chooseCard(index, event.currentTarget)}
                     aria-label={`Choose face-down card ${index + 1} of ${CARD_COUNT}`}
-                    className="reading-deck-card group absolute left-1/2 top-1/2 aspect-[1060/1484] w-11 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-[0.3rem] border border-[#f5d85d]/55 bg-[#8b1c10] shadow-[0_9px_16px_rgba(0,0,0,0.48)] will-change-transform enabled:cursor-pointer enabled:hover:brightness-125 enabled:hover:shadow-[0_18px_36px_rgba(238,198,50,0.4)] sm:w-[6.5rem] lg:w-[7.25rem]"
+                    className={`reading-deck-card group absolute left-1/2 top-1/2 aspect-[1060/1484] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-[0.3rem] border border-[#f5d85d]/55 bg-[#8b1c10] shadow-[0_9px_16px_rgba(0,0,0,0.48)] will-change-transform enabled:cursor-pointer enabled:hover:brightness-125 enabled:hover:shadow-[0_18px_36px_rgba(238,198,50,0.4)] sm:w-[6.5rem] lg:w-[7.25rem] ${showBuyButton ? "w-10" : "w-11"}`}
                   >
                     <Image src="/images/shakti-cards/card-back-cover.webp" alt="Shakti oracle card back design" fill sizes="(max-width: 640px) 44px, 94px" className="object-cover" />
                     <span className="absolute inset-0 bg-gradient-to-br from-white/15 via-transparent to-black/15 opacity-0 transition-opacity duration-300 group-enabled:group-hover:opacity-100" />
@@ -419,7 +420,7 @@ export default function ShaktiCardReading({ showBuyButton = false }: { showBuyBu
                 ))}
 
                 {phase === "idle" && (
-                  <div className="home-hero-deck absolute left-1/2 top-[58%] w-28 -translate-x-1/2 -translate-y-1/2 sm:top-[60%] sm:w-[12.5rem] lg:left-[72%] lg:top-[43%] lg:w-[16rem]">
+                  <div className={`home-hero-deck absolute left-1/2 -translate-x-1/2 -translate-y-1/2 sm:top-[60%] sm:w-[12.5rem] lg:left-[72%] lg:top-[43%] lg:w-[16rem] ${showBuyButton ? "top-[74%] w-24" : "top-[58%] w-28"}`}>
                     <div className="pointer-events-none absolute left-1/2 top-1/2 h-[19rem] w-[19rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(240,198,51,0.19),rgba(180,20,20,0.07)_45%,transparent_70%)] blur-sm sm:h-[24rem] sm:w-[24rem]" />
                     <div className="absolute -left-[42%] top-[8%] hidden aspect-[1060/1484] w-full -rotate-[17deg] overflow-hidden rounded-xl border border-gold/25 opacity-35 shadow-[0_26px_55px_rgba(0,0,0,0.48)] sm:block">
                       <Image src="/images/shakti-cards/card-back-cover.webp" alt="Shakti oracle card back design" fill sizes="224px" className="object-cover" />
@@ -471,7 +472,7 @@ export default function ShaktiCardReading({ showBuyButton = false }: { showBuyBu
                 <div className="revealed-card relative mx-auto w-full max-w-[18rem] [perspective:1200px] lg:max-w-[21rem]">
                   <div className="absolute -inset-9 rounded-[3rem] bg-gold/20 blur-3xl" />
                   <div className="relative aspect-[1060/1484] overflow-hidden rounded-2xl border border-gold-light/70 bg-gold-soft shadow-[0_45px_100px_rgba(0,0,0,0.7),0_0_55px_rgba(221,184,41,0.22)]">
-                    <Image src={`/images/shakti-cards/card_${cardNumber}.png`} alt={`Your selected Shakti card, card ${cardNumber}`} fill sizes="(max-width: 1023px) 288px, 336px" priority className="object-cover" />
+                    <Image src={shaktiCardImagePath(cardNumber)} alt={`Your selected Shakti card, card ${cardNumber}`} fill sizes="(max-width: 1023px) 288px, 336px" priority className="object-cover" />
                   </div>
                 </div>
 

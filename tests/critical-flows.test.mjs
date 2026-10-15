@@ -1,6 +1,9 @@
 import assert from "node:assert/strict";
+import { existsSync } from "node:fs";
+import { join } from "node:path";
 import { test } from "node:test";
 import { cartState } from "../src/lib/cart.ts";
+import { SHAKTI_CARD_COUNT, shaktiCardImagePath } from "../src/lib/shakti-card-assets.ts";
 import {
   cartWhatsAppMessage,
   contactWhatsAppMessage,
@@ -46,4 +49,15 @@ test("missing Supabase or Razorpay activates manual fallback", () => {
   assert.equal(shouldUseManualFlow(false, false), true);
   assert.equal(shouldUseManualFlow(true, false), true);
   assert.equal(shouldUseManualFlow(true, true), false);
+});
+
+test("every selectable Shakti card resolves to an existing image", () => {
+  for (let cardNumber = 1; cardNumber <= SHAKTI_CARD_COUNT; cardNumber += 1) {
+    const publicPath = shaktiCardImagePath(cardNumber);
+    assert.equal(
+      existsSync(join(process.cwd(), "public", publicPath.slice(1))),
+      true,
+      `Missing image for Shakti card ${cardNumber}: ${publicPath}`,
+    );
+  }
 });
