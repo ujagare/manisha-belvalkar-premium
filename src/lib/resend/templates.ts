@@ -134,16 +134,24 @@ export function requestConfirmationEmail(input: {
   summary: string;
 }): { subject: string; html: string } {
   const safeName = input.name.replace(/[&<>]/g, " ").trim() || "there";
+  const safeType = input.requestType.replace(/[&<>]/g, " ");
+  const isContactEnquiry = input.requestType === "contact enquiry";
+  const acknowledgement = isContactEnquiry
+    ? `Thank you for contacting Manisha Belvalkar. We have received your <strong>${safeType}</strong>.`
+    : `Thank you. We have received your <strong>${safeType}</strong>. This is an acknowledgement, not a payment or final appointment confirmation.`;
+  const nextSteps = isContactEnquiry
+    ? "Our team will review your message and reply using the email address or phone number you provided."
+    : "Please send the prepared WhatsApp message if you have not already done so. Our team will personally confirm availability, amount, schedule, delivery, or next steps as applicable.";
   return {
     subject: `Request received - ${input.reference}`,
     html: layout("Request Received", `
       <p style="margin:0 0 8px;font-size:16px;color:#2b2118;">Dear ${safeName},</p>
-      <p style="margin:0 0 16px;font-size:14px;line-height:1.7;color:#2b2118;">Thank you. We have received your <strong>${input.requestType.replace(/[&<>]/g, " ")}</strong>. This is an acknowledgement, not a payment or final appointment confirmation.</p>
+      <p style="margin:0 0 16px;font-size:14px;line-height:1.7;color:#2b2118;">${acknowledgement}</p>
       ${detailsTable([
         { label: "Reference", value: input.reference },
         { label: "Request", value: input.summary },
       ])}
-      <p style="margin:24px 0 0;font-size:14px;line-height:1.7;color:#2b2118;">Please send the prepared WhatsApp message if you have not already done so. Our team will personally confirm availability, amount, schedule, delivery, or next steps as applicable.</p>
+      <p style="margin:24px 0 0;font-size:14px;line-height:1.7;color:#2b2118;">${nextSteps}</p>
       <p style="margin:12px 0 0;font-size:14px;line-height:1.7;color:#2b2118;">With love &amp; light,<br>Manisha Belvalkar</p>
     `),
   };
