@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import Link from "next/link";
 import { Mail, Loader2, Send } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import { getSiteUrl } from "@/lib/site-url";
 import { cn } from "@/lib/utils";
 
 /**
@@ -24,7 +25,7 @@ export default function ForgotPasswordForm() {
     startTransition(async () => {
       const supabase = createClient();
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/auth/update-password`,
+        redirectTo: `${getSiteUrl()}/auth/update-password`,
       });
       if (error) {
         setError(error.message);

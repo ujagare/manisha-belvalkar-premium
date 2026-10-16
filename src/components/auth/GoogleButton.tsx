@@ -6,6 +6,7 @@ import { Loader2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
 import { safeInternalPath } from "@/lib/redirects";
+import { getSiteUrl } from "@/lib/site-url";
 
 /**
  * Google OAuth button. Uses Supabase's built-in Google provider —
@@ -26,7 +27,7 @@ export default function GoogleButton({ redirectTo = "/account" }: { redirectTo?:
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`,
+          redirectTo: `${getSiteUrl()}/auth/callback?next=${encodeURIComponent(next)}`,
         },
       });
       if (error) setError(error.message);

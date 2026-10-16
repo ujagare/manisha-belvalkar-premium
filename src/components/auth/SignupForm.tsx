@@ -8,6 +8,7 @@ import { createClient, isSupabaseConfigured } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
 import GoogleButton from "./GoogleButton";
 import { safeInternalPath } from "@/lib/redirects";
+import { getSiteUrl } from "@/lib/site-url";
 
 /**
  * Premium sign-up form — name + email/password (+ Google OAuth).
@@ -44,7 +45,7 @@ export default function SignupForm() {
         password,
         options: {
           data: { full_name: name },
-          emailRedirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`,
+          emailRedirectTo: `${getSiteUrl()}/auth/callback?next=${encodeURIComponent(next)}`,
         },
       });
 
