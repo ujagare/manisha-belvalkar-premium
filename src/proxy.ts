@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createServerClient } from "@supabase/ssr";
-import { isSupabaseConfigured } from "@/lib/supabase/config";
+import { getSupabasePublicKey, isSupabaseConfigured } from "@/lib/supabase/config";
+import { isPaymentsConfigured } from "@/lib/env";
 
 /**
  * Proxy (Next 16 name for middleware).
@@ -22,7 +23,7 @@ export default async function proxy(request: NextRequest) {
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    getSupabasePublicKey(),
     {
       cookies: {
         getAll() {
@@ -49,7 +50,9 @@ export default async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // --- Protected: require authentication -------------------------------
-  const protectedCheckout = pathname.startsWith("/checkout") && !pathname.startsWith("/checkout/product/");
+  // During the pre-Razorpay phase, every checkout stays public and hands off
+  // to WhatsApp. Once payments are configured, paid checkout requires auth.
+  const protectedCheckout = isPaymentsConfigured() && pathname.startsWith("/checkout") && !pathname.startsWith("/checkout/product/");
   if (!user && (protectedCheckout || pathname.startsWith("/account") || pathname.startsWith("/admin"))) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";

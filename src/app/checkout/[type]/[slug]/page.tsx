@@ -9,6 +9,7 @@ import { getCurrentUser, getMyAddresses } from "@/lib/supabase/session";
 import { getCatalogItem, orderTypes } from "@/lib/checkout";
 import CheckoutForm from "@/components/checkout/CheckoutForm";
 import type { OrderItemType } from "@/lib/supabase/database.types";
+import { shouldUseManualFlow } from "@/lib/manual-flow";
 
 interface Props {
   params: Promise<{ type: string; slug: string }>;
@@ -49,8 +50,8 @@ export default async function CheckoutPage({ params }: Props) {
 
   const configured = isSupabaseConfigured();
   const isCourse = type === "course";
-  const manualMode = !isServerConfigured() || (type === "product" && !user);
-  const paymentUnavailable = isDistanceHealing && (!isPaymentsConfigured() || !item.price);
+  const paymentsConfigured = isPaymentsConfigured();
+  const manualMode = shouldUseManualFlow(isServerConfigured(), paymentsConfigured) || (type === "product" && !user);
   const reassuranceItems = isCourse
     ? [
         { icon: CalendarCheck, title: "Personal onboarding", copy: "Schedule confirmed with you" },
@@ -137,11 +138,7 @@ export default async function CheckoutPage({ params }: Props) {
 
           <aside className="lg:sticky lg:top-28">
             <div className="rounded-[1.75rem] bg-white p-6 shadow-[0_24px_70px_-38px_rgba(62,38,25,0.45)] ring-1 ring-parchment sm:p-8">
-                  {paymentUnavailable ? (
-                    <div className="rounded-2xl border border-gold/40 bg-gold-soft/70 p-5 text-sm leading-6 text-gold-deep">
-                      <strong>Payment setup required.</strong> Distance Healing accepts photographs only after a verified online payment. Configure Razorpay and set the active offering price in Supabase before opening bookings.
-                    </div>
-                  ) : <CheckoutForm
+                  <CheckoutForm
                     type={item.type}
                     slug={item.slug}
                     itemTitle={item.title}
@@ -151,8 +148,8 @@ export default async function CheckoutPage({ params }: Props) {
                     userName={user?.fullName ?? null}
                     addresses={addresses}
                     manualMode={manualMode}
-                    strictPayment={isDistanceHealing}
-                  />}
+                    strictPayment={isDistanceHealing && paymentsConfigured}
+                  />
             </div>
           </aside>
         </div>
