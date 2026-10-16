@@ -4,7 +4,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { isSameOriginRequest } from "@/lib/security";
 import { sendEmail } from "@/lib/resend/client";
-import { enquiryAdminEmail } from "@/lib/resend/templates";
+import { enquiryAdminEmail, requestConfirmationEmail } from "@/lib/resend/templates";
 import { brand } from "@/lib/data";
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -32,7 +32,7 @@ export async function POST(request: Request) {
     const admin = createAdminClient();
     if (kind === "enquiry") {
       const message = textValue(body.message, 3000);
-      if (!name || !message || (!email && !phone)) return apiError("BAD_REQUEST", "Name, message and contact details are required.", 422);
+      if (!name || !message || !email || !phone) return apiError("BAD_REQUEST", "Name, email, phone and message are required.", 422);
       const { data, error } = await admin.from("enquiries").insert({
         user_id: user?.id ?? null, category: textValue(body.category, 50) || "general",
         name, email: email || null, phone: phone || null, message,
@@ -46,6 +46,10 @@ export async function POST(request: Request) {
         sourcePath: textValue(body.sourcePath, 200) || null,
       });
       await sendEmail({ to: brand.email, subject, html });
+      if (email) {
+        const customer = requestConfirmationEmail({ name, reference, requestType: "contact enquiry", summary: message });
+        await sendEmail({ to: email, subject: customer.subject, html: customer.html });
+      }
       return apiSuccess({ reference }, 201);
     }
     if (kind === "waitlist") {

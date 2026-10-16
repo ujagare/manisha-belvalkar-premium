@@ -5,7 +5,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { isSameOriginRequest } from "@/lib/security";
 import { sendEmail } from "@/lib/resend/client";
-import { bookingAdminEmail } from "@/lib/resend/templates";
+import { bookingAdminEmail, requestConfirmationEmail } from "@/lib/resend/templates";
 import { brand } from "@/lib/data";
 
 export async function POST(request: Request) {
@@ -50,6 +50,15 @@ export async function POST(request: Request) {
       timezone,
     });
     await sendEmail({ to: brand.email, subject, html });
+    if (user.email) {
+      const customer = requestConfirmationEmail({
+        name: user.user_metadata?.full_name ?? user.email.split("@")[0],
+        reference: bookingRef,
+        requestType: "session booking",
+        summary: `${offering} - ${format}${requestedStart ? ` - ${new Date(requestedStart).toLocaleString("en-IN", { timeZone: timezone })}` : ""}`,
+      });
+      await sendEmail({ to: user.email, subject: customer.subject, html: customer.html });
+    }
     return apiSuccess({ booking: { ...data, reference: bookingRef } }, 201);
   } catch (error) {
     console.error("[bookings:create]", error);

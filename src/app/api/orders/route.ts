@@ -5,6 +5,8 @@ import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { getCatalogItem, orderTypes } from "@/lib/checkout";
 import type { OrderItemType } from "@/lib/supabase/database.types";
 import { isSameOriginRequest } from "@/lib/security";
+import { sendEmail } from "@/lib/resend/client";
+import { requestConfirmationEmail } from "@/lib/resend/templates";
 
 /**
  * POST /api/orders — create a purchase/booking order for an authenticated
@@ -133,6 +135,18 @@ export async function POST(request: Request) {
   if (itemError) {
     await admin.from("orders").delete().eq("id", order.id);
     return NextResponse.json({ error: "Could not save the order details." }, { status: 500 });
+  }
+
+  const confirmationEmail = user?.email ?? guestEmail;
+  if (confirmationEmail) {
+    const reference = order.id.slice(0, 8).toUpperCase();
+    const customer = requestConfirmationEmail({
+      name: user?.user_metadata?.full_name ?? guestName ?? confirmationEmail.split("@")[0],
+      reference,
+      requestType: type === "course" ? "course enrollment" : "order request",
+      summary: `${item.title} x ${quantity}`,
+    });
+    await sendEmail({ to: confirmationEmail, subject: customer.subject, html: customer.html });
   }
 
   return NextResponse.json({ order }, { status: 201 });

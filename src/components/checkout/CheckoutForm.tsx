@@ -8,6 +8,7 @@ import { brand } from "@/lib/data";
 import { cn, formatINR } from "@/lib/utils";
 import type { OrderItemType } from "@/lib/supabase/database.types";
 import type { UserAddress } from "@/lib/supabase/models";
+import { sendManualConfirmation } from "@/lib/manual-flow";
 
 declare global {
   interface Window {
@@ -141,7 +142,15 @@ export default function CheckoutForm({
       return;
     }
     if (manualMode) {
-      setCreated({ id: `MANUAL-${crypto.randomUUID().slice(0, 8).toUpperCase()}`, manual: true });
+      const reference = `MANUAL-${crypto.randomUUID().slice(0, 8).toUpperCase()}`;
+      void sendManualConfirmation({
+        name: activeName,
+        email: activeEmail,
+        reference,
+        requestType: isCourse ? "course enrollment" : "product order",
+        summary: `${itemTitle} - ${totalLabel}`,
+      });
+      setCreated({ id: reference, manual: true });
       return;
     }
 

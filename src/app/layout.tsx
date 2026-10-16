@@ -4,6 +4,7 @@ import Script from "next/script";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import IntroLoader from "@/components/layout/IntroLoader";
 import CustomCursor from "@/components/ui/CustomCursor";
 import SmoothScrollProvider from "@/components/providers/SmoothScrollProvider";
 import CartProvider from "@/components/cart/CartProvider";
@@ -170,6 +171,7 @@ export default function RootLayout({
       )}
     >
       <body className="grain min-h-screen flex flex-col" suppressHydrationWarning>
+        <IntroLoader />
         <noscript>
           <iframe
             src="https://www.googletagmanager.com/ns.html?id=GTM-WBZVC9Q4"

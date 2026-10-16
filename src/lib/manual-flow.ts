@@ -14,6 +14,21 @@ export function shouldUseManualFlow(serverConfigured: boolean, paymentsConfigure
   return !serverConfigured || !paymentsConfigured;
 }
 
+export function sendManualConfirmation(input: {
+  name: string;
+  email: string;
+  reference: string;
+  requestType: "contact enquiry" | "product order" | "course enrollment" | "cart order";
+  summary: string;
+}) {
+  return fetch("/api/manual-confirmations", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(input),
+    keepalive: true,
+  }).catch(() => null);
+}
+
 export function contactWhatsAppMessage(input: {
   reference: string;
   name: string;

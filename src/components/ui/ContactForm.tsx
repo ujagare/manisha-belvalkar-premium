@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Heart } from "lucide-react";
 import { brand } from "@/lib/data";
-import { contactWhatsAppMessage, manualReference, whatsappUrl } from "@/lib/manual-flow";
+import { contactWhatsAppMessage, manualReference, sendManualConfirmation, whatsappUrl } from "@/lib/manual-flow";
 
 /** Premium contact form that opens WhatsApp with a pre-filled message. */
 export default function ContactForm({ manualMode = false }: { manualMode?: boolean }) {
@@ -25,6 +25,15 @@ export default function ContactForm({ manualMode = false }: { manualMode?: boole
     setIsSubmitting(true);
     const openWhatsApp = (nextReference: string, saved: boolean) => {
       setReference(nextReference);
+      if (!saved && form.email.trim()) {
+        void sendManualConfirmation({
+          name: form.name,
+          email: form.email,
+          reference: nextReference,
+          requestType: "contact enquiry",
+          summary: form.message,
+        });
+      }
       window.open(
         whatsappUrl(contactWhatsAppMessage({ reference: nextReference, ...form })),
         "_blank",
@@ -111,6 +120,7 @@ export default function ContactForm({ manualMode = false }: { manualMode?: boole
         <input
           id="email"
           type="email"
+          required
           placeholder="your@email.com"
           className={fieldClasses}
           value={form.email}
@@ -155,8 +165,7 @@ export default function ContactForm({ manualMode = false }: { manualMode?: boole
         {isSubmitting ? "Preparing…" : "Prepare WhatsApp message"}
       </button>
       <p className="text-center text-xs text-warmgray/70">
-        Your message opens in {brand.name}&apos;s WhatsApp — the fastest way to
-        connect.
+        Your message opens in {brand.name}&apos;s WhatsApp and a confirmation is sent to your email.
       </p>
       <p className="text-center text-xs leading-5 text-warmgray/60">
         Your details are used to respond to this enquiry. Read our{" "}

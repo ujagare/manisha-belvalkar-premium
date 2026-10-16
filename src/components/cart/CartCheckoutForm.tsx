@@ -7,7 +7,7 @@ import { Loader2, LockKeyhole, MapPin, MessageCircle } from "lucide-react";
 import { useCart } from "./CartProvider";
 import { formatINR } from "@/lib/utils";
 import type { UserAddress } from "@/lib/supabase/models";
-import { cartWhatsAppMessage, manualReference, whatsappUrl } from "@/lib/manual-flow";
+import { cartWhatsAppMessage, manualReference, sendManualConfirmation, whatsappUrl } from "@/lib/manual-flow";
 import { cartState } from "@/lib/cart";
 
 declare global { interface Window { Razorpay?: new (options: Record<string, unknown>) => { open: () => void } } }
@@ -79,6 +79,13 @@ export default function CartCheckoutForm({ userEmail, userName, addresses, manua
         return;
       }
       const reference = manualReference("ORDER");
+      void sendManualConfirmation({
+        name: guestName.trim(),
+        email: guestEmail.trim(),
+        reference,
+        requestType: "cart order",
+        summary: `${items.map((item) => `${item.title} x ${item.quantity}`).join(", ")} - ${formatINR(subtotal)}`,
+      });
       window.open(whatsappUrl(cartWhatsAppMessage({ reference, items, subtotalLabel: formatINR(subtotal), name: guestName.trim(), email: guestEmail.trim(), address: manualAddress() })), "_blank", "noopener,noreferrer");
       setError(`Order ${reference} is prepared but not saved online. Please send the WhatsApp message to confirm it.`);
       return;
