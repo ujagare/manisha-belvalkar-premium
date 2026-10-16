@@ -7,22 +7,6 @@ import { ArrowRight, Check } from "lucide-react";
 
 const programs = [
   {
-    id: "goddess-invocation",
-    tab: "Goddess Invocation Sadhana",
-    duration: "52 days",
-    title: "Goddess Invocation Sadhana",
-    description:
-      "A 52-day sacred practice rooted in the chanting of seed mantras and guided invocation rituals. The journey helps you build a living relationship with Goddess energy through devotion, discipline and daily inner listening.",
-    image: "/images/page-heroes/shakti-hero.webp",
-    imageAlt: "A crimson and antique-gold lotus altar representing Goddess invocation",
-    features: [
-      "Guided chanting of sacred seed mantras",
-      "Daily Goddess invocation rituals",
-      "Practices for devotion, receptivity and inner strength",
-      "Reflection and integration throughout all 52 days",
-    ],
-  },
-  {
     id: "transformation-journey",
     tab: "Shakti Transformation Journey",
     duration: "6 months",
@@ -36,6 +20,22 @@ const programs = [
       "Deep self-exploration and emotional awareness",
       "Reclaim your voice, choices and personal power",
       "Create grounded change through clarity and alignment",
+    ],
+  },
+  {
+    id: "goddess-invocation",
+    tab: "Goddess Invocation Sadhana",
+    duration: "52 days",
+    title: "Goddess Invocation Sadhana",
+    description:
+      "A 52-day sacred practice rooted in the chanting of seed mantras and guided invocation rituals. The journey helps you build a living relationship with Goddess energy through devotion, discipline and daily inner listening.",
+    image: "/images/page-heroes/shakti-hero.webp",
+    imageAlt: "A crimson and antique-gold lotus altar representing Goddess invocation",
+    features: [
+      "Guided chanting of sacred seed mantras",
+      "Daily Goddess invocation rituals",
+      "Practices for devotion, receptivity and inner strength",
+      "Reflection and integration throughout all 52 days",
     ],
   },
 ] as const;
