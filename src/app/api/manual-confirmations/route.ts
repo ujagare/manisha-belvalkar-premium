@@ -22,12 +22,30 @@ export async function POST(request: Request) {
     const reference = text(body.reference, 80);
     const requestType = text(body.requestType, 40);
     const summary = text(body.summary, 2000);
+    const details = Array.isArray(body.details)
+      ? body.details.slice(0, 20).flatMap((entry) => {
+          if (!entry || typeof entry !== "object" || Array.isArray(entry)) return [];
+          const item = entry as Record<string, unknown>;
+          const label = text(item.label, 60);
+          const value = text(item.value, 1500);
+          return label && value ? [{ label, value }] : [];
+        })
+      : [];
     if (!name || !emailPattern.test(email) || !reference || !allowedTypes.has(requestType) || !summary) {
       return apiError("BAD_REQUEST", "Valid confirmation details are required.", 422);
     }
 
-    const customer = requestConfirmationEmail({ name, reference, requestType, summary });
-    const admin = requestConfirmationEmail({ name, reference, requestType, summary: `${summary}\nCustomer email: ${email}` });
+    const customer = requestConfirmationEmail({ name, reference, requestType, summary, details });
+    const adminDetails = details.some((item) => item.label.toLowerCase().includes("email"))
+      ? details
+      : [...details, { label: "Customer email", value: email }];
+    const admin = requestConfirmationEmail({
+      name,
+      reference,
+      requestType,
+      summary,
+      details: adminDetails,
+    });
     const [customerResult, adminResult] = await Promise.all([
       sendEmail({ to: email, subject: customer.subject, html: customer.html }),
       sendEmail({ to: brand.email, subject: `New ${requestType} - ${reference}`, html: admin.html }),

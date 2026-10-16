@@ -85,6 +85,13 @@ export default function CartCheckoutForm({ userEmail, userName, addresses, manua
         reference,
         requestType: "cart order",
         summary: `${items.map((item) => `${item.title} x ${item.quantity}`).join(", ")} - ${formatINR(subtotal)}`,
+        details: [
+          { label: "Items", value: items.map((item) => `${item.title} × ${item.quantity} — ${formatINR(item.price * item.quantity)}`).join("\n") },
+          { label: "Estimated subtotal", value: formatINR(subtotal) },
+          { label: "Customer name", value: guestName.trim() },
+          { label: "Email", value: guestEmail.trim() },
+          { label: "Delivery details", value: manualAddress() },
+        ],
       });
       window.open(whatsappUrl(cartWhatsAppMessage({ reference, items, subtotalLabel: formatINR(subtotal), name: guestName.trim(), email: guestEmail.trim(), address: manualAddress() })), "_blank", "noopener,noreferrer");
       setError(`Order ${reference} is prepared but not saved online. Please send the WhatsApp message to confirm it.`);

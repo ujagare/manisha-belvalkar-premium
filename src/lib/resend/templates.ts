@@ -132,6 +132,7 @@ export function requestConfirmationEmail(input: {
   reference: string;
   requestType: string;
   summary: string;
+  details?: { label: string; value: string }[];
 }): { subject: string; html: string } {
   const safeName = input.name.replace(/[&<>]/g, " ").trim() || "there";
   const safeType = input.requestType.replace(/[&<>]/g, " ");
@@ -147,10 +148,9 @@ export function requestConfirmationEmail(input: {
     html: layout("Request Received", `
       <p style="margin:0 0 8px;font-size:16px;color:#2b2118;">Dear ${safeName},</p>
       <p style="margin:0 0 16px;font-size:14px;line-height:1.7;color:#2b2118;">${acknowledgement}</p>
-      ${detailsTable([
-        { label: "Reference", value: input.reference },
-        { label: "Request", value: input.summary },
-      ])}
+      ${detailsTable(input.details?.length
+        ? [{ label: "Reference", value: input.reference }, ...input.details]
+        : [{ label: "Reference", value: input.reference }, { label: "Request", value: input.summary }])}
       <p style="margin:24px 0 0;font-size:14px;line-height:1.7;color:#2b2118;">${nextSteps}</p>
       <p style="margin:12px 0 0;font-size:14px;line-height:1.7;color:#2b2118;">With love &amp; light,<br>Manisha Belvalkar</p>
     `),

@@ -131,6 +131,13 @@ export default function CheckoutForm({
     return Object.keys(nextErrors).length === 0;
   }
 
+  const deliverySummary = isPhysicalProduct
+    ? selectedSavedAddress
+      ? `${selectedSavedAddress.recipient_name}, ${selectedSavedAddress.line1}${selectedSavedAddress.line2 ? `, ${selectedSavedAddress.line2}` : ""}, ${selectedSavedAddress.city}, ${selectedSavedAddress.state} ${selectedSavedAddress.postal_code}`
+      : `${address.recipient_name}, ${address.line1}${address.line2 ? `, ${address.line2}` : ""}, ${address.city}, ${address.state} ${address.postal_code}`
+    : "";
+  const deliveryPhone = selectedSavedAddress?.phone ?? address.phone;
+
   function handleConfirm() {
     setError(null);
     if (!validate()) return;
@@ -149,6 +156,27 @@ export default function CheckoutForm({
         reference,
         requestType: isCourse ? "course enrollment" : "product order",
         summary: `${itemTitle} - ${totalLabel}`,
+        details: isCourse
+          ? [
+              { label: "Course", value: itemTitle },
+              { label: "Amount", value: totalLabel },
+              { label: "Student name", value: activeName },
+              { label: "Email", value: activeEmail },
+              { label: "Phone / WhatsApp", value: courseDetails.phone.trim() },
+              { label: "Preferred contact", value: courseDetails.preferredContact },
+              { label: "Preferred language", value: courseDetails.preferredLanguage },
+              { label: "Experience level", value: courseDetails.experienceLevel },
+              { label: "Learning goal", value: courseDetails.learningGoal.trim() },
+            ]
+          : [
+              { label: "Product", value: itemTitle },
+              { label: "Quantity", value: String(quantity) },
+              { label: "Estimated total", value: totalLabel },
+              { label: "Customer name", value: activeName },
+              { label: "Email", value: activeEmail },
+              { label: "Phone", value: deliveryPhone },
+              { label: "Delivery address", value: deliverySummary },
+            ],
       });
       setCreated({ id: reference, manual: true });
       return;
@@ -241,11 +269,6 @@ export default function CheckoutForm({
     });
   }
 
-  const deliverySummary = isPhysicalProduct
-    ? selectedSavedAddress
-      ? `${selectedSavedAddress.recipient_name}, ${selectedSavedAddress.line1}, ${selectedSavedAddress.city}, ${selectedSavedAddress.state} ${selectedSavedAddress.postal_code}, ${selectedSavedAddress.phone}`
-      : `${address.recipient_name}, ${address.line1}${address.line2 ? `, ${address.line2}` : ""}, ${address.city}, ${address.state} ${address.postal_code}, ${address.phone}`
-    : "";
   const whatsappUrl = created
     ? `https://wa.me/919922246111?text=${encodeURIComponent(`Namaste Manisha ji, I would like to confirm my ${isCourse ? "enrollment request" : "order"}:\n\nOrder ID: ${created.id}\nItem: ${itemTitle}\nTotal: ${totalLabel}\n\nName: ${userEmail ? userName : guestName}\nEmail: ${userEmail || guestEmail}${isCourse ? `\nPhone: ${courseDetails.phone}\nPreferred contact: ${courseDetails.preferredContact}` : ""}${deliverySummary ? `\nDelivery: ${deliverySummary}` : ""}\n\nPlease share the next steps.`)}`
     : brand.whatsappHref;

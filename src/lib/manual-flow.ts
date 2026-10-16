@@ -20,6 +20,7 @@ export function sendManualConfirmation(input: {
   reference: string;
   requestType: "contact enquiry" | "product order" | "course enrollment" | "cart order";
   summary: string;
+  details?: { label: string; value: string }[];
 }) {
   return fetch("/api/manual-confirmations", {
     method: "POST",
