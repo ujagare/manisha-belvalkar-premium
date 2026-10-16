@@ -40,12 +40,12 @@ export default async function CourseDetailPage({ params }: Props) {
     name: course.title,
     description: course.description,
     image: course.image
-      ? [`https://manishabelvalkar.com${course.image}`]
+      ? [`https://www.manishabelvalkar.com${course.image}`]
       : undefined,
     provider: {
       "@type": "Person",
       name: "Dr. Manisha Belvalkar",
-      url: "https://manishabelvalkar.com",
+      url: "https://www.manishabelvalkar.com",
     },
     offers: course.price
       ? {
@@ -53,7 +53,7 @@ export default async function CourseDetailPage({ params }: Props) {
           price: course.price,
           priceCurrency: "INR",
           availability: "https://schema.org/InStock",
-          url: `https://manishabelvalkar.com/courses/${course.slug}`,
+          url: `https://www.manishabelvalkar.com/courses/${course.slug}`,
         }
       : undefined,
   };

@@ -7,6 +7,7 @@ import type { OrderItemType } from "@/lib/supabase/database.types";
 import { isSameOriginRequest } from "@/lib/security";
 import { sendEmail } from "@/lib/resend/client";
 import { requestConfirmationEmail } from "@/lib/resend/templates";
+import { consumeRateLimit } from "@/lib/rate-limit";
 
 /**
  * POST /api/orders — create a purchase/booking order for an authenticated
@@ -21,6 +22,15 @@ export async function POST(request: Request) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
+
+  // Protect both authenticated and guest order creation from automated spam.
+  // Signed-in customers are limited by user id; guests are limited by IP.
+  if (!(await consumeRateLimit(request, "orders", 8, 600, user?.id))) {
+    return NextResponse.json(
+      { error: "Too many order attempts. Please try again shortly." },
+      { status: 429 },
+    );
+  }
 
   let body: { type?: string; slug?: string; quantity?: number; address?: Record<string, unknown>; customerDetails?: Record<string, unknown> };
   try {

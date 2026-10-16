@@ -77,7 +77,7 @@ export default async function ProductDetailPage({ params }: Props) {
     name: product.title,
     description: product.description,
     image: product.image
-      ? [`https://manishabelvalkar.com${product.image}`]
+      ? [`https://www.manishabelvalkar.com${product.image}`]
       : undefined,
     category: product.category,
     sku: product.slug,
@@ -87,7 +87,7 @@ export default async function ProductDetailPage({ params }: Props) {
       price: product.price,
       priceCurrency: "INR",
       availability: "https://schema.org/InStock",
-      url: `https://manishabelvalkar.com/products/${product.slug}`,
+      url: `https://www.manishabelvalkar.com/products/${product.slug}`,
     },
   };
 

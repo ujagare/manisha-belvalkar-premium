@@ -8,7 +8,7 @@ import {
 } from "@/lib/data";
 import { insights } from "@/lib/insights";
 
-const BASE = "https://manishabelvalkar.com";
+const BASE = "https://www.manishabelvalkar.com";
 const SITE_UPDATED = new Date("2026-10-16T00:00:00.000Z");
 
 export default function sitemap(): MetadataRoute.Sitemap {

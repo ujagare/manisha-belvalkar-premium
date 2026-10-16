@@ -1,4 +1,4 @@
-const SITE_URL = "https://manishabelvalkar.com";
+const SITE_URL = "https://www.manishabelvalkar.com";
 
 type JsonLdValue = Record<string, unknown> | Array<Record<string, unknown>>;
 

@@ -6,7 +6,7 @@ import { ArrowLeft, ArrowUpRight, Clock3 } from "lucide-react";
 import { getInsight, insights } from "@/lib/insights";
 import { BreadcrumbJsonLd, JsonLd } from "@/components/seo/JsonLd";
 
-const BASE = "https://manishabelvalkar.com";
+const BASE = "https://www.manishabelvalkar.com";
 
 export function generateStaticParams() {
   return insights.map(({ slug }) => ({ slug }));

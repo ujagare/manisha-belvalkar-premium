@@ -49,12 +49,12 @@ export default async function ServiceDetailPage({ params }: Props) {
     name: service.title,
     description: service.description,
     image: service.image
-      ? [`https://manishabelvalkar.com${service.image}`]
+      ? [`https://www.manishabelvalkar.com${service.image}`]
       : undefined,
     provider: {
       "@type": "Person",
       name: "Dr. Manisha Belvalkar",
-      url: "https://manishabelvalkar.com",
+      url: "https://www.manishabelvalkar.com",
     },
     areaServed: ["Mumbai", "Pune", "India"],
     offers: service.price > 0
@@ -63,7 +63,7 @@ export default async function ServiceDetailPage({ params }: Props) {
           price: service.price,
           priceCurrency: "INR",
           availability: "https://schema.org/InStock",
-          url: `https://manishabelvalkar.com/services/${service.slug}`,
+          url: `https://www.manishabelvalkar.com/services/${service.slug}`,
         }
       : undefined,
   };

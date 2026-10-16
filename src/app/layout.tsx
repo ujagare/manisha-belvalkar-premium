@@ -31,7 +31,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://manishabelvalkar.com"),
+  metadataBase: new URL("https://www.manishabelvalkar.com"),
   title: {
     default: "Manisha Belvalkar — Tarot Reading & Spiritual Healing in Mumbai",
     template: "%s | Manisha Belvalkar",
@@ -63,7 +63,7 @@ export const metadata: Metadata = {
     title: "Manisha Belvalkar — Spiritual Mentor",
     description:
       "Guidance For the Soul. Tarot, Healing, and Well-being sessions with 30+ years of experience. Mumbai & Pune.",
-    url: "https://manishabelvalkar.com",
+    url: "https://www.manishabelvalkar.com",
     siteName: "Manisha Belvalkar",
     type: "website",
     locale: "en_IN",
@@ -100,8 +100,8 @@ const personSchema = {
   "@context": "https://schema.org",
   "@type": "Person",
   name: "Dr. Manisha Belvalkar",
-  url: "https://manishabelvalkar.com",
-  image: "https://manishabelvalkar.com/images/manisha-portrait.webp",
+  url: "https://www.manishabelvalkar.com",
+  image: "https://www.manishabelvalkar.com/images/manisha-portrait.webp",
   jobTitle: "Spiritual Mentor & Holistic Well-being Coach",
   description:
     "A holistic well-being coach with over 30 years of experience in Tarot Consultation, Soul Purpose Reading, Goddess Attunement, and Chakra Therapy.",
@@ -136,8 +136,8 @@ const orgSchema = {
   "@context": "https://schema.org",
   "@type": "ProfessionalService",
   name: "Manisha Belvalkar — Guidance For the Soul",
-  url: "https://manishabelvalkar.com",
-  image: "https://manishabelvalkar.com/images/manisha-portrait.webp",
+  url: "https://www.manishabelvalkar.com",
+  image: "https://www.manishabelvalkar.com/images/manisha-portrait.webp",
   telephone: "+91-9922246111",
   email: "manishabelvalkar@gmail.com",
   priceRange: "₹899 - ₹25,000",
@@ -150,7 +150,7 @@ const webSchema = {
   "@context": "https://schema.org",
   "@type": "WebSite",
   name: "Manisha Belvalkar",
-  url: "https://manishabelvalkar.com",
+  url: "https://www.manishabelvalkar.com",
   inLanguage: "en-IN",
 };
 

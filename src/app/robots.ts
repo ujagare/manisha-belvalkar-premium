@@ -9,7 +9,7 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/api/", "/account/", "/checkout/", "/login", "/signup", "/app/"],
       },
     ],
-    sitemap: "https://manishabelvalkar.com/sitemap.xml",
-    host: "https://manishabelvalkar.com",
+    sitemap: "https://www.manishabelvalkar.com/sitemap.xml",
+    host: "https://www.manishabelvalkar.com",
   };
 }
