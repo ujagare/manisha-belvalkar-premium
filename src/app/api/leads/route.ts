@@ -45,12 +45,13 @@ export async function POST(request: Request) {
         name, email: email || null, phone: phone || null, message, reference,
         sourcePath: textValue(body.sourcePath, 200) || null,
       });
-      await sendEmail({ to: brand.email, subject, html });
+      const adminEmail = await sendEmail({ to: brand.email, subject, html });
+      let customerEmailSent = false;
       if (email) {
         const customer = requestConfirmationEmail({ name, reference, requestType: "contact enquiry", summary: message });
-        await sendEmail({ to: email, subject: customer.subject, html: customer.html });
+        customerEmailSent = (await sendEmail({ to: email, subject: customer.subject, html: customer.html })).ok;
       }
-      return apiSuccess({ reference }, 201);
+      return apiSuccess({ reference, emailed: customerEmailSent, adminNotified: adminEmail.ok }, 201);
     }
     if (kind === "waitlist") {
       if (!email && !phone) return apiError("BAD_REQUEST", "Email or phone is required.", 422);
