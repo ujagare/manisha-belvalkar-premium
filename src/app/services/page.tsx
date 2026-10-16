@@ -9,7 +9,6 @@ import {
   Clock,
   Compass,
   Heart,
-  MessageCircle,
   Sparkles,
 } from "lucide-react";
 
@@ -19,7 +18,6 @@ import {
   healingServices,
   mentoringAreas,
   services,
-  testimonials,
 } from "@/lib/data";
 import { formatINR } from "@/lib/utils";
 
@@ -111,8 +109,6 @@ export default function ServicesPage() {
   const featuredCourse = courses.find(
     (course) => course.slug === "personalized-wellbeing"
   );
-  const featuredTestimonial = testimonials[6] ?? testimonials[0];
-
   return (
     <div className="overflow-hidden bg-[#f8f3e9] text-[#241b17]">
       <section className="relative isolate min-h-[760px] bg-[#201713] text-white lg:min-h-[840px]">
@@ -577,55 +573,6 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {featuredTestimonial && (
-        <section className="bg-white px-6 py-24 sm:px-10 lg:py-32">
-          <Reveal>
-            <figure className="mx-auto max-w-5xl text-center">
-              <div className="mx-auto flex size-12 items-center justify-center rounded-full border border-[#a81414]/25 font-serif text-3xl text-[#a81414]">
-                “
-              </div>
-              <blockquote className="mt-8 font-serif text-3xl leading-[1.28] tracking-[-0.025em] text-[#34251f] sm:text-5xl">
-                {featuredTestimonial.text}
-              </blockquote>
-              <figcaption className="mt-8">
-                <p className="text-sm font-semibold text-[#3b2922]">
-                  {featuredTestimonial.name}
-                </p>
-                <p className="mt-1 text-xs uppercase tracking-[0.18em] text-[#9a8173]">
-                  {featuredTestimonial.role}
-                </p>
-              </figcaption>
-            </figure>
-          </Reveal>
-        </section>
-      )}
-
-      <section className="relative bg-[#6b0b0b] px-6 py-20 text-white sm:px-10 lg:py-24">
-        <div className="absolute inset-0 opacity-[0.08] [background-image:radial-gradient(circle_at_1px_1px,#fff_1px,transparent_0)] [background-size:22px_22px]" />
-        <Reveal>
-          <div className="relative mx-auto flex max-w-7xl flex-col items-start justify-between gap-10 lg:flex-row lg:items-center">
-            <div className="max-w-3xl">
-              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#e7c968]">
-                Still deciding?
-              </p>
-              <h2 className="mt-4 font-serif text-4xl leading-tight sm:text-5xl">
-                Tell us what you are navigating.
-              </h2>
-              <p className="mt-4 max-w-2xl text-lg leading-8 text-white/78">
-                Manisha&apos;s team will help you choose the most useful
-                starting point—without pressure or guesswork.
-              </p>
-            </div>
-            <Link
-              href="/contact"
-              className="inline-flex min-h-14 shrink-0 items-center justify-center gap-3 bg-[#e4c665] px-8 py-4 text-sm font-bold uppercase tracking-[0.11em] text-[#4a130f] transition-colors hover:bg-white"
-            >
-              <MessageCircle className="size-5" />
-              Help me choose
-            </Link>
-          </div>
-        </Reveal>
-      </section>
     </div>
   );
 }
