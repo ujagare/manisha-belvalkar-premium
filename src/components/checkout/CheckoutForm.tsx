@@ -270,7 +270,7 @@ export default function CheckoutForm({
   }
 
   const whatsappUrl = created
-    ? `https://wa.me/919922246111?text=${encodeURIComponent(`Namaste Manisha ji, I would like to confirm my ${isCourse ? "enrollment request" : "order"}:\n\nOrder ID: ${created.id}\nItem: ${itemTitle}\nTotal: ${totalLabel}\n\nName: ${userEmail ? userName : guestName}\nEmail: ${userEmail || guestEmail}${isCourse ? `\nPhone: ${courseDetails.phone}\nPreferred contact: ${courseDetails.preferredContact}` : ""}${deliverySummary ? `\nDelivery: ${deliverySummary}` : ""}\n\nPlease share the next steps.`)}`
+    ? `https://wa.me/919922246111?text=${encodeURIComponent(`Namaste Manisha ji, I would like to confirm my ${isCourse ? "enrollment request" : "order"}:\n\nReference: ${created.id}\n${isCourse ? "Course" : "Product"}: ${itemTitle}${isPhysicalProduct ? `\nQuantity: ${quantity}` : ""}\nEstimated total: ${totalLabel}\n\n${isCourse ? "Student" : "Customer"} name: ${userEmail ? userName : guestName}\nEmail: ${userEmail || guestEmail}${isCourse ? `\nPhone / WhatsApp: ${courseDetails.phone}\nPreferred contact: ${courseDetails.preferredContact}\nPreferred language: ${courseDetails.preferredLanguage}\nExperience level: ${courseDetails.experienceLevel}\nLearning goal: ${courseDetails.learningGoal}` : `\nPhone: ${deliveryPhone}`}${deliverySummary ? `\nDelivery address: ${deliverySummary}` : ""}\n\nPlease confirm availability, final amount, ${isCourse ? "onboarding" : "shipping"}, and next steps.`)}`
     : brand.whatsappHref;
 
   if (created) {
