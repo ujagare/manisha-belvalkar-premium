@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Link from "next/link";
 import { Heart } from "lucide-react";
 import { manualReference, sendManualConfirmation } from "@/lib/manual-flow";
@@ -12,12 +12,14 @@ export default function ContactForm({ manualMode = false }: { manualMode?: boole
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [reference, setReference] = useState<string | null>(null);
+  const honeypotRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setError(null);
     setReference(null);
     setIsSubmitting(true);
+    const honeypot = honeypotRef.current?.value ?? "";
     try {
       if (manualMode) {
         const nextReference = manualReference("ENQUIRY");
@@ -34,7 +36,7 @@ export default function ContactForm({ manualMode = false }: { manualMode?: boole
         const response = await fetch("/api/leads", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ kind: "enquiry", ...form, consent, sourcePath: window.location.pathname }),
+          body: JSON.stringify({ kind: "enquiry", ...form, consent, sourcePath: window.location.pathname, company_website: honeypot }),
         });
         const result = await response.json().catch(() => null);
         if (!response.ok) throw new Error(result?.error?.message ?? "SUBMIT_FAILED");
@@ -55,6 +57,11 @@ export default function ContactForm({ manualMode = false }: { manualMode?: boole
 
   return (
     <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
+      {/* Honeypot trap — invisible to humans, filled by bots. CSS hides the field completely. */}
+      <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", top: "-9999px", height: 0, width: 0, overflow: "hidden" }}>
+        <label htmlFor="company_website">Company website</label>
+        <input id="company_website" name="company_website" type="text" tabIndex={-1} autoComplete="off" ref={honeypotRef} />
+      </div>
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
           <label htmlFor="name" className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-warmgray">Name</label>

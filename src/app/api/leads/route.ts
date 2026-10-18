@@ -11,6 +11,24 @@ const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const phonePattern = /^[+()\d\s-]{7,20}$/;
 const textValue = (value: unknown, max: number) => typeof value === "string" ? value.trim().slice(0, max) : "";
 
+/** Anti-bot: hidden honeypot field that real humans never fill. */
+function isHoneypotTriggered(body: Record<string, unknown>) {
+  const trap = textValue(body.company_website, 254) || textValue(body.url, 254);
+  return trap.length > 0;
+}
+
+/** Anti-bot: reject gibberish bot payloads (long, single 'word', random-case). */
+function isGibberish(value: string, minLen = 12) {
+  if (value.length < minLen) return false;
+  // A real sentence almost always has whitespace. Bots send one long random blob.
+  if (!/\s/.test(value)) return true;
+  // A real word/sentence contains vowels; pure consonant runs signal bot noise.
+  const letters = value.replace(/[^a-zA-Z]/g, "");
+  if (letters.length >= max(8, minLen) && !/[aeiouAEIOU]/i.test(letters)) return true;
+  return false;
+}
+function max(a: number, b: number) { return a > b ? a : b; }
+
 export async function POST(request: Request) {
   const traceId = requestId(request);
   try {
@@ -19,6 +37,10 @@ export async function POST(request: Request) {
       return apiError("RATE_LIMITED", "Too many submissions. Please try again later.", 429);
     }
     const body = await readJsonObject(request, 12_288);
+    // Anti-bot: silently drop honeypot-filled submissions without inserting/emailing.
+    if (isHoneypotTriggered(body)) {
+      return apiSuccess({ dropped: true }, 201);
+    }
     if (!body.consent) return apiError("BAD_REQUEST", "Consent is required.", 422);
     const kind = body.kind;
     const name = textValue(body.name, 120);
@@ -33,6 +55,10 @@ export async function POST(request: Request) {
     if (kind === "enquiry") {
       const message = textValue(body.message, 3000);
       if (!name || !message || !email || !phone) return apiError("BAD_REQUEST", "Name, email, phone and message are required.", 422);
+      // Anti-bot: drop gibberish messages/names silently (no insert, no email).
+      if (isGibberish(message) || isGibberish(name, 8)) {
+        return apiSuccess({ dropped: true }, 201);
+      }
       const { data, error } = await admin.from("enquiries").insert({
         user_id: user?.id ?? null, category: textValue(body.category, 50) || "general",
         name, email: email || null, phone: phone || null, message,
