@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import { Cormorant_Garamond, Inter, Playfair_Display } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
@@ -154,11 +155,12 @@ const webSchema = {
   inLanguage: "en-IN",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const nonce = (await headers()).get("x-nonce") ?? undefined;
   return (
     <html
       lang="en"
@@ -203,7 +205,7 @@ export default function RootLayout({
           </SmoothScrollProvider>
         </CartProvider>
       </body>
-      <Script id="google-tag-manager" strategy="lazyOnload">
+      <Script id="google-tag-manager" strategy="lazyOnload" nonce={nonce}>
         {`
           (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
           new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
