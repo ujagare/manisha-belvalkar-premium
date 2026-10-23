@@ -4,6 +4,9 @@
   z-index: 999999;
   overflow: hidden;
   pointer-events: auto;
+  /* Failsafe: even if JS never runs/hydrates, the splash hides itself
+     after 8s so it can never permanently block the page. */
+  animation: intro-failsafe 0s linear 8s forwards;
 }
 
 .panel {
@@ -104,5 +107,12 @@
 @media (prefers-reduced-motion: reduce) {
   .loader {
     display: none;
+  }
+}
+
+@keyframes intro-failsafe {
+  to {
+    visibility: hidden;
+    pointer-events: none;
   }
 }
