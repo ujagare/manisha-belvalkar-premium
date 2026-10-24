@@ -1,12 +1,10 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-const AUTOPLAY_MS = 7500;
 
 const navigationSlides = [
   {
@@ -77,8 +75,6 @@ const navigationSlides = [
 
 export default function HeroSlider() {
   const [current, setCurrent] = useState(0);
-  const [paused, setPaused] = useState(false);
-  const touchStart = useRef<number | null>(null);
   const reduceMotion = useReducedMotion();
   const slide = navigationSlides[current];
 
@@ -93,31 +89,11 @@ export default function HeroSlider() {
     );
   }, []);
 
-  useEffect(() => {
-    if (paused || reduceMotion) return;
-    const timer = window.setTimeout(() => step(1), AUTOPLAY_MS);
-    return () => window.clearTimeout(timer);
-  }, [current, paused, reduceMotion, step]);
-
   return (
     <section
       className="relative isolate overflow-hidden bg-[#fbf7ef] text-charcoal"
       aria-roledescription="carousel"
       aria-label="Explore Manisha Belvalkar"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-      onFocusCapture={() => setPaused(true)}
-      onBlurCapture={() => setPaused(false)}
-      onTouchStart={(event) => {
-        touchStart.current = event.touches[0]?.clientX ?? null;
-      }}
-      onTouchEnd={(event) => {
-        const start = touchStart.current;
-        const end = event.changedTouches[0]?.clientX;
-        touchStart.current = null;
-        if (start == null || end == null || Math.abs(end - start) < 48) return;
-        step(end < start ? 1 : -1);
-      }}
     >
       <div
         className="pointer-events-none absolute inset-0 opacity-70"

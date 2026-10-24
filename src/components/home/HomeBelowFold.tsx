@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
@@ -65,8 +65,6 @@ const slides = [slideLibrary[2], slideLibrary[0], slideLibrary[1]] as const;
 
 export default function HomeBelowFold() {
   const [current, setCurrent] = useState(0);
-  const [paused, setPaused] = useState(false);
-  const touchStart = useRef<number | null>(null);
   const reduceMotion = useReducedMotion();
   const slide = slides[current];
 
@@ -74,27 +72,11 @@ export default function HomeBelowFold() {
     setCurrent((value) => (value + direction + slides.length) % slides.length);
   }, []);
 
-  useEffect(() => {
-    if (paused || reduceMotion) return;
-    const timer = window.setTimeout(() => step(1), 8000);
-    return () => window.clearTimeout(timer);
-  }, [current, paused, reduceMotion, step]);
-
   return (
     <section
       className="content-auto relative isolate overflow-hidden bg-[#f8f1e6] py-12 text-charcoal sm:py-20 lg:py-24"
       aria-roledescription="carousel"
       aria-label="Explore everything Manisha offers"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-      onFocusCapture={() => setPaused(true)}
-      onBlurCapture={() => setPaused(false)}
-      onTouchStart={(event) => { touchStart.current = event.touches[0]?.clientX ?? null; }}
-      onTouchEnd={(event) => {
-        const end = event.changedTouches[0]?.clientX;
-        if (touchStart.current != null && end != null && Math.abs(end - touchStart.current) > 48) step(end < touchStart.current ? 1 : -1);
-        touchStart.current = null;
-      }}
     >
       <div className="pointer-events-none absolute inset-0 opacity-80" aria-hidden="true" style={{ backgroundImage: "radial-gradient(circle at 8% 12%, rgba(180,20,20,.07), transparent 24%), radial-gradient(circle at 90% 86%, rgba(221,184,41,.15), transparent 28%)" }} />
       <div className="pointer-events-none absolute inset-y-0 left-[6%] hidden w-px bg-primary/10 lg:block" />

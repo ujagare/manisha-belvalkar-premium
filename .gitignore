@@ -36,6 +36,16 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 .codex-*.log
+*.log
+.next-prod-loader*/
+.playwright-cli/
+.impeccable/
+/output/
+
+# test screenshots and snapshots
+/*.png
+/*.jpeg
+/*.yml
 
 # env files (can opt-in for committing if needed)
 .env*
