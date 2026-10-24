@@ -471,8 +471,8 @@ export default function ShaktiCardReading({ showBuyButton = false }: { showBuyBu
               <div className={`mx-auto grid max-w-6xl -translate-y-3 content-center items-center gap-2 px-5 py-7 sm:translate-y-0 sm:gap-12 sm:px-8 sm:py-14 lg:grid-cols-[0.82fr_1.18fr] lg:gap-20 lg:py-16 ${revealHeight}`}>
                 <div className="revealed-card relative mx-auto w-full max-w-[9rem] [perspective:1200px] sm:max-w-[18rem] lg:max-w-[21rem]">
                   <div className="absolute -inset-9 rounded-[3rem] bg-gold/20 blur-3xl" />
-                  <div className="relative aspect-[1060/1484] overflow-hidden rounded-2xl border border-gold-light/70 bg-gold-soft shadow-[0_45px_100px_rgba(0,0,0,0.7),0_0_55px_rgba(221,184,41,0.22)]">
-                    <Image src={shaktiCardImagePath(cardNumber)} alt={`Your selected Shakti card, card ${cardNumber}`} fill sizes="(max-width: 640px) 144px, (max-width: 1023px) 288px, 336px" className="object-cover" />
+                  <div className="relative aspect-[2/3] overflow-hidden rounded-2xl border border-gold-light/70 bg-gold-soft shadow-[0_45px_100px_rgba(0,0,0,0.7),0_0_55px_rgba(221,184,41,0.22)]">
+                    <Image src={shaktiCardImagePath(cardNumber)} alt={`Your selected Shakti card, card ${cardNumber}`} fill sizes="(max-width: 640px) 144px, (max-width: 1023px) 288px, 336px" className="object-contain" />
                   </div>
                 </div>
 

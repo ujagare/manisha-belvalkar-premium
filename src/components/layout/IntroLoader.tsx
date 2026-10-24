@@ -1,28 +1,15 @@
 "use client";
 
-import { useLayoutEffect, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import styles from "./IntroLoader.module.css";
 
 const brandName = "Manisha Belvalkar";
-const loaderSessionKey = "manisha-intro-seen";
 
 export default function IntroLoader() {
-  const loaderRef = useRef<HTMLDivElement>(null);
   const [leaving, setLeaving] = useState(false);
   const [visible, setVisible] = useState(true);
 
-  useLayoutEffect(() => {
-    try {
-      if (window.sessionStorage.getItem(loaderSessionKey) === "true") {
-        if (loaderRef.current) loaderRef.current.style.display = "none";
-        return;
-      }
-
-      window.sessionStorage.setItem(loaderSessionKey, "true");
-    } catch {
-      // Keep the loader functional when browser storage is unavailable.
-    }
-
+  useEffect(() => {
     const leaveTimer = window.setTimeout(() => setLeaving(true), 4200);
     const removeTimer = window.setTimeout(() => setVisible(false), 5400);
 
@@ -36,7 +23,6 @@ export default function IntroLoader() {
 
   return (
     <div
-      ref={loaderRef}
       className={`${styles.loader} ${leaving ? styles.leaving : ""}`}
       aria-hidden="true"
     >
