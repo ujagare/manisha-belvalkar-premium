@@ -1,0 +1,13 @@
+.git
+.next
+.next-*
+node_modules
+coverage
+tmp
+output
+.playwright-cli
+.playwright-mcp
+.impeccable
+*.log
+.env*
+!.env.example
