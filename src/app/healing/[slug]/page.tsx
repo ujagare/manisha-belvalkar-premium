@@ -14,6 +14,7 @@ import {
   Video,
 } from "lucide-react";
 import { healingServices } from "@/lib/data";
+import { formatINR } from "@/lib/utils";
 import SessionBookingForm from "@/components/services/SessionBookingForm";
 import InternalSubmenu from "@/components/layout/InternalSubmenu";
 import { isServerConfigured } from "@/lib/env";
@@ -108,6 +109,12 @@ export default async function HealingDetailPage({ params }: Props) {
                       <CircleCheck className="h-4 w-4" /> Private one-to-one session
                     </div>
                     <h1 className="mt-5 max-w-full [overflow-wrap:anywhere] text-balance font-display text-4xl font-semibold leading-[1.05] tracking-[-0.025em] text-charcoal sm:text-[2.75rem] 2xl:text-5xl">{service.title}</h1>
+                    {service.price || service.format ? (
+                      <div className="mt-5 flex flex-wrap items-center gap-3">
+                        {service.price ? <span className="font-display text-3xl font-bold text-primary">{formatINR(service.price)}</span> : null}
+                        {service.format ? <span className="rounded-full bg-gold-soft px-3 py-1.5 text-xs font-semibold text-gold-deep">{service.format}</span> : null}
+                      </div>
+                    ) : null}
                     <p className="mt-4 max-w-prose text-pretty text-[0.95rem] leading-7 text-warmgray sm:text-base">{service.description}</p>
 
                     <div className="mt-7 grid gap-3 sm:grid-cols-2">

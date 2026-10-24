@@ -45,6 +45,7 @@ export interface Course {
   image: string;
   /** Optional price in INR — when set, the course is buyable online. */
   price?: number;
+  pricingOptions?: { label: string; price: number; format: string }[];
   /** Optional recorded curriculum shown on the detail page and in the player. */
   curriculum?: CourseModule[];
 }
@@ -410,12 +411,38 @@ export const services: Service[] = [
 /* ---------- Courses ---------- */
 export const courses: Course[] = [
   {
+    slug: "professional-tarot-reader",
+    title: "Become a Professional Tarot Reader",
+    duration: "Live online · Basic and Advanced levels",
+    price: 300000,
+    pricingOptions: [
+      { label: "Basic", price: 300000, format: "Live online" },
+      { label: "Advanced", price: 600000, format: "Live online" },
+    ],
+    description:
+      "A structured live online course designed to help you understand Tarot deeply, read with confidence and develop the practical skills needed to guide clients professionally.",
+    highlights: [
+      "Learn Tarot foundations, symbols and card meanings",
+      "Build confident and ethical reading skills",
+      "Practise spreads, interpretation and client guidance",
+      "Advance toward professional Tarot reading",
+    ],
+    suitableFor: [
+      "Beginners ready to learn Tarot systematically",
+      "Readers who want advanced interpretation skills",
+      "Those preparing to offer professional readings",
+    ],
+    image: "/images/tarot.webp",
+  },
+  {
     slug: "aishwarya-siddhi",
     title: "Aishwarya Siddhi Course",
-    duration: "11-day online course",
+    duration: "Online WhatsApp course",
+    price: 24999,
     description:
       "A sacred journey of invoking Goddess Mahalakshmi and receiving her blessings for abundance, beauty, harmony, and grace. Once you enrol, the most suitable day to begin is decided on the basis of your intent and energy design. Every day you receive instructions in the form of voice notes, texts, and images.",
     highlights: [
+      "Guided online practice delivered through WhatsApp",
       "Remedies and rituals to tap into Goddess Lakshmi's abundance",
       "Yantra, mantra, and techniques to strengthen your wealth attraction capability",
       "Guidance to carry the sadhana into Diwali for more powerful results",
@@ -456,7 +483,8 @@ export const courses: Course[] = [
   {
     slug: "shri-vidya",
     title: "Shri Vidya Course",
-    duration: "9 classes over two years · monthly · 3 hours",
+    duration: "Two-year course · 12 sessions",
+    price: 1200000,
     description:
       "An online course for opening the door to material and spiritual success. Discover the Mysteries of Shri Vidya — a profound journey designed to gently take you on the sacred path of Shri Vidya, connecting with the Sri Yantra as a living presence and the Goddess Tripura Sundari.",
     highlights: [
@@ -493,7 +521,8 @@ export const courses: Course[] = [
   {
     slug: "advanced-chakra",
     title: "Advanced Chakra Course",
-    duration: "12 classes over two years · every two months · 3 hours",
+    duration: "8 sessions",
+    price: 900000,
     description:
       "A two-year immersive program that takes you on a deep journey through the chakras to explore their energy, function, and role in healing and spiritual awakening. With a special focus on kundalini movement, the course includes hands-on exercises, energy healing, and in-depth exploration of each chakra.",
     highlights: [
@@ -512,10 +541,13 @@ export const courses: Course[] = [
   {
     slug: "personalized-wellbeing",
     title: "Personalized Well-being Course",
-    duration: "Six-month personalized program",
+    duration: "6 online sessions",
+    price: 600000,
     description:
       "A deeply personalized journey to help you heal, grow, and thrive. Designed around your unique mental, energetic, and emotional blueprint, it empowers you to navigate life with confidence and positivity through ancient wisdom, practical tools, and modern insights.",
     highlights: [
+      "Live online sessions through Zoom",
+      "WhatsApp support with replies within 24 hours",
       "Self-Discovery: understand your unique design, gifts, and talents",
       "Empowerment: master tools to handle life's challenges with ease",
       "Inner Transformation: reprogram your inner narrative for positivity, success, and purpose",
@@ -528,19 +560,38 @@ export const courses: Course[] = [
     ],
     image: "/images/personalized-wellbeing-course.webp",
   },
+  {
+    slug: "soul-purpose-reading-course",
+    title: "Soul Purpose Reading",
+    duration: "Online reading · 3-day preparation",
+    price: 99000,
+    description:
+      "A deeply prepared Soul Purpose Reading shaped around your birth details and personal questions, offering reflective guidance on your path, purpose and next steps.",
+    highlights: [
+      "Date, time and place of birth required",
+      "Submit your questions before the reading begins",
+      "Three days of preparation before the reading",
+      "Personalized soul-purpose guidance",
+    ],
+    suitableFor: [
+      "Those seeking clarity about their life purpose",
+      "Anyone exploring recurring patterns and direction",
+      "Seekers ready for a deeply personalized reading",
+    ],
+    image: "/images/home-cards/tarot-consultation.webp",
+  },
 ];
 
 /* ---------- Products (sacred tools & treasures) ---------- */
 export const products: Product[] = [
   {
     slug: "shakti-oracle-deck",
-    title: "Deck",
+    title: "Card Deck",
     subtitle: "SHAKTI Oracle Deck",
     category: "oracle",
     description:
       "Inspired by the sacred 51 Shakti Peethas, the Shakti Oracle Cards are a powerful tool for connecting with the divine feminine. Created from Dr. Manisha S. Belvalkar's profound experiences and meditations with the Goddesses, this beautifully illustrated deck offers daily guidance, positivity, and spiritual insights.",
-    price: 2993,
-    salePrice: 3533,
+    price: 1899,
     badge: "Best Seller",
     image: "/images/shakti-cards-and-book.webp",
     details: [
@@ -553,19 +604,18 @@ export const products: Product[] = [
   },
   {
     slug: "shakti-deck-guidebook",
-    title: "Book",
+    title: "Shakti Book",
     subtitle: "SHAKTI guidebook for daily practice",
     category: "oracle",
     description:
-      "The complete SHAKTI experience — a beautifully illustrated 52-card oracle deck paired with its companion guidebook, holding the wisdom of the 51 Shakti Peethas for your daily practice. Gift-ready sacred packaging.",
-    price: 2993,
-    salePrice: 3533,
+      "The SHAKTI companion book holds the wisdom of the 51 Shakti Peethas, with guidance created to support your daily spiritual practice.",
+    price: 1999,
     badge: "Complete Set",
-    image: "/images/shakti-book-front.webp",
+    image: "/images/shakti-goddess-oracle-book.png",
     details: [
-      "52 oracle cards",
-      "Companion guidebook included",
-      "Gift-ready sacred packaging",
+      "Companion guidebook",
+      "Daily spiritual practice",
+      "Gift-ready sacred keepsake",
       "Inspired by 51 Shakti Peethas",
     ],
   },
@@ -577,7 +627,6 @@ export const products: Product[] = [
     description:
       "Gift the divine — the SHAKTI Oracle Deck and guidebook presented together as one sacred combo, handcrafted with intention and blessed before it reaches your altar. A complete spiritual toolkit for daily guidance.",
     price: 2993,
-    salePrice: 3533,
     badge: "Sacred Combo",
     image: "/images/shakti-cards-and-book.webp",
     details: [
@@ -594,10 +643,9 @@ export const products: Product[] = [
     category: "ritual",
     description:
       "A handcrafted Himalayan crystal salt frame infused with intention — a living tool for space clearing, protection and gentle energy cleansing. Place it near your entrance, altar or meditation corner to hold your space calm, clear and protected.",
-    price: 899,
-    salePrice: 1099,
+    price: 699,
     badge: "Handcrafted",
-    image: "/images/shakti-salt-frame.webp",
+    image: "/images/magic-salt.png",
     details: [
       "Authentic Himalayan crystal salt",
       "Handcrafted with intention",
@@ -612,8 +660,7 @@ export const products: Product[] = [
     category: "ritual",
     description:
       "Intention-led Vastu healing frames created to support harmony, protection and energetic balance in your home or work space.",
-    price: 899,
-    salePrice: 1099,
+    price: 7419,
     badge: "Vastu",
     image: "/images/vastu-healing-frame.jpeg",
     details: [
@@ -630,10 +677,9 @@ export const products: Product[] = [
     category: "ritual",
     description:
       "Guided abundance rituals designed to invite prosperity, gratitude and aligned flow into your everyday spiritual practice.",
-    price: 899,
-    salePrice: 1099,
+    price: 15000,
     badge: "Ritual",
-    image: "/images/aishwarya-siddhi-program.webp",
+    image: "/images/abundance-ritual.png",
     details: [
       "Prosperity-focused ritual guidance",
       "Simple steps for home practice",
@@ -644,15 +690,15 @@ export const products: Product[] = [
   {
     slug: "good-luck-rituals",
     title: "Good Luck Rituals",
-    subtitle: "Ritual support for blessings and luck",
+    subtitle: "One year of ritual support for blessings and luck",
     category: "ritual",
     description:
       "Good Luck Rituals created to support blessings, positivity and auspicious beginnings through focused spiritual practice.",
-    price: 899,
-    salePrice: 1099,
+    price: 24000,
     badge: "Ritual",
     image: "/images/home-cards/positive-energy.webp",
     details: [
+      "Effect for one year",
       "For blessings and new beginnings",
       "Positive intention practice",
       "Guided ritual format",
@@ -666,8 +712,7 @@ export const products: Product[] = [
     category: "ritual",
     description:
       "Good Health Rituals created to support wellness, calm and energetic balance through gentle guided spiritual practice.",
-    price: 899,
-    salePrice: 1099,
+    price: 9999,
     badge: "Ritual",
     image: "/images/home-cards/healing-session.webp",
     details: [
@@ -678,6 +723,40 @@ export const products: Product[] = [
     ],
   },
   {
+    slug: "protection-rituals",
+    title: "Protection Rituals",
+    subtitle: "Ritual support for protection and energetic boundaries",
+    category: "ritual",
+    description:
+      "Guided protection rituals created to support a calm, protected space and stronger energetic boundaries through focused spiritual practice.",
+    price: 9999,
+    badge: "Ritual",
+    image: "/images/protection-ritual.png",
+    details: [
+      "Protection-focused ritual guidance",
+      "Supports energetic boundaries",
+      "For home and personal practice",
+      "Created with healing intention",
+    ],
+  },
+  {
+    slug: "tarot-reading",
+    title: "Tarot Reading",
+    subtitle: "Personal guidance and clarity through Tarot",
+    category: "ritual",
+    description:
+      "A personal Tarot reading for clear, reflective guidance around your present questions, patterns and next steps.",
+    price: 24000,
+    badge: "Reading",
+    image: "/images/home-cards/tarot-consultation.webp",
+    details: [
+      "Personal Tarot guidance",
+      "Clarity for present questions",
+      "Reflective and intuitive reading",
+      "Focused next-step guidance",
+    ],
+  },
+  {
     slug: "whatsapp-workshops",
     title: "WhatsApp Workshops",
     subtitle: "Guided learning through WhatsApp",
@@ -685,7 +764,6 @@ export const products: Product[] = [
     description:
       "Compact WhatsApp workshops with guided messages, images, voice notes and step-by-step spiritual practice.",
     price: 999,
-    salePrice: 1299,
     badge: "Workshop",
     image: "/images/home-cards/shakti-app.webp",
     details: [
@@ -982,13 +1060,13 @@ export const mentoringAreas: MentoringArea[] = [
   {
     slug: "clarity-alignment",
     title: "Evolve through Clarity and Alignment",
-    short: "A refined self-exploration pathway for inner clarity and grounded change.",
+    short: "Refined guidance for specific questions and inner clarity.",
     description:
       "A premium mentoring pathway for those ready to evolve with intention. Through self-exploration, energetic clarity and practical alignment, you begin moving from confusion to confident direction.",
     features: [
-      "Self exploration and values discovery",
-      "Clarity around repeating life patterns",
-      "Alignment practices for daily decisions",
+      "Come with your questions",
+      "Specific guidance for dealing with your situation",
+      "Practical solutions for a brighter future",
       "Support for purpose-led transformation",
     ],
     image: "/images/manisha-portrait.webp",
@@ -1001,6 +1079,8 @@ export interface HealingService {
   title: string;
   short: string;
   description: string;
+  price?: number;
+  format?: string;
   features: string[];
   image: string;
 }
@@ -1012,7 +1092,9 @@ export const legacyHealingServices: HealingService[] = [
   {
     slug: "healing-sessions",
     title: "Energy Healing",
-    short: "In-person energy healing with Manisha.",
+    short: "In-person energy healing.",
+    price: 24000,
+    format: "In person",
     description:
       "Personal healing sessions guided by Dr. Manisha Belvalkar — combining energy work, chakra alignment and intuitive insight.",
     features: [
@@ -1026,6 +1108,8 @@ export const legacyHealingServices: HealingService[] = [
     slug: "distance-healing",
     title: "Distance Healing",
     short: "Healing energy, wherever you are.",
+    price: 15000,
+    format: "Distance · 1 session",
     description:
       "Receive the same healing care remotely — distance healing works across any location, bringing balance and relief to you at home.",
     features: [
@@ -1109,7 +1193,9 @@ export const healingServices: HealingService[] = [
   {
     slug: "healing-sessions",
     title: "Energy Healing",
-    short: "In-person energy healing with Manisha.",
+    short: "In-person energy healing.",
+    price: 24000,
+    format: "In person",
     description:
       "Personal healing sessions guided by Dr. Manisha Belvalkar, combining intuitive insight, energy alignment and gentle aftercare for body, mind and spirit.",
     features: [
@@ -1123,6 +1209,8 @@ export const healingServices: HealingService[] = [
     slug: "distance-healing",
     title: "Distance Healing",
     short: "Healing energy, wherever you are.",
+    price: 15000,
+    format: "Distance · 1 session",
     description:
       "Receive the same healing care remotely. Distance healing supports balance, relief and energetic calm from any location.",
     features: [
@@ -1136,6 +1224,8 @@ export const healingServices: HealingService[] = [
     slug: "shakti-healing",
     title: "Shakti Healing",
     short: "Healing through sacred divine feminine energy.",
+    price: 24000,
+    format: "In person",
     description:
       "Connect with Shakti, the divine feminine force, through a healing session designed to restore emotional strength, spiritual connection and inner support.",
     features: [
@@ -1149,6 +1239,8 @@ export const healingServices: HealingService[] = [
     slug: "mind-reprogramming",
     title: "Reprogramming Your Mind (Through Guided Meditation)",
     short: "A longer guided meditation pathway to release limiting beliefs and create new inner patterns.",
+    price: 99000,
+    format: "Live online · 3 sessions",
     description:
       "A deeper guided meditation offering designed to reprogram limiting beliefs, release old mental loops and create supportive inner pathways for positive thinking, clarity and empowered living.",
     features: [
@@ -1354,7 +1446,7 @@ export const navigation = [
   { label: "Mentoring", href: "/mentoring" },
   { label: "Healing", href: "/healing" },
   { label: "Courses", href: "/courses" },
-  { label: "Shop", href: "/products" },
+  { label: "Products", href: "/products" },
   { label: "Community", href: "/community" },
   { label: "Contact", href: "/contact" },
 ];

@@ -20,14 +20,14 @@ const slideLibrary = [
     primary: ["Explore all guidance", "/services"],
     secondary: ["Book a session", "/contact"],
     links: [
-      ["Personal readings", "Tarot, soul purpose and clear next steps", "/services"],
-      ["Energy healing", "In-person and distance support", "/healing"],
       ["Mentoring", "Longer journeys of clarity and alignment", "/mentoring"],
+      ["Energy healing", "In-person and distance support", "/healing"],
+      ["Courses", "Tarot, healing and spiritual learning", "/courses"],
     ],
   },
   {
     number: "03",
-    tab: "Shakti",
+    tab: "Shakti Card",
     eyebrow: "Sacred wisdom for everyday life",
     title: "Bring practice, learning and ritual closer.",
     description: "Discover Manisha’s world of divine feminine wisdom through Shakti, thoughtful courses, sacred tools and guidance you can return to each day.",

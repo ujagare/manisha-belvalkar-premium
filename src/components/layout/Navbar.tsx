@@ -32,7 +32,7 @@ export default function Navbar() {
     { label: "Mentoring", href: "/mentoring", icon: Compass },
     { label: "Healing", href: "/healing", icon: HeartPulse },
     { label: "Courses", href: "/courses", icon: BookOpen },
-    { label: "Shop", href: "/products", icon: Store },
+    { label: "Products", href: "/products", icon: Store },
   ];
 
   useEffect(() => {

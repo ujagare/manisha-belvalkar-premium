@@ -120,29 +120,29 @@ export function ShaktiOracleCollection() {
       <div className="relative mx-auto grid max-w-7xl gap-14 lg:grid-cols-[0.95fr_1.05fr] lg:items-center lg:gap-24">
         <Reveal direction="right" className="relative min-h-[32rem] sm:min-h-[42rem]">
           <div className="absolute inset-[8%_5%_2%_14%] rounded-[45%_45%_2rem_2rem] bg-[#6f100d] shadow-[0_42px_100px_-45px_rgba(91,20,13,0.75)]" />
-          <Image src="/images/shakti-cards-and-book.webp" alt="SHAKTI Oracle Deck with its companion guidebook" fill sizes="(max-width: 1024px) 100vw, 48vw" className="object-contain drop-shadow-[0_32px_38px_rgba(80,20,12,0.26)]" />
+          <Image src="/images/shakti-goddess-oracle-book.png" alt="Shakti Symbols and Guidance book by Dr. Manisha Belvalkar" fill sizes="(max-width: 1024px) 100vw, 48vw" className="object-contain drop-shadow-[0_32px_38px_rgba(80,20,12,0.26)]" />
           <div className="absolute bottom-4 left-0 border border-gold/30 bg-[#fffaf2]/90 px-5 py-4 shadow-xl backdrop-blur-md sm:left-5">
-            <p className="text-[0.6rem] font-bold uppercase tracking-[0.24em] text-gold-deep">Complete sacred set</p>
-            <p className="mt-1 font-display text-3xl font-semibold text-primary">₹2,993</p>
+            <p className="text-[0.6rem] font-bold uppercase tracking-[0.24em] text-gold-deep">Shakti Book</p>
+            <p className="mt-1 font-display text-3xl font-semibold text-primary">₹2,799</p>
           </div>
         </Reveal>
 
         <Reveal direction="left">
-          <p className="font-serif text-xl italic text-primary">Created through meditation</p>
+          <p className="font-serif text-xl italic text-primary">Symbols, stories and sacred guidance</p>
           <h2 id="oracle-collection-title" className="mt-4 text-balance font-display text-5xl font-semibold leading-[0.96] tracking-[-0.045em] text-charcoal sm:text-6xl">
-            Wisdom of the <span className="text-crimson-gradient">51 Shakti Peethas</span>, held in your hands.
+            Meet the Goddesses through the <span className="text-crimson-gradient">Shakti Book.</span>
           </h2>
           <p className="mt-7 max-w-2xl text-pretty text-base leading-8 text-warmgray">
-            Born from Dr. Manisha S. Belvalkar&apos;s profound experiences and meditations with the Goddesses, the SHAKTI Oracle is designed for daily guidance, positivity and a more intimate connection with the divine feminine.
+            Shakti: Symbols &amp; Guidance brings together 52 Goddess illustrations inspired by the sacred 51 Shakti Peethas. Created by Dr. Manisha S. Belvalkar, it offers meaningful guidance for reflection, spiritual practice and a deeper connection with the divine feminine.
           </p>
           <ul className="mt-8 grid gap-4 sm:grid-cols-2">
             {[
-              "52 beautifully illustrated cards",
-              "Companion information guidebook",
-              "Sacred box for the complete deck",
-              "Daily guidance and spiritual insight",
-              "Handcrafted with intention",
-              "Gift-ready presentation",
+              "52 beautifully illustrated Goddesses",
+              "Symbols and guidance for reflection",
+              "Inspired by the 51 Shakti Peethas",
+              "Daily wisdom and spiritual insight",
+              "Created by Dr. Manisha S. Belvalkar",
+              "A meaningful book for sacred practice",
             ].map((item) => (
               <li key={item} className="flex items-start gap-3 text-sm leading-6 text-charcoal/78">
                 <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-gold-soft text-primary"><Check className="h-3 w-3" strokeWidth={3} /></span>
@@ -151,10 +151,10 @@ export function ShaktiOracleCollection() {
             ))}
           </ul>
           <div className="mt-10 flex flex-wrap items-center gap-5">
-            <Link href="/checkout/product/shakti-oracle-deck" className="group inline-flex items-center gap-3 rounded-full bg-primary px-7 py-3.5 text-sm font-semibold text-white shadow-[0_16px_36px_-16px_rgba(107,11,11,0.7)] transition duration-300 hover:-translate-y-1 hover:bg-primary-dark">
-              Buy the SHAKTI deck<ArrowUpRight className="h-4 w-4" />
+            <Link href="/checkout/product/shakti-deck-guidebook" className="group inline-flex items-center gap-3 rounded-full bg-primary px-7 py-3.5 text-sm font-semibold text-white shadow-[0_16px_36px_-16px_rgba(107,11,11,0.7)] transition duration-300 hover:-translate-y-1 hover:bg-primary-dark">
+              Buy the Shakti Book<ArrowUpRight className="h-4 w-4" />
             </Link>
-            <Link href="/products/shakti-oracle-deck" className="text-sm font-semibold text-primary underline decoration-gold/45 underline-offset-8 hover:decoration-primary">View complete details</Link>
+            <Link href="/products/shakti-deck-guidebook" className="text-sm font-semibold text-primary underline decoration-gold/45 underline-offset-8 hover:decoration-primary">View book details</Link>
           </div>
         </Reveal>
       </div>

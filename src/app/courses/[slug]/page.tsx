@@ -97,6 +97,17 @@ export default async function CourseDetailPage({ params }: Props) {
                 </p>
               </Reveal>
               <Reveal delay={0.25}>
+                {course.pricingOptions?.length ? (
+                  <div className="mt-8 grid gap-3 sm:grid-cols-2">
+                    {course.pricingOptions.map((option) => (
+                      <div key={option.label} className="rounded-2xl border border-gold/25 bg-white/80 px-5 py-4">
+                        <p className="text-xs font-bold uppercase tracking-[0.16em] text-gold-deep">{option.label}</p>
+                        <p className="mt-1 font-display text-2xl font-bold text-primary">{formatINR(option.price)}</p>
+                        <p className="mt-1 text-sm text-warmgray">{option.format}</p>
+                      </div>
+                    ))}
+                  </div>
+                ) : null}
                 <div className="mt-8 flex flex-wrap gap-4">
                   {course.price ? (
                     <Button href={`/checkout/course/${course.slug}`} size="lg" variant="gold">

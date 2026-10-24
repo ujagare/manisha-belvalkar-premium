@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Check, Sparkles } from "lucide-react";
 import { healingServices, healingIntro } from "@/lib/data";
+import { formatINR } from "@/lib/utils";
 import PageHero from "@/components/ui/PageHero";
 import SectionHeading from "@/components/ui/SectionHeading";
 import Reveal from "@/components/ui/Reveal";
@@ -49,18 +50,6 @@ export default function HealingPage() {
             subtitle="Choose Energy Healing, Distance Healing, or Shakti Healing. Each offering is designed with gentle precision and personal aftercare."
           />
 
-          <div className="mx-auto mt-10 grid max-w-4xl gap-3 rounded-[2rem] border border-gold/20 bg-white/65 p-2 shadow-[0_20px_70px_-48px_rgba(107,11,11,0.45)] backdrop-blur-md sm:grid-cols-3 sm:rounded-full">
-            {primaryServices.map((service, index) => (
-              <a
-                key={service.slug}
-                href={`#${service.slug}`}
-                className="rounded-full px-4 py-3 text-center text-xs font-bold uppercase tracking-[0.18em] text-warmgray transition-all duration-300 hover:bg-primary hover:text-white"
-              >
-                {String(index + 1).padStart(2, "0")} {service.title}
-              </a>
-            ))}
-          </div>
-
           <div className="mt-16 grid gap-8 lg:grid-cols-3">
             {primaryServices.map((service, index) => (
               <Reveal key={service.slug} delay={index * 0.08}>
@@ -90,6 +79,10 @@ export default function HealingPage() {
                     <h3 className="font-display text-2xl font-bold leading-tight text-charcoal transition-colors duration-300 group-hover:text-primary">
                       {service.title}
                     </h3>
+                    <div className="mt-4 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-gold/20 bg-gold-soft/45 px-3.5 py-3">
+                      <span className="font-display text-xl font-bold text-primary">{service.price ? formatINR(service.price) : "On enquiry"}</span>
+                      {service.format ? <span className="text-xs font-semibold text-gold-deep">{service.format}</span> : null}
+                    </div>
                     <div className="mt-4 flex items-center gap-3" aria-hidden="true">
                       <span className="h-px flex-1 bg-gradient-to-r from-transparent via-gold/40 to-gold/40" />
                       <span className="font-serif text-sm text-gold">*</span>
@@ -158,6 +151,10 @@ export default function HealingPage() {
                   <h3 className="mt-4 font-display text-3xl font-bold leading-tight text-white sm:text-4xl">
                     {guidedMeditation.title}
                   </h3>
+                  <div className="mt-5 flex flex-wrap items-center gap-3">
+                    {guidedMeditation.price ? <span className="font-display text-2xl font-bold text-gold-light">{formatINR(guidedMeditation.price)}</span> : null}
+                    {guidedMeditation.format ? <span className="rounded-full border border-gold/35 bg-white/10 px-3 py-1.5 text-xs font-semibold text-white/85">{guidedMeditation.format}</span> : null}
+                  </div>
                   <p className="mt-5 max-w-2xl text-sm leading-relaxed text-white/70 sm:text-base">
                     {guidedMeditation.description}
                   </p>

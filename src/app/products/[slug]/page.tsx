@@ -60,10 +60,6 @@ export default async function ProductDetailPage({ params }: Props) {
   if (!product) notFound();
 
   const meta = categoryMeta(product.category);
-  const discount =
-    product.salePrice && product.salePrice > product.price
-      ? Math.round(((product.salePrice - product.price) / product.salePrice) * 100)
-      : 0;
 
   const all = await getProducts();
   const related = all
@@ -127,11 +123,6 @@ export default async function ProductDetailPage({ params }: Props) {
                       {product.badge}
                     </span>
                   ) : null}
-                  {discount > 0 ? (
-                    <span className="absolute right-6 top-6 rounded-full bg-gold px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-primary-deeper shadow-lg">
-                      Save {discount}%
-                    </span>
-                  ) : null}
                 </div>
 
                 <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
@@ -180,16 +171,6 @@ export default async function ProductDetailPage({ params }: Props) {
                   <span className="font-display text-5xl font-bold text-primary">
                     {formatINR(product.price)}
                   </span>
-                  {product.salePrice ? (
-                    <>
-                      <span className="text-xl text-warmgray line-through">
-                        {formatINR(product.salePrice)}
-                      </span>
-                      <span className="rounded-full bg-primary px-3 py-1 text-xs font-bold text-white">
-                        {discount}% OFF
-                      </span>
-                    </>
-                  ) : null}
                   <span className="ml-auto hidden text-sm text-warmgray sm:block">
                     Inclusive of all taxes
                   </span>

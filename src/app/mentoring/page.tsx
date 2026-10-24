@@ -34,37 +34,6 @@ export default function MentoringPage() {
         subtitle={premiumMentoringIntro}
       />
 
-      <section className="relative overflow-hidden bg-gradient-to-br from-white via-cream to-gold-soft/70 py-20 lg:py-24">
-        <div className="pointer-events-none absolute -left-32 top-0 h-[420px] w-[420px] rounded-full bg-gold/18 blur-3xl" />
-        <div className="pointer-events-none absolute -right-24 bottom-0 h-[360px] w-[360px] rounded-full bg-primary/8 blur-3xl" />
-        <svg
-          viewBox="0 0 500 500"
-          className="pointer-events-none absolute left-1/2 top-1/2 h-[620px] w-[620px] -translate-x-1/2 -translate-y-1/2 animate-spin-slow text-gold-deep opacity-[0.16] motion-reduce:animate-none"
-          style={{ animationDuration: "100s" }}
-          aria-hidden="true"
-        >
-          <g fill="none" stroke="currentColor">
-            <circle cx="250" cy="250" r="214" strokeWidth="1" />
-            <circle cx="250" cy="250" r="156" strokeWidth="1" opacity=".75" />
-            <path d="M250 50 420 350H80Z" strokeWidth="1.2" />
-            <path d="m250 450 170-300H80Z" strokeWidth="1.2" />
-            <circle cx="250" cy="250" r="86" strokeDasharray="3 10" strokeLinecap="round" />
-          </g>
-        </svg>
-        <div className="mx-auto max-w-4xl px-6 text-center lg:px-10">
-          <Reveal>
-            <Sparkles className="mx-auto mb-6 h-8 w-8 text-gold" />
-            <p className="relative font-serif text-2xl font-semibold italic leading-relaxed text-primary-deeper sm:text-3xl">
-              &ldquo;Mentoring is a sacred pause: a space to listen deeply, see
-              clearly, and choose the next step with courage.&rdquo;
-            </p>
-            <p className="mt-6 font-serif text-lg text-warmgray">
-              &mdash; {brand.name}
-            </p>
-          </Reveal>
-        </div>
-      </section>
-
       <section className="relative overflow-hidden py-20 lg:py-28">
         <div className="pointer-events-none absolute -right-40 top-10 h-[520px] w-[520px] rounded-full bg-gold/10 blur-3xl" />
         <div className="pointer-events-none absolute -left-40 bottom-0 h-[420px] w-[420px] rounded-full bg-primary/5 blur-3xl" />
@@ -75,18 +44,6 @@ export default function MentoringPage() {
             title="Choose the guidance your soul is asking for"
             subtitle="Three focused pathways: Mentoring through Tarot, Soul Purpose Reading, and evolution through clarity and alignment."
           />
-
-          <div className="mx-auto mt-10 grid max-w-4xl gap-3 rounded-[2rem] border border-gold/20 bg-white/60 p-2 shadow-[0_20px_70px_-48px_rgba(107,11,11,0.45)] backdrop-blur-md sm:grid-cols-3 sm:rounded-full">
-            {mentoringAreas.map((area, index) => (
-              <a
-                key={area.slug}
-                href={`#${area.slug}`}
-                className="rounded-full px-4 py-3 text-center text-xs font-bold uppercase tracking-[0.18em] text-warmgray transition-all duration-300 hover:bg-primary hover:text-white"
-              >
-                {String(index + 1).padStart(2, "0")} {area.title}
-              </a>
-            ))}
-          </div>
 
           <div className="mt-16 grid gap-8 lg:grid-cols-3">
             {mentoringAreas.map((area, index) => (
@@ -175,6 +132,37 @@ export default function MentoringPage() {
               Find your mentoring path
               <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
+          </Reveal>
+        </div>
+      </section>
+
+      <section className="relative overflow-hidden bg-gradient-to-br from-white via-cream to-gold-soft/70 py-20 lg:py-24">
+        <div className="pointer-events-none absolute -left-32 top-0 h-[420px] w-[420px] rounded-full bg-gold/18 blur-3xl" />
+        <div className="pointer-events-none absolute -right-24 bottom-0 h-[360px] w-[360px] rounded-full bg-primary/8 blur-3xl" />
+        <svg
+          viewBox="0 0 500 500"
+          className="pointer-events-none absolute left-1/2 top-1/2 h-[620px] w-[620px] -translate-x-1/2 -translate-y-1/2 animate-spin-slow text-gold-deep opacity-[0.16] motion-reduce:animate-none"
+          style={{ animationDuration: "100s" }}
+          aria-hidden="true"
+        >
+          <g fill="none" stroke="currentColor">
+            <circle cx="250" cy="250" r="214" strokeWidth="1" />
+            <circle cx="250" cy="250" r="156" strokeWidth="1" opacity=".75" />
+            <path d="M250 50 420 350H80Z" strokeWidth="1.2" />
+            <path d="m250 450 170-300H80Z" strokeWidth="1.2" />
+            <circle cx="250" cy="250" r="86" strokeDasharray="3 10" strokeLinecap="round" />
+          </g>
+        </svg>
+        <div className="mx-auto max-w-4xl px-6 text-center lg:px-10">
+          <Reveal>
+            <Sparkles className="mx-auto mb-6 h-8 w-8 text-gold" />
+            <p className="relative font-serif text-2xl font-semibold italic leading-relaxed text-primary-deeper sm:text-3xl">
+              &ldquo;Mentoring is a sacred pause: a space to listen deeply, see
+              clearly, and choose the next step with courage.&rdquo;
+            </p>
+            <p className="mt-6 font-serif text-lg text-warmgray">
+              &mdash; {brand.name}
+            </p>
           </Reveal>
         </div>
       </section>

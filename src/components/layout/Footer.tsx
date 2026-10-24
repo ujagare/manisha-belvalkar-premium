@@ -298,7 +298,7 @@ export default function Footer() {
                     className="group inline-flex items-center gap-1.5 text-sm text-ivory/60 transition-colors duration-300 hover:text-gold"
                   >
                     <span className="h-px w-0 bg-gold transition-all duration-300 group-hover:w-4" />
-                    Shop
+                    Products
                   </Link>
                 </li>
               </ul>
