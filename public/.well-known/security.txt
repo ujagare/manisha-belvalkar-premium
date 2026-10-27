@@ -1,0 +1,4 @@
+Contact: mailto:manishabelvalkar@gmail.com
+Expires: 2027-10-27T00:00:00.000Z
+Preferred-Languages: en, hi
+Canonical: https://www.manishabelvalkar.com/.well-known/security.txt
