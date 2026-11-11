@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { CART_STORAGE_KEY, MAX_CART_QUANTITY, type CartItem } from "@/lib/cart";
+import { CART_STORAGE_KEY, MAX_CART_QUANTITY, normalizeCartItems, type CartItem } from "@/lib/cart";
 
 interface CartContextValue {
   items: CartItem[];
@@ -16,28 +16,6 @@ interface CartContextValue {
 
 const CartContext = createContext<CartContextValue | null>(null);
 
-function validItems(value: unknown): CartItem[] {
-  if (!Array.isArray(value)) return [];
-  return value.flatMap((item) => {
-    if (!item || typeof item !== "object") return [];
-    const candidate = item as Partial<CartItem>;
-    if (
-      typeof candidate.slug !== "string" ||
-      typeof candidate.title !== "string" ||
-      typeof candidate.image !== "string" ||
-      typeof candidate.price !== "number" ||
-      !Number.isFinite(candidate.price)
-    ) return [];
-    return [{
-      slug: candidate.slug.slice(0, 100),
-      title: candidate.title.slice(0, 200),
-      image: candidate.image,
-      price: Math.max(0, candidate.price),
-      quantity: Math.min(MAX_CART_QUANTITY, Math.max(1, Math.floor(candidate.quantity ?? 1))),
-    }];
-  });
-}
-
 export default function CartProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
   const [ready, setReady] = useState(false);
@@ -45,7 +23,7 @@ export default function CartProvider({ children }: { children: React.ReactNode }
   useEffect(() => {
     let restored: CartItem[] = [];
     try {
-      restored = validItems(JSON.parse(localStorage.getItem(CART_STORAGE_KEY) ?? "[]"));
+      restored = normalizeCartItems(JSON.parse(localStorage.getItem(CART_STORAGE_KEY) ?? "[]"));
     } catch {
       restored = [];
     }

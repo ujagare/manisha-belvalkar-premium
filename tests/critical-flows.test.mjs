@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { test } from "node:test";
-import { cartState } from "../src/lib/cart.ts";
+import { cartState, normalizeCartItems } from "../src/lib/cart.ts";
 import { SHAKTI_CARD_COUNT, shaktiCardImagePath } from "../src/lib/shakti-card-assets.ts";
 import {
   cartWhatsAppMessage,
@@ -43,6 +43,21 @@ test("empty and filled carts resolve to the correct UI state", () => {
   assert.equal(cartState([]), "empty");
   assert.equal(cartState([item]), "ready");
   assert.match(cartWhatsAppMessage({ reference: "ORDER-2", items: [item], subtotalLabel: "₹2,000", name: "Asha", email: "asha@example.com", address: "Mumbai 400028" }), /Deck x 2/);
+});
+
+test("malformed persisted cart quantities default to one", () => {
+  assert.equal(
+    typeof normalizeCartItems,
+    "function",
+    "cart normalization must be available at the storage boundary",
+  );
+
+  const [item] = normalizeCartItems([
+    { slug: "deck", title: "Deck", image: "/deck.jpg", price: 1000, quantity: "not-a-number" },
+  ]);
+
+  assert.equal(item.quantity, 1);
+  assert.equal(item.price * item.quantity, 1000);
 });
 
 test("missing Supabase or Razorpay activates manual fallback", () => {

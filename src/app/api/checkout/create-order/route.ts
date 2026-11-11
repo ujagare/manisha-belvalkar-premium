@@ -93,6 +93,9 @@ export async function POST(request: Request) {
     }
 
     const amountSubunits = resolved.reduce((sum, { requested, item }) => sum + Math.round(item!.price! * 100) * requested.quantity, 0);
+    if (!Number.isSafeInteger(amountSubunits) || amountSubunits < 100) {
+      return apiError("BAD_REQUEST", "Payment amount must be at least ₹1.", 422);
+    }
     const primary = resolved[0].item!;
     const orderTitle = resolved.length === 1 ? primary.title : `${primary.title} + ${resolved.length - 1} more`;
     const admin = createAdminClient();

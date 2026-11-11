@@ -47,14 +47,15 @@ export async function getCatalogItem(
   if (type === "course") {
     const c = courses.find((x) => x.slug === slug);
     if (!c) return null;
+    const price = c.price && c.price > 0 ? c.price : null;
     return {
       type,
       slug: c.slug,
       title: c.title,
       description: c.description,
       image: c.image,
-      price: null,
-      priceLabel: "By consultation",
+      price,
+      priceLabel: price ? `₹${price.toLocaleString("en-IN")}` : "By consultation",
       href: itemHref(type, c.slug),
     };
   }
