@@ -68,7 +68,7 @@ const steps = [
   {
     number: "02",
     title: "Reserve a time",
-    text: "Share a few suitable time windows and the team will confirm your private appointment.",
+    text: "Share a few suitable time windows and the team will confirm your booking time.",
   },
   {
     number: "03",
@@ -111,24 +111,24 @@ export default function ServicesPage() {
   );
   return (
     <div className="overflow-hidden bg-[#f8f3e9] text-[#241b17]">
-      <section className="relative isolate min-h-[760px] bg-[#201713] text-white lg:min-h-[840px]">
-        <div className="pointer-events-none absolute inset-0 z-10 opacity-[0.07] [background-image:radial-gradient(circle_at_1px_1px,#fff_1px,transparent_0)] [background-size:24px_24px]" />
-        <div className="mx-auto grid min-h-[760px] max-w-[1680px] lg:min-h-[840px] lg:grid-cols-[0.94fr_1.06fr]">
-          <div className="relative z-20 flex items-center px-6 py-32 sm:px-10 lg:px-16 xl:px-24">
-            <div className="max-w-xl">
+      <section className="relative isolate bg-[#fdf8f0] px-6 pb-24 pt-16 sm:px-10 lg:pb-28 lg:pt-20">
+        <div className="pointer-events-none absolute -right-32 top-12 size-[32rem] rounded-full bg-[#d9b957]/12 blur-3xl" />
+        <div className="relative mx-auto grid max-w-[1200px] items-center gap-16 lg:grid-cols-[1.08fr_0.92fr] lg:gap-20">
+          <div className="relative z-20">
+            <div className="max-w-2xl">
               <Reveal>
-                <Marker light>Private guidance, thoughtfully held</Marker>
+                <Marker>Private guidance, thoughtfully held</Marker>
               </Reveal>
               <Reveal delay={0.08}>
-                <h1 className="mt-9 max-w-2xl text-balance font-serif text-[clamp(3.6rem,7vw,7.5rem)] font-medium leading-[0.88] tracking-[-0.055em]">
+                <h1 className="mt-8 max-w-2xl text-balance font-serif text-[clamp(3.25rem,6.4vw,5.5rem)] font-medium leading-[0.94] tracking-[-0.045em] text-[#292524]">
                   A clearer way
-                  <span className="block italic text-[#e4c665]">
+                  <span className="block italic text-[#a81414]">
                     back to yourself.
                   </span>
                 </h1>
               </Reveal>
               <Reveal delay={0.16}>
-                <p className="mt-9 max-w-xl text-lg leading-8 text-white/78 sm:text-xl sm:leading-9">
+                <p className="mt-8 max-w-xl text-lg leading-8 text-[#67564d] sm:text-xl sm:leading-9">
                   Personal Tarot, healing and mentoring experiences for the
                   questions that cannot be answered by logic alone.
                 </p>
@@ -137,98 +137,62 @@ export default function ServicesPage() {
                 <div className="mt-11 flex flex-col gap-3 sm:flex-row">
                   <Link
                     href="#paths"
-                    className="inline-flex min-h-14 items-center justify-center gap-3 bg-[#b41414] px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-white shadow-[0_18px_45px_-18px_rgba(180,20,20,0.9)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#981010] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#e4c665]"
+                    className="inline-flex min-h-14 items-center justify-center gap-3 rounded-full bg-[#b41414] px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-white shadow-[0_18px_45px_-18px_rgba(180,20,20,0.9)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#981010] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#e4c665]"
                   >
                     Find your path <ArrowRight className="size-4" />
                   </Link>
                   <Link
                     href="/contact"
-                    className="inline-flex min-h-14 items-center justify-center gap-3 border border-white/30 px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-white transition-all duration-300 hover:-translate-y-0.5 hover:border-white/60 hover:bg-white/7 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#e4c665]"
+                    className="inline-flex min-h-14 items-center justify-center gap-3 rounded-full border border-[#a8871a] px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-[#292524] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#ddb829] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#a8871a]"
                   >
                     Ask Manisha&apos;s team
                   </Link>
                 </div>
               </Reveal>
+              <Reveal delay={0.3}>
+                <div className="mt-12 grid gap-5 border-t border-[#6b0b0b]/12 pt-7 sm:grid-cols-3">
+                  {[
+                    ["Private & confidential", "A calm, judgement-free space"],
+                    ["Online from anywhere", "Join from the comfort of home"],
+                    ["Personal guidance", "Shaped around you"],
+                  ].map(([title, text]) => (
+                    <div key={title}>
+                      <p className="text-sm font-semibold text-[#34251f]">{title}</p>
+                      <p className="mt-1 text-sm leading-6 text-[#76635a]">{text}</p>
+                    </div>
+                  ))}
+                </div>
+              </Reveal>
             </div>
           </div>
 
-          <div className="relative min-h-[520px] lg:min-h-full">
-            <Image
-              src="/images/page-heroes/services-hero.webp"
-              alt="Manisha Belvalkar's private guidance, healing and mentoring services"
-              fill
-              preload
-              sizes="(max-width: 1024px) 100vw, 54vw"
-              className="object-cover object-center"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#211a17]/75 via-transparent to-transparent lg:bg-gradient-to-r lg:from-[#211a17] lg:via-[#211a17]/12 lg:to-transparent" />
-            <div className="absolute bottom-6 left-6 right-6 z-20 border border-white/25 bg-[#211a17]/78 p-6 shadow-2xl backdrop-blur-xl sm:bottom-10 sm:left-10 sm:right-auto sm:max-w-md sm:p-7">
-              <p className="font-serif text-2xl leading-snug">
-                “The right session is not about knowing everything. It is about
-                seeing what matters now.”
-              </p>
-              <p className="mt-3 text-xs font-semibold uppercase tracking-[0.2em] text-[#e4c665]">
-                Manisha Belvalkar
-              </p>
+          <Reveal direction="left" delay={0.12}>
+            <div className="relative mx-auto w-full max-w-[470px] px-3 pt-3">
+              <div className="pointer-events-none absolute inset-0 rounded-t-[999px] rounded-b-[1.5rem] border border-[#c7a23b]" />
+              <div className="relative aspect-[3/4.15] overflow-hidden rounded-t-[999px] rounded-b-[1rem] shadow-[0_45px_85px_-45px_rgba(107,11,11,0.65)]">
+                <Image
+                  src="/images/page-heroes/services-hero.webp"
+                  alt="Manisha Belvalkar's private guidance, healing and mentoring services"
+                  fill
+                  preload
+                  sizes="(max-width: 1024px) 90vw, 470px"
+                  className="object-cover object-center"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#351b16]/30 via-transparent to-transparent" />
+              </div>
+              <div className="relative z-20 -mt-20 -ml-3 mr-4 border-t-2 border-[#ddb829] bg-[#211a17] p-6 text-white shadow-[0_28px_60px_-25px_rgba(28,25,23,0.7)] sm:-ml-10 sm:mr-20 sm:p-7">
+                <p className="font-serif text-2xl leading-snug">
+                  “The right session is not about knowing everything. It is about
+                  seeing what matters now.”
+                </p>
+                <p className="mt-3 text-xs font-semibold uppercase tracking-[0.2em] text-[#e4c665]">
+                  Manisha Belvalkar
+                </p>
+              </div>
             </div>
-          </div>
+          </Reveal>
         </div>
       </section>
-
-      <div className="border-b border-[#6b0b0b]/12 bg-[#fffdf9]">
-        <div className="mx-auto grid max-w-7xl divide-y divide-[#6b0b0b]/10 px-6 sm:grid-cols-3 sm:divide-x sm:divide-y-0 lg:px-8">
-          {[
-            ["Private & confidential", "A calm, judgement-free space"],
-            ["Online from anywhere", "Join from the comfort of home"],
-            ["Personal, not prescriptive", "Guidance shaped around you"],
-          ].map(([title, text]) => (
-            <div className="px-4 py-6 sm:px-7" key={title}>
-              <p className="flex items-center gap-2 text-sm font-semibold text-[#3b2922]">
-                <Check className="size-4 text-[#a81414]" /> {title}
-              </p>
-              <p className="mt-2 pl-6 text-base leading-6 text-[#6b554a]">{text}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <nav
-        aria-label="Service categories"
-        className="border-b border-[#d5b75e]/35 bg-[#6b0b0b] text-white"
-      >
-        <div className="mx-auto grid max-w-7xl lg:grid-cols-[1.15fr_repeat(4,1fr)]">
-          <div className="flex min-h-24 items-center bg-[#560707] px-6 py-6 sm:px-8">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#e7c968]">
-                Explore services
-              </p>
-              <p className="mt-1 font-serif text-2xl">Choose your starting point</p>
-            </div>
-          </div>
-          {[
-            ["01", "Tarot readings", "#readings"],
-            ["02", "Healing", "#healing"],
-            ["03", "Mentoring", "#mentoring"],
-            ["04", "Courses", "/courses"],
-          ].map(([number, label, href]) => (
-            <Link
-              href={href}
-              key={label}
-              className="group flex min-h-20 items-center justify-between border-t border-white/15 px-6 py-5 transition-colors duration-300 hover:bg-[#861010] focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-[#e7c968] lg:min-h-24 lg:border-l lg:border-t-0"
-            >
-              <span>
-                <span className="block text-xs font-semibold tracking-[0.18em] text-[#e7c968]">
-                  {number}
-                </span>
-                <span className="mt-1 block text-base font-semibold sm:text-lg">
-                  {label}
-                </span>
-              </span>
-              <ArrowRight className="size-5 text-[#e7c968] transition-transform group-hover:translate-x-1" />
-            </Link>
-          ))}
-        </div>
-      </nav>
 
       <section id="paths" className="relative px-6 py-24 sm:px-10 lg:py-36">
         <div className="pointer-events-none absolute right-0 top-0 h-96 w-96 rounded-full bg-[#d9b957]/10 blur-3xl" />
@@ -245,32 +209,32 @@ export default function ServicesPage() {
             </div>
           </Reveal>
 
-          <div className="relative mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="relative mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {pathways.map((path, index) => {
               const Icon = path.icon;
               return (
                 <Reveal delay={index * 0.06} key={path.title}>
                   <Link
                     href={path.href}
-                    className="group flex min-h-[360px] h-full flex-col border border-[#6b0b0b]/14 bg-[#fffdf8] p-7 shadow-[0_24px_70px_-48px_rgba(73,29,20,0.55)] transition-all duration-300 hover:-translate-y-2 hover:border-[#6b0b0b] hover:bg-[#6b0b0b] hover:shadow-[0_30px_70px_-35px_rgba(73,29,20,0.65)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#a81414] sm:p-8"
+                    className="group flex min-h-[280px] h-full flex-col rounded-md border border-[#d8c8ae] bg-white p-7 shadow-[0_24px_40px_-30px_rgba(107,11,11,0.25)] transition-all duration-300 hover:-translate-y-1 hover:border-[#c5a146] hover:shadow-[0_24px_40px_-28px_rgba(107,11,11,0.4)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#a81414] sm:p-8"
                   >
                     <div className="flex items-start justify-between">
-                      <Icon className="size-6 text-[#a81414] transition-colors group-hover:text-[#e4c665]" />
-                      <span className="text-xs font-semibold tracking-[0.18em] text-[#a81414] transition-colors group-hover:text-[#e4c665]">
+                      <Icon className="size-6 text-[#a81414]" />
+                      <span className="text-xs font-semibold tracking-[0.18em] text-[#a8871a]">
                         0{index + 1}
                       </span>
                     </div>
-                    <div className="mt-auto pt-14">
-                      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#a81414] transition-colors group-hover:text-[#e4c665]">
+                    <div className="mt-auto pt-10">
+                      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#a8871a]">
                         {path.eyebrow}
                       </p>
-                      <h3 className="mt-3 font-serif text-3xl leading-tight transition-colors group-hover:text-white">
+                      <h3 className="mt-3 font-serif text-3xl leading-tight">
                         {path.title}
                       </h3>
-                      <p className="mt-4 text-base leading-7 text-[#5f4a3f] transition-colors group-hover:text-white/80 sm:text-lg sm:leading-8">
+                      <p className="mt-4 text-base leading-7 text-[#5f4a3f]">
                         {path.text}
                       </p>
-                      <ArrowUpRight className="mt-6 size-5 text-[#a81414] transition-transform group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-[#e4c665]" />
+                      <ArrowUpRight className="mt-6 size-5 text-[#a81414] transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" />
                     </div>
                   </Link>
                 </Reveal>
@@ -282,88 +246,69 @@ export default function ServicesPage() {
 
       <section id="readings" className="relative overflow-hidden border-y border-[#6b0b0b]/10 bg-[#f3eadc] px-6 py-24 sm:px-10 lg:py-36">
         <div className="pointer-events-none absolute -left-40 top-24 size-[34rem] rounded-full bg-[#c39a32]/12 blur-3xl" />
-        <div className="pointer-events-none absolute right-0 top-0 h-full w-px bg-gradient-to-b from-transparent via-[#b41414]/25 to-transparent" />
         <div className="relative mx-auto max-w-7xl">
-          <div className="grid gap-8 lg:grid-cols-[0.82fr_1.18fr] lg:gap-10">
-            <Reveal>
-              <div className="relative overflow-hidden bg-[#251815] px-7 py-10 text-white shadow-[0_35px_90px_-45px_rgba(67,18,13,0.8)] sm:px-10 sm:py-12 lg:sticky lg:top-28 lg:min-h-[42rem] lg:self-start lg:px-12 lg:py-14">
-                <div className="pointer-events-none absolute inset-0 opacity-[0.08] [background-image:radial-gradient(circle_at_1px_1px,#f4da80_1px,transparent_0)] [background-size:22px_22px]" />
-                <div className="pointer-events-none absolute -right-24 -top-24 size-72 rounded-full bg-[#c6922c]/20 blur-3xl" />
-                <div className="relative flex h-full flex-col">
-                  <div className="flex items-start justify-between gap-6">
-                    <Marker light>Tarot & soul guidance</Marker>
-                    <span className="font-serif text-5xl italic leading-none text-[#e4c665]/35">01</span>
-                  </div>
-                  <p className="mt-9 inline-flex w-fit border border-[#e4c665]/30 bg-[#e4c665]/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-[#f0d77c]">
-                    Private services
-                  </p>
-                  <h2 className="mt-7 max-w-lg text-balance font-serif text-4xl leading-[1.02] tracking-[-0.04em] sm:text-5xl lg:text-[3.5rem]">
-                    Insight for the chapter
-                    <span className="block italic text-[#e4c665]">you are living now.</span>
-                  </h2>
-                  <p className="mt-7 max-w-md text-lg leading-8 text-white/72">
-                    A focused private conversation that brings intuitive insight
-                    and grounded perspective to your most important questions.
-                  </p>
-                  <div className="mt-10 border-t border-white/15 pt-7 lg:mt-auto">
-                    <p className="border-l-2 border-[#e4c665] pl-5 font-serif text-xl italic leading-8 text-white/90">
-                      No fear-based predictions. No generic answers. Just honest,
-                      compassionate clarity.
-                    </p>
-                  </div>
-                </div>
+          <Reveal>
+            <div className="grid gap-8 lg:grid-cols-2 lg:items-end">
+              <div>
+                <Marker>Tarot & soul guidance</Marker>
+                <h2 className="mt-6 max-w-2xl text-balance font-serif text-4xl leading-[1.02] tracking-[-0.04em] sm:text-6xl">
+                  Insight for the chapter
+                  <span className="block italic text-[#a81414]">you are living now.</span>
+                </h2>
               </div>
-            </Reveal>
-
-            <div className="space-y-3 lg:pt-8">
-              {tarotServices.map((service, index) => (
-                <Reveal delay={index * 0.05} key={service.slug}>
-                  <article
-                    className={`group relative overflow-hidden border p-5 transition-all duration-500 sm:p-6 ${
-                      service.mostBooked
-                        ? "border-[#a31313] bg-[#751010] text-white shadow-[0_30px_70px_-40px_rgba(107,11,11,0.85)]"
-                        : "border-white/80 bg-[#fffdf9] shadow-[0_24px_70px_-52px_rgba(73,29,20,0.5)] hover:-translate-y-1.5 hover:border-[#c5a146]/55 hover:shadow-[0_32px_75px_-42px_rgba(107,11,11,0.4)]"
-                    }`}
-                  >
-                    <div className={`pointer-events-none absolute inset-x-0 top-0 h-1 ${service.mostBooked ? "bg-[#e4c665]" : "bg-gradient-to-r from-[#8f0e0e] via-[#c9a54b] to-transparent"}`} />
-                    <div className="grid gap-4 sm:grid-cols-[2.25rem_1fr_auto] sm:items-center sm:gap-5">
-                      <span className={`font-serif text-xl italic ${service.mostBooked ? "text-[#e4c665]" : "text-[#aa8d7d]"}`}>
-                        0{index + 1}
-                      </span>
-                      <div>
-                        <div className="flex flex-wrap items-center gap-3">
-                          <h3 className={`font-serif text-2xl leading-tight sm:text-3xl ${service.mostBooked ? "text-white" : "text-[#321e18]"}`}>
-                            {service.title}
-                          </h3>
-                          {service.mostBooked && (
-                            <span className="bg-[#e4c665] px-2.5 py-1 text-[0.65rem] font-bold uppercase tracking-[0.12em] text-[#50100c]">
-                              Most booked
-                            </span>
-                          )}
-                        </div>
-                        <p className={`mt-2 line-clamp-2 max-w-xl text-base leading-7 ${service.mostBooked ? "text-white/75" : "text-[#513b32]"}`}>
-                          {service.description}
-                        </p>
-                        <div className={`mt-3 flex flex-wrap gap-x-5 gap-y-2 text-xs font-semibold uppercase tracking-[0.1em] ${service.mostBooked ? "text-[#f0d77c]" : "text-[#6b0b0b]"}`}>
-                          <span className="flex items-center gap-2">
-                            <Clock className="size-3.5" /> {service.duration}
-                          </span>
-                          <span>{formatINR(service.price)}</span>
-                        </div>
-                      </div>
-                      <Link
-                        href={`/services/${service.slug}`}
-                        aria-label={`View ${service.title}`}
-                        className={`inline-flex min-h-11 items-center justify-center gap-2 px-4 text-sm font-bold transition-all group-hover:translate-x-1 sm:size-12 sm:px-0 ${service.mostBooked ? "bg-[#e4c665] text-[#50100c] hover:bg-white" : "bg-[#6b0b0b] text-white hover:bg-[#a81414]"}`}
-                      >
-                        <span className="sm:hidden">View session</span>
-                        <ArrowUpRight className="size-4" />
-                      </Link>
-                    </div>
-                  </article>
-                </Reveal>
-              ))}
+              <div className="lg:pb-1">
+                <p className="max-w-xl text-lg leading-8 text-[#5f4a3f]">
+                  A focused private conversation that brings intuitive insight
+                  and grounded perspective to your most important questions.
+                </p>
+                <p className="mt-5 max-w-xl font-serif text-xl italic leading-8 text-[#8f0e0e]">
+                  No fear-based predictions. No generic answers. Just honest,
+                  compassionate clarity.
+                </p>
+              </div>
             </div>
+          </Reveal>
+
+          <div className="mt-16 grid gap-7 sm:grid-cols-2 xl:grid-cols-4">
+            {tarotServices.map((service, index) => (
+              <Reveal delay={index * 0.06} key={service.slug}>
+                <article
+                  className={`group relative flex h-full min-h-[35rem] flex-col rounded-t-[999px] rounded-b-xl border p-2.5 transition-all duration-500 hover:-translate-y-2 ${
+                    service.mostBooked
+                      ? "border-[#6b0b0b] bg-[#6b0b0b] text-white shadow-[0_35px_70px_-35px_rgba(107,11,11,0.75)]"
+                      : "border-[#d8c8ae] bg-[#fffdf9] shadow-[0_24px_60px_-42px_rgba(107,11,11,0.55)] hover:border-[#c5a146]"
+                  }`}
+                >
+                  {service.mostBooked && (
+                    <span className="absolute left-1/2 top-0 z-10 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-full bg-[#ddb829] px-4 py-2 text-[0.65rem] font-bold uppercase tracking-[0.16em] text-[#371d17]">
+                      Most booked
+                    </span>
+                  )}
+                  <div className={`flex h-full flex-col rounded-t-[999px] rounded-b-lg border px-5 pb-5 pt-14 text-center ${service.mostBooked ? "border-[#ddb829]" : "border-[#c9a520]"}`}>
+                    <span className={`font-serif text-sm tracking-[0.28em] ${service.mostBooked ? "text-[#e4c665]" : "text-[#8f0e0e]"}`}>
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <Sparkles className={`mx-auto mt-5 size-10 stroke-[1.2] ${service.mostBooked ? "text-[#e4c665]" : "text-[#a81414]"}`} />
+                    <h3 className="mt-5 font-serif text-3xl leading-tight">{service.title}</h3>
+                    <p className={`mt-5 text-[0.95rem] leading-7 ${service.mostBooked ? "text-white/75" : "text-[#5f4a3f]"}`}>
+                      {service.description}
+                    </p>
+                    <div className={`mt-auto flex items-end justify-between border-t pt-5 text-left ${service.mostBooked ? "border-[#ddb829]/35" : "border-[#6b0b0b]/12"}`}>
+                      <span className={`flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.1em] ${service.mostBooked ? "text-[#f0d77c]" : "text-[#6b0b0b]"}`}>
+                        <Clock className="size-3.5" /> {service.duration}
+                      </span>
+                      <span className="font-serif text-2xl">{formatINR(service.price)}</span>
+                    </div>
+                    <Link
+                      href={`/services/${service.slug}`}
+                      className={`mt-5 inline-flex min-h-12 items-center justify-center gap-2 rounded-full px-5 text-xs font-bold uppercase tracking-[0.15em] transition-all active:scale-[0.98] ${service.mostBooked ? "bg-[#ddb829] text-[#371d17] hover:bg-[#f0d060]" : "bg-[#a81414] text-white hover:bg-[#6b0b0b]"}`}
+                    >
+                      Reserve session <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+                    </Link>
+                  </div>
+                </article>
+              </Reveal>
+            ))}
           </div>
         </div>
       </section>
@@ -403,41 +348,37 @@ export default function ServicesPage() {
         </section>
       )}
 
-      <section id="healing" className="relative bg-[#211a17] px-6 py-24 text-white sm:px-10 lg:py-36">
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#e4c665] to-transparent" />
-        <div className="mx-auto max-w-7xl">
+      <section id="healing" className="relative bg-[#6b0b0b] px-6 py-24 text-white sm:px-10 lg:py-28">
+        <div className="mx-auto grid max-w-[1200px] gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
           <Reveal>
-            <div className="grid gap-8 lg:grid-cols-[1fr_0.8fr] lg:items-end">
-              <div>
+            <div>
                 <Marker light>Healing & energy work</Marker>
-                <h2 className="mt-6 max-w-3xl font-serif text-4xl leading-[1.02] tracking-[-0.035em] sm:text-6xl">
-                  Create space for what wants to change.
+                <h2 className="mt-6 max-w-xl font-serif text-4xl leading-[1.02] tracking-[-0.035em] sm:text-6xl">
+                  Create space for <span className="italic text-[#f0d060]">what wants to change.</span>
                 </h2>
-              </div>
-              <p className="max-w-lg text-lg leading-8 text-white/75 lg:justify-self-end">
+              <p className="mt-7 max-w-lg text-lg leading-8 text-[#efe5d2]">
                 Gentle, private sessions designed to support emotional release,
                 energetic balance and a more centred relationship with yourself.
               </p>
             </div>
           </Reveal>
 
-          <div className="mt-16 border-t border-white/15">
+          <div className="border-t border-[#ddb829]/35">
             {healingServices.map((service, index) => (
               <Reveal delay={index * 0.05} key={service.slug}>
                 <Link
                   href={`/healing/${service.slug}`}
-                  className="group grid gap-5 border-b border-white/15 py-8 transition-colors hover:bg-white/[0.035] sm:grid-cols-[70px_0.8fr_1.2fr_auto] sm:items-center sm:px-4"
+                  className="group grid grid-cols-[1fr_auto] items-center gap-6 border-b border-[#ddb829]/35 px-1 py-7 transition-all hover:bg-white/[0.05] hover:px-4 sm:py-8"
                 >
-                  <span className="font-serif text-xl italic text-[#e4c665]">
-                    0{index + 1}
-                  </span>
-                  <h3 className="font-serif text-2xl sm:text-3xl">
-                    {service.title}
-                  </h3>
-                  <p className="max-w-xl text-lg leading-8 text-white/78">
-                    {service.short}
-                  </p>
-                  <span className="inline-flex size-11 items-center justify-center rounded-full border border-white/20 transition-colors group-hover:border-[#e4c665] group-hover:text-[#e4c665]">
+                  <div className="min-w-0">
+                    <h3 className="font-serif text-2xl leading-tight sm:text-3xl">
+                      {service.title}
+                    </h3>
+                    <p className="mt-2 max-w-xl text-sm leading-6 text-[#efe5d2] sm:text-base sm:leading-7">
+                      {service.short}
+                    </p>
+                  </div>
+                  <span className="inline-flex size-11 shrink-0 items-center justify-center rounded-full border border-[#ddb829] text-[#ddb829] transition-colors group-hover:bg-[#ddb829] group-hover:text-[#292524]">
                     <ArrowUpRight className="size-4" />
                   </span>
                 </Link>
@@ -491,9 +432,9 @@ export default function ServicesPage() {
       </section>
 
       {featuredCourse && (
-        <section className="bg-white px-6 py-24 sm:px-10 lg:py-32">
-          <div className="mx-auto grid max-w-7xl overflow-hidden bg-[#eee3d2] lg:grid-cols-2">
-            <div className="relative min-h-[520px] lg:min-h-[650px]">
+        <section className="bg-[#fdf8f0] px-6 py-24 sm:px-10 lg:py-28">
+          <div className="mx-auto grid max-w-[1200px] overflow-hidden rounded-lg bg-[#1c1917] text-white lg:grid-cols-[0.9fr_1.1fr]">
+            <div className="relative min-h-[340px] lg:min-h-[620px]">
               <Image
                 src="/images/manisha-wix.webp"
                 alt="Manisha Belvalkar"
@@ -501,31 +442,31 @@ export default function ServicesPage() {
                 sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover object-top"
               />
+              <span className="absolute bottom-6 left-6 rounded-full bg-[#ddb829] px-5 py-2 text-xs font-bold uppercase tracking-[0.16em] text-[#292524]">
+                {featuredCourse.duration}
+              </span>
             </div>
             <div className="flex items-center p-8 sm:p-12 lg:p-16">
               <Reveal>
-                <Marker>Signature journey</Marker>
-                <p className="mt-8 text-xs font-semibold uppercase tracking-[0.2em] text-[#806b5f]">
-                  {featuredCourse.duration}
-                </p>
+                <Marker light>Signature journey</Marker>
                 <h2 className="mt-4 font-serif text-4xl leading-[1.03] tracking-[-0.035em] sm:text-5xl">
                   {featuredCourse.title}
                 </h2>
-                <p className="mt-6 text-lg leading-9 text-[#5d493f]">
+                <p className="mt-6 text-lg leading-9 text-[#d6cfc2]">
                   {featuredCourse.description}
                 </p>
-                <div className="mt-8 border-y border-[#6b0b0b]/15 py-5">
-                  <p className="text-sm font-semibold text-[#34251f]">
+                <div className="mt-8 border-y border-[#ddb829]/30 py-5">
+                  <p className="text-sm font-semibold text-white">
                     Best for you if:
                   </p>
-                  <ul className="mt-4 space-y-3 text-base leading-7 text-[#5d493f]">
+                  <ul className="mt-4 space-y-3 text-base leading-7 text-[#efe5d2]">
                     <li className="flex gap-3">
-                      <Check className="mt-1 size-4 shrink-0 text-[#a81414]" />
+                      <Check className="mt-1 size-4 shrink-0 text-[#ddb829]" />
                       You want consistent, personal guidance rather than a
                       one-time conversation.
                     </li>
                     <li className="flex gap-3">
-                      <Check className="mt-1 size-4 shrink-0 text-[#a81414]" />
+                      <Check className="mt-1 size-4 shrink-0 text-[#ddb829]" />
                       You are ready to work gently but honestly with recurring
                       patterns.
                     </li>
@@ -533,7 +474,7 @@ export default function ServicesPage() {
                 </div>
                 <Link
                   href={`/courses/${featuredCourse.slug}`}
-                  className="mt-8 inline-flex min-h-12 items-center justify-center gap-3 bg-[#6b0b0b] px-7 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#8f0e0e]"
+                  className="mt-8 inline-flex min-h-12 items-center justify-center gap-3 rounded-full bg-[#ddb829] px-7 py-3 text-sm font-semibold text-[#292524] transition-colors hover:bg-[#f0d060]"
                 >
                   Explore the journey <ArrowRight className="size-4" />
                 </Link>
@@ -543,29 +484,25 @@ export default function ServicesPage() {
         </section>
       )}
 
-      <section className="bg-[#f8f3e9] px-6 py-24 sm:px-10 lg:py-32">
-        <div className="mx-auto max-w-7xl">
+      <section className="bg-[#f8f3e9] px-6 py-24 sm:px-10 lg:py-28">
+        <div className="mx-auto max-w-[1200px]">
           <Reveal>
-            <div className="text-center">
+            <div>
               <Marker>What happens next</Marker>
-              <h2 className="mx-auto mt-6 max-w-2xl font-serif text-4xl leading-tight sm:text-5xl">
-                Simple to book. Personal from the start.
+              <h2 className="mt-6 max-w-2xl font-serif text-4xl leading-tight sm:text-5xl">
+                Simple to book. <span className="italic text-[#a81414]">Personal from the start.</span>
               </h2>
             </div>
           </Reveal>
-          <div className="mt-14 grid gap-10 border-t border-[#6b0b0b]/18 pt-10 md:grid-cols-3">
+          <div className="mt-16 grid gap-12 md:grid-cols-3">
             {steps.map((step, index) => (
               <Reveal delay={index * 0.07} key={step.number}>
-                <div className="grid grid-cols-[auto_1fr] gap-5">
-                  <span className="font-serif text-3xl italic text-[#a81414]">
-                    {step.number}
+                <div className="relative border-t border-[#c9a520] pt-10">
+                  <span className="absolute -top-7 left-0 bg-[#f8f3e9] pr-4 font-serif text-5xl italic text-[#a81414]">
+                    {index === 0 ? "i." : index === 1 ? "ii." : "iii."}
                   </span>
-                  <div>
-                    <h3 className="font-serif text-2xl">{step.title}</h3>
-                    <p className="mt-3 text-base leading-7 text-[#644d43]">
-                      {step.text}
-                    </p>
-                  </div>
+                  <h3 className="mt-4 font-serif text-2xl">{step.title}</h3>
+                  <p className="mt-3 text-base leading-7 text-[#644d43]">{step.text}</p>
                 </div>
               </Reveal>
             ))}

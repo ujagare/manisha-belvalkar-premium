@@ -1,0 +1,80 @@
+.heroArt {
+  position: relative;
+  width: min(460px, 100%);
+  justify-self: center;
+  padding: 34px 34px 0;
+}
+
+.mandala {
+  position: absolute;
+  left: 50%;
+  top: 44%;
+  z-index: -1;
+  width: 150%;
+  aspect-ratio: 1;
+  color: #ddb829;
+  opacity: 0.34;
+  translate: -50% -50%;
+  animation: mandala-spin 120s linear infinite;
+  pointer-events: none;
+}
+
+.jharokha {
+  position: relative;
+  aspect-ratio: 5 / 7;
+  background: linear-gradient(160deg, #f0d060, #a8871a 55%, #ddb829);
+  filter: drop-shadow(0 40px 50px rgb(0 0 0 / 0.5));
+  -webkit-mask: var(--about-arch) center / 100% 100% no-repeat;
+  mask: var(--about-arch) center / 100% 100% no-repeat;
+}
+
+.jharokhaInner {
+  position: absolute;
+  inset: 10px;
+  overflow: hidden;
+  background: #6b0b0b;
+  -webkit-mask: var(--about-arch) center / 100% 100% no-repeat;
+  mask: var(--about-arch) center / 100% 100% no-repeat;
+}
+
+.jharokhaImage {
+  object-fit: cover;
+  -webkit-mask: var(--about-arch) center / 100% 100% no-repeat;
+  mask: var(--about-arch) center / 100% 100% no-repeat;
+}
+
+.plinth {
+  position: relative;
+  height: 16px;
+  margin-inline: -20px;
+  background: linear-gradient(180deg, #f0d060, #a8871a);
+  clip-path: polygon(4% 0, 96% 0, 100% 100%, 0 100%);
+}
+
+.plinth::after {
+  position: absolute;
+  top: 100%;
+  right: -12px;
+  left: -12px;
+  height: 8px;
+  background: #a8871a;
+  clip-path: polygon(2% 0, 98% 0, 100% 100%, 0 100%);
+  content: "";
+  opacity: 0.65;
+}
+
+.page {
+  --about-arch: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 140' preserveAspectRatio='none'%3E%3Cpath d='M0 140V48C0 30 18 19 33 13C42 9.5 47 5 50 0C53 5 58 9.5 67 13C82 19 100 30 100 48V140Z'/%3E%3C/svg%3E");
+}
+
+@keyframes mandala-spin {
+  to { rotate: 360deg; }
+}
+
+@media (max-width: 560px) {
+  .heroArt { padding: 20px 20px 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mandala { animation: none; }
+}
