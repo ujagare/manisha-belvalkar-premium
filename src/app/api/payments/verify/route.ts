@@ -33,12 +33,12 @@ export async function POST(request: Request) {
     const { data: order } = await admin.from("orders").select("id,user_id,gateway_order_id,amount_subunits,amount,currency,item_type,item_slug,item_title").eq("id", internalOrderId).eq("user_id", user.id).maybeSingle();
     if (!order || order.gateway_order_id !== razorpayOrderId) return apiError("NOT_FOUND", "Order not found.", 404);
     if (!verifyCheckoutSignature(order.gateway_order_id, paymentId, signature)) {
-      return apiError("FORBIDDEN", "Payment verification failed.", 403);
+      return apiError("BAD_REQUEST", "Payment verification failed.", 400);
     }
 
     const remote = await fetchRazorpayPayment(paymentId);
     if (remote.order_id !== order.gateway_order_id || remote.amount !== order.amount_subunits || remote.currency !== order.currency) {
-      return apiError("FORBIDDEN", "Payment details do not match the order.", 403);
+      return apiError("BAD_REQUEST", "Payment details do not match the order.", 400);
     }
     const paid = remote.status === "captured";
     await admin.from("payments").update({

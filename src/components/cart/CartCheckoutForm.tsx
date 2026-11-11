@@ -10,7 +10,14 @@ import type { UserAddress } from "@/lib/supabase/models";
 import { cartWhatsAppMessage, manualReference, sendManualConfirmation, whatsappUrl } from "@/lib/manual-flow";
 import { cartState } from "@/lib/cart";
 
-declare global { interface Window { Razorpay?: new (options: Record<string, unknown>) => { open: () => void } } }
+declare global {
+  interface Window {
+    Razorpay?: new (options: Record<string, unknown>) => {
+      open: () => void;
+      on: (event: string, handler: (response: { error?: { description?: string } }) => void) => void;
+    };
+  }
+}
 
 async function loadRazorpay() {
   if (window.Razorpay) return true;
@@ -115,7 +122,7 @@ export default function CartCheckoutForm({ userEmail, userName, addresses, manua
         setError("Secure payment window could not load. Please check your connection.");
         return;
       }
-      new window.Razorpay({
+      const checkout = new window.Razorpay({
         key: data.keyId,
         amount: data.amount,
         currency: data.currency,
@@ -141,7 +148,12 @@ export default function CartCheckoutForm({ userEmail, userName, addresses, manua
             router.push(`/thank-you?order=${encodeURIComponent(data.orderId)}`);
           } else router.push(`/checkout/failure?order=${encodeURIComponent(data.orderId)}&reason=verification`);
         },
-      }).open();
+      });
+      checkout.on("payment.failed", (payment) => {
+        setError(payment.error?.description ?? "Payment failed. Please retry or use another payment method.");
+        router.push(`/checkout/failure?order=${encodeURIComponent(data.orderId)}&reason=payment`);
+      });
+      checkout.open();
     });
   }
 

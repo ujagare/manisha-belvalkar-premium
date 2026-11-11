@@ -12,7 +12,10 @@ import { sendManualConfirmation } from "@/lib/manual-flow";
 
 declare global {
   interface Window {
-    Razorpay?: new (options: Record<string, unknown>) => { open: () => void };
+    Razorpay?: new (options: Record<string, unknown>) => {
+      open: () => void;
+      on: (event: string, handler: (response: { error?: { description?: string } }) => void) => void;
+    };
   }
 }
 
@@ -211,7 +214,7 @@ export default function CheckoutForm({
           setError("Secure payment window could not load. Please check your connection and retry.");
           return;
         }
-        new window.Razorpay({
+        const checkout = new window.Razorpay({
           key: paymentData.keyId,
           amount: paymentData.amount,
           currency: paymentData.currency,
@@ -241,7 +244,12 @@ export default function CheckoutForm({
                 : `/thank-you?order=${encodeURIComponent(paymentData.orderId)}`)
               : `/checkout/failure?order=${encodeURIComponent(paymentData.orderId)}&reason=verification`);
           },
-        }).open();
+        });
+        checkout.on("payment.failed", (response) => {
+          setError(response.error?.description ?? "Payment failed. Please retry or use another payment method.");
+          router.push(`/checkout/failure?order=${encodeURIComponent(paymentData.orderId)}&reason=payment`);
+        });
+        checkout.open();
         return;
       }
 

@@ -1,291 +1,89 @@
 import type { Metadata } from "next";
-import {
-  Sparkles,
-  Gift,
-  Truck,
-  ShieldCheck,
-  Quote,
-  ArrowUpRight,
-} from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { ArrowRight, Gift, ShieldCheck, Sparkles, Star, Truck } from "lucide-react";
 import type { Product } from "@/lib/data";
 import { formatINR } from "@/lib/utils";
 import { getProducts } from "@/lib/supabase/products";
-import PageHero from "@/components/ui/PageHero";
-import Reveal from "@/components/ui/Reveal";
-import Button from "@/components/ui/Button";
-import GoldDivider from "@/components/ui/GoldDivider";
-import ProductCard, { categoryMeta } from "@/components/products/ProductCard";
-import RitualCard from "@/components/products/RitualCard";
+import AddToCartButton from "@/components/cart/AddToCartButton";
+import styles from "./page.module.css";
 
 export const metadata: Metadata = {
   title: "Shakti Oracle Deck, Rituals & Sacred Products",
-  description:
-    "Buy the Shakti Oracle deck, guidebook, magic salt, vastu healing frames, abundance rituals and WhatsApp workshops by Dr. Manisha Belvalkar. Ships across India.",
+  description: "Buy the Shakti Oracle deck, guidebook, magic salt, vastu healing frames, abundance rituals and Tarot Reading by Dr. Manisha Belvalkar. Ships across India.",
   alternates: { canonical: "/products" },
 };
 
-const trustPoints = [
-  {
-    icon: Sparkles,
-    title: "Created with intention",
-    text: "Every product is infused with prayer, ritual and healing energy.",
-  },
-  {
-    icon: Gift,
-    title: "Gift-worthy packaging",
-    text: "Sacred wrapping, love notes and protective care in every parcel.",
-  },
-  {
-    icon: Truck,
-    title: "Ships across India",
-    text: "Careful, insured dispatch — your treasure arrives safe and blessed.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Authentic & blessed",
-    text: "Each piece is personally handled by Manisha before it leaves.",
-  },
-];
+const images: Record<string, string> = {
+  "shakti-oracle-deck": "/images/products-reference/deck.webp",
+  "shakti-deck-guidebook": "/images/products-reference/book.webp",
+  "sacred-salt-frame": "/images/products-reference/salt.webp",
+  "vastu-healing-frames": "/images/products-reference/vastu.webp",
+  "abundance-rituals": "/images/products-reference/abundance.webp",
+  "good-luck-rituals": "/images/products-reference/luck.webp",
+  "good-health-rituals": "/images/products-reference/health.webp",
+  "protection-rituals": "/images/products-reference/protection.webp",
+  "tarot-reading": "/images/products-reference/tarot.webp",
+};
+
+const pick = (products: Product[], slugs: string[]) => slugs.map((slug) => products.find((p) => p.slug === slug)).filter((p): p is Product => Boolean(p));
+
+function Actions({ product, dark = false }: { product: Product; dark?: boolean }) {
+  return <div className={styles.actions}>
+    <Link className={dark ? styles.goldButton : styles.primaryButton} href={`/checkout/product/${product.slug}`}>Buy now</Link>
+    <AddToCartButton product={{ ...product, image: images[product.slug] ?? product.image }} compact className={dark ? styles.darkCartButton : styles.cartButton} />
+    <Link className={dark ? styles.darkTextLink : styles.textLink} href={`/products/${product.slug}`}>Details <ArrowRight aria-hidden="true" /></Link>
+  </div>;
+}
 
 export default async function ProductsPage() {
-  // DB-backed catalog (falls back to static catalog until Supabase is configured)
   const products = await getProducts();
-  const featured = products.find((p) => p.featured) ?? products[0];
+  const wisdom = pick(products, ["shakti-oracle-deck", "shakti-deck-guidebook"]);
+  const tools = pick(products, ["sacred-salt-frame", "vastu-healing-frames"]);
+  const rituals = pick(products, ["abundance-rituals", "good-luck-rituals", "good-health-rituals", "protection-rituals", "tarot-reading"]);
+  const trust = [
+    [Sparkles, "Created with intention", "Every product is infused with prayer, ritual and healing energy."],
+    [Gift, "Gift-worthy packaging", "Sacred wrapping, love notes and protective care in every parcel."],
+    [Truck, "Ships across India", "Careful, insured dispatch — your treasure arrives safe and blessed."],
+    [ShieldCheck, "Authentic & blessed", "Each piece is personally handled by Manisha before it leaves."],
+  ] as const;
 
-  // 1. Deck & Book (2 cards)
-  const deckBookSlugs = ["shakti-oracle-deck", "shakti-deck-guidebook"];
-  const deckAndBookProducts = deckBookSlugs
-    .map((slug) => products.find((p) => p.slug === slug))
-    .filter((p): p is Product => Boolean(p));
+  return <main className={styles.page}>
+    <section className={styles.hero} id="top" aria-labelledby="products-title">
+      <Image src="/images/products-reference/hero.webp" alt="Shakti Oracle Cards with their companion guidebook" fill priority sizes="100vw" className={styles.heroImage} />
+      <div className={styles.heroShade} />
+      <div className={styles.wrap}>
+        <nav className={styles.breadcrumbs} aria-label="Breadcrumb"><Link href="/">Home</Link><span>/</span><span>Products</span></nav>
+        <p className={styles.eyebrow}><Star />The sacred collection</p>
+        <h1 id="products-title">Sacred creations for <em>your journey</em></h1>
+        <p className={styles.heroCopy}>Card Deck, Shakti Book, Magic Salt, Vastu Healing Frames, sacred rituals and Tarot Reading.</p>
+        <div className={styles.heroActions}><Link className={styles.goldButton} href="#wisdom">Explore the collection <ArrowRight /></Link><Link className={styles.darkCartButton} href="/products/shakti-oracle-deck">Shakti Oracle Deck · ₹1,899</Link></div>
+        <dl className={styles.stats}><div><dt>52</dt><dd>Oracle cards</dd></div><div><dt>51</dt><dd>Shakti Peethas</dd></div><div><dt>9</dt><dd>Sacred offerings</dd></div></dl>
+      </div>
+    </section>
 
-  // 2. Shop (Magic Salt, Vastu healing Frames) (2 cards)
-  const shopSlugs = ["sacred-salt-frame", "vastu-healing-frames"];
-  const shopProductsList = shopSlugs
-    .map((slug) => products.find((p) => p.slug === slug))
-    .filter((p): p is Product => Boolean(p));
+    <nav className={styles.categories} aria-label="Product categories"><div className={styles.wrap}><Link href="#wisdom"><i>01</i> Deck & Book</Link><Link href="#tools"><i>02</i> Sacred Tools & Frames</Link><Link href="#rituals"><i>03</i> Rituals & Guidance</Link></div></nav>
 
-  // 3. Rituals and readings
-  const ritualSlugs = [
-    "abundance-rituals",
-    "good-luck-rituals",
-    "good-health-rituals",
-    "protection-rituals",
-    "tarot-reading",
-  ];
-  const ritualProductsList = ritualSlugs
-    .map((slug) => products.find((p) => p.slug === slug))
-    .filter((p): p is Product => Boolean(p));
+    <section className={styles.section} id="wisdom" aria-labelledby="wisdom-title"><div className={styles.wrap}>
+      <header className={styles.sectionHead}><p className={styles.index}>01</p><div><p className={styles.eyebrow}>Sacred wisdom</p><h2 id="wisdom-title">Deck & <em>Book</em></h2></div><p>Sacred 52-card oracle deck and companion guidebook inspired by the 51 Shakti Peethas.</p></header>
+      <div className={styles.features}>{wisdom.map((product, i) => <article className={`${styles.feature} ${i ? styles.reverse : ""}`} key={product.slug}>
+        <Link className={`${styles.featureMedia} ${i === 0 ? styles.stage : ""}`} href={`/products/${product.slug}`}><span className={styles.badge}><Star />{product.badge}</span><Image src={images[product.slug]} alt={product.title} fill sizes="(max-width: 899px) 100vw, 52vw" /></Link>
+        <div className={styles.featureBody}><p className={styles.eyebrow}>{i === 0 ? "Featured · Card Deck" : "Shakti Book"}</p><h3>{i === 0 ? <>SHAKTI <em>Oracle Deck</em></> : <>SHAKTI guidebook for <em>daily practice</em></>}</h3><p className={styles.lede}>{product.description}</p><ul className={styles.checks}>{product.details.slice(0, 3).map((d) => <li key={d}><Star />{d}</li>)}</ul><div className={styles.priceRow}><strong>{formatINR(product.price)}</strong><span>incl. all taxes</span></div><Actions product={product} /></div>
+      </article>)}</div>
+    </div></section>
 
-  return (
-    <>
-      <PageHero
-        eyebrow="Products"
-        image="/images/page-heroes/products-premium-hero.webp"
-        imageAlt="Shakti Oracle Cards with their companion guidebook"
-        imagePosition="62% center"
-        title={
-          <>
-            <span className="text-crimson-gradient">Products</span>
-          </>
-        }
-        subtitle="Card Deck, Shakti Book, Magic Salt, Vastu Healing Frames, sacred rituals and Tarot Reading."
-      />
+    <section className={styles.quote} aria-label="A note from Manisha"><Star /><blockquote>Every creation is a channel — made in meditation, blessed with intention, and meant to hold you on your journey.</blockquote><p>Dr. Manisha S. Belvalkar</p></section>
 
-      {/* Featured product */}
-      {featured ? (
-        <section className="py-20 lg:py-28">
-          <div className="mx-auto max-w-7xl px-6 lg:px-10">
-            <Reveal>
-              <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
-                {/* Image */}
-                <div className="relative">
-                  <div className="gold-border-gradient relative overflow-hidden rounded-3xl">
-                    <div
-                      className="h-[420px] w-full bg-cover bg-center transition-transform duration-700 hover:scale-105 sm:h-[520px]"
-                      style={{ backgroundImage: `url('${featured.image}')` }}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-charcoal/50 via-transparent to-transparent" />
-                    <span className="absolute left-6 top-6 rounded-full bg-gold px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-primary-deeper shadow-lg">
-                      ✦ Featured
-                    </span>
-                  </div>
-                  <div className="absolute -bottom-6 right-6 hidden rounded-2xl border border-parchment bg-white px-6 py-4 shadow-xl sm:block">
-                    <p className="font-serif text-sm italic text-warmgray">From</p>
-                    <p className="font-display text-2xl font-bold text-primary">
-                      {formatINR(featured.price)}
-                    </p>
-                  </div>
-                </div>
+    <section className={styles.section} id="tools" aria-labelledby="tools-title"><div className={styles.wrap}>
+      <header className={styles.sectionHead}><p className={styles.index}>02</p><div><p className={styles.eyebrow}>Sacred tools & frames</p><h2 id="tools-title">For your <em>sacred space</em></h2></div><p>Authentic Himalayan crystal magic salt and intention-infused Vastu healing frames for your sacred space.</p></header>
+      <div className={styles.toolGrid}>{tools.map((product) => <article className={styles.toolCard} key={product.slug}><Link className={styles.toolMedia} href={`/products/${product.slug}`}><span className={styles.badge}><Star />{product.badge}</span><Image src={images[product.slug]} alt={product.title} fill sizes="(max-width: 699px) 100vw, 50vw" /></Link><div className={styles.toolBody}><p className={styles.eyebrow}>Rituals & tools</p><h3><Link href={`/products/${product.slug}`}>{product.title}</Link></h3><p className={styles.lede}>{product.subtitle}</p><div className={styles.toolFoot}><div><strong>{formatINR(product.price)}</strong><span>incl. all taxes</span></div><Actions product={product} /></div></div></article>)}</div>
+    </div></section>
 
-                {/* Copy */}
-                <div>
-                  <div className="eyebrow mb-4 flex items-center gap-4 text-gold-dark">
-                    <span className="hairline-gold w-10" />
-                    {categoryMeta(featured.category).label}
-                  </div>
-                  <h2 className="font-display text-4xl font-bold leading-tight text-charcoal sm:text-5xl">
-                    {featured.title}
-                  </h2>
-                  <p className="mt-3 font-serif text-xl italic text-gold-dark">
-                    {featured.subtitle}
-                  </p>
-                  <p className="mt-6 leading-relaxed text-warmgray">
-                    {featured.description}
-                  </p>
+    <section className={styles.trust} aria-label="Why shop with us"><div className={styles.wrap}>{trust.map(([Icon, title, copy]) => <article key={title}><span><Icon /></span><h3>{title}</h3><p>{copy}</p></article>)}</div></section>
 
-                  <div className="mt-6 flex items-baseline gap-3">
-                    <span className="font-display text-4xl font-bold text-primary">
-                      {formatINR(featured.price)}
-                    </span>
-                  </div>
-
-                  <div className="mt-8 flex flex-wrap gap-4">
-                    <Button
-                      href={`/checkout/product/${featured.slug}`}
-                      size="lg"
-                      variant="gold"
-                    >
-                      Buy Now
-                      <ArrowUpRight className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      href={`/products/${featured.slug}`}
-                      size="lg"
-                      variant="outline"
-                    >
-                      View Details
-                    </Button>
-                  </div>
-
-                  <div className="mt-10 border-l-2 border-gold pl-5">
-                    <Quote className="h-5 w-5 text-gold" />
-                    <p className="mt-2 font-serif text-lg italic leading-relaxed text-charcoal">
-                      Every creation is a channel — made in meditation, blessed
-                      with intention, and meant to hold you on your journey.
-                    </p>
-                    <p className="mt-2 text-sm font-semibold uppercase tracking-widest text-gold-dark">
-                      Dr. Manisha S. Belvalkar
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </Reveal>
-          </div>
-        </section>
-      ) : null}
-
-      {/* Product groups: Deck & Book, Products, Rituals */}
-      <section className="bg-ivory/60 py-12 sm:py-20 lg:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10 space-y-12 sm:space-y-16 lg:space-y-24">
-
-          {/* Section 1: Deck & Book */}
-          <div>
-            <Reveal className="mb-6 sm:mb-10 text-center">
-              <div className="eyebrow mb-2 sm:mb-3 flex items-center justify-center gap-3 sm:gap-4 text-gold-dark">
-                <span className="hairline-gold w-8 sm:w-10" />
-                Sacred Wisdom
-                <span className="hairline-gold w-8 sm:w-10" />
-              </div>
-              <h2 className="font-display text-2xl font-bold text-charcoal sm:text-4xl lg:text-5xl">
-                Deck &amp; Book
-              </h2>
-              <p className="mx-auto mt-2 max-w-xl text-xs sm:text-base text-warmgray">
-                Sacred 52-card oracle deck and companion guidebook inspired by 51 Shakti Peethas.
-              </p>
-            </Reveal>
-            <div className="mx-auto grid max-w-4xl gap-4 sm:grid-cols-2 sm:gap-6 lg:gap-8">
-              {deckAndBookProducts.map((product) => (
-                <ProductCard key={product.slug} product={product} />
-              ))}
-            </div>
-          </div>
-
-          {/* Ornamental divider */}
-          <div className="flex items-center justify-center gap-3 sm:gap-4 text-gold-dark/40" aria-hidden="true">
-            <span className="h-px w-16 sm:w-24 bg-gradient-to-r from-transparent to-gold/40" />
-            <span className="font-serif text-base sm:text-lg text-gold">✦</span>
-            <span className="h-px w-16 sm:w-24 bg-gradient-to-l from-transparent to-gold/40" />
-          </div>
-
-          {/* Section 2: Products */}
-          <div>
-            <Reveal className="mb-6 sm:mb-10 text-center">
-              <div className="eyebrow mb-2 sm:mb-3 flex items-center justify-center gap-3 sm:gap-4 text-gold-dark">
-                <span className="hairline-gold w-8 sm:w-10" />
-                Sacred Tools &amp; Frames
-                <span className="hairline-gold w-8 sm:w-10" />
-              </div>
-              <h2 className="font-display text-2xl font-bold text-charcoal sm:text-4xl lg:text-5xl">
-                Products
-              </h2>
-              <p className="mx-auto mt-2 max-w-xl text-xs sm:text-base text-warmgray">
-                Authentic Himalayan crystal magic salt and intention-infused Vastu healing frames for your sacred space.
-              </p>
-            </Reveal>
-            <div className="mx-auto grid max-w-4xl gap-4 sm:grid-cols-2 sm:gap-6 lg:gap-8">
-              {shopProductsList.map((product) => (
-                <ProductCard key={product.slug} product={product} />
-              ))}
-            </div>
-          </div>
-
-          {/* Ornamental divider */}
-          <div className="flex items-center justify-center gap-3 sm:gap-4 text-gold-dark/40" aria-hidden="true">
-            <span className="h-px w-16 sm:w-24 bg-gradient-to-r from-transparent to-gold/40" />
-            <span className="font-serif text-base sm:text-lg text-gold">✦</span>
-            <span className="h-px w-16 sm:w-24 bg-gradient-to-l from-transparent to-gold/40" />
-          </div>
-
-          {/* Section 3: Rituals */}
-          <div>
-            <Reveal className="mb-6 sm:mb-10 text-center">
-              <div className="eyebrow mb-2 sm:mb-3 flex items-center justify-center gap-3 sm:gap-4 text-gold-dark">
-                <span className="hairline-gold w-8 sm:w-10" />
-                Energy Work &amp; Guidance
-                <span className="hairline-gold w-8 sm:w-10" />
-              </div>
-              <h2 className="font-display text-2xl font-bold text-charcoal sm:text-4xl lg:text-5xl">
-                Rituals
-              </h2>
-              <p className="mx-auto mt-2 max-w-xl text-xs sm:text-base text-warmgray">
-                Guided abundance, good luck, health and protection rituals, plus personal Tarot Reading.
-              </p>
-            </Reveal>
-            <div className="mx-auto grid max-w-5xl gap-4 sm:grid-cols-2 sm:gap-6 lg:gap-8">
-              {ritualProductsList.map((product) => (
-                <RitualCard key={product.slug} product={product} />
-              ))}
-            </div>
-          </div>
-
-        </div>
-      </section>
-
-      {/* Trust strip */}
-      <section className="py-20 lg:py-24">
-        <div className="mx-auto max-w-7xl px-6 lg:px-10">
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {trustPoints.map((point, i) => (
-              <Reveal key={point.title} delay={i * 0.08}>
-                <div className="flex h-full flex-col items-start rounded-2xl border border-parchment bg-white p-7 transition-all duration-300 hover:-translate-y-1 hover:border-gold/50 hover:shadow-lg hover:shadow-gold/10">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-full bg-primary-soft text-primary">
-                    <point.icon className="h-5 w-5" />
-                  </span>
-                  <h3 className="mt-4 font-display text-lg font-bold text-charcoal">
-                    {point.title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-warmgray">
-                    {point.text}
-                  </p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <GoldDivider />
-
-    </>
-  );
+    <section className={styles.rituals} id="rituals" aria-labelledby="rituals-title"><div className={styles.wrap}>
+      <header className={`${styles.sectionHead} ${styles.darkHead}`}><p className={styles.index}>03</p><div><p className={styles.eyebrow}>Energy work & guidance</p><h2 id="rituals-title">Rituals & <em>Tarot</em></h2></div><p>Guided abundance, good luck, health and protection rituals, plus personal Tarot Reading.</p></header>
+      <div className={styles.ritualList}>{rituals.map((product, i) => <article className={styles.ritual} key={product.slug}><span className={styles.ritualIndex}>{String(i + 1).padStart(2, "0")}</span><Link className={styles.ritualMedia} href={`/products/${product.slug}`}><Image src={images[product.slug]} alt={product.title} fill sizes="(max-width: 1039px) 100vw, 190px" /></Link><div className={styles.ritualBody}><p className={styles.tags}><span>{product.slug === "tarot-reading" ? "Personal guidance" : "Sacred ritual"}</span><span>{product.slug === "tarot-reading" ? "Tarot" : "Energy healing"}</span></p><h3><Link href={`/products/${product.slug}`}>{product.title}</Link></h3><p className={styles.lede}>{product.subtitle}</p><ul className={styles.checks}>{product.details.slice(0, 3).map((d) => <li key={d}><Star />{d}</li>)}</ul></div><div className={styles.ritualBuy}><p>Offering price</p><strong>{formatINR(product.price)}</strong><Actions product={product} dark /></div></article>)}</div>
+    </div></section>
+  </main>;
 }

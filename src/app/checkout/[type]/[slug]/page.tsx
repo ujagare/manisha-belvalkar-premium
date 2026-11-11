@@ -43,7 +43,7 @@ export default async function CheckoutPage({ params }: Props) {
   // form below). Re-check the session so signed-in users are prefilled.
   const user = await getCurrentUser();
   const isDistanceHealing = type === "healing" && slug === "distance-healing";
-  if ((type === "course" || isDistanceHealing) && isServerConfigured() && !user) {
+  if (isPaymentsConfigured() && !user) {
     redirect(`/login?next=${encodeURIComponent(`/checkout/${type}/${slug}`)}`);
   }
   const addresses = user && type === "product" ? await getMyAddresses() : [];
@@ -51,7 +51,7 @@ export default async function CheckoutPage({ params }: Props) {
   const configured = isSupabaseConfigured();
   const isCourse = type === "course";
   const paymentsConfigured = isPaymentsConfigured();
-  const manualMode = shouldUseManualFlow(isServerConfigured(), paymentsConfigured) || (type === "product" && !user);
+  const manualMode = shouldUseManualFlow(isServerConfigured(), paymentsConfigured);
   const reassuranceItems = isCourse
     ? [
         { icon: CalendarCheck, title: "Personal onboarding", copy: "Schedule confirmed with you" },
