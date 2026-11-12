@@ -96,13 +96,13 @@ export default function SectionHeading({
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.7, ease: EASE }}
             className={cn(
-              "sh-eyebrow eyebrow mb-4 flex items-center gap-4 text-gold-dark",
+              "sh-eyebrow eyebrow mb-2.5 flex items-center gap-3 text-gold-dark sm:mb-4 sm:gap-4",
               centered && "justify-center",
             )}
           >
-            <span className="hairline-gold w-10" />
+            <span className="hairline-gold w-7 sm:w-10" />
             <span>{eyebrow}</span>
-            <span className="hairline-gold w-10" />
+            <span className="hairline-gold w-7 sm:w-10" />
           </motion.div>
         ) : null}
         <motion.h2
@@ -110,7 +110,7 @@ export default function SectionHeading({
           whileInView={settle}
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 1, delay: 0.12, ease: EASE }}
-          className="font-display text-4xl font-bold leading-[1.1] tracking-tight text-charcoal sm:text-5xl"
+          className="font-display text-[1.65rem] font-bold leading-[1.15] tracking-tight text-charcoal sm:text-4xl lg:text-5xl"
         >
           {title}
         </motion.h2>
@@ -125,7 +125,7 @@ export default function SectionHeading({
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.9, delay: 0.38, ease: EASE }}
             className={cn(
-              "sh-sub mt-5 text-base leading-relaxed text-warmgray sm:text-lg",
+              "sh-sub mt-3 text-sm leading-relaxed text-warmgray sm:mt-5 sm:text-base lg:text-lg",
               centered && "mx-auto max-w-2xl",
             )}
           >

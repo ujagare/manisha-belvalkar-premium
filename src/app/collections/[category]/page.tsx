@@ -76,8 +76,8 @@ export default async function CategoryPage({ params }: Props) {
       />
 
       {/* Breadcrumb + cross-links */}
-      <section className="bg-ivory/60 pb-2 pt-10">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-6 lg:px-10">
+      <section className="bg-ivory/60 pb-2 pt-6 sm:pt-10">
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 sm:px-6 lg:px-10">
           <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-sm text-warmgray">
             <Link href="/" className="hover:text-primary">Home</Link>
             <span aria-hidden="true">/</span>
@@ -89,12 +89,12 @@ export default async function CategoryPage({ params }: Props) {
             <LayoutGrid className="h-4 w-4" /> All shop
           </Link>
         </div>
-        <div className="mx-auto mt-6 flex max-w-7xl flex-wrap items-center gap-2 px-6 lg:px-10">
+        <div className="mx-auto mt-4 flex max-w-7xl flex-wrap items-center gap-2 px-4 sm:mt-6 sm:px-6 lg:px-10">
           {CATEGORIES.filter((c) => c !== category).map((c) => (
             <Link
               key={c}
               href={`/collections/${c}`}
-              className="inline-flex items-center gap-1.5 rounded-full border border-parchment bg-white px-4 py-2 text-sm font-medium text-warmgray transition-colors hover:border-gold hover:text-charcoal"
+              className="inline-flex min-h-10 items-center gap-1.5 rounded-full border border-parchment bg-white px-3.5 py-2 text-xs font-medium text-warmgray transition-colors hover:border-gold hover:text-charcoal sm:px-4 sm:text-sm"
             >
               {c === "oracle" ? <Sparkles className="h-3.5 w-3.5" /> : c === "book" ? <BookOpen className="h-3.5 w-3.5" /> : <Gem className="h-3.5 w-3.5" />}
               {productCategoryLabels[c]}
@@ -104,19 +104,19 @@ export default async function CategoryPage({ params }: Props) {
       </section>
 
       {/* Collection copy + grid */}
-      <section className="bg-ivory/60 py-14 lg:py-20">
-        <div className="mx-auto max-w-7xl px-6 lg:px-10">
-          <Reveal className="mb-10 flex items-center justify-center gap-2 text-gold-dark">
+      <section className="bg-ivory/60 py-10 sm:py-14 lg:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
+          <Reveal className="mb-6 flex items-center justify-center gap-2 text-gold-dark sm:mb-10">
             <Icon className="h-5 w-5" />
             <span className="eyebrow">{items.length} {items.length === 1 ? "item" : "items"}</span>
           </Reveal>
-          <Reveal className="mb-12 text-center">
-            <p className="mx-auto max-w-2xl text-warmgray">{categoryCopy[category]}</p>
+          <Reveal className="mb-8 text-center sm:mb-12">
+            <p className="mx-auto max-w-2xl text-sm text-warmgray sm:text-base">{categoryCopy[category]}</p>
           </Reveal>
           <Reveal delay={0.1}>
             <ProductGrid products={items} />
           </Reveal>
-          <div className="mt-14 text-center">
+          <div className="mt-10 text-center sm:mt-14">
             <Link href="/products" className="inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3.5 font-semibold text-white shadow-lg shadow-primary/25 transition-all hover:shadow-xl hover:brightness-110">
               Back to the full shop <ArrowRight className="h-4 w-4" />
             </Link>

@@ -76,10 +76,10 @@ export default async function MentoringDetailPage({ params }: Props) {
         subtitle={area.short}
       />
 
-      <section className="py-20 lg:py-24">
-        <div className="mx-auto grid max-w-6xl gap-12 px-6 lg:grid-cols-2 lg:items-center lg:px-10">
+      <section className="py-12 sm:py-20 lg:py-24">
+        <div className="mx-auto grid max-w-6xl gap-7 px-4 sm:gap-12 sm:px-6 lg:grid-cols-2 lg:items-center lg:px-10">
           <Reveal direction="right">
-            <div className="gold-border-gradient relative h-72 overflow-hidden rounded-2xl lg:h-[480px]">
+            <div className="gold-border-gradient relative h-56 overflow-hidden rounded-2xl sm:h-72 lg:h-[480px]">
               <Parallax
                 src={area.image}
                 speed={0.35}
@@ -92,30 +92,30 @@ export default async function MentoringDetailPage({ params }: Props) {
           </Reveal>
 
           <Reveal delay={0.1}>
-            <div className="eyebrow mb-4 text-gold-dark">What to expect</div>
-            <h2 className="font-display text-3xl font-bold leading-tight text-charcoal sm:text-4xl">
+            <div className="eyebrow mb-2.5 text-gold-dark sm:mb-4">What to expect</div>
+            <h2 className="font-display text-2xl font-bold leading-tight text-charcoal sm:text-4xl">
               {area.title}
             </h2>
-            <p className="mt-5 text-base leading-relaxed text-warmgray">
+            <p className="mt-3.5 text-sm leading-relaxed text-warmgray sm:mt-5 sm:text-base">
               {area.description}
             </p>
-            <ul className="mt-7 space-y-3">
+            <ul className="mt-5 space-y-2.5 sm:mt-7 sm:space-y-3">
               {area.features.map((f) => (
                 <li key={f} className="flex items-start gap-3">
-                  <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-gold to-gold-dark shadow-sm shadow-gold/40">
-                    <Check className="h-3.5 w-3.5 text-primary-deeper" strokeWidth={3} />
+                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-gold to-gold-dark shadow-sm shadow-gold/40 sm:h-6 sm:w-6">
+                    <Check className="h-3 w-3 text-primary-deeper sm:h-3.5 sm:w-3.5" strokeWidth={3} />
                   </span>
-                  <span className="text-ink">{f}</span>
+                  <span className="text-sm text-ink sm:text-base">{f}</span>
                 </li>
               ))}
             </ul>
-            <div className="mt-9 flex flex-wrap gap-4">
+            <div className="mt-6 flex flex-wrap items-center gap-3 sm:mt-9 sm:gap-4">
               <Button href={brand.whatsappHref} size="lg" variant="gold">
                 Begin Your Journey
               </Button>
               <Link
                 href="/mentoring"
-                className="inline-flex items-center gap-2 text-sm font-medium text-warmgray transition-colors hover:text-primary"
+                className="inline-flex min-h-10 items-center gap-2 text-sm font-medium text-warmgray transition-colors hover:text-primary"
               >
                 <ArrowLeft className="h-4 w-4" />
                 All mentoring areas
@@ -126,8 +126,8 @@ export default async function MentoringDetailPage({ params }: Props) {
       </section>
 
       {/* Session booking */}
-      <section className="pb-20 lg:pb-24">
-        <div className="mx-auto max-w-6xl px-6 lg:px-10">
+      <section className="pb-12 sm:pb-20 lg:pb-24">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-10">
           <div className="mx-auto max-w-3xl">
             <SessionBookingForm type="mentoring" slug={area.slug} title={area.title} manualMode={!isServerConfigured()} />
           </div>

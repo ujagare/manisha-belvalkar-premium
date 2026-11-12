@@ -11,10 +11,10 @@ export default async function CartCheckoutPage() {
   const user = await getCurrentUser();
   if (!manualMode && !user) redirect("/login?next=%2Fcheckout%2Fcart");
   const addresses = user ? await getMyAddresses() : [];
-  return <section className="bg-ivory px-6 pb-24 pt-32 lg:pt-40"><div className="mx-auto max-w-2xl">
+  return <section className="bg-ivory px-4 sm:px-6 pb-24 pt-20 sm:pt-32 lg:pt-40"><div className="mx-auto max-w-2xl">
     <p className="eyebrow text-gold-dark">{manualMode ? "Personal confirmation" : "Secure checkout"}</p>
-    <h1 className="mt-4 font-display text-5xl font-bold text-charcoal">{manualMode ? "Order request" : "Payment"}</h1>
-    <p className="mt-4 mb-9 leading-7 text-warmgray">{manualMode ? "Add your delivery details, then send the prepared order to our team on WhatsApp. No online payment is taken." : "Review your order and continue through Razorpay's encrypted payment window."}</p>
+    <h1 className="mt-3 sm:mt-4 font-display text-3xl sm:text-5xl font-bold text-charcoal">{manualMode ? "Order request" : "Payment"}</h1>
+    <p className="mt-3 sm:mt-4 mb-6 sm:mb-9 text-sm sm:text-base leading-6 sm:leading-7 text-warmgray">{manualMode ? "Add your delivery details, then send the prepared order to our team on WhatsApp. No online payment is taken." : "Review your order and continue through Razorpay's encrypted payment window."}</p>
     <CartCheckoutForm userEmail={user?.email ?? ""} userName={user?.fullName ?? null} addresses={addresses} manualMode={manualMode} />
   </div></section>;
 }

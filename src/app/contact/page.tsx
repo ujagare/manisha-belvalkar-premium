@@ -31,26 +31,26 @@ export default function ContactPage() {
         subtitle="Whether you seek answers, alignment, or transformation — reach out and begin your journey."
       />
 
-      <section className="py-20 lg:pb-28">
-        <div className="mx-auto max-w-7xl px-6 lg:px-10">
-          <div className="grid gap-14 lg:grid-cols-2 lg:gap-20">
+      <section className="py-12 sm:py-20 lg:pb-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
+          <div className="grid gap-8 sm:gap-14 lg:grid-cols-2 lg:gap-20">
             {/* Contact details */}
             <div>
               <Reveal>
-                <h2 className="font-display text-3xl font-bold text-charcoal">
+                <h2 className="font-display text-2xl sm:text-3xl font-bold text-charcoal">
                   Reach out to Manisha
                 </h2>
-                <p className="mt-4 leading-relaxed text-warmgray">
+                <p className="mt-3 sm:mt-4 text-sm sm:text-base leading-relaxed text-warmgray">
                   Ready to begin your journey? Send a message, and Manisha will
                   personally guide you toward the path that&apos;s right for you.
                 </p>
               </Reveal>
 
-              <div className="mt-10 space-y-6">
+              <div className="mt-6 sm:mt-10 space-y-4 sm:space-y-6">
                 <Reveal delay={0.1}>
                   <a
                     href={brand.phoneHref}
-                    className="group relative flex items-center gap-5 overflow-hidden rounded-[24px] border border-parchment bg-gradient-to-b from-white to-cream/70 p-6 shadow-[0_8px_30px_-18px_rgba(28,25,23,0.18)] transition-all duration-500 hover:-translate-y-1 hover:border-gold/50 hover:shadow-[0_25px_50px_-25px_rgba(221,184,41,0.45)]"
+                    className="group relative flex items-center gap-3.5 sm:gap-5 overflow-hidden rounded-2xl sm:rounded-[24px] border border-parchment bg-gradient-to-b from-white to-cream/70 p-4 sm:p-6 shadow-[0_8px_30px_-18px_rgba(28,25,23,0.18)] transition-all duration-500 hover:-translate-y-1 hover:border-gold/50 hover:shadow-[0_25px_50px_-25px_rgba(221,184,41,0.45)]"
                   >
                     <div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-gold/15 opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100" />
                     <span className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-primary-dark text-white shadow-lg shadow-primary/25 ring-1 ring-gold/30 transition-transform duration-500 group-hover:scale-105">
@@ -68,7 +68,7 @@ export default function ContactPage() {
                 <Reveal delay={0.15}>
                   <a
                     href={brand.emailHref}
-                    className="group relative flex items-center gap-5 overflow-hidden rounded-[24px] border border-parchment bg-gradient-to-b from-white to-cream/70 p-6 shadow-[0_8px_30px_-18px_rgba(28,25,23,0.18)] transition-all duration-500 hover:-translate-y-1 hover:border-gold/50 hover:shadow-[0_25px_50px_-25px_rgba(221,184,41,0.45)]"
+                    className="group relative flex items-center gap-3.5 sm:gap-5 overflow-hidden rounded-2xl sm:rounded-[24px] border border-parchment bg-gradient-to-b from-white to-cream/70 p-4 sm:p-6 shadow-[0_8px_30px_-18px_rgba(28,25,23,0.18)] transition-all duration-500 hover:-translate-y-1 hover:border-gold/50 hover:shadow-[0_25px_50px_-25px_rgba(221,184,41,0.45)]"
                   >
                     <div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-gold/15 opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100" />
                     <span className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-primary-dark text-white shadow-lg shadow-primary/25 ring-1 ring-gold/30 transition-transform duration-500 group-hover:scale-105">
@@ -92,7 +92,7 @@ export default function ContactPage() {
                           href={location.mapsHref}
                           target="_blank"
                           rel="noreferrer"
-                          className="group relative flex items-center gap-5 overflow-hidden rounded-[24px] border border-parchment bg-gradient-to-b from-white to-cream/70 p-6 shadow-[0_8px_30px_-18px_rgba(28,25,23,0.18)] transition-all duration-500 hover:-translate-y-1 hover:border-gold/50 hover:shadow-[0_25px_50px_-25px_rgba(221,184,41,0.45)]"
+                          className="group relative flex items-center gap-3.5 sm:gap-5 overflow-hidden rounded-2xl sm:rounded-[24px] border border-parchment bg-gradient-to-b from-white to-cream/70 p-4 sm:p-6 shadow-[0_8px_30px_-18px_rgba(28,25,23,0.18)] transition-all duration-500 hover:-translate-y-1 hover:border-gold/50 hover:shadow-[0_25px_50px_-25px_rgba(221,184,41,0.45)]"
                         >
                           <div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-gold/15 opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100" />
                           <span className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-primary-dark text-white shadow-lg shadow-primary/25 ring-1 ring-gold/30 transition-transform duration-500 group-hover:scale-105">
@@ -111,7 +111,7 @@ export default function ContactPage() {
                         href={brand.mapsHref}
                         target="_blank"
                         rel="noreferrer"
-                        className="group relative flex items-center gap-5 overflow-hidden rounded-[24px] border border-parchment bg-gradient-to-b from-white to-cream/70 p-6 shadow-[0_8px_30px_-18px_rgba(28,25,23,0.18)] transition-all duration-500 hover:-translate-y-1 hover:border-gold/50 hover:shadow-[0_25px_50px_-25px_rgba(221,184,41,0.45)]"
+                        className="group relative flex items-center gap-3.5 sm:gap-5 overflow-hidden rounded-2xl sm:rounded-[24px] border border-parchment bg-gradient-to-b from-white to-cream/70 p-4 sm:p-6 shadow-[0_8px_30px_-18px_rgba(28,25,23,0.18)] transition-all duration-500 hover:-translate-y-1 hover:border-gold/50 hover:shadow-[0_25px_50px_-25px_rgba(221,184,41,0.45)]"
                       >
                         <div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-gold/15 opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100" />
                         <span className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-primary-dark text-white shadow-lg shadow-primary/25 ring-1 ring-gold/30 transition-transform duration-500 group-hover:scale-105">
@@ -144,7 +144,7 @@ export default function ContactPage() {
 
             {/* Contact form */}
             <Reveal direction="left" delay={0.15}>
-              <div className="relative overflow-hidden rounded-[28px] border border-parchment bg-gradient-to-b from-white to-cream/70 p-8 shadow-[0_10px_40px_-20px_rgba(28,25,23,0.18)] sm:p-10">
+              <div className="relative overflow-hidden rounded-2xl sm:rounded-[28px] border border-parchment bg-gradient-to-b from-white to-cream/70 p-5 sm:p-8 lg:p-10 shadow-[0_10px_40px_-20px_rgba(28,25,23,0.18)]">
                 <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-gold/15 blur-3xl" />
                 <div className="relative">
                   <h3 className="font-display text-2xl font-bold text-charcoal">

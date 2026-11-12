@@ -16,18 +16,18 @@ export default function AddressBook({ addresses }: { addresses: UserAddress[] })
       {addresses.length ? (
         <div className="grid gap-4 sm:grid-cols-2">
           {addresses.map((a) => (
-            <div key={a.id} className="rounded-[24px] border border-parchment bg-white p-6">
+            <div key={a.id} className="rounded-2xl sm:rounded-[24px] border border-parchment bg-white p-4 sm:p-6">
               <div className="flex items-center justify-between">
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-gold-soft px-3 py-1 text-xs font-bold uppercase tracking-wider text-gold-deep">
                   {a.is_default ? "✦ Default" : a.label || "Home"}
                 </span>
                 <div className="flex items-center gap-1">
-                  <button type="button" onClick={() => setEditingId(editingId === a.id ? null : a.id)} className="flex h-9 w-9 items-center justify-center rounded-full text-warmgray transition hover:bg-ivory hover:text-primary" aria-label={`Edit ${a.label}`}>
+                  <button type="button" onClick={() => setEditingId(editingId === a.id ? null : a.id)} className="flex h-10 w-10 items-center justify-center rounded-full text-warmgray transition hover:bg-ivory hover:text-primary" aria-label={`Edit ${a.label}`}>
                     <Pencil className="h-4 w-4" />
                   </button>
                   <form action={deleteAddressAction}>
                     <input type="hidden" name="id" value={a.id} />
-                    <button type="submit" className="flex h-9 w-9 items-center justify-center rounded-full text-warmgray transition hover:bg-primary-soft hover:text-primary" aria-label={`Delete ${a.label}`}>
+                    <button type="submit" className="flex h-10 w-10 items-center justify-center rounded-full text-warmgray transition hover:bg-primary-soft hover:text-primary" aria-label={`Delete ${a.label}`}>
                       <Trash2 className="h-4 w-4" />
                     </button>
                   </form>
@@ -63,8 +63,8 @@ export default function AddressBook({ addresses }: { addresses: UserAddress[] })
           <AddressForm onCancel={() => setShowAdd(false)} />
         ) : (
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <Link className="text-sm text-warmgray hover:text-primary" href="/account">← Back to account</Link>
-            <button type="button" onClick={() => setShowAdd(true)} className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white hover:brightness-110">
+            <Link className="inline-flex min-h-10 items-center text-sm text-warmgray hover:text-primary" href="/account">← Back to account</Link>
+            <button type="button" onClick={() => setShowAdd(true)} className="inline-flex min-h-11 items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white hover:brightness-110">
               <Plus className="h-4 w-4" /> Add new address
             </button>
           </div>

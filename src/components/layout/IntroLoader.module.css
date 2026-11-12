@@ -50,7 +50,7 @@
   stroke-linecap: round;
   stroke-linejoin: round;
   paint-order: stroke fill;
-  font-family: var(--font-playfair), Georgia, serif;
+  font-family: var(--font-lora), Georgia, serif;
   font-size: 82px;
   font-weight: 600;
   letter-spacing: 1px;

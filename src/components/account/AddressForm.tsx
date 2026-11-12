@@ -28,10 +28,10 @@ export default function AddressForm({ address, onCancel }: AddressFormProps) {
   const errors = (state as { errors?: Record<string, string> })?.errors;
 
   return (
-    <form action={formAction} className="rounded-[24px] border border-parchment bg-white p-6">
+    <form action={formAction} className="rounded-2xl sm:rounded-[24px] border border-parchment bg-white p-4 sm:p-6">
       <input type="hidden" name="id" value={address?.id ?? ""} />
       {address ? <p className="font-display text-lg font-bold text-charcoal">Edit address</p> : <p className="font-display text-lg font-bold text-charcoal">Add a new address</p>}
-      <div className="mt-5 grid gap-4 sm:grid-cols-2">
+      <div className="mt-4 sm:mt-5 grid gap-3.5 sm:gap-4 sm:grid-cols-2">
         {FIELDS.map((field) => (
           <div key={field.name} className={field.col ?? ""}>
             <label htmlFor={`addr-${field.name}`} className="mb-1.5 block text-sm font-medium text-charcoal">
@@ -44,7 +44,7 @@ export default function AddressForm({ address, onCancel }: AddressFormProps) {
               placeholder={field.placeholder}
               required={!["line2", "label", "id"].includes(field.name)}
               className={cn(
-                "w-full rounded-xl border border-parchment bg-ivory/50 px-4 py-2.5 text-charcoal outline-none transition focus:border-gold",
+                "w-full rounded-xl border border-parchment bg-ivory/50 px-4 py-2.5 text-base sm:text-sm text-charcoal outline-none transition focus:border-gold",
                 errors?.[field.name] && "border-primary",
               )}
             />
@@ -55,13 +55,13 @@ export default function AddressForm({ address, onCancel }: AddressFormProps) {
 
       {errors?.form ? <p role="alert" className="mt-4 rounded-xl bg-primary-soft p-3 text-sm text-primary">{errors.form}</p> : null}
 
-      <div className="mt-6 flex flex-wrap items-center justify-end gap-3">
+      <div className="mt-5 sm:mt-6 flex flex-wrap items-center justify-end gap-3">
         {onCancel ? (
-          <button type="button" onClick={onCancel} className="rounded-full border border-parchment px-5 py-2.5 text-sm font-semibold text-warmgray hover:text-charcoal">
+          <button type="button" onClick={onCancel} className="min-h-10 rounded-full border border-parchment px-5 py-2.5 text-sm font-semibold text-warmgray hover:text-charcoal">
             Cancel
           </button>
         ) : null}
-        <button type="submit" disabled={pending} className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-2.5 text-sm font-semibold text-white transition hover:brightness-110 disabled:opacity-60">
+        <button type="submit" disabled={pending} className="inline-flex min-h-11 items-center gap-2 rounded-full bg-primary px-6 py-2.5 text-sm font-semibold text-white transition hover:brightness-110 disabled:opacity-60">
           {pending ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
           {address ? "Save changes" : "Add address"}
         </button>

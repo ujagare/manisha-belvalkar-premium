@@ -119,16 +119,17 @@
 
 @media (max-width: 639px) {
   .shakti-nurture-stack .scroll-stack-inner {
-    padding-top: 2.5rem;
-    padding-bottom: 6rem;
+    padding-top: 1.5rem;
+    padding-bottom: 3rem;
   }
 
   .shakti-nurture-stack .scroll-stack-card {
-    height: 22rem;
+    height: auto;
+    min-height: 16rem;
+    padding: 1.5rem;
     border-radius: 1.25rem;
+    margin-bottom: 4.5rem;
   }
-
-  .shakti-nurture-stack .scroll-stack-card { margin-bottom: 7rem; }
   .shakti-nurture-stack .scroll-stack-card:nth-child(1) { top: 5rem; }
   .shakti-nurture-stack .scroll-stack-card:nth-child(2) { top: 5.75rem; }
   .shakti-nurture-stack .scroll-stack-card:nth-child(3) { top: 6.5rem; }

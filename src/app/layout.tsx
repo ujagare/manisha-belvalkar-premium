@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
-import { Cormorant_Garamond, Inter, Playfair_Display } from "next/font/google";
+import { Lora } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
@@ -11,23 +11,11 @@ import SmoothScrollProvider from "@/components/providers/SmoothScrollProvider";
 import CartProvider from "@/components/cart/CartProvider";
 import { cn } from "@/lib/utils";
 
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
+// Single site-wide typeface (headings, body, UI) for a consistent, warm voice.
+const lora = Lora({
+  variable: "--font-lora",
   subsets: ["latin"],
-  display: "swap",
-});
-
-const cormorant = Cormorant_Garamond({
-  variable: "--font-cormorant",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
   style: ["normal", "italic"],
-  display: "swap",
-});
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
   display: "swap",
 });
 
@@ -166,9 +154,7 @@ export default async function RootLayout({
       lang="en"
       data-scroll-behavior="smooth"
       className={cn(
-        playfair.variable,
-        cormorant.variable,
-        inter.variable,
+        lora.variable,
         "antialiased",
       )}
     >

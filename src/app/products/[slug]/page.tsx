@@ -94,44 +94,44 @@ export default async function ProductDetailPage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
       />
       <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Shop", path: "/products" }, { name: product.title, path: `/products/${product.slug}` }]} />
-      <section className="relative overflow-hidden bg-ivory pb-16 pt-32 lg:pb-24 lg:pt-40">
+      <section className="relative overflow-hidden bg-ivory pb-12 pt-20 sm:pb-16 sm:pt-28 lg:pb-24 lg:pt-36">
         <div className="glow-gold absolute -right-32 -top-32 h-[420px] w-[420px]" />
         <div className="glow-crimson absolute -bottom-32 -left-32 h-[380px] w-[380px]" />
 
-        <div className="relative mx-auto max-w-7xl px-6 lg:px-10">
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
           <Reveal>
             <Link
               href="/products"
-              className="inline-flex items-center gap-2 text-sm font-medium text-warmgray transition-colors hover:text-primary"
+              className="inline-flex min-h-10 items-center gap-2 text-sm font-medium text-warmgray transition-colors hover:text-primary"
             >
               <ArrowLeft className="h-4 w-4" />
               All shop
             </Link>
           </Reveal>
 
-          <div className="mt-10 grid gap-14 lg:grid-cols-2 lg:gap-16">
+          <div className="mt-5 grid gap-7 sm:mt-10 sm:gap-12 lg:grid-cols-2 lg:gap-16">
             {/* Image */}
             <div className="lg:sticky lg:top-28 lg:self-start">
               <Reveal direction="right">
-                <div className="gold-border-gradient relative overflow-hidden rounded-3xl">
-                  <div className="relative h-[380px] w-full sm:h-[500px]">
+                <div className="gold-border-gradient relative overflow-hidden rounded-2xl sm:rounded-3xl">
+                  <div className="relative h-[280px] w-full sm:h-[420px] lg:h-[500px]">
                     <Image src={product.image} alt={product.title} fill priority sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" />
                   </div>
                   <div className="absolute inset-0 bg-gradient-to-t from-charcoal/45 to-transparent" />
                   {product.badge ? (
-                    <span className="absolute left-6 top-6 rounded-full bg-primary px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-white shadow-lg">
+                    <span className="absolute left-4 top-4 rounded-full bg-primary px-3.5 py-1 text-xs font-bold uppercase tracking-widest text-white shadow-lg sm:left-6 sm:top-6 sm:px-4 sm:py-1.5">
                       {product.badge}
                     </span>
                   ) : null}
                 </div>
 
-                <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
+                <div className="mt-4 grid grid-cols-2 gap-2.5 sm:mt-6 sm:grid-cols-4 sm:gap-4">
                   {assurance.map((item) => (
                     <div
                       key={item.text}
-                      className="flex flex-col items-center gap-2 rounded-2xl border border-parchment bg-white px-3 py-4 text-center"
+                      className="flex flex-col items-center gap-1.5 rounded-xl border border-parchment bg-white px-2.5 py-3 text-center sm:gap-2 sm:rounded-2xl sm:px-3 sm:py-4"
                     >
-                      <item.icon className="h-5 w-5 text-primary" />
+                      <item.icon className="h-4 w-4 text-primary sm:h-5 sm:w-5" />
                       <span className="text-[11px] font-medium leading-tight text-warmgray">
                         {item.text}
                       </span>
@@ -144,34 +144,34 @@ export default async function ProductDetailPage({ params }: Props) {
             {/* Info */}
             <div>
               <Reveal>
-                <div className="eyebrow mb-4 flex items-center gap-4 text-gold-dark">
-                  <span className="hairline-gold w-10" />
+                <div className="eyebrow mb-2.5 flex items-center gap-3 text-gold-dark sm:mb-4 sm:gap-4">
+                  <span className="hairline-gold w-7 sm:w-10" />
                   <span className="inline-flex items-center gap-1.5 uppercase">
                     <meta.icon className="h-3.5 w-3.5" />
                     {meta.label}
                   </span>
                 </div>
-                <h1 className="font-display text-4xl font-bold leading-[1.05] tracking-tight text-charcoal sm:text-6xl">
+                <h1 className="font-display text-[1.95rem] font-bold leading-[1.08] tracking-tight text-charcoal sm:text-5xl lg:text-6xl">
                   {product.title}
                 </h1>
-                <p className="mt-3 font-serif text-xl italic text-gold-dark">
+                <p className="mt-2 font-serif text-lg italic text-gold-dark sm:mt-3 sm:text-xl">
                   {product.subtitle}
                 </p>
               </Reveal>
 
               <Reveal delay={0.1}>
-                <p className="mt-7 text-lg leading-relaxed text-warmgray">
+                <p className="mt-4 text-base leading-relaxed text-warmgray sm:mt-7 sm:text-lg">
                   {product.description}
                 </p>
               </Reveal>
 
               {/* Price */}
               <Reveal delay={0.15}>
-                <div className="mt-8 flex flex-wrap items-center gap-3 rounded-2xl border border-gold/25 bg-gold-soft/50 px-6 py-5">
-                  <span className="font-display text-5xl font-bold text-primary">
+                <div className="mt-5 flex flex-wrap items-center gap-3 rounded-xl border border-gold/25 bg-gold-soft/50 px-4 py-3.5 sm:mt-8 sm:rounded-2xl sm:px-6 sm:py-5">
+                  <span className="font-display text-3xl font-bold text-primary sm:text-5xl">
                     {formatINR(product.price)}
                   </span>
-                  <span className="ml-auto hidden text-sm text-warmgray sm:block">
+                  <span className="ml-auto text-xs text-warmgray sm:text-sm">
                     Inclusive of all taxes
                   </span>
                 </div>
@@ -179,7 +179,7 @@ export default async function ProductDetailPage({ params }: Props) {
 
               {/* CTAs */}
               <Reveal delay={0.2}>
-                <div className="mt-8 flex flex-wrap gap-4">
+                <div className="mt-5 flex flex-wrap gap-3 sm:mt-8 sm:gap-4">
                   <AddToCartButton product={{ slug: product.slug, title: product.title, image: product.image, price: product.price }} />
                   <Button
                     href={`/checkout/product/${product.slug}`}
@@ -227,15 +227,15 @@ export default async function ProductDetailPage({ params }: Props) {
 
       {/* Related products */}
       {related.length > 0 ? (
-        <section className="py-20 lg:py-24">
-          <div className="mx-auto max-w-7xl px-6 lg:px-10">
-            <Reveal className="mb-12 flex flex-wrap items-end justify-between gap-4">
+        <section className="py-12 sm:py-20 lg:py-24">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
+            <Reveal className="mb-7 flex flex-wrap items-end justify-between gap-4 sm:mb-12">
               <div>
-                <div className="eyebrow mb-3 flex items-center gap-4 text-gold-dark">
-                  <span className="hairline-gold w-10" />
+                <div className="eyebrow mb-2.5 flex items-center gap-3 text-gold-dark sm:mb-3 sm:gap-4">
+                  <span className="hairline-gold w-7 sm:w-10" />
                   Complete your practice
                 </div>
-                <h2 className="font-display text-4xl font-bold text-charcoal sm:text-5xl">
+                <h2 className="font-display text-2xl font-bold text-charcoal sm:text-4xl lg:text-5xl">
                   You may also{" "}
                   <span className="text-crimson-gradient">love</span>
                 </h2>

@@ -50,7 +50,7 @@ export default function Hero() {
   return (
     <section
       ref={sectionRef}
-      className="relative flex min-h-screen items-center justify-center overflow-hidden bg-cream"
+      className="relative flex min-h-[100dvh] items-center justify-center overflow-hidden bg-cream"
     >
       {/* ============ Background layers ============ */}
       {/* Gold radial glow */}
@@ -79,17 +79,17 @@ export default function Hero() {
       <div className="grain" aria-hidden="true" />
 
       {/* ============ Content ============ */}
-      <div className="relative z-10 mx-auto max-w-3xl px-6 pb-20 pt-28 text-center lg:pb-24 lg:pt-36">
+      <div className="relative z-10 mx-auto max-w-3xl px-4 pb-12 pt-24 text-center sm:px-6 sm:pb-16 lg:pb-24 lg:pt-36">
         {/* Eyebrow */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="eyebrow mb-8 flex items-center justify-center gap-4 text-gold-dark"
+          className="eyebrow mb-5 flex items-center justify-center gap-3 text-gold-dark sm:mb-8 sm:gap-4"
         >
-          <span className="hairline-gold w-12" />
+          <span className="hairline-gold w-8 sm:w-12" />
           {brand.heroAction}
-          <span className="hairline-gold w-12" />
+          <span className="hairline-gold w-8 sm:w-12" />
         </motion.div>
 
         {/* Heading */}
@@ -97,7 +97,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-          className="font-display text-5xl font-bold leading-[1.06] tracking-tight text-charcoal sm:text-6xl md:text-7xl lg:text-[5.25rem]"
+          className="font-display text-[2.35rem] font-bold leading-[1.06] tracking-tight text-charcoal sm:text-6xl md:text-7xl lg:text-[5.25rem]"
         >
           <span className="block">Guidance For</span>
           <span className="mt-1 block">

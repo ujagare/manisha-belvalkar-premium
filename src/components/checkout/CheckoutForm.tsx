@@ -293,7 +293,7 @@ export default function CheckoutForm({
     );
   }
 
-  const inputClass = "h-12 w-full rounded-xl border border-parchment bg-white px-4 text-sm text-charcoal outline-none transition placeholder:text-warmgray/45 focus:border-gold-dark focus:ring-4 focus:ring-gold/10";
+  const inputClass = "h-11 sm:h-12 w-full rounded-xl border border-parchment bg-white px-4 text-base sm:text-sm text-charcoal outline-none transition placeholder:text-warmgray/45 focus:border-gold-dark focus:ring-4 focus:ring-gold/10";
   const field = (name: keyof AddressFields, label: string, options?: { wide?: boolean; optional?: boolean; autoComplete?: string; inputMode?: "text" | "tel" | "numeric" }) => (
     <div className={options?.wide ? "sm:col-span-2" : ""}>
       <label htmlFor={`checkout-${name}`} className="mb-2 block text-xs font-semibold text-charcoal">{label}{options?.optional ? <span className="ml-1 font-normal text-warmgray">(optional)</span> : null}</label>
@@ -349,7 +349,7 @@ export default function CheckoutForm({
             </div>
             <div className="sm:col-span-2">
               <label htmlFor="course-goal" className="mb-2 block text-xs font-semibold text-charcoal">What would you like support with?</label>
-              <textarea id="course-goal" rows={4} value={courseDetails.learningGoal} onChange={(event) => { setCourseDetails((current) => ({ ...current, learningGoal: event.target.value.slice(0, 1000) })); setFieldErrors((current) => ({ ...current, learningGoal: "" })); }} placeholder="Share your current goals, challenges, or what you hope to receive from this program…" className={cn("w-full resize-none rounded-xl border border-parchment bg-white px-4 py-3 text-sm leading-6 text-charcoal outline-none transition placeholder:text-warmgray/45 focus:border-gold-dark focus:ring-4 focus:ring-gold/10", fieldErrors.learningGoal && "border-primary")} />
+              <textarea id="course-goal" rows={4} value={courseDetails.learningGoal} onChange={(event) => { setCourseDetails((current) => ({ ...current, learningGoal: event.target.value.slice(0, 1000) })); setFieldErrors((current) => ({ ...current, learningGoal: "" })); }} placeholder="Share your current goals, challenges, or what you hope to receive from this program…" className={cn("w-full resize-none rounded-xl border border-parchment bg-white px-4 py-3 text-base sm:text-sm leading-6 text-charcoal outline-none transition placeholder:text-warmgray/45 focus:border-gold-dark focus:ring-4 focus:ring-gold/10", fieldErrors.learningGoal && "border-primary")} />
               <div className="mt-1.5 flex justify-between gap-3"><p className="text-xs text-primary">{fieldErrors.learningGoal}</p><span className="ml-auto text-[11px] tabular-nums text-warmgray">{courseDetails.learningGoal.length}/1000</span></div>
             </div>
           </div>
@@ -367,7 +367,7 @@ export default function CheckoutForm({
           {addresses.length ? (
             <div className="relative mt-5">
               <MapPin className="pointer-events-none absolute left-4 top-4 h-4 w-4 text-gold-deep" />
-              <select value={selectedAddress} onChange={(event) => setSelectedAddress(event.target.value)} className="h-12 w-full appearance-none rounded-xl border border-parchment bg-white pl-11 pr-10 text-sm text-charcoal outline-none focus:border-gold-dark focus:ring-4 focus:ring-gold/10">
+              <select value={selectedAddress} onChange={(event) => setSelectedAddress(event.target.value)} className="h-11 sm:h-12 w-full appearance-none rounded-xl border border-parchment bg-white pl-11 pr-10 text-base sm:text-sm text-charcoal outline-none focus:border-gold-dark focus:ring-4 focus:ring-gold/10">
                 {addresses.map((entry) => <option key={entry.id} value={entry.id}>{entry.label || "Saved address"} — {entry.line1}, {entry.city}</option>)}
                 <option value="new">Use a new address</option>
               </select>

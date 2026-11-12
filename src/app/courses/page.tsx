@@ -71,7 +71,7 @@ export default function CoursesPage() {
         imageAlt="Handcrafted study books and learning cards in warm golden light"
         title={
           <>
-            <span className="block whitespace-nowrap text-[2rem] min-[380px]:text-[2.25rem] sm:text-inherit">
+            <span className="block sm:whitespace-nowrap">
               Transformative
             </span>
             <span className="block text-crimson-gradient">courses</span>
@@ -80,7 +80,7 @@ export default function CoursesPage() {
         subtitle="Choose personalized online study, advanced chakra work, Shri Vidya, guided WhatsApp practice, or a Soul Purpose Reading."
       />
 
-      <section className="relative overflow-hidden py-20 lg:py-28">
+      <section className="relative overflow-hidden py-12 sm:py-20 lg:py-28">
         <div
           className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_50%_0%,rgba(221,184,41,0.09),transparent_70%)]"
           aria-hidden="true"
@@ -88,14 +88,14 @@ export default function CoursesPage() {
         <div className="pointer-events-none absolute -right-40 top-20 h-[520px] w-[520px] rounded-full bg-gold/10 blur-3xl" />
         <div className="pointer-events-none absolute -left-36 bottom-10 h-[420px] w-[420px] rounded-full bg-primary/5 blur-3xl" />
 
-        <div className="relative mx-auto max-w-7xl px-6 lg:px-10">
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
           <SectionHeading
             eyebrow="Courses & Readings"
             title="Choose your next journey"
             subtitle="Explore each offering through its format, guidance, investment, and the experience it is designed to support."
           />
 
-          <div className="mt-14 grid gap-8 lg:grid-cols-6">
+          <div className="mt-8 grid gap-6 sm:mt-14 sm:gap-8 lg:grid-cols-6">
             {offeringsWithCourses.map((tab, index) => {
               const course = tab.course!;
 
@@ -107,31 +107,31 @@ export default function CoursesPage() {
                 >
                   <article
                     id={course.slug}
-                    className="group relative flex h-full flex-col overflow-hidden rounded-[2rem] border border-gold/25 bg-white shadow-[0_24px_70px_-44px_rgba(107,11,11,0.55)] transition-all duration-500 hover:-translate-y-1.5 hover:border-gold/60 hover:shadow-[0_36px_90px_-42px_rgba(107,11,11,0.5)]"
+                    className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-gold/25 bg-white shadow-[0_24px_70px_-44px_rgba(107,11,11,0.55)] transition-all duration-500 hover:-translate-y-1.5 hover:border-gold/60 hover:shadow-[0_36px_90px_-42px_rgba(107,11,11,0.5)] sm:rounded-[2rem]"
                   >
                     <div className="pointer-events-none absolute -right-20 -top-20 h-60 w-60 rounded-full bg-gold/20 opacity-70 blur-3xl transition-opacity duration-700 group-hover:opacity-100" />
-                    <div className="relative h-72 overflow-hidden bg-ivory sm:h-80">
+                    <div className="relative h-56 overflow-hidden bg-ivory sm:h-72 lg:h-80">
                       <Image src={course.image} alt="" fill sizes="(max-width: 1024px) 92vw, 46vw" className="scale-125 object-cover opacity-50 blur-2xl" aria-hidden="true" />
                       <div className="absolute inset-0 bg-gradient-to-b from-charcoal/5 via-transparent to-charcoal/35" />
                       <Image src={course.image} alt={course.title} fill sizes="(max-width: 1024px) 92vw, 46vw" className="object-contain p-3 transition-transform duration-1000 ease-out group-hover:scale-[1.04] sm:p-4" />
-                      <span className="absolute bottom-4 left-5 inline-flex items-center gap-2 rounded-full border border-white/40 bg-charcoal/50 px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-white backdrop-blur-md">
+                      <span className="absolute bottom-3 left-3 inline-flex items-center gap-1.5 rounded-full border border-white/40 bg-charcoal/50 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-white backdrop-blur-md sm:bottom-4 sm:left-5 sm:gap-2 sm:px-4 sm:py-1.5">
                         <Sparkles className="h-3 w-3 text-gold-light" />
                         {tab.eyebrow}
                       </span>
                     </div>
 
-                    <div className="relative flex flex-1 flex-col px-6 pb-7 pt-7 sm:px-8 sm:pb-8">
-                      <h2 className="font-display text-3xl font-bold leading-tight text-charcoal transition-colors duration-300 group-hover:text-primary">
+                    <div className="relative flex flex-1 flex-col px-4 pb-5 pt-5 sm:px-8 sm:pb-8 sm:pt-7">
+                      <h2 className="font-display text-2xl font-bold leading-tight text-charcoal transition-colors duration-300 group-hover:text-primary sm:text-3xl">
                         {course.title}
                       </h2>
-                      <div className="mt-5 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-gold/20 bg-cream/60 px-4 py-3.5">
+                      <div className="mt-4 flex flex-wrap items-center justify-between gap-2.5 rounded-xl border border-gold/20 bg-cream/60 px-3.5 py-3 sm:mt-5 sm:gap-3 sm:rounded-2xl sm:px-4 sm:py-3.5">
                         {course.price ? (
                           <div>
                             <span className="block text-[10px] font-bold uppercase tracking-[0.16em] text-warmgray">{course.pricingOptions?.length ? "Starting at" : "Investment"}</span>
-                            <span className="font-display text-2xl font-bold text-primary">{formatINR(course.price)}</span>
+                            <span className="font-display text-xl font-bold text-primary sm:text-2xl">{formatINR(course.price)}</span>
                           </div>
                         ) : null}
-                        <div className="max-w-[55%] text-right">
+                        <div className="sm:max-w-[55%] sm:text-right">
                           <span className="block text-[10px] font-bold uppercase tracking-[0.16em] text-warmgray">Format</span>
                           <span className="text-xs font-semibold leading-relaxed text-gold-deep">{course.duration}</span>
                         </div>

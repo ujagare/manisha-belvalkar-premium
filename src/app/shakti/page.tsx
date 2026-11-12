@@ -40,7 +40,7 @@ export default function ShaktiPage() {
 
       <ShaktiQuote />
 
-      <section className="bg-ivory px-6 py-20"><div className="mx-auto max-w-2xl text-center"><p className="eyebrow text-gold-dark">Stay close to Shakti</p><h2 className="mt-4 font-display text-4xl font-bold text-charcoal">Receive new guidance first</h2><LeadCaptureForm kind="waitlist" source="shakti-page" manualMode={!isServerConfigured()} /></div></section>
+      <section className="bg-ivory px-4 py-12 sm:px-6 sm:py-16 lg:py-20"><div className="mx-auto max-w-2xl text-center"><p className="eyebrow text-gold-dark">Stay close to Shakti</p><h2 className="mt-3 font-display text-2xl font-bold text-charcoal sm:mt-4 sm:text-4xl">Receive new guidance first</h2><LeadCaptureForm kind="waitlist" source="shakti-page" manualMode={!isServerConfigured()} /></div></section>
 
       <GoldDivider />
     </>

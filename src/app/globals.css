@@ -42,9 +42,10 @@
   --color-mist: #faf6ef;
 
   /* Fonts */
-  --font-display: var(--font-playfair), "Playfair Display", Georgia, serif;
-  --font-serif: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
-  --font-sans: var(--font-inter), "Inter", ui-sans-serif, system-ui, sans-serif;
+  /* One typeface everywhere: all three roles resolve to Lora. */
+  --font-display: var(--font-lora), "Lora", Georgia, serif;
+  --font-serif: var(--font-lora), "Lora", Georgia, serif;
+  --font-sans: var(--font-lora), "Lora", Georgia, serif;
 
   /* Custom animations */
   --animate-fade-up: fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -443,4 +444,36 @@ html.lenis body {
   html {
     @apply font-sans;
   }
+}
+
+/*
+ * Site-wide heading consistency.
+ * Pages used different weights (400 on About, 600 on Home, 500-700 elsewhere)
+ * and very tight tracking, so the same typeface (Lora) looked different.
+ * Unlayered + !important so it wins over per-page Tailwind utilities.
+ */
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display) !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.02em !important;
+}
+
+/*
+ * One line, one look: accent words inside headings (and quotes) may change
+ * colour, but must not switch to italic / a different weight or family —
+ * Lora italic looks like a second font next to Lora regular.
+ */
+h1 *,
+h2 *,
+h3 *,
+h4 *,
+blockquote em,
+blockquote i {
+  font-family: inherit !important;
+  font-style: normal !important;
+  font-weight: inherit !important;
+  letter-spacing: inherit !important;
 }

@@ -29,15 +29,15 @@ export default function DistanceHealingExperience() {
   return (
     <section
       aria-labelledby="distance-healing-title"
-      className="relative isolate overflow-hidden bg-ivory py-20 sm:py-24 lg:py-32"
+      className="relative isolate overflow-hidden bg-ivory py-12 sm:py-20 lg:py-28"
     >
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold/70 to-transparent" />
       <div className="pointer-events-none absolute -right-48 top-16 h-96 w-96 rounded-full bg-primary/6 blur-3xl" />
 
-      <div className="relative mx-auto max-w-7xl px-6 lg:px-10">
-        <div className="grid gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:items-center lg:gap-20">
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
+        <div className="grid gap-8 sm:gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:items-center lg:gap-20">
           <div className="relative mx-auto w-full max-w-xl lg:mx-0">
-            <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-parchment shadow-[0_32px_80px_-38px_rgba(107,11,11,0.42)]">
+            <div className="relative aspect-[4/4.2] overflow-hidden rounded-2xl bg-parchment shadow-[0_32px_80px_-38px_rgba(107,11,11,0.42)] sm:aspect-[4/5] sm:rounded-[2rem]">
               <Image
                 src="/images/home-cards/distance-healing.webp"
                 alt="A calm Distance Healing session from the comfort of home"
@@ -46,36 +46,36 @@ export default function DistanceHealingExperience() {
                 className="object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-charcoal/65 via-transparent to-transparent" />
-              <div className="absolute inset-x-0 bottom-0 p-7 text-white sm:p-9">
-                <p className="max-w-sm font-display text-2xl leading-tight sm:text-3xl">
+              <div className="absolute inset-x-0 bottom-0 p-5 text-white sm:p-9">
+                <p className="max-w-sm font-display text-xl leading-tight sm:text-3xl">
                   Healing support, wherever you are.
                 </p>
-                <div className="mt-5 flex items-center gap-2 text-sm text-white/85">
+                <div className="mt-3 flex items-center gap-2 text-xs text-white/85 sm:mt-5 sm:text-sm">
                   <ShieldCheck className="h-4 w-4 text-gold-light" aria-hidden="true" />
                   Private and personally guided
                 </div>
               </div>
             </div>
 
-            <div className="absolute -bottom-6 -right-2 max-w-[16rem] rounded-2xl border border-gold/30 bg-cream p-5 shadow-[0_20px_50px_-28px_rgba(107,11,11,0.45)] sm:right-[-1.5rem]">
+            <div className="mt-3 rounded-2xl border border-gold/30 bg-cream p-4 shadow-[0_20px_50px_-28px_rgba(107,11,11,0.45)] sm:absolute sm:-bottom-6 sm:-right-6 sm:mt-0 sm:max-w-[16rem] sm:p-5">
               <div className="flex items-start gap-3">
-                <LockKeyhole className="mt-0.5 h-5 w-5 shrink-0 text-primary" aria-hidden="true" />
-                <p className="text-sm leading-6 text-warmgray">
+                <LockKeyhole className="mt-0.5 h-4 w-4 shrink-0 text-primary sm:h-5 sm:w-5" aria-hidden="true" />
+                <p className="text-xs leading-5 text-warmgray sm:text-sm sm:leading-6">
                   Your photograph is treated as private session material and is never published without consent.
                 </p>
               </div>
             </div>
           </div>
 
-          <div className="pt-5 lg:pt-0">
+          <div className="lg:pt-0">
             <p className="eyebrow text-primary">Distance Healing</p>
             <h2
               id="distance-healing-title"
-              className="mt-5 max-w-2xl font-display text-4xl leading-[1.08] tracking-tight text-charcoal sm:text-5xl lg:text-6xl"
+              className="mt-3 max-w-2xl font-display text-[1.85rem] leading-[1.08] tracking-tight text-charcoal sm:mt-5 sm:text-5xl lg:text-6xl"
             >
               A personal healing journey, held beyond distance
             </h2>
-            <p className="mt-6 max-w-xl text-base leading-8 text-warmgray sm:text-lg">
+            <p className="mt-4 max-w-xl text-sm leading-7 text-warmgray sm:mt-6 sm:text-lg sm:leading-8">
               Receive focused energy healing from your own space. The entire experience, from booking and photograph sharing to aftercare and feedback, is designed to feel clear, respectful and supported.
             </p>
 
@@ -114,7 +114,7 @@ export default function DistanceHealingExperience() {
           </div>
         </div>
 
-        <div className="mt-20 rounded-[2rem] border border-gold/25 bg-cream px-6 py-8 sm:px-10 sm:py-10 lg:px-12">
+        <div className="mt-10 rounded-2xl border border-gold/25 bg-cream px-4 py-6 sm:mt-16 sm:rounded-[2rem] sm:px-10 sm:py-10 lg:px-12">
           <div className="grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:items-center lg:gap-12">
             <div>
               <div className="flex items-center gap-1 text-gold-deep" aria-label="Five star client feedback">

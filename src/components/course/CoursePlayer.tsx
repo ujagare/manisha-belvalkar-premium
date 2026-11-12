@@ -102,23 +102,23 @@ export default function CoursePlayer({
   if (!loaded) return <div className="min-h-screen animate-pulse bg-[#f8f3e9]" />;
 
   return (
-    <div className="min-h-screen bg-[#f8f3e9] pb-16 pt-24 lg:pt-28">
+    <div className="min-h-[100dvh] bg-[#f8f3e9] pb-14 pt-20 sm:pb-16 sm:pt-24 lg:pt-28">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
-        <header className="flex flex-wrap items-center justify-between gap-4 border-b border-gold/20 pb-5">
+        <header className="flex flex-wrap items-center justify-between gap-3 border-b border-gold/20 pb-4 sm:gap-4 sm:pb-5">
           <div className="flex items-center gap-3">
-            <Link href="/account/courses" className="grid h-10 w-10 place-items-center rounded-full bg-white text-warmgray ring-1 ring-parchment transition hover:text-primary" aria-label="Back to my courses"><ArrowLeft className="h-4 w-4" /></Link>
-            <div><p className="font-display text-lg font-semibold leading-tight text-charcoal">{course.title}</p><p className="mt-0.5 text-xs text-warmgray">Recorded course · Learn at your own pace</p></div>
+            <Link href="/account/courses" className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-white text-warmgray ring-1 ring-parchment transition hover:text-primary" aria-label="Back to my courses"><ArrowLeft className="h-4 w-4" /></Link>
+            <div className="min-w-0"><p className="truncate font-display text-base font-semibold leading-tight text-charcoal sm:text-lg">{course.title}</p><p className="mt-0.5 text-xs text-warmgray">Recorded course · Learn at your own pace</p></div>
           </div>
-          <div className="flex items-center gap-3"><span className="hidden text-sm font-semibold text-charcoal sm:inline">Your progress</span><div className="h-2 w-28 overflow-hidden rounded-full bg-parchment"><div className="h-full rounded-full bg-primary transition-[width] duration-500" style={{ width: `${percentage}%` }} /></div><span className="text-xs font-semibold tabular-nums text-primary">{percentage}%</span></div>
+          <div className="flex items-center gap-3"><span className="hidden text-sm font-semibold text-charcoal sm:inline">Your progress</span><div className="h-2 w-24 overflow-hidden rounded-full bg-parchment sm:w-28"><div className="h-full rounded-full bg-primary transition-[width] duration-500" style={{ width: `${percentage}%` }} /></div><span className="text-xs font-semibold tabular-nums text-primary">{percentage}%</span></div>
         </header>
 
-        <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem]">
+        <div className="mt-5 grid gap-5 sm:mt-6 sm:gap-6 lg:grid-cols-[minmax(0,1fr)_22rem]">
           <section>
             {active ? (
-              <article className="overflow-hidden rounded-[1.75rem] bg-white shadow-[0_26px_75px_-48px_rgba(62,38,25,0.48)] ring-1 ring-parchment">
-                <div className="p-6 sm:p-8">
-                  <div className="flex flex-wrap items-center gap-2 text-xs text-warmgray"><Link href="/account/courses" className="hover:text-primary">My courses</Link><span>/</span><span className="truncate">{course.title}</span><span>/</span><span className="font-semibold text-charcoal">{active.title}</span></div>
-                  <div className="mt-4 flex flex-wrap items-start justify-between gap-4"><div><p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gold-deep">Lesson {activeIndex + 1} of {lessons.length}</p><h1 className="mt-2 text-balance font-display text-3xl font-semibold text-charcoal sm:text-4xl">{active.title}</h1></div><span className="flex items-center gap-1.5 rounded-full bg-ivory px-3 py-1.5 text-xs text-warmgray"><Clock3 className="h-3.5 w-3.5" />{active.duration}</span></div>
+              <article className="overflow-hidden rounded-2xl bg-white shadow-[0_26px_75px_-48px_rgba(62,38,25,0.48)] ring-1 ring-parchment sm:rounded-[1.75rem]">
+                <div className="p-4 sm:p-8">
+                  <div className="flex flex-wrap items-center gap-1.5 text-xs text-warmgray sm:gap-2"><Link href="/account/courses" className="hover:text-primary">My courses</Link><span>/</span><span className="truncate">{course.title}</span><span>/</span><span className="font-semibold text-charcoal">{active.title}</span></div>
+                  <div className="mt-3 flex flex-wrap items-start justify-between gap-3 sm:mt-4 sm:gap-4"><div><p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gold-deep">Lesson {activeIndex + 1} of {lessons.length}</p><h1 className="mt-1.5 text-balance font-display text-2xl font-semibold text-charcoal sm:mt-2 sm:text-4xl">{active.title}</h1></div><span className="flex items-center gap-1.5 rounded-full bg-ivory px-3 py-1.5 text-xs text-warmgray"><Clock3 className="h-3.5 w-3.5" />{active.duration}</span></div>
 
                   <div className="mt-6 overflow-hidden rounded-2xl bg-charcoal shadow-2xl shadow-charcoal/20">
                     {active.videoUrl ? <video controls controlsList="nodownload" preload="none" className="aspect-video w-full bg-black" src={active.videoUrl} poster={course.image} /> : <div className="relative flex aspect-video items-center justify-center bg-charcoal"><div className="absolute inset-0 bg-cover bg-center opacity-15 blur-sm" style={{ backgroundImage: `url('${course.image}')` }} /><div className="relative px-6 text-center text-white"><span className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-gold/15 ring-1 ring-gold/35"><PlayCircle className="h-8 w-8 text-gold-light" /></span><p className="mt-4 font-display text-xl font-semibold">{active.title}</p><p className="mt-1 text-xs text-white/55">Recorded lesson · Video will appear here when uploaded</p></div></div>}

@@ -19,7 +19,7 @@ const icons = [HeartHandshake, Sparkles, Users, CalendarHeart];
 export default function CommunityPage() {
   return (
     <>
-      <section className="hero-single-tone relative isolate min-h-[640px] overflow-hidden bg-neutral-200 pt-24 text-white lg:min-h-[720px] lg:pt-28">
+      <section className="hero-single-tone relative isolate min-h-[380px] sm:min-h-[540px] lg:min-h-[720px] overflow-hidden bg-neutral-200 pt-16 sm:pt-24 lg:pt-28 text-white">
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: "url('/images/page-heroes/community-hero.webp')" }}
@@ -29,14 +29,14 @@ export default function CommunityPage() {
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(82,82,82,0.92)_0%,rgba(82,82,82,0.72)_42%,rgba(82,82,82,0.22)_76%,rgba(82,82,82,0.08)_100%)]" />
         <div className="absolute inset-y-0 left-[7%] hidden w-px bg-gradient-to-b from-transparent via-white/35 to-transparent lg:block" />
 
-        <div className="relative mx-auto flex min-h-[540px] max-w-7xl items-end px-6 pb-16 pt-20 lg:min-h-[610px] lg:items-center lg:px-10 lg:pb-20">
+        <div className="relative mx-auto flex min-h-[320px] sm:min-h-[460px] lg:min-h-[610px] max-w-7xl items-end px-4 sm:px-6 lg:px-10 pb-10 pt-14 sm:pb-16 sm:pt-20 lg:items-center lg:pb-20">
           <Reveal>
             <div className="max-w-3xl">
-              <div className="eyebrow mb-6 flex items-center gap-4 text-white/85">
-                <span className="h-px w-12 bg-gradient-to-r from-white to-transparent" />
+              <div className="eyebrow mb-3 sm:mb-6 flex items-center gap-3 sm:gap-4 text-white/85">
+                <span className="h-px w-8 sm:w-12 bg-gradient-to-r from-white to-transparent" />
                 Community
               </div>
-              <h1 className="max-w-[11ch] break-words font-display text-[2.25rem] font-bold leading-[1.06] text-white drop-shadow-[0_3px_24px_rgba(0,0,0,0.35)] sm:max-w-full sm:text-6xl lg:text-[5.15rem] lg:leading-[0.98]">
+              <h1 className="break-words font-display text-[2rem] font-bold leading-[1.08] text-white drop-shadow-[0_3px_24px_rgba(0,0,0,0.35)] sm:text-6xl lg:text-[5.15rem] lg:leading-[0.98]">
                 Join Magic Community
                 <span className="block text-gold-shimmer">
                   Growth is magical together
@@ -53,20 +53,20 @@ export default function CommunityPage() {
       </section>
 
       {/* Pillars */}
-      <section className="py-20 lg:py-28">
-        <div className="mx-auto max-w-7xl px-6 lg:px-10">
+      <section className="py-12 sm:py-20 lg:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
           <SectionHeading
             eyebrow="Inside the Community"
             title="What members receive"
             subtitle="A like-hearted circle of women and seekers, guided by Dr. Manisha Belvalkar."
           />
 
-          <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-8 sm:mt-16 grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {communityPillars.map((pillar, i) => {
               const Icon = icons[i] ?? HeartHandshake;
               return (
                 <Reveal key={pillar.title} delay={i * 0.08}>
-                  <div className="group relative h-full overflow-hidden rounded-[28px] border border-parchment bg-gradient-to-b from-white to-cream/70 p-8 text-center shadow-[0_10px_40px_-20px_rgba(28,25,23,0.18)] transition-all duration-500 hover:-translate-y-2 hover:border-gold/50 hover:shadow-[0_35px_80px_-30px_rgba(221,184,41,0.45)]">
+                  <div className="group relative h-full overflow-hidden rounded-2xl sm:rounded-[28px] border border-parchment bg-gradient-to-b from-white to-cream/70 p-5 sm:p-8 text-center shadow-[0_10px_40px_-20px_rgba(28,25,23,0.18)] transition-all duration-500 hover:-translate-y-2 hover:border-gold/50 hover:shadow-[0_35px_80px_-30px_rgba(221,184,41,0.45)]">
                     <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-gold/15 opacity-0 blur-3xl transition-opacity duration-700 group-hover:opacity-100" />
                     <div className="relative mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-primary-dark text-white shadow-lg shadow-primary/25 ring-1 ring-gold/30 transition-all duration-500 group-hover:scale-105">
                       <Icon className="h-6 w-6 text-gold-light" />
@@ -91,11 +91,11 @@ export default function CommunityPage() {
       </section>
 
       {/* Join CTA */}
-      <section className="bg-charcoal py-20 lg:py-28">
-        <div className="mx-auto max-w-3xl px-6 text-center lg:px-10">
+      <section className="bg-charcoal py-12 sm:py-20 lg:py-28">
+        <div className="mx-auto max-w-3xl px-4 sm:px-6 text-center lg:px-10">
           <Reveal>
-            <div className="eyebrow mb-5 text-gold">Join Our Community</div>
-            <h2 className="font-display text-4xl font-bold leading-tight text-white sm:text-5xl">
+            <div className="eyebrow mb-3 sm:mb-5 text-gold">Join Our Community</div>
+            <h2 className="font-display text-2xl font-bold leading-tight text-white sm:text-5xl">
               Begin your journey in{" "}
               <span className="text-gold-shimmer">sacred company</span>
             </h2>

@@ -43,14 +43,14 @@ export default function ProductGrid({ products }: ProductGridProps) {
   return (
     <div>
       {/* Filter pills */}
-      <div className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-3">
+      <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
         {filters.map((f) => (
           <button
             key={f.key}
             type="button"
             onClick={() => setActive(f.key)}
             className={cn(
-              "inline-flex items-center gap-1.5 rounded-full border px-5 py-2.5 text-sm font-medium transition-all duration-300",
+              "inline-flex min-h-10 items-center gap-1.5 rounded-full border px-3.5 py-2 text-xs font-medium transition-all duration-300 sm:px-5 sm:py-2.5 sm:text-sm",
               active === f.key
                 ? "border-primary bg-primary text-white shadow-md shadow-primary/25"
                 : "border-parchment bg-white text-warmgray hover:border-gold hover:text-charcoal",
@@ -73,7 +73,7 @@ export default function ProductGrid({ products }: ProductGridProps) {
       </div>
 
       {/* Grid */}
-      <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+      <div className="mt-7 grid gap-5 sm:mt-12 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-8">
         {visible.map((product) => (
           <ProductCard key={product.slug} product={product} />
         ))}

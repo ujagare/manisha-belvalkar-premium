@@ -30,16 +30,16 @@ export default function ShopSearch({ defaultValue = "" }: { defaultValue?: strin
         e.preventDefault();
         submit(value);
       }}
-      className="mx-auto flex w-full max-w-xl items-center gap-2 rounded-full border border-parchment bg-white py-2 pl-5 pr-2 shadow-[0_8px_30px_-18px_rgba(28,25,23,0.25)] focus-within:border-gold"
+      className="mx-auto flex w-full max-w-xl items-center gap-2 rounded-full border border-parchment bg-white py-1.5 pl-4 pr-1.5 shadow-[0_8px_30px_-18px_rgba(28,25,23,0.25)] focus-within:border-gold sm:py-2 sm:pl-5 sm:pr-2"
     >
-      <Search className="h-5 w-5 shrink-0 text-gold-dark" />
+      <Search className="h-4 w-4 shrink-0 text-gold-dark sm:h-5 sm:w-5" />
       <input
         type="search"
         value={value}
         onChange={(e) => setValue(e.target.value)}
         placeholder="Search decks, books, rituals…"
         aria-label="Search the shop"
-        className="w-full bg-transparent text-charcoal outline-none placeholder:text-warmgray/70"
+        className="w-full min-w-0 bg-transparent text-base text-charcoal outline-none placeholder:text-warmgray/70 sm:text-sm"
       />
       {value ? (
         <button
@@ -49,14 +49,14 @@ export default function ShopSearch({ defaultValue = "" }: { defaultValue?: strin
             setValue("");
             submit("");
           }}
-          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-ink/10 text-warmgray hover:bg-ink/20"
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-ink/10 text-warmgray hover:bg-ink/20"
         >
           <X className="h-4 w-4" />
         </button>
       ) : null}
       <button
         type="submit"
-        className="shrink-0 rounded-full bg-primary px-5 py-2 text-sm font-semibold text-white transition hover:brightness-110"
+        className="min-h-10 shrink-0 rounded-full bg-primary px-4 py-2 text-xs font-semibold text-white transition hover:brightness-110 sm:px-5 sm:text-sm"
       >
         Search
       </button>

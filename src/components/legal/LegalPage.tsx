@@ -22,51 +22,51 @@ export default function LegalPage({
   showContact?: boolean;
 }) {
   return (
-    <article className="relative overflow-hidden bg-ivory pb-24 pt-28 lg:pb-32 lg:pt-36">
+    <article className="relative overflow-hidden bg-ivory pb-14 pt-20 sm:pb-24 sm:pt-28 lg:pb-32 lg:pt-36">
       <div className="glow-gold pointer-events-none absolute -right-40 -top-36 h-[430px] w-[430px]" />
       <div className="glow-crimson pointer-events-none absolute -bottom-40 -left-40 h-[400px] w-[400px] opacity-50" />
 
-      <div className="relative mx-auto max-w-6xl px-6 lg:px-10">
+      <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-10">
         <Link
           href="/"
-          className="inline-flex items-center gap-2 text-sm font-medium text-warmgray transition-colors hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold"
+          className="inline-flex min-h-10 items-center gap-2 text-sm font-medium text-warmgray transition-colors hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold"
         >
           <ArrowLeft className="h-4 w-4" />
           Back to home
         </Link>
 
-        <header className="mt-10 max-w-4xl border-b border-gold/25 pb-10">
+        <header className="mt-5 sm:mt-10 max-w-4xl border-b border-gold/25 pb-6 sm:pb-10">
           <p className="eyebrow text-gold-dark">{eyebrow}</p>
-          <h1 className="mt-4 text-balance font-display text-4xl font-bold leading-[1.05] tracking-tight text-charcoal sm:text-5xl lg:text-6xl">
+          <h1 className="mt-3 sm:mt-4 text-balance font-display text-[1.85rem] font-bold leading-[1.08] tracking-tight text-charcoal sm:text-5xl lg:text-6xl">
             {title}
           </h1>
-          <p className="mt-5 max-w-3xl text-pretty text-base leading-8 text-warmgray sm:text-lg">
+          <p className="mt-3 sm:mt-5 max-w-3xl text-pretty text-base leading-7 sm:leading-8 text-warmgray sm:text-lg">
             {introduction}
           </p>
-          <p className="mt-5 text-xs font-medium uppercase tracking-[0.18em] text-warmgray/70">
+          <p className="mt-4 sm:mt-5 text-xs font-medium uppercase tracking-[0.18em] text-warmgray/70">
             Last updated: 1 October 2026
           </p>
         </header>
 
-        <div className="mt-12 grid gap-12 lg:grid-cols-[minmax(0,1fr)_17rem] lg:gap-20">
-          <div className="space-y-12">
+        <div className="mt-8 sm:mt-12 grid gap-8 sm:gap-12 lg:grid-cols-[minmax(0,1fr)_17rem] lg:gap-20">
+          <div className="space-y-8 sm:space-y-12">
             {sections.map((section, index) => (
-              <section key={section.title} id={`section-${index + 1}`} className="scroll-mt-28">
-                <div className="flex items-start gap-4">
+              <section key={section.title} id={`section-${index + 1}`} className="scroll-mt-24 sm:scroll-mt-28">
+                <div className="flex items-start gap-3 sm:gap-4">
                   <span className="mt-1 font-serif text-sm italic text-gold-dark">
                     {String(index + 1).padStart(2, "0")}
                   </span>
                   <div className="min-w-0">
-                    <h2 className="text-balance font-display text-2xl font-bold text-charcoal sm:text-3xl">
+                    <h2 className="text-balance font-display text-xl sm:text-2xl lg:text-3xl font-bold text-charcoal">
                       {section.title}
                     </h2>
                     {section.paragraphs?.map((paragraph) => (
-                      <p key={paragraph} className="mt-4 max-w-[68ch] text-pretty leading-7 text-warmgray">
+                      <p key={paragraph} className="mt-3 sm:mt-4 max-w-[68ch] text-pretty text-sm sm:text-base leading-7 text-warmgray">
                         {paragraph}
                       </p>
                     ))}
                     {section.items ? (
-                      <ul className="mt-5 max-w-[68ch] space-y-3 text-warmgray">
+                      <ul className="mt-4 sm:mt-5 max-w-[68ch] space-y-2.5 sm:space-y-3 text-sm sm:text-base text-warmgray">
                         {section.items.map((item) => (
                           <li key={item} className="flex gap-3 leading-7">
                             <span className="mt-3 h-1.5 w-1.5 shrink-0 rounded-full bg-gold" aria-hidden="true" />

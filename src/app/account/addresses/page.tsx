@@ -17,16 +17,16 @@ export default async function AddressesPage() {
   const addresses = await getMyAddresses();
 
   return (
-    <section className="relative overflow-hidden bg-ivory pb-24 pt-32 lg:pt-40">
+    <section className="relative overflow-hidden bg-ivory pb-24 pt-20 sm:pt-32 lg:pt-40">
       <div className="glow-gold absolute -right-32 -top-32 h-[400px] w-[400px]" />
-      <div className="relative mx-auto max-w-4xl px-6 lg:px-10">
-        <Link href="/account" className="inline-flex items-center gap-2 text-sm font-medium text-warmgray hover:text-primary">
+      <div className="relative mx-auto max-w-4xl px-4 sm:px-6 lg:px-10">
+        <Link href="/account" className="inline-flex min-h-10 items-center gap-2 text-sm font-medium text-warmgray hover:text-primary">
           <ArrowLeft className="h-4 w-4" /> Back to My Account
         </Link>
-        <div className="mt-6 border-b border-parchment pb-6">
+        <div className="mt-4 sm:mt-6 border-b border-parchment pb-5 sm:pb-6">
           <p className="eyebrow text-gold-dark">Address book</p>
-          <h1 className="mt-3 font-display text-4xl font-bold text-charcoal sm:text-5xl">Saved addresses</h1>
-          <p className="mt-3 text-warmgray">Manage the delivery and contact addresses used for your shop orders.</p>
+          <h1 className="mt-2 sm:mt-3 font-display text-3xl font-bold text-charcoal sm:text-5xl">Saved addresses</h1>
+          <p className="mt-2 sm:mt-3 text-sm sm:text-base text-warmgray">Manage the delivery and contact addresses used for your shop orders.</p>
         </div>
         <AddressBook addresses={addresses} />
       </div>

@@ -100,14 +100,14 @@ function SideOrnament({ className }: { className: string }) {
 
 export default function ShaktiCardReading({ showBuyButton = false }: { showBuyButton?: boolean }) {
   const sectionHeight = showBuyButton
-    ? "h-[50rem] sm:h-auto sm:min-h-[76rem] lg:min-h-[60rem]"
-    : "h-[46rem] sm:h-auto sm:min-h-[72rem] lg:min-h-[48rem]";
+    ? "min-h-[43rem] sm:min-h-[68rem] lg:min-h-[58rem]"
+    : "min-h-[39rem] sm:min-h-[64rem] lg:min-h-[48rem]";
   const tableHeight = showBuyButton
-    ? "h-[44rem] sm:h-[69rem] lg:h-[54rem]"
-    : "h-[40rem] sm:h-[65rem] lg:h-[42rem]";
+    ? "h-[37rem] sm:h-[62rem] lg:h-[52rem]"
+    : "h-[33rem] sm:h-[58rem] lg:h-[42rem]";
   const revealHeight = showBuyButton
-    ? "h-[calc(50rem-3.5rem)] sm:h-auto sm:min-h-[68rem] lg:min-h-[54rem]"
-    : "h-[calc(46rem-3.5rem)] sm:h-auto sm:min-h-[64rem] lg:min-h-[42rem]";
+    ? "min-h-[36rem] sm:min-h-[60rem] lg:min-h-[52rem]"
+    : "min-h-[33rem] sm:min-h-[56rem] lg:min-h-[42rem]";
   const sectionRef = useRef<HTMLElement>(null);
   const tableRef = useRef<HTMLDivElement>(null);
   const deckOrderRef = useRef<number[]>(Array.from({ length: CARD_COUNT }, (_, index) => index + 1));
@@ -343,14 +343,14 @@ export default function ShaktiCardReading({ showBuyButton = false }: { showBuyBu
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_72%_45%,rgba(153,42,29,0.94)_0%,rgba(70,16,13,0.94)_39%,rgba(25,7,7,1)_78%)]" />
 
       {showBuyButton && phase === "idle" ? (
-        <h1 className="home-hero-wordmark absolute left-1/2 top-20 z-30 -translate-x-1/2 whitespace-nowrap text-center font-serif text-4xl font-medium leading-none tracking-[0.14em] text-[#e8c96a] sm:top-24 sm:text-6xl sm:tracking-[0.1em] lg:top-24 lg:text-7xl">
+        <h1 className="home-hero-wordmark absolute left-1/2 top-[4.65rem] z-30 -translate-x-1/2 whitespace-nowrap text-center font-serif text-3xl font-medium leading-none tracking-[0.14em] text-[#e8c96a] sm:top-24 sm:text-6xl sm:tracking-[0.1em] lg:top-24 lg:text-7xl">
           SHAKTI
         </h1>
       ) : null}
 
       <div className={`relative mx-auto max-w-[100rem] ${sectionHeight}`}>
-        <header className={`${phase === "idle" ? "absolute" : "hidden"} left-1/2 ${showBuyButton ? "top-[8rem] sm:top-[12rem]" : "top-[5rem] sm:top-[8.5rem]"} z-40 w-[calc(100%-3rem)] -translate-x-1/2 text-center lg:left-[8%] lg:top-[54%] lg:w-[42%] lg:max-w-[40rem] lg:-translate-x-0 lg:-translate-y-1/2`}>
-          <div className="relative mx-auto h-[22rem] w-fit max-w-full sm:h-[28rem] lg:h-[44rem]">
+        <header className={`${phase === "idle" ? "absolute" : "hidden"} left-1/2 ${showBuyButton ? "top-[7rem] sm:top-[12rem]" : "top-[4.75rem] sm:top-[8.5rem]"} z-40 w-[calc(100%-2.5rem)] -translate-x-1/2 text-center lg:left-[8%] lg:top-[54%] lg:w-[42%] lg:max-w-[40rem] lg:-translate-x-0 lg:-translate-y-1/2`}>
+          <div className="relative mx-auto h-[17.5rem] w-fit max-w-full sm:h-[26rem] lg:h-[44rem]">
             {showBuyButton ? (
               <div className="pointer-events-none absolute left-1/2 top-[34%] block aspect-[1172/1342] w-full -translate-x-1/2 -translate-y-1/2 drop-shadow-[0_0_30px_rgba(238,198,50,0.5)]" aria-hidden="true">
                 <div className="animate-spin-slow relative h-full w-full motion-reduce:animate-none">
@@ -420,7 +420,7 @@ export default function ShaktiCardReading({ showBuyButton = false }: { showBuyBu
                 ))}
 
                 {phase === "idle" && (
-                  <div className={`home-hero-deck absolute left-1/2 -translate-x-1/2 -translate-y-1/2 sm:top-[60%] sm:w-[12.5rem] lg:left-[72%] lg:top-[43%] lg:w-[16rem] ${showBuyButton ? "top-[69%] w-24" : "top-[58%] w-28"}`}>
+                  <div className={`home-hero-deck absolute left-1/2 -translate-x-1/2 -translate-y-1/2 sm:top-[60%] sm:w-[12.5rem] lg:left-[72%] lg:top-[43%] lg:w-[16rem] ${showBuyButton ? "top-[63%] w-[5.5rem]" : "top-[56%] w-24"}`}>
                     <div className="pointer-events-none absolute left-1/2 top-1/2 h-[19rem] w-[19rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(240,198,51,0.19),rgba(180,20,20,0.07)_45%,transparent_70%)] blur-sm sm:h-[24rem] sm:w-[24rem]" />
                     <div className="absolute -left-[42%] top-[8%] hidden aspect-[1060/1484] w-full -rotate-[17deg] overflow-hidden rounded-xl border border-gold/25 opacity-35 shadow-[0_26px_55px_rgba(0,0,0,0.48)] sm:block">
                       <Image src="/images/shakti-cards/card-back-cover.webp" alt="Shakti oracle card back design" fill sizes="224px" className="object-cover" />
@@ -438,11 +438,11 @@ export default function ShaktiCardReading({ showBuyButton = false }: { showBuyBu
                     <div className="pointer-events-none absolute left-1/2 top-[calc(100%+1.2rem)] h-3 w-48 -translate-x-1/2 rounded-[50%] bg-black/50 blur-md" />
                     <div className="pointer-events-none absolute left-1/2 top-[calc(100%+1.65rem)] h-px w-56 -translate-x-1/2 bg-gradient-to-r from-transparent via-gold/55 to-transparent" />
                     <div className="pointer-events-none absolute left-1/2 top-[calc(100%+1.45rem)] h-2 w-2 -translate-x-1/2 rotate-45 border border-gold/60 bg-[#4b120f]" />
-                    <div className="home-hero-cta absolute left-1/2 top-[calc(100%+3.25rem)] z-20 flex -translate-x-1/2 flex-col items-center gap-3">
+                    <div className="home-hero-cta absolute left-1/2 top-[calc(100%+2.25rem)] z-20 flex -translate-x-1/2 flex-col items-center gap-2.5 sm:top-[calc(100%+3.25rem)] sm:gap-3">
                       <button
                         type="button"
                         onClick={startShuffle}
-                        className="group inline-flex items-center gap-3 whitespace-nowrap rounded-full border border-gold/45 bg-[#210a09]/90 px-6 py-3 text-xs font-semibold tracking-[0.1em] text-gold-light shadow-[0_16px_35px_rgba(0,0,0,0.42),inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-md transition duration-300 hover:-translate-y-1 hover:border-gold-light/75 hover:bg-[#35100d] sm:px-7 sm:py-3.5"
+                        className="group inline-flex min-h-11 items-center gap-2.5 whitespace-nowrap rounded-full border border-gold/45 bg-[#210a09]/90 px-5 py-2.5 text-xs font-semibold tracking-[0.1em] text-gold-light shadow-[0_16px_35px_rgba(0,0,0,0.42),inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-md transition duration-300 hover:-translate-y-1 hover:border-gold-light/75 hover:bg-[#35100d] sm:px-7 sm:py-3.5"
                       >
                         Shuffle the cards
                         <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
@@ -450,7 +450,7 @@ export default function ShaktiCardReading({ showBuyButton = false }: { showBuyBu
                       {showBuyButton ? (
                         <Link
                           href="/checkout/product/shakti-oracle-deck"
-                          className="group inline-flex items-center gap-2.5 whitespace-nowrap rounded-full bg-gradient-to-r from-gold to-gold-dark px-6 py-3 text-xs font-semibold tracking-[0.06em] text-primary-deeper shadow-[0_18px_45px_-18px_rgba(238,198,50,0.72)] transition duration-300 hover:-translate-y-1 hover:from-gold-light hover:to-gold focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold-light sm:px-7 sm:py-3.5"
+                          className="group inline-flex min-h-11 items-center gap-2 whitespace-nowrap rounded-full bg-gradient-to-r from-gold to-gold-dark px-5 py-2.5 text-xs font-semibold tracking-[0.06em] text-primary-deeper shadow-[0_18px_45px_-18px_rgba(238,198,50,0.72)] transition duration-300 hover:-translate-y-1 hover:from-gold-light hover:to-gold focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold-light sm:px-7 sm:py-3.5"
                         >
                           <ShoppingBag className="h-4 w-4" aria-hidden="true" />
                           Buy the SHAKTI deck

@@ -157,19 +157,19 @@ export default function CartCheckoutForm({ userEmail, userName, addresses, manua
     });
   }
 
-  if (!ready) return <div className="h-52 animate-pulse rounded-3xl bg-parchment/60" />;
-  if (cartState(items) === "empty") return <div className="rounded-3xl border border-parchment bg-white p-8 text-center"><p className="text-warmgray">Your cart is empty.</p><Link href="/products" className="mt-5 inline-flex rounded-full bg-primary px-6 py-3 font-semibold text-white">Return to shop</Link></div>;
+  if (!ready) return <div className="h-52 animate-pulse rounded-2xl sm:rounded-3xl bg-parchment/60" />;
+  if (cartState(items) === "empty") return <div className="rounded-2xl sm:rounded-3xl border border-parchment bg-white p-6 sm:p-8 text-center"><p className="text-warmgray">Your cart is empty.</p><Link href="/products" className="mt-5 inline-flex min-h-11 items-center rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white">Return to shop</Link></div>;
 
-  return <div className="rounded-[28px] border border-parchment bg-white p-7 shadow-xl sm:p-9">
-    {manualMode ? <div className="mb-5 rounded-xl bg-gold-soft/70 px-4 py-3 text-xs leading-5 text-gold-deep ring-1 ring-gold/30"><strong>Personal confirmation:</strong> This order will be prepared for WhatsApp. The team will confirm availability, shipping, final amount, and payment instructions.</div> : null}
-    {userEmail ? <div className="flex items-center justify-between border-b border-parchment pb-5"><span className="text-warmgray">Signed in as</span><span className="max-w-[60%] truncate font-semibold">{userEmail}</span></div> : (
-      <div className="grid gap-3 border-b border-parchment pb-5 sm:grid-cols-2"><div><label htmlFor="cart-name" className="mb-1 block text-xs font-medium text-charcoal">Full name</label><input id="cart-name" value={guestName} onChange={(event) => setGuestName(event.target.value)} autoComplete="name" className="w-full rounded-lg border border-parchment bg-ivory/50 px-3 py-2 text-sm outline-none focus:border-gold" /></div><div><label htmlFor="cart-email" className="mb-1 block text-xs font-medium text-charcoal">Email</label><input id="cart-email" type="email" value={guestEmail} onChange={(event) => setGuestEmail(event.target.value)} autoComplete="email" className="w-full rounded-lg border border-parchment bg-ivory/50 px-3 py-2 text-sm outline-none focus:border-gold" /></div></div>
+  return <div className="rounded-2xl sm:rounded-[28px] border border-parchment bg-white p-4 sm:p-7 shadow-xl lg:p-9">
+    {manualMode ? <div className="mb-4 sm:mb-5 rounded-xl bg-gold-soft/70 px-3.5 sm:px-4 py-3 text-xs leading-5 text-gold-deep ring-1 ring-gold/30"><strong>Personal confirmation:</strong> This order will be prepared for WhatsApp. The team will confirm availability, shipping, final amount, and payment instructions.</div> : null}
+    {userEmail ? <div className="flex items-center justify-between gap-3 border-b border-parchment pb-4 sm:pb-5 text-sm"><span className="text-warmgray">Signed in as</span><span className="max-w-[60%] truncate font-semibold">{userEmail}</span></div> : (
+      <div className="grid gap-3 border-b border-parchment pb-4 sm:pb-5 sm:grid-cols-2"><div><label htmlFor="cart-name" className="mb-1 block text-xs font-medium text-charcoal">Full name</label><input id="cart-name" value={guestName} onChange={(event) => setGuestName(event.target.value)} autoComplete="name" className="w-full rounded-lg border border-parchment bg-ivory/50 px-3 py-2.5 text-base sm:text-sm outline-none focus:border-gold" /></div><div><label htmlFor="cart-email" className="mb-1 block text-xs font-medium text-charcoal">Email</label><input id="cart-email" type="email" value={guestEmail} onChange={(event) => setGuestEmail(event.target.value)} autoComplete="email" className="w-full rounded-lg border border-parchment bg-ivory/50 px-3 py-2.5 text-base sm:text-sm outline-none focus:border-gold" /></div></div>
     )}
-    <div className="mt-5 space-y-3">{items.map((item) => <div key={item.slug} className="flex justify-between gap-4 text-sm"><span>{item.title} × {item.quantity}</span><span className="font-semibold">{formatINR(item.price * item.quantity)}</span></div>)}</div>
-    <div className="mt-6 flex justify-between border-t border-parchment pt-5 text-lg"><span>Total</span><span className="font-display text-2xl font-bold text-primary">{formatINR(subtotal)}</span></div>
+    <div className="mt-4 sm:mt-5 space-y-2.5 sm:space-y-3">{items.map((item) => <div key={item.slug} className="flex justify-between gap-4 text-sm"><span>{item.title} × {item.quantity}</span><span className="shrink-0 font-semibold">{formatINR(item.price * item.quantity)}</span></div>)}</div>
+    <div className="mt-5 sm:mt-6 flex justify-between border-t border-parchment pt-4 sm:pt-5 text-base sm:text-lg"><span>Total</span><span className="font-display text-xl sm:text-2xl font-bold text-primary">{formatINR(subtotal)}</span></div>
 
     {/* Delivery address */}
-    <div className="mt-6 rounded-2xl bg-ivory p-5">
+    <div className="mt-5 sm:mt-6 rounded-2xl bg-ivory p-4 sm:p-5">
       <p className="flex items-center gap-2 text-sm font-semibold text-charcoal"><MapPin className="h-4 w-4 text-gold-dark" />Delivery address</p>
 
       {addresses.length ? (
@@ -201,7 +201,7 @@ export default function CartCheckoutForm({ userEmail, userName, addresses, manua
               ] as const).map(([name, label]) => (
                 <div key={name} className={name === "line1" || name === "line2" ? "sm:col-span-2" : ""}>
                   <label htmlFor={`na-${name}`} className="mb-1 block text-xs font-medium text-charcoal">{label}</label>
-                  <input id={`na-${name}`} type="text" value={newAddress[name]} onChange={(e) => setNewAddress((p) => ({ ...p, [name]: e.target.value }))} className="w-full rounded-lg border border-parchment bg-ivory/50 px-3 py-2 text-sm outline-none focus:border-gold" />
+                  <input id={`na-${name}`} type="text" value={newAddress[name]} onChange={(e) => setNewAddress((p) => ({ ...p, [name]: e.target.value }))} className="w-full rounded-lg border border-parchment bg-ivory/50 px-3 py-2.5 text-base sm:text-sm outline-none focus:border-gold" />
                 </div>
               ))}
             </div>
@@ -220,7 +220,7 @@ export default function CartCheckoutForm({ userEmail, userName, addresses, manua
           ] as const).map(([name, label]) => (
             <div key={name} className={name === "line1" || name === "line2" ? "sm:col-span-2" : ""}>
               <label htmlFor={`na-${name}`} className="mb-1 block text-xs font-medium text-charcoal">{label}</label>
-              <input id={`na-${name}`} type="text" value={newAddress[name]} onChange={(e) => setNewAddress((p) => ({ ...p, [name]: e.target.value }))} className="w-full rounded-lg border border-parchment bg-ivory/50 px-3 py-2 text-sm outline-none focus:border-gold" />
+              <input id={`na-${name}`} type="text" value={newAddress[name]} onChange={(e) => setNewAddress((p) => ({ ...p, [name]: e.target.value }))} className="w-full rounded-lg border border-parchment bg-ivory/50 px-3 py-2.5 text-base sm:text-sm outline-none focus:border-gold" />
             </div>
           ))}
         </div>
@@ -230,8 +230,8 @@ export default function CartCheckoutForm({ userEmail, userName, addresses, manua
 
     <label className="mt-6 flex items-start gap-3 rounded-2xl bg-ivory p-4 text-xs leading-5 text-warmgray"><input type="checkbox" checked={accepted} onChange={(event) => setAccepted(event.target.checked)} className="mt-1 h-4 w-4 accent-[var(--color-primary)]" /><span>I agree to the <Link href="/terms-and-conditions" target="_blank" className="font-semibold text-primary underline">Terms</Link>, <Link href="/refund-cancellation-policy" target="_blank" className="font-semibold text-primary underline">refund policy</Link> and <Link href="/privacy-policy" target="_blank" className="font-semibold text-primary underline">privacy policy</Link>.</span></label>
     {error ? <p className="mt-5 rounded-xl bg-primary-soft p-4 text-sm text-primary" role="alert">{error}</p> : null}
-    {manualMode ? <button type="button" onClick={pay} disabled={!accepted} className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-6 py-3.5 font-bold text-white disabled:cursor-not-allowed disabled:opacity-50"><MessageCircle className="h-4 w-4" />Prepare WhatsApp order</button> : (
-    <button type="button" onClick={pay} disabled={!accepted || pending} className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-6 py-3.5 font-bold text-white disabled:cursor-not-allowed disabled:opacity-50">{pending ? <Loader2 className="h-4 w-4 animate-spin" /> : <LockKeyhole className="h-4 w-4" />}{pending ? "Opening secure payment…" : "Pay securely"}</button>
+    {manualMode ? <button type="button" onClick={pay} disabled={!accepted} className="mt-5 sm:mt-6 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full bg-primary px-6 py-3.5 font-bold text-white disabled:cursor-not-allowed disabled:opacity-50"><MessageCircle className="h-4 w-4" />Prepare WhatsApp order</button> : (
+    <button type="button" onClick={pay} disabled={!accepted || pending} className="mt-5 sm:mt-6 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full bg-primary px-6 py-3.5 font-bold text-white disabled:cursor-not-allowed disabled:opacity-50">{pending ? <Loader2 className="h-4 w-4 animate-spin" /> : <LockKeyhole className="h-4 w-4" />}{pending ? "Opening secure payment…" : "Pay securely"}</button>
     )}
     <p className="mt-4 text-center text-xs text-warmgray">{manualMode ? "No payment is taken on this website. Your request is confirmed personally on WhatsApp." : "Final prices are verified securely on the server."}</p>
   </div>;

@@ -30,7 +30,7 @@ export default function PageHero({
   const settle = { opacity: 1, y: 0, ...(reduce ? {} : { filter: "blur(0px)" }) };
 
   return (
-    <section className="hero-single-tone relative isolate min-h-[640px] overflow-hidden bg-charcoal pt-24 text-white lg:min-h-[720px] lg:pt-28">
+    <section className="hero-single-tone relative isolate min-h-[340px] overflow-hidden bg-charcoal pt-20 text-white sm:min-h-[460px] sm:pt-24 lg:min-h-[600px] lg:pt-28">
       {image ? (
         <motion.div
           initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 1.04 }}
@@ -62,15 +62,15 @@ export default function PageHero({
       <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(18,14,12,0.8)_0%,transparent_38%)]" />
       <div className="absolute inset-y-0 left-[7%] hidden w-px bg-gradient-to-b from-transparent via-gold/35 to-transparent lg:block" />
 
-      <div className="relative mx-auto flex min-h-[540px] max-w-7xl items-end px-6 pb-16 pt-20 lg:min-h-[610px] lg:items-center lg:px-10 lg:pb-20">
+      <div className="relative mx-auto flex min-h-[260px] max-w-7xl items-end px-4 pb-8 pt-10 sm:min-h-[380px] sm:px-6 sm:pb-12 sm:pt-14 lg:min-h-[500px] lg:items-center lg:px-10 lg:pb-16 lg:pt-16">
         <div className={`w-full max-w-2xl ${contentSide === "right" ? "lg:ml-auto lg:w-[52%]" : ""}`}>
           <motion.div
             initial={reduce ? { opacity: 0 } : { opacity: 0, y: 20, filter: "blur(6px)" }}
             animate={settle}
             transition={{ duration: 0.7, delay: 0.1, ease: EASE }}
-            className="eyebrow mb-6 flex items-center gap-4 text-gold-light"
+            className="eyebrow mb-3 flex items-center gap-3 text-gold-light sm:mb-5 sm:gap-4"
           >
-            <span className="h-px w-12 bg-gradient-to-r from-gold to-transparent" />
+            <span className="h-px w-8 bg-gradient-to-r from-gold to-transparent sm:w-12" />
             {eyebrow}
           </motion.div>
 
@@ -78,7 +78,7 @@ export default function PageHero({
             initial={reduce ? { opacity: 0 } : { opacity: 0, y: 46, filter: "blur(10px)" }}
             animate={settle}
             transition={{ duration: 1, delay: 0.22, ease: EASE }}
-            className="max-w-[10.5ch] break-words font-display text-[2.25rem] font-bold leading-[1.06] text-white drop-shadow-[0_3px_24px_rgba(0,0,0,0.35)] sm:max-w-full sm:text-6xl lg:text-[5.15rem] lg:leading-[0.98]"
+            className="break-words font-display text-[1.9rem] font-bold leading-[1.08] text-white drop-shadow-[0_3px_24px_rgba(0,0,0,0.35)] sm:text-5xl lg:text-[4.6rem] lg:leading-[1.0]"
           >
             {title}
           </motion.h1>
@@ -88,7 +88,7 @@ export default function PageHero({
               initial={reduce ? { opacity: 0 } : { opacity: 0, y: 24, filter: "blur(8px)" }}
               animate={settle}
               transition={{ duration: 0.9, delay: 0.52, ease: EASE }}
-              className="mt-7 max-w-xl text-base leading-relaxed text-white/76 text-shadow-sm sm:text-lg"
+              className="mt-3.5 max-w-xl text-sm leading-relaxed text-white/80 text-shadow-sm sm:mt-6 sm:text-base lg:text-lg"
             >
               {subtitle}
             </motion.p>

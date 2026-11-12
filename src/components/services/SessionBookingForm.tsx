@@ -162,46 +162,46 @@ export default function SessionBookingForm({ type, slug, title, manualMode = fal
     const reference = success.manual ? success.id : success.id.slice(0, 8).toUpperCase();
     const wa = whatsappUrl(sessionWhatsAppMessage({ title, date: displayDate(date), time, format: selectedFormat.label, reference }));
     return (
-      <div className="overflow-hidden rounded-[2rem] bg-charcoal text-white shadow-[0_35px_90px_-45px_rgba(62,38,25,0.75)]">
+      <div className="overflow-hidden rounded-2xl sm:rounded-[2rem] bg-charcoal text-white shadow-[0_35px_90px_-45px_rgba(62,38,25,0.75)]">
         <div className="h-1 bg-gradient-to-r from-primary via-gold to-primary" />
-        <div className="p-8 text-center sm:p-12">
-          <span className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-gold/15 ring-1 ring-gold/35">
-            <ShieldCheck className="h-8 w-8 text-gold" />
+        <div className="p-5 sm:p-8 lg:p-12 text-center">
+          <span className="mx-auto grid h-14 w-14 sm:h-16 sm:w-16 place-items-center rounded-full bg-gold/15 ring-1 ring-gold/35">
+            <ShieldCheck className="h-7 w-7 sm:h-8 sm:w-8 text-gold" />
           </span>
-          <p className="mt-6 text-xs font-semibold uppercase tracking-[0.24em] text-gold-light">{success.manual ? "Request prepared" : "Request received"} · {reference}</p>
-          <h3 className="mt-3 font-display text-3xl font-semibold">{success.manual ? "Your request is ready to send." : "Your healing time is being held."}</h3>
-          <p className="mx-auto mt-4 max-w-lg leading-7 text-white/65">
+          <p className="mt-4 sm:mt-6 text-xs font-semibold uppercase tracking-[0.24em] text-gold-light">{success.manual ? "Request prepared" : "Request received"} · {reference}</p>
+          <h3 className="mt-2.5 sm:mt-3 font-display text-2xl sm:text-3xl font-semibold">{success.manual ? "Your request is ready to send." : "Your healing time is being held."}</h3>
+          <p className="mx-auto mt-3 sm:mt-4 max-w-lg text-sm sm:text-base leading-6 sm:leading-7 text-white/65">
             {success.manual ? "Send this request on WhatsApp so the team can record it and confirm availability." : `We've recorded ${displayDate(date)} at ${time} IST as your preferred time. The team will verify availability and confirm it on WhatsApp.`}
           </p>
-          <div className="mx-auto mt-7 flex max-w-md items-center justify-between rounded-2xl bg-white/[0.06] px-5 py-4 text-left ring-1 ring-white/10">
+          <div className="mx-auto mt-5 sm:mt-7 flex max-w-md items-center justify-between gap-3 rounded-2xl bg-white/[0.06] px-4 sm:px-5 py-3.5 sm:py-4 text-left ring-1 ring-white/10">
             <div><p className="text-xs text-white/45">Session</p><p className="mt-1 text-sm font-medium">{title}</p></div>
             <div className="text-right"><p className="text-xs text-white/45">Format</p><p className="mt-1 text-sm font-medium">{selectedFormat.label}</p></div>
           </div>
-          <a href={wa} target="_blank" rel="noreferrer" className="mt-8 inline-flex items-center gap-2 rounded-full bg-gold px-7 py-3.5 text-sm font-bold text-primary-deeper transition hover:-translate-y-0.5 hover:brightness-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold">
+          <a href={wa} target="_blank" rel="noreferrer" className="mt-6 sm:mt-8 inline-flex min-h-11 items-center gap-2 rounded-full bg-gold px-6 sm:px-7 py-3 sm:py-3.5 text-sm font-bold text-primary-deeper transition hover:-translate-y-0.5 hover:brightness-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold">
             <MessageCircle className="h-4 w-4" /> Continue on WhatsApp
           </a>
-          {!success.manual ? <button type="button" onClick={() => router.push("/account/bookings")} className="mt-4 block w-full text-sm text-white/55 transition hover:text-gold">View this request in My bookings</button> : <p className="mt-4 text-xs leading-5 text-white/50">Manual requests appear in My bookings only after the future database setup is connected.</p>}
+          {!success.manual ? <button type="button" onClick={() => router.push("/account/bookings")} className="mt-4 block w-full py-2 text-sm text-white/55 transition hover:text-gold">View this request in My bookings</button> : <p className="mt-4 text-xs leading-5 text-white/50">Manual requests appear in My bookings only after the future database setup is connected.</p>}
         </div>
       </div>
     );
   }
 
   return (
-    <div className="overflow-hidden rounded-[2rem] bg-white shadow-[0_30px_90px_-48px_rgba(62,38,25,0.5)] ring-1 ring-parchment">
-      <header className="border-b border-parchment bg-[radial-gradient(circle_at_90%_0%,rgba(221,184,41,0.15),transparent_35%)] px-6 py-7 sm:px-9">
-        <div className="grid min-w-0 gap-5">
+    <div className="overflow-hidden rounded-2xl sm:rounded-[2rem] bg-white shadow-[0_30px_90px_-48px_rgba(62,38,25,0.5)] ring-1 ring-parchment">
+      <header className="border-b border-parchment bg-[radial-gradient(circle_at_90%_0%,rgba(221,184,41,0.15),transparent_35%)] px-4 py-5 sm:px-9 sm:py-7">
+        <div className="grid min-w-0 gap-4 sm:gap-5">
           <div className="min-w-0">
             <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-gold-deep"><Sparkles className="h-3.5 w-3.5" /> Private booking</p>
-            <h2 className="mt-2 text-balance font-display text-3xl font-semibold leading-tight text-charcoal">Reserve your session</h2>
-            <p className="mt-2 max-w-xl text-sm leading-6 text-warmgray">Choose a preferred time in a few steps. No payment is taken until availability and the session fee are confirmed.</p>
+            <h2 className="mt-1.5 sm:mt-2 text-balance font-display text-2xl sm:text-3xl font-semibold leading-tight text-charcoal">Reserve your session</h2>
+            <p className="mt-1.5 sm:mt-2 max-w-xl text-sm leading-6 text-warmgray">Choose a preferred time in a few steps. No payment is taken until availability and the session fee are confirmed.</p>
           </div>
-          <div className="min-w-0 rounded-2xl bg-white/70 px-4 py-3 text-left ring-1 ring-parchment/80">
+          <div className="min-w-0 rounded-2xl bg-white/70 px-4 py-2.5 sm:py-3 text-left ring-1 ring-parchment/80">
             <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-warmgray">Booking for</p>
-            <p className="mt-1 [overflow-wrap:anywhere] font-serif text-sm italic leading-5 text-primary sm:text-base">{title}</p>
+            <p className="mt-0.5 sm:mt-1 [overflow-wrap:anywhere] font-serif text-sm italic leading-5 text-primary sm:text-base">{title}</p>
           </div>
         </div>
 
-        <ol className="mt-7 grid grid-cols-4 gap-2" aria-label="Booking progress">
+        <ol className="mt-5 sm:mt-7 grid grid-cols-4 gap-2" aria-label="Booking progress">
           {STEPS.map((label, index) => (
             <li key={label} aria-current={index === step ? "step" : undefined}>
               <div className={`h-1 rounded-full transition-colors ${index <= step ? "bg-primary" : "bg-parchment"}`} />
@@ -211,18 +211,18 @@ export default function SessionBookingForm({ type, slug, title, manualMode = fal
         </ol>
       </header>
 
-      <div className="min-h-[28rem] px-6 py-8 sm:px-9">
+      <div className="min-h-0 sm:min-h-[26rem] px-4 py-5 sm:px-9 sm:py-8">
         {step === 0 ? (
           <section aria-labelledby="format-heading">
             <p className="text-xs font-semibold text-gold-deep">Step 1 of 4</p>
-            <h3 id="format-heading" className="mt-2 font-display text-2xl font-semibold text-charcoal">How would you like to meet?</h3>
-            <p className="mt-2 text-sm text-warmgray">You can discuss or adjust this with the team before confirmation.</p>
-            <div className="mt-7 grid gap-3 sm:grid-cols-2">
+            <h3 id="format-heading" className="mt-1.5 sm:mt-2 font-display text-xl sm:text-2xl font-semibold text-charcoal">How would you like to meet?</h3>
+            <p className="mt-1.5 sm:mt-2 text-sm text-warmgray">You can discuss or adjust this with the team before confirmation.</p>
+            <div className="mt-5 sm:mt-7 grid gap-2.5 sm:gap-3 sm:grid-cols-2">
               {FORMATS.map(({ value, label, detail, icon: Icon }) => {
                 const active = format === value;
                 return (
-                  <button key={value} type="button" onClick={() => setFormat(value)} className={`group flex items-center gap-4 rounded-2xl p-4 text-left ring-1 transition-all duration-200 active:scale-[0.99] ${active ? "bg-primary text-white ring-primary shadow-lg shadow-primary/15" : "bg-ivory/45 text-charcoal ring-parchment hover:bg-cream hover:ring-gold/60"}`}>
-                    <span className={`grid h-11 w-11 shrink-0 place-items-center rounded-xl ${active ? "bg-white/12" : "bg-white text-primary shadow-sm"}`}><Icon className="h-5 w-5" /></span>
+                  <button key={value} type="button" onClick={() => setFormat(value)} className={`group flex min-h-14 items-center gap-3.5 sm:gap-4 rounded-2xl p-3.5 sm:p-4 text-left ring-1 transition-all duration-200 active:scale-[0.99] ${active ? "bg-primary text-white ring-primary shadow-lg shadow-primary/15" : "bg-ivory/45 text-charcoal ring-parchment hover:bg-cream hover:ring-gold/60"}`}>
+                    <span className={`grid h-10 w-10 sm:h-11 sm:w-11 shrink-0 place-items-center rounded-xl ${active ? "bg-white/12" : "bg-white text-primary shadow-sm"}`}><Icon className="h-5 w-5" /></span>
                     <span className="flex-1"><span className="block text-sm font-semibold">{label}</span><span className={`mt-0.5 block text-xs ${active ? "text-white/65" : "text-warmgray"}`}>{detail}</span></span>
                     {active ? <Check className="h-5 w-5 text-gold-light" /> : null}
                   </button>
@@ -235,18 +235,18 @@ export default function SessionBookingForm({ type, slug, title, manualMode = fal
         {step === 1 ? (
           <section aria-labelledby="time-heading">
             <p className="text-xs font-semibold text-gold-deep">Step 2 of 4 · Times shown in IST</p>
-            <h3 id="time-heading" className="mt-2 font-display text-2xl font-semibold text-charcoal">Choose your preferred time</h3>
-            <p className="mt-2 text-sm text-warmgray">These are preferred windows. Your exact appointment is confirmed personally by the team.</p>
-            <div className="mt-7 grid grid-cols-3 gap-2 sm:grid-cols-7">
+            <h3 id="time-heading" className="mt-1.5 sm:mt-2 font-display text-xl sm:text-2xl font-semibold text-charcoal">Choose your preferred time</h3>
+            <p className="mt-1.5 sm:mt-2 text-sm text-warmgray">These are preferred windows. Your exact appointment is confirmed personally by the team.</p>
+            <div className="mt-5 sm:mt-7 flex gap-2 overflow-x-auto pb-1 sm:grid sm:grid-cols-7 sm:overflow-visible sm:pb-0">
               {dates.map((value) => {
                 const active = date === value;
-                return <button key={value} type="button" onClick={() => { setDate(value); setTime(""); setError(null); }} className={`rounded-2xl px-2 py-3 text-center ring-1 transition ${active ? "bg-charcoal text-white ring-charcoal" : "bg-ivory/50 text-charcoal ring-parchment hover:ring-gold"}`}><span className={`block text-[10px] uppercase tracking-wider ${active ? "text-gold-light" : "text-warmgray"}`}>{displayDate(value, { weekday: "short" })}</span><span className="mt-1 block font-display text-xl font-semibold">{displayDate(value, { day: "numeric" })}</span><span className={`block text-[10px] ${active ? "text-white/55" : "text-warmgray"}`}>{displayDate(value, { month: "short" })}</span></button>;
+                return <button key={value} type="button" onClick={() => { setDate(value); setTime(""); setError(null); }} className={`min-w-[4.5rem] shrink-0 rounded-2xl px-2 py-2.5 sm:py-3 text-center ring-1 transition sm:min-w-0 ${active ? "bg-charcoal text-white ring-charcoal" : "bg-ivory/50 text-charcoal ring-parchment hover:ring-gold"}`}><span className={`block text-[10px] uppercase tracking-wider ${active ? "text-gold-light" : "text-warmgray"}`}>{displayDate(value, { weekday: "short" })}</span><span className="mt-0.5 sm:mt-1 block font-display text-lg sm:text-xl font-semibold">{displayDate(value, { day: "numeric" })}</span><span className={`block text-[10px] ${active ? "text-white/55" : "text-warmgray"}`}>{displayDate(value, { month: "short" })}</span></button>;
               })}
             </div>
-            <div className={`mt-7 transition-opacity ${date ? "opacity-100" : "pointer-events-none opacity-35"}`}>
+            <div className={`mt-5 sm:mt-7 transition-opacity ${date ? "opacity-100" : "pointer-events-none opacity-35"}`}>
               <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-warmgray"><Clock3 className="h-4 w-4" /> Preferred start time</p>
               <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">
-                {TIME_SLOTS.map((value) => <button key={value} type="button" onClick={() => { setTime(value); setError(null); }} className={`rounded-xl px-4 py-3 text-sm font-semibold tabular-nums ring-1 transition ${time === value ? "bg-primary text-white ring-primary" : "bg-white text-charcoal ring-parchment hover:ring-gold"}`}>{value} <span className="text-[10px] font-normal opacity-65">IST</span></button>)}
+                {TIME_SLOTS.map((value) => <button key={value} type="button" onClick={() => { setTime(value); setError(null); }} className={`min-h-11 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-sm font-semibold tabular-nums ring-1 transition ${time === value ? "bg-primary text-white ring-primary" : "bg-white text-charcoal ring-parchment hover:ring-gold"}`}>{value} <span className="text-[10px] font-normal opacity-65">IST</span></button>)}
               </div>
             </div>
           </section>
@@ -255,42 +255,42 @@ export default function SessionBookingForm({ type, slug, title, manualMode = fal
         {step === 2 ? (
           <section aria-labelledby="intention-heading">
             <p className="text-xs font-semibold text-gold-deep">Step 3 of 4</p>
-            <h3 id="intention-heading" className="mt-2 font-display text-2xl font-semibold text-charcoal">What would you like support with?</h3>
-            <p className="mt-2 max-w-xl text-sm leading-6 text-warmgray">A short note helps Manisha prepare with care. Share only what feels comfortable; you can speak in detail during the session.</p>
-            <label htmlFor="booking-intention" className="mt-7 block text-xs font-semibold uppercase tracking-[0.16em] text-warmgray">Your intention <span className="normal-case tracking-normal text-warmgray/60">(optional)</span></label>
-            <textarea id="booking-intention" value={notes} onChange={(event) => setNotes(event.target.value)} rows={7} maxLength={1500} placeholder="For example: I would like support with recurring stress, emotional balance, or a transition I am navigating…" className="mt-2 w-full resize-none rounded-2xl bg-ivory/45 px-5 py-4 text-sm leading-6 text-charcoal outline-none ring-1 ring-parchment transition placeholder:text-warmgray/50 focus:bg-white focus:ring-2 focus:ring-gold" />
-            <div className="mt-2 flex justify-between text-[11px] text-warmgray/65"><span>Your note stays attached to this private request.</span><span className="tabular-nums">{notes.length}/1500</span></div>
+            <h3 id="intention-heading" className="mt-1.5 sm:mt-2 font-display text-xl sm:text-2xl font-semibold text-charcoal">What would you like support with?</h3>
+            <p className="mt-1.5 sm:mt-2 max-w-xl text-sm leading-6 text-warmgray">A short note helps Manisha prepare with care. Share only what feels comfortable; you can speak in detail during the session.</p>
+            <label htmlFor="booking-intention" className="mt-5 sm:mt-7 block text-xs font-semibold uppercase tracking-[0.16em] text-warmgray">Your intention <span className="normal-case tracking-normal text-warmgray/60">(optional)</span></label>
+            <textarea id="booking-intention" value={notes} onChange={(event) => setNotes(event.target.value)} rows={5} maxLength={1500} placeholder="For example: I would like support with recurring stress, emotional balance, or a transition I am navigating…" className="mt-2 w-full resize-none rounded-2xl bg-ivory/45 px-4 sm:px-5 py-3.5 sm:py-4 text-base sm:text-sm leading-6 text-charcoal outline-none ring-1 ring-parchment transition placeholder:text-warmgray/50 focus:bg-white focus:ring-2 focus:ring-gold" />
+            <div className="mt-2 flex justify-between gap-2 text-[11px] text-warmgray/65"><span>Your note stays attached to this private request.</span><span className="tabular-nums">{notes.length}/1500</span></div>
           </section>
         ) : null}
 
         {step === 3 ? (
           <section aria-labelledby="review-heading">
             <p className="text-xs font-semibold text-gold-deep">Step 4 of 4</p>
-            <h3 id="review-heading" className="mt-2 font-display text-2xl font-semibold text-charcoal">Review your request</h3>
-            <p className="mt-2 text-sm text-warmgray">Nothing is charged today. The team will confirm availability, fee, and next steps personally.</p>
-            <dl className="mt-7 divide-y divide-parchment overflow-hidden rounded-2xl bg-ivory/45 px-5 ring-1 ring-parchment">
-              <div className="flex items-center justify-between gap-4 py-4"><dt className="text-sm text-warmgray">Session</dt><dd className="text-right text-sm font-semibold text-charcoal">{title}</dd></div>
-              <div className="flex items-center justify-between gap-4 py-4"><dt className="text-sm text-warmgray">Format</dt><dd className="text-right text-sm font-semibold text-charcoal">{selectedFormat.label} · {selectedFormat.detail}</dd></div>
-              <div className="flex items-center justify-between gap-4 py-4"><dt className="text-sm text-warmgray">Preferred time</dt><dd className="text-right text-sm font-semibold text-charcoal">{displayDate(date)} · {time} IST</dd></div>
-              <div className="flex items-start justify-between gap-6 py-4"><dt className="text-sm text-warmgray">Intention</dt><dd className="max-w-sm text-right text-sm leading-6 text-charcoal">{notes || "I’ll share during the session"}</dd></div>
+            <h3 id="review-heading" className="mt-1.5 sm:mt-2 font-display text-xl sm:text-2xl font-semibold text-charcoal">Review your request</h3>
+            <p className="mt-1.5 sm:mt-2 text-sm text-warmgray">Nothing is charged today. The team will confirm availability, fee, and next steps personally.</p>
+            <dl className="mt-5 sm:mt-7 divide-y divide-parchment overflow-hidden rounded-2xl bg-ivory/45 px-4 sm:px-5 ring-1 ring-parchment">
+              <div className="flex items-center justify-between gap-4 py-3 sm:py-4"><dt className="text-sm text-warmgray">Session</dt><dd className="text-right text-sm font-semibold text-charcoal">{title}</dd></div>
+              <div className="flex items-center justify-between gap-4 py-3 sm:py-4"><dt className="text-sm text-warmgray">Format</dt><dd className="text-right text-sm font-semibold text-charcoal">{selectedFormat.label} · {selectedFormat.detail}</dd></div>
+              <div className="flex items-center justify-between gap-4 py-3 sm:py-4"><dt className="text-sm text-warmgray">Preferred time</dt><dd className="text-right text-sm font-semibold text-charcoal">{displayDate(date)} · {time} IST</dd></div>
+              <div className="flex items-start justify-between gap-6 py-3 sm:py-4"><dt className="text-sm text-warmgray">Intention</dt><dd className="max-w-sm text-right text-sm leading-6 text-charcoal">{notes || "I’ll share during the session"}</dd></div>
             </dl>
-            <div className="mt-5 flex items-start gap-3 rounded-2xl bg-gold-soft/50 p-4 text-xs leading-5 text-gold-deep"><ShieldCheck className="mt-0.5 h-4 w-4 shrink-0" /><p>Submitting creates a booking request, not a confirmed appointment. The team will contact you before any payment.</p></div>
-            <label className="mt-4 flex cursor-pointer items-start gap-3 rounded-2xl bg-white p-4 text-xs leading-5 text-warmgray ring-1 ring-parchment">
+            <div className="mt-4 sm:mt-5 flex items-start gap-3 rounded-2xl bg-gold-soft/50 p-3.5 sm:p-4 text-xs leading-5 text-gold-deep"><ShieldCheck className="mt-0.5 h-4 w-4 shrink-0" /><p>Submitting creates a booking request, not a confirmed appointment. The team will contact you before any payment.</p></div>
+            <label className="mt-3 sm:mt-4 flex cursor-pointer items-start gap-3 rounded-2xl bg-white p-3.5 sm:p-4 text-xs leading-5 text-warmgray ring-1 ring-parchment">
               <input type="checkbox" checked={privacyAccepted} onChange={(event) => { setPrivacyAccepted(event.target.checked); setError(null); }} className="mt-0.5 h-4 w-4 shrink-0 accent-[var(--color-primary)]" />
               <span>I consent to these details being used to respond to my booking request. I understand this is a wellbeing service, not medical or psychological treatment.</span>
             </label>
           </section>
         ) : null}
 
-        {error ? <p role="alert" className="mt-5 rounded-xl bg-primary-soft p-3 text-sm font-medium text-primary">{error}</p> : null}
+        {error ? <p role="alert" className="mt-4 sm:mt-5 rounded-xl bg-primary-soft p-3 text-sm font-medium text-primary">{error}</p> : null}
       </div>
 
-      <footer className="flex items-center justify-between gap-3 border-t border-parchment bg-ivory/35 px-6 py-5 sm:px-9">
-        <button type="button" onClick={() => { setError(null); setStep((current) => Math.max(current - 1, 0)); }} disabled={step === 0 || pending} className="inline-flex items-center gap-2 px-2 py-3 text-sm font-semibold text-warmgray transition hover:text-primary disabled:invisible"><ArrowLeft className="h-4 w-4" /> Back</button>
+      <footer className="flex items-center justify-between gap-3 border-t border-parchment bg-ivory/35 px-4 py-4 sm:px-9 sm:py-5">
+        <button type="button" onClick={() => { setError(null); setStep((current) => Math.max(current - 1, 0)); }} disabled={step === 0 || pending} className="inline-flex min-h-11 items-center gap-2 px-2 py-2.5 text-sm font-semibold text-warmgray transition hover:text-primary disabled:invisible"><ArrowLeft className="h-4 w-4" /> Back</button>
         {step < STEPS.length - 1 ? (
-          <button type="button" onClick={continueFlow} className="inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3.5 text-sm font-bold text-white shadow-lg shadow-primary/20 transition hover:-translate-y-0.5 hover:brightness-110 active:translate-y-0">Continue <ArrowRight className="h-4 w-4" /></button>
+          <button type="button" onClick={continueFlow} className="inline-flex min-h-11 items-center gap-2 rounded-full bg-primary px-6 sm:px-7 py-3 sm:py-3.5 text-sm font-bold text-white shadow-lg shadow-primary/20 transition hover:-translate-y-0.5 hover:brightness-110 active:translate-y-0">Continue <ArrowRight className="h-4 w-4" /></button>
         ) : (
-          <button type="button" onClick={requestBooking} disabled={pending} className="inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3.5 text-sm font-bold text-white shadow-lg shadow-primary/20 transition hover:-translate-y-0.5 hover:brightness-110 disabled:cursor-wait disabled:opacity-60">
+          <button type="button" onClick={requestBooking} disabled={pending} className="inline-flex min-h-11 items-center gap-2 rounded-full bg-primary px-5 sm:px-7 py-3 sm:py-3.5 text-sm font-bold text-white shadow-lg shadow-primary/20 transition hover:-translate-y-0.5 hover:brightness-110 disabled:cursor-wait disabled:opacity-60">
             {pending ? <Loader2 className="h-4 w-4 animate-spin" /> : <CalendarDays className="h-4 w-4" />}{pending ? "Sending request…" : "Request this session"}
           </button>
         )}

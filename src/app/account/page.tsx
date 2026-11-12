@@ -25,22 +25,22 @@ export default async function AccountPage() {
   const initial = name.charAt(0).toUpperCase();
 
   return (
-    <section className="relative overflow-hidden bg-ivory pb-20 pt-32 lg:pt-40">
+    <section className="relative overflow-hidden bg-ivory pb-20 pt-20 sm:pb-24 sm:pt-32 lg:pt-40">
       <div className="glow-gold absolute -right-32 -top-32 h-[400px] w-[400px]" />
       <div className="glow-crimson absolute -bottom-32 -left-32 h-[380px] w-[380px]" />
 
-      <div className="relative mx-auto max-w-5xl px-6 lg:px-10">
+      <div className="relative mx-auto max-w-5xl px-4 sm:px-6 lg:px-10">
         {/* Profile card */}
-        <div className="relative flex flex-wrap items-start gap-6 overflow-hidden rounded-[28px] border border-parchment bg-gradient-to-b from-white to-cream/70 p-8 shadow-[0_10px_40px_-20px_rgba(28,25,23,0.18)] sm:items-center sm:gap-8">
+        <div className="relative flex flex-wrap items-start gap-4 sm:gap-8 overflow-hidden rounded-2xl sm:rounded-[28px] border border-parchment bg-gradient-to-b from-white to-cream/70 p-5 sm:p-8 shadow-[0_10px_40px_-20px_rgba(28,25,23,0.18)] sm:items-center">
           <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-gold/15 blur-3xl" />
-          <div className="relative flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary-dark text-3xl font-bold text-white shadow-lg shadow-primary/25 ring-2 ring-gold/40">
+          <div className="relative flex h-14 w-14 sm:h-20 sm:w-20 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary-dark text-2xl sm:text-3xl font-bold text-white shadow-lg shadow-primary/25 ring-2 ring-gold/40">
             {initial}
           </div>
-          <div className="relative flex-1">
-            <h1 className="font-display text-3xl font-bold text-charcoal">
+          <div className="relative min-w-0 flex-1">
+            <h1 className="font-display text-2xl sm:text-3xl font-bold text-charcoal">
               Namaste, {name} 🙏
             </h1>
-            <p className="mt-1 text-sm text-warmgray">{email}</p>
+            <p className="mt-1 truncate text-sm text-warmgray">{email}</p>
             <p className="mt-1 text-xs text-warmgray/70">
               Joined{" "}
               {user.createdAt
@@ -56,40 +56,40 @@ export default async function AccountPage() {
         </div>
 
         {/* Address book shortcut */}
-        <div className="mt-6 flex flex-wrap items-center justify-between gap-3 rounded-[24px] border border-parchment bg-gradient-to-b from-white to-cream/70 p-6">
+        <div className="mt-4 sm:mt-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl sm:rounded-[24px] border border-parchment bg-gradient-to-b from-white to-cream/70 p-4 sm:p-6">
           <div>
             <p className="font-semibold text-charcoal">Delivery addresses</p>
             <p className="mt-1 text-sm text-warmgray">Manage the addresses used to ship your sacred shop orders.</p>
           </div>
-          <Link href="/account/addresses" className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-2.5 text-sm font-semibold text-white hover:brightness-110">
+          <Link href="/account/addresses" className="inline-flex min-h-11 items-center gap-2 rounded-full bg-primary px-5 sm:px-6 py-2.5 text-sm font-semibold text-white hover:brightness-110">
             Manage addresses →
           </Link>
         </div>
 
         {/* My Courses shortcut */}
-        <div className="mt-6 flex flex-wrap items-center justify-between gap-3 rounded-[24px] border border-parchment bg-gradient-to-b from-white to-cream/70 p-6">
+        <div className="mt-4 sm:mt-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl sm:rounded-[24px] border border-parchment bg-gradient-to-b from-white to-cream/70 p-4 sm:p-6">
           <div>
             <p className="font-semibold text-charcoal">My courses</p>
             <p className="mt-1 text-sm text-warmgray">Open your enrolled courses and continue your learning.</p>
           </div>
-          <Link href="/account/courses" className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-2.5 text-sm font-semibold text-white hover:brightness-110">
+          <Link href="/account/courses" className="inline-flex min-h-11 items-center gap-2 rounded-full bg-primary px-5 sm:px-6 py-2.5 text-sm font-semibold text-white hover:brightness-110">
             Open my courses →
           </Link>
         </div>
 
         {/* My Bookings shortcut */}
-        <div className="mt-6 flex flex-wrap items-center justify-between gap-3 rounded-[24px] border border-parchment bg-gradient-to-b from-white to-cream/70 p-6">
+        <div className="mt-4 sm:mt-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl sm:rounded-[24px] border border-parchment bg-gradient-to-b from-white to-cream/70 p-4 sm:p-6">
           <div>
             <p className="font-semibold text-charcoal">My sessions &amp; bookings</p>
             <p className="mt-1 text-sm text-warmgray">Healing aur mentoring session requests track karein.</p>
           </div>
-          <Link href="/account/bookings" className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-2.5 text-sm font-semibold text-white hover:brightness-110">
+          <Link href="/account/bookings" className="inline-flex min-h-11 items-center gap-2 rounded-full bg-primary px-5 sm:px-6 py-2.5 text-sm font-semibold text-white hover:brightness-110">
             View bookings →
           </Link>
         </div>
 
         {/* Orders */}
-        <div className="mt-12">
+        <div className="mt-8 sm:mt-12">
           <h2 className="font-display text-2xl font-bold text-charcoal">
             <Package className="mr-2 inline h-5 w-5 text-gold" />
             Orders &amp; bookings

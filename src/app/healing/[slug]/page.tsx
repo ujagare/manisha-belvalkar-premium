@@ -68,18 +68,18 @@ export default async function HealingDetailPage({ params }: Props) {
         label="Healing"
       />
 
-      <div className="relative overflow-hidden bg-ivory pb-28 pt-28 lg:pb-24 lg:pt-36">
+      <div className="relative overflow-hidden bg-ivory pb-36 pt-20 sm:pb-36 sm:pt-24 lg:pb-24 lg:pt-32">
         <div className="pointer-events-none absolute inset-x-0 top-0 h-[42rem] bg-[radial-gradient(circle_at_82%_8%,rgba(221,184,41,0.18),transparent_32%),radial-gradient(circle_at_8%_24%,rgba(107,11,11,0.09),transparent_28%)]" />
-        <div className="relative mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
-          <Link href="/healing" className="inline-flex items-center gap-2 text-sm font-semibold text-warmgray transition-colors hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold">
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-8 lg:px-10">
+          <Link href="/healing" className="inline-flex min-h-10 items-center gap-2 text-sm font-semibold text-warmgray transition-colors hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold">
             <ArrowLeft className="h-4 w-4" /> All healing services
           </Link>
 
-          <div className="mt-7 grid min-w-0 items-start gap-10 2xl:grid-cols-[minmax(0,1fr)_minmax(26rem,31rem)] 2xl:gap-14">
+          <div className="mt-4 grid min-w-0 items-start gap-7 sm:mt-7 sm:gap-10 2xl:grid-cols-[minmax(0,1fr)_minmax(26rem,31rem)] 2xl:gap-14">
             <article className="min-w-0">
-              <section className="overflow-hidden rounded-[2rem] bg-white shadow-[0_28px_80px_-48px_rgba(62,38,25,0.55)] ring-1 ring-parchment/90">
+              <section className="overflow-hidden rounded-2xl bg-white shadow-[0_28px_80px_-48px_rgba(62,38,25,0.55)] ring-1 ring-parchment/90 sm:rounded-[2rem]">
                 <div className="grid">
-                  <div className="relative h-[22rem] overflow-hidden bg-charcoal sm:h-[28rem] lg:h-[30rem]">
+                  <div className="relative h-[16rem] overflow-hidden bg-charcoal sm:h-[26rem] lg:h-[30rem]">
                     <Image
                       src={service.image}
                       alt={`${service.title} healing session background`}
@@ -104,31 +104,31 @@ export default async function HealingDetailPage({ params }: Props) {
                     </div>
                   </div>
 
-                  <div className="min-w-0 p-6 sm:p-8 lg:p-9">
-                    <div className="inline-flex items-center gap-2 rounded-full bg-primary-soft px-3 py-1.5 text-xs font-bold text-primary">
+                  <div className="min-w-0 p-4 sm:p-8 lg:p-9">
+                    <div className="inline-flex items-center gap-2 rounded-full bg-primary-soft px-3 py-1 text-xs font-bold text-primary sm:py-1.5">
                       <CircleCheck className="h-4 w-4" /> Private one-to-one session
                     </div>
-                    <h1 className="mt-5 max-w-full [overflow-wrap:anywhere] text-balance font-display text-4xl font-semibold leading-[1.05] tracking-[-0.025em] text-charcoal sm:text-[2.75rem] 2xl:text-5xl">{service.title}</h1>
+                    <h1 className="mt-3.5 max-w-full [overflow-wrap:anywhere] text-balance font-display text-[1.85rem] font-semibold leading-[1.08] tracking-[-0.025em] text-charcoal sm:mt-5 sm:text-[2.75rem] 2xl:text-5xl">{service.title}</h1>
                     {service.price || service.format ? (
-                      <div className="mt-5 flex flex-wrap items-center gap-3">
-                        {service.price ? <span className="font-display text-3xl font-bold text-primary">{formatINR(service.price)}</span> : null}
-                        {service.format ? <span className="rounded-full bg-gold-soft px-3 py-1.5 text-xs font-semibold text-gold-deep">{service.format}</span> : null}
+                      <div className="mt-3.5 flex flex-wrap items-center gap-2.5 sm:mt-5 sm:gap-3">
+                        {service.price ? <span className="font-display text-2xl font-bold text-primary sm:text-3xl">{formatINR(service.price)}</span> : null}
+                        {service.format ? <span className="rounded-full bg-gold-soft px-3 py-1 text-xs font-semibold text-gold-deep sm:py-1.5">{service.format}</span> : null}
                       </div>
                     ) : null}
-                    <p className="mt-4 max-w-prose text-pretty text-[0.95rem] leading-7 text-warmgray sm:text-base">{service.description}</p>
+                    <p className="mt-3 max-w-prose text-pretty text-sm leading-6 text-warmgray sm:mt-4 sm:text-base sm:leading-7">{service.description}</p>
 
-                    <div className="mt-7 grid gap-3 sm:grid-cols-2">
-                      <div className="flex items-center gap-3 rounded-2xl bg-ivory/70 p-4">
-                        <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-white text-primary shadow-sm"><Video className="h-5 w-5" /></span>
+                    <div className="mt-5 grid gap-2.5 sm:mt-7 sm:grid-cols-2 sm:gap-3">
+                      <div className="flex items-center gap-3 rounded-xl bg-ivory/70 p-3.5 sm:rounded-2xl sm:p-4">
+                        <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-white text-primary shadow-sm sm:h-10 sm:w-10"><Video className="h-4 w-4 sm:h-5 sm:w-5" /></span>
                         <div><p className="text-sm font-semibold text-charcoal">Online available</p><p className="mt-0.5 text-xs text-warmgray">Private video session</p></div>
                       </div>
-                      <div className="flex items-center gap-3 rounded-2xl bg-ivory/70 p-4">
-                        <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-white text-primary shadow-sm"><Clock3 className="h-5 w-5" /></span>
+                      <div className="flex items-center gap-3 rounded-xl bg-ivory/70 p-3.5 sm:rounded-2xl sm:p-4">
+                        <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-white text-primary shadow-sm sm:h-10 sm:w-10"><Clock3 className="h-4 w-4 sm:h-5 sm:w-5" /></span>
                         <div><p className="text-sm font-semibold text-charcoal">IST scheduling</p><p className="mt-0.5 text-xs text-warmgray">Choose your preferred slot</p></div>
                       </div>
                     </div>
 
-                    <ul className="mt-7 space-y-3">
+                    <ul className="mt-5 space-y-2.5 sm:mt-7 sm:space-y-3">
                       {service.features.map((feature) => (
                         <li key={feature} className="flex items-start gap-3 text-sm leading-6 text-ink">
                           <Check className="mt-1 h-4 w-4 shrink-0 text-gold-deep" strokeWidth={2.5} /> {feature}
@@ -179,7 +179,7 @@ export default async function HealingDetailPage({ params }: Props) {
         </div>
       </div>
 
-      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-parchment bg-white/95 p-3 shadow-[0_-12px_35px_-22px_rgba(62,38,25,0.5)] backdrop-blur-xl lg:hidden">
+      <div className="fixed inset-x-0 bottom-[calc(3.65rem+env(safe-area-inset-bottom))] z-30 border-t border-parchment bg-white/95 px-3 py-2.5 shadow-[0_-12px_35px_-22px_rgba(62,38,25,0.45)] backdrop-blur-xl lg:hidden">
         <div className="mx-auto flex max-w-md items-center gap-3">
           <div className="min-w-0 flex-1">
             <p className="text-pretty text-[11px] font-semibold leading-4 text-charcoal sm:text-xs">{service.title}</p>

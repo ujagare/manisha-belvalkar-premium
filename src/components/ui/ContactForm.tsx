@@ -53,16 +53,16 @@ export default function ContactForm({ manualMode = false }: { manualMode?: boole
   };
 
   const fieldClasses =
-    "w-full rounded-2xl border border-parchment bg-white px-4 py-3.5 text-sm text-ink shadow-[inset_0_1px_2px_rgba(28,25,23,0.04)] placeholder:text-warmgray/50 transition-all duration-300 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/25";
+    "w-full rounded-xl sm:rounded-2xl border border-parchment bg-white px-4 py-3 sm:py-3.5 text-base sm:text-sm text-ink shadow-[inset_0_1px_2px_rgba(28,25,23,0.04)] placeholder:text-warmgray/50 transition-all duration-300 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/25";
 
   return (
-    <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
+    <form className="mt-5 sm:mt-8 space-y-4 sm:space-y-5" onSubmit={handleSubmit}>
       {/* Honeypot trap — invisible to humans, filled by bots. CSS hides the field completely. */}
       <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", top: "-9999px", height: 0, width: 0, overflow: "hidden" }}>
         <label htmlFor="company_website">Company website</label>
         <input id="company_website" name="company_website" type="text" tabIndex={-1} autoComplete="off" ref={honeypotRef} />
       </div>
-      <div className="grid gap-5 sm:grid-cols-2">
+      <div className="grid gap-4 sm:gap-5 sm:grid-cols-2">
         <div>
           <label htmlFor="name" className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-warmgray">Name</label>
           <input id="name" type="text" required placeholder="Your name" className={fieldClasses} value={form.name} onChange={(event) => setForm({ ...form, name: event.target.value })} />
@@ -86,7 +86,7 @@ export default function ContactForm({ manualMode = false }: { manualMode?: boole
       </label>
       {error ? <p role="alert" className="text-sm text-primary">{error}</p> : null}
       {reference ? <p role="status" className="text-sm text-green-700">Message sent. Email confirmation sent. Reference: {reference}</p> : null}
-      <button type="submit" disabled={isSubmitting || !consent} className="group inline-flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-primary to-primary-dark px-8 py-4 text-sm font-bold text-white shadow-lg shadow-primary/25 transition-all duration-300 hover:shadow-xl hover:shadow-primary/40 hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60">
+      <button type="submit" disabled={isSubmitting || !consent} className="group inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-primary to-primary-dark px-6 sm:px-8 py-3.5 sm:py-4 text-sm font-bold text-white shadow-lg shadow-primary/25 transition-all duration-300 hover:shadow-xl hover:shadow-primary/40 hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60">
         <Heart className="h-4 w-4 text-gold-light transition-transform duration-300 group-hover:scale-110" />
         {isSubmitting ? "Sending..." : "Send enquiry"}
       </button>

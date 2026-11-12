@@ -32,35 +32,35 @@ export default function LivePage() {
         subtitle="Online sessions and interactive live workshops — Tarot, healing and self-development from anywhere in the world."
       />
 
-      <section className="py-20 lg:py-28">
-        <div className="mx-auto max-w-6xl px-6 lg:px-10">
+      <section className="py-12 sm:py-20 lg:py-28">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-10">
           <SectionHeading
             eyebrow="Live Offerings"
             title="Join from anywhere"
             subtitle="Small-group and one-on-one experiences, held online."
           />
 
-          <div className="mt-14 grid gap-7 md:grid-cols-2">
+          <div className="mt-8 sm:mt-14 grid gap-5 sm:gap-7 md:grid-cols-2">
             {liveEvents.map((event, i) => {
               const Icon = icons[i] ?? Radio;
               return (
                 <Reveal key={event.title} delay={i * 0.1}>
-                  <div className="gold-border-gradient group relative h-full overflow-hidden rounded-2xl bg-white p-9 transition-all duration-500 hover:-translate-y-1 hover:shadow-xl hover:shadow-gold/10">
-                    <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-full bg-primary-soft text-primary transition-all duration-500 group-hover:bg-primary group-hover:text-white">
-                      <Icon className="h-6 w-6" />
+                  <div className="gold-border-gradient group relative h-full overflow-hidden rounded-2xl bg-white p-5 sm:p-9 transition-all duration-500 hover:-translate-y-1 hover:shadow-xl hover:shadow-gold/10">
+                    <div className="mb-4 sm:mb-6 flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-primary-soft text-primary transition-all duration-500 group-hover:bg-primary group-hover:text-white">
+                      <Icon className="h-5 w-5 sm:h-6 sm:w-6" />
                     </div>
-                    <span className="eyebrow mb-3 inline-block rounded-full bg-gold-soft px-3 py-1 text-gold-dark">
+                    <span className="eyebrow mb-2.5 sm:mb-3 inline-block rounded-full bg-gold-soft px-3 py-1 text-gold-dark">
                       {event.format}
                     </span>
-                    <h3 className="font-display text-2xl font-bold text-charcoal">
+                    <h3 className="font-display text-xl sm:text-2xl font-bold text-charcoal">
                       {event.title}
                     </h3>
-                    <p className="mt-3 leading-relaxed text-warmgray">
+                    <p className="mt-2.5 sm:mt-3 text-sm sm:text-base leading-relaxed text-warmgray">
                       {event.description}
                     </p>
                     <Button
                       href={`/events/${eventOfferings[i]?.slug ?? ""}`}
-                      className="mt-7"
+                      className="mt-5 sm:mt-7"
                       variant="primary"
                     >
                       View experience

@@ -91,7 +91,7 @@ export default function Footer() {
   const yMandala = useTransform(scrollYProgress, [0, 1], [60, -20]);
 
   return (
-    <footer className="relative overflow-hidden bg-charcoal pb-20 text-ivory/80 xl:pb-0">
+    <footer className="relative overflow-hidden bg-charcoal pb-24 text-ivory/80 xl:pb-0">
       {/* ================= CTA band ================= */}
       <section className="relative overflow-hidden bg-gradient-to-br from-primary-deeper via-primary to-primary-dark">
         {/* Gold glows */}
@@ -125,19 +125,19 @@ export default function Footer() {
           aria-hidden="true"
         />
 
-        <div className="relative mx-auto max-w-4xl px-6 py-7 text-center lg:py-9">
+        <div className="relative mx-auto max-w-4xl px-4 py-6 text-center sm:px-6 sm:py-8 lg:py-9">
           <Reveal>
-            <div className="eyebrow mb-5 flex items-center justify-center gap-4 text-gold-light">
-              <span className="hairline-gold w-12" />
+            <div className="eyebrow mb-3 flex items-center justify-center gap-3 text-gold-light sm:mb-5 sm:gap-4">
+              <span className="hairline-gold w-8 sm:w-12" />
               <Sparkles className="h-4 w-4" />
               Begin Your Journey
               <Sparkles className="h-4 w-4" />
-              <span className="hairline-gold w-12" />
+              <span className="hairline-gold w-8 sm:w-12" />
             </div>
           </Reveal>
 
           <Reveal delay={0.1}>
-            <h2 className="font-display text-2xl font-bold leading-[1.1] tracking-tight text-white sm:text-3xl lg:text-4xl">
+            <h2 className="font-display text-[1.45rem] font-bold leading-[1.12] tracking-tight text-white sm:text-3xl lg:text-4xl">
               It is your own commitment
               <br />
               <span className="font-serif font-medium italic text-gold-light">
@@ -147,26 +147,26 @@ export default function Footer() {
           </Reveal>
 
           <Reveal delay={0.2}>
-            <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-white/75 sm:text-base">
+            <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-white/75 sm:mt-4 sm:text-base">
               Take the first step toward clarity, alignment, and purpose.
               Manisha is here to illuminate your path.
             </p>
           </Reveal>
 
           <Reveal delay={0.3}>
-            <div className="mt-7 flex flex-wrap items-center justify-center gap-4">
+            <div className="mt-5 flex flex-wrap items-center justify-center gap-3 sm:mt-7 sm:gap-4">
               <a
                 href={brand.whatsappHref}
                 target="_blank"
                 rel="noreferrer"
-                className="group inline-flex items-center gap-2 rounded-full bg-gold px-6 py-3 text-sm font-semibold text-primary-deeper shadow-[0_16px_40px_-12px_rgba(221,184,41,0.7)] transition-all duration-500 hover:-translate-y-0.5 hover:bg-gold-light hover:shadow-[0_20px_50px_-12px_rgba(221,184,41,0.9)]"
+                className="group inline-flex min-h-11 items-center gap-2 rounded-full bg-gold px-5 py-2.5 text-sm font-semibold text-primary-deeper shadow-[0_16px_40px_-12px_rgba(221,184,41,0.7)] transition-all duration-500 hover:-translate-y-0.5 hover:bg-gold-light hover:shadow-[0_20px_50px_-12px_rgba(221,184,41,0.9)] sm:px-6 sm:py-3"
               >
                 <MessageCircle className="h-4 w-4" />
                 Book a Session
               </a>
               <a
                 href="/contact"
-                className="inline-flex items-center gap-2 rounded-full border border-white/40 px-6 py-3 text-sm font-semibold text-white backdrop-blur transition-all duration-500 hover:-translate-y-0.5 hover:border-gold hover:bg-white/10"
+                className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/40 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur transition-all duration-500 hover:-translate-y-0.5 hover:border-gold hover:bg-white/10 sm:px-6 sm:py-3"
               >
                 <Heart className="h-4 w-4 text-gold-light" />
                 Ask a Question
@@ -205,20 +205,20 @@ export default function Footer() {
           aria-hidden="true"
         />
 
-        <div className="relative mx-auto max-w-7xl px-6 pb-6 pt-9 lg:px-10 lg:pt-11">
+        <div className="relative mx-auto max-w-7xl px-4 pb-5 pt-7 sm:px-6 sm:pt-9 lg:px-10 lg:pt-11">
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-12 lg:gap-6">
             {/* Brand column */}
             <Reveal className="lg:col-span-3" delay={0}>
               <Link
                 href="/"
-                className="flex items-center gap-3 font-display text-3xl font-bold tracking-tight text-white transition-colors hover:text-gold-light"
+                className="flex items-center gap-2.5 font-display text-2xl font-bold tracking-tight text-white transition-colors hover:text-gold-light sm:gap-3 sm:text-3xl"
               >
                 <Image
                   src="/images/manisha-belvalkar-logo.webp"
                   alt="Manisha Belvalkar"
                   width={48}
                   height={48}
-                  className="h-12 w-12 rounded-full object-cover ring-1 ring-gold/40"
+                  className="h-10 w-10 rounded-full object-cover ring-1 ring-gold/40 sm:h-12 sm:w-12"
                 />
                 Manisha
                 <span className="font-serif font-normal italic text-gold">
@@ -382,7 +382,7 @@ export default function Footer() {
 
           <nav
             aria-label="Customer help"
-            className="mt-7 flex flex-wrap justify-center gap-x-6 gap-y-1.5 border-t border-white/10 pt-4 text-xs text-ivory/55"
+            className="mt-5 flex flex-wrap justify-center gap-x-4 gap-y-2 border-t border-white/10 pt-4 text-xs text-ivory/55 sm:mt-7 sm:gap-x-6 sm:gap-y-1.5"
           >
             <Link className="transition-colors hover:text-gold" href="/how-it-works">How it works</Link>
             <Link className="transition-colors hover:text-gold" href="/faq">FAQ</Link>
@@ -394,7 +394,7 @@ export default function Footer() {
 
           <nav
             aria-label="Legal information"
-            className="mt-3 flex flex-wrap justify-center gap-x-6 gap-y-1.5 text-xs text-ivory/55"
+            className="mt-2.5 flex flex-wrap justify-center gap-x-4 gap-y-2 text-xs text-ivory/55 sm:mt-3 sm:gap-x-6 sm:gap-y-1.5"
           >
             <Link className="transition-colors hover:text-gold" href="/privacy-policy">Privacy policy</Link>
             <Link className="transition-colors hover:text-gold" href="/terms-and-conditions">Terms &amp; conditions</Link>
@@ -405,13 +405,13 @@ export default function Footer() {
             <Link className="transition-colors hover:text-gold" href="/editorial-policy">Editorial policy</Link>
           </nav>
 
-          <GoldDivider className="mt-6" />
+          <GoldDivider className="mt-5 sm:mt-6" />
         </div>
       </div>
 
       {/* ================= Bottom bar ================= */}
-      <div className="relative border-t border-white/10 px-6 py-3 lg:px-10">
-        <div className="mx-auto flex max-w-7xl flex-col items-center gap-4 text-xs text-ivory/40 sm:flex-row sm:justify-between">
+      <div className="relative border-t border-white/10 px-4 py-3 sm:px-6 lg:px-10">
+        <div className="mx-auto flex max-w-7xl flex-col items-center gap-3 text-xs text-ivory/40 sm:flex-row sm:justify-between">
           <p>
             &copy; {year} {brand.name}. All rights reserved.
           </p>

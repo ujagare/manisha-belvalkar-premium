@@ -30,14 +30,14 @@ export default function ProductCard({ product, className }: ProductCardProps) {
   return (
     <article
       className={cn(
-        "group relative flex h-full flex-col overflow-hidden rounded-[28px] border border-parchment bg-gradient-to-b from-white to-cream/70 shadow-[0_10px_40px_-20px_rgba(28,25,23,0.18)] transition-all duration-500 hover:-translate-y-2 hover:border-gold/50 hover:shadow-[0_35px_80px_-30px_rgba(221,184,41,0.45)]",
+        "group relative flex h-full flex-col overflow-hidden rounded-2xl border border-parchment bg-gradient-to-b from-white to-cream/70 shadow-[0_10px_40px_-20px_rgba(28,25,23,0.18)] transition-all duration-500 hover:-translate-y-2 hover:border-gold/50 hover:shadow-[0_35px_80px_-30px_rgba(221,184,41,0.45)] sm:rounded-[28px]",
         className,
       )}
     >
       {/* ============ Image — compact, whole product fits ============ */}
       <Link
         href={`/products/${product.slug}`}
-        className="relative block aspect-[4/5] overflow-hidden bg-gradient-to-b from-ivory to-cream"
+        className="relative block aspect-[4/4.2] overflow-hidden bg-gradient-to-b from-ivory to-cream sm:aspect-[4/5]"
         aria-label={product.title}
       >
         <Image
@@ -80,13 +80,13 @@ export default function ProductCard({ product, className }: ProductCardProps) {
       </Link>
 
       {/* ============ Body ============ */}
-      <div className="flex flex-1 flex-col px-6 pb-6 pt-5">
+      <div className="flex flex-1 flex-col px-4 pb-4 pt-3.5 sm:px-6 sm:pb-6 sm:pt-5">
         <Link href={`/products/${product.slug}`} className="block">
-          <h3 className="font-display text-xl font-bold leading-snug text-charcoal transition-colors duration-300 group-hover:text-primary sm:text-[1.4rem]">
+          <h3 className="font-display text-lg font-bold leading-snug text-charcoal transition-colors duration-300 group-hover:text-primary sm:text-[1.4rem]">
             {product.title}
           </h3>
         </Link>
-        <p className="mt-1.5 font-serif text-[15px] italic leading-snug text-warmgray">
+        <p className="mt-1 font-serif text-sm italic leading-snug text-warmgray sm:mt-1.5 sm:text-[15px]">
           {product.subtitle}
         </p>
 

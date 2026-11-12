@@ -38,20 +38,20 @@ export default function MentoringPage() {
         <div className="pointer-events-none absolute -right-40 top-10 h-[520px] w-[520px] rounded-full bg-gold/10 blur-3xl" />
         <div className="pointer-events-none absolute -left-40 bottom-0 h-[420px] w-[420px] rounded-full bg-primary/5 blur-3xl" />
 
-        <div className="relative mx-auto max-w-7xl px-6 lg:px-10">
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
           <SectionHeading
             eyebrow="Three Premium Pathways"
             title="Choose the guidance your soul is asking for"
             subtitle="Three focused pathways: Mentoring through Tarot, Soul Purpose Reading, and evolution through clarity and alignment."
           />
 
-          <div className="mt-16 grid gap-8 lg:grid-cols-3">
+          <div className="mt-8 grid gap-5 sm:mt-14 sm:gap-8 lg:grid-cols-3">
             {mentoringAreas.map((area, index) => (
               <Reveal key={area.slug} delay={index * 0.08}>
                 <Link
                   id={area.slug}
                   href={`/mentoring/${area.slug}`}
-                  className="group relative flex h-full min-h-[520px] flex-col overflow-hidden rounded-[2rem] border border-gold/20 bg-gradient-to-b from-white/95 to-cream/80 p-7 shadow-[0_20px_70px_-46px_rgba(107,11,11,0.55)] backdrop-blur-sm transition-all duration-500 hover:-translate-y-2 hover:border-gold/55 hover:shadow-[0_38px_90px_-42px_rgba(221,184,41,0.75)]"
+                  className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-gold/20 bg-gradient-to-b from-white/95 to-cream/80 p-5 shadow-[0_20px_70px_-46px_rgba(107,11,11,0.55)] backdrop-blur-sm transition-all duration-500 hover:-translate-y-2 hover:border-gold/55 hover:shadow-[0_38px_90px_-42px_rgba(221,184,41,0.75)] sm:rounded-[2rem] sm:p-7 lg:min-h-[480px]"
                 >
                   <div className="pointer-events-none absolute -right-20 -top-20 h-60 w-60 rounded-full bg-gold/20 opacity-70 blur-3xl transition-opacity duration-700 group-hover:opacity-100" />
                   <div
@@ -63,16 +63,16 @@ export default function MentoringPage() {
                     }}
                   />
                   <div className="relative z-10 flex flex-1 flex-col">
-                    <div className="mb-8 flex items-center justify-between">
+                    <div className="mb-4 flex items-center justify-between sm:mb-8">
                       <span className="eyebrow text-gold-dark">
                         Path {String(index + 1).padStart(2, "0")}
                       </span>
-                      <span className="grid h-12 w-12 place-items-center rounded-full border border-gold/25 bg-gold/10 text-gold-deep shadow-[0_0_40px_rgba(221,184,41,0.18)]">
+                      <span className="grid h-10 w-10 place-items-center rounded-full border border-gold/25 bg-gold/10 text-gold-deep shadow-[0_0_40px_rgba(221,184,41,0.18)] sm:h-12 sm:w-12">
                         <Sparkles className="h-4 w-4" />
                       </span>
                     </div>
 
-                    <h3 className="font-display text-2xl font-bold leading-tight text-charcoal transition-colors duration-300 group-hover:text-primary">
+                    <h3 className="font-display text-xl font-bold leading-tight text-charcoal transition-colors duration-300 group-hover:text-primary sm:text-2xl">
                       {area.title}
                     </h3>
                     <div
@@ -116,19 +116,19 @@ export default function MentoringPage() {
         </div>
       </section>
 
-      <section className="relative overflow-hidden bg-[#210b0a] py-24 text-white sm:py-28">
+      <section className="relative overflow-hidden bg-[#210b0a] py-12 text-white sm:py-20 lg:py-28">
         <div className="pointer-events-none absolute left-1/2 top-1/2 h-[34rem] w-[34rem] -translate-x-1/2 -translate-y-1/2 rounded-full border border-gold/10" />
         <div className="pointer-events-none absolute left-1/2 top-1/2 h-[24rem] w-[24rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/20 blur-3xl" />
-        <div className="relative mx-auto max-w-4xl px-6 text-center lg:px-10">
+        <div className="relative mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-10">
           <Reveal>
-            <p className="font-serif text-xl italic tracking-[0.06em] text-gold-light/75">Your next step can be simple</p>
-            <h2 className="mt-4 text-balance font-display text-5xl font-semibold leading-[0.98] tracking-[-0.04em] sm:text-6xl">
+            <p className="font-serif text-lg italic tracking-[0.06em] text-gold-light/75 sm:text-xl">Your next step can be simple</p>
+            <h2 className="mt-3 text-balance font-display text-[1.85rem] font-semibold leading-[1.06] tracking-[-0.03em] sm:mt-4 sm:text-5xl lg:text-6xl">
               Ready to find <span className="text-gold-shimmer">clarity?</span>
             </h2>
-            <p className="mx-auto mt-6 max-w-2xl text-pretty text-base leading-8 text-white/65 sm:text-lg">
+            <p className="mx-auto mt-4 max-w-2xl text-pretty text-sm leading-7 text-white/65 sm:mt-6 sm:text-lg sm:leading-8">
               Choose the mentoring pathway that feels closest to your present question, or begin with a conversation to understand which form of guidance suits you best.
             </p>
-            <Link href="/contact" className="group mt-9 inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-gold to-gold-dark px-8 py-4 text-sm font-semibold text-primary-deeper shadow-[0_14px_42px_rgba(221,184,41,0.2)] transition duration-300 hover:-translate-y-1 hover:from-gold-light hover:to-gold">
+            <Link href="/contact" className="group mt-6 inline-flex min-h-11 items-center gap-3 rounded-full bg-gradient-to-r from-gold to-gold-dark px-6 py-3 text-sm font-semibold text-primary-deeper shadow-[0_14px_42px_rgba(221,184,41,0.2)] transition duration-300 hover:-translate-y-1 hover:from-gold-light hover:to-gold sm:mt-9 sm:px-8 sm:py-4">
               Find your mentoring path
               <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
@@ -136,7 +136,7 @@ export default function MentoringPage() {
         </div>
       </section>
 
-      <section className="relative overflow-hidden bg-gradient-to-br from-white via-cream to-gold-soft/70 py-20 lg:py-24">
+      <section className="relative overflow-hidden bg-gradient-to-br from-white via-cream to-gold-soft/70 py-12 sm:py-20 lg:py-24">
         <div className="pointer-events-none absolute -left-32 top-0 h-[420px] w-[420px] rounded-full bg-gold/18 blur-3xl" />
         <div className="pointer-events-none absolute -right-24 bottom-0 h-[360px] w-[360px] rounded-full bg-primary/8 blur-3xl" />
         <svg
@@ -153,10 +153,10 @@ export default function MentoringPage() {
             <circle cx="250" cy="250" r="86" strokeDasharray="3 10" strokeLinecap="round" />
           </g>
         </svg>
-        <div className="mx-auto max-w-4xl px-6 text-center lg:px-10">
+        <div className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-10">
           <Reveal>
-            <Sparkles className="mx-auto mb-6 h-8 w-8 text-gold" />
-            <p className="relative font-serif text-2xl font-semibold italic leading-relaxed text-primary-deeper sm:text-3xl">
+            <Sparkles className="mx-auto mb-4 h-7 w-7 text-gold sm:mb-6 sm:h-8 sm:w-8" />
+            <p className="relative font-serif text-xl font-semibold italic leading-relaxed text-primary-deeper sm:text-3xl">
               &ldquo;Mentoring is a sacred pause: a space to listen deeply, see
               clearly, and choose the next step with courage.&rdquo;
             </p>

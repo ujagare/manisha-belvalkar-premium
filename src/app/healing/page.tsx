@@ -39,27 +39,27 @@ export default function HealingPage() {
         subtitle={healingIntro}
       />
 
-      <section className="relative overflow-hidden py-20 lg:py-28">
+      <section className="relative overflow-hidden py-12 sm:py-20 lg:py-28">
         <div className="pointer-events-none absolute -right-40 top-16 h-[520px] w-[520px] rounded-full bg-gold/10 blur-3xl" />
         <div className="pointer-events-none absolute -left-40 bottom-10 h-[420px] w-[420px] rounded-full bg-primary/5 blur-3xl" />
 
-        <div className="relative mx-auto max-w-7xl px-6 lg:px-10">
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
           <SectionHeading
             eyebrow="Healing Pathways"
             title="Three focused ways to restore your energy"
             subtitle="Choose Energy Healing, Distance Healing, or Shakti Healing. Each offering is designed with gentle precision and personal aftercare."
           />
 
-          <div className="mt-16 grid gap-8 lg:grid-cols-3">
+          <div className="mt-8 grid gap-5 sm:mt-14 sm:gap-8 lg:grid-cols-3">
             {primaryServices.map((service, index) => (
               <Reveal key={service.slug} delay={index * 0.08}>
                 <Link
                   id={service.slug}
                   href={`/healing/${service.slug}`}
-                  className="group relative flex h-full min-h-[500px] flex-col overflow-hidden rounded-[2rem] border border-gold/20 bg-gradient-to-b from-white/95 to-cream/80 p-7 shadow-[0_20px_70px_-46px_rgba(107,11,11,0.55)] backdrop-blur-sm transition-all duration-500 hover:-translate-y-2 hover:border-gold/55 hover:shadow-[0_38px_90px_-42px_rgba(221,184,41,0.75)]"
+                  className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-gold/20 bg-gradient-to-b from-white/95 to-cream/80 p-5 shadow-[0_20px_70px_-46px_rgba(107,11,11,0.55)] backdrop-blur-sm transition-all duration-500 hover:-translate-y-2 hover:border-gold/55 hover:shadow-[0_38px_90px_-42px_rgba(221,184,41,0.75)] sm:rounded-[2rem] sm:p-7 lg:min-h-[480px]"
                 >
                   <div className="pointer-events-none absolute -right-20 -top-20 h-60 w-60 rounded-full bg-gold/20 opacity-70 blur-3xl transition-opacity duration-700 group-hover:opacity-100" />
-                  <div className="relative h-52 overflow-hidden rounded-[1.5rem] ring-1 ring-gold/20">
+                  <div className="relative h-44 overflow-hidden rounded-xl ring-1 ring-gold/20 sm:h-52 sm:rounded-[1.5rem]">
                     <div
                       className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 ease-out group-hover:scale-[1.08]"
                       style={{ backgroundImage: `url(${service.image})` }}
@@ -67,28 +67,28 @@ export default function HealingPage() {
                     <div className="absolute inset-0 bg-gradient-to-t from-charcoal/45 via-transparent to-transparent" />
                   </div>
 
-                  <div className="relative z-10 mt-7 flex flex-1 flex-col">
-                    <div className="mb-5 flex items-center justify-between">
+                  <div className="relative z-10 mt-5 flex flex-1 flex-col sm:mt-7">
+                    <div className="mb-3 flex items-center justify-between sm:mb-5">
                       <span className="eyebrow text-gold-dark">
                         Healing {String(index + 1).padStart(2, "0")}
                       </span>
-                      <span className="grid h-11 w-11 place-items-center rounded-full border border-gold/25 bg-gold/10 text-gold-deep">
+                      <span className="grid h-10 w-10 place-items-center rounded-full border border-gold/25 bg-gold/10 text-gold-deep sm:h-11 sm:w-11">
                         <Sparkles className="h-4 w-4" />
                       </span>
                     </div>
-                    <h3 className="font-display text-2xl font-bold leading-tight text-charcoal transition-colors duration-300 group-hover:text-primary">
+                    <h3 className="font-display text-xl font-bold leading-tight text-charcoal transition-colors duration-300 group-hover:text-primary sm:text-2xl">
                       {service.title}
                     </h3>
-                    <div className="mt-4 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-gold/20 bg-gold-soft/45 px-3.5 py-3">
-                      <span className="font-display text-xl font-bold text-primary">{service.price ? formatINR(service.price) : "On enquiry"}</span>
+                    <div className="mt-3 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-gold/20 bg-gold-soft/45 px-3 py-2.5 sm:mt-4 sm:px-3.5 sm:py-3">
+                      <span className="font-display text-lg font-bold text-primary sm:text-xl">{service.price ? formatINR(service.price) : "On enquiry"}</span>
                       {service.format ? <span className="text-xs font-semibold text-gold-deep">{service.format}</span> : null}
                     </div>
-                    <div className="mt-4 flex items-center gap-3" aria-hidden="true">
+                    <div className="mt-3 flex items-center gap-3 sm:mt-4" aria-hidden="true">
                       <span className="h-px flex-1 bg-gradient-to-r from-transparent via-gold/40 to-gold/40" />
                       <span className="font-serif text-sm text-gold">*</span>
                       <span className="h-px flex-1 bg-gradient-to-l from-transparent via-gold/40 to-gold/40" />
                     </div>
-                    <p className="mt-4 flex-1 text-sm leading-relaxed text-warmgray">
+                    <p className="mt-3 flex-1 text-sm leading-relaxed text-warmgray sm:mt-4">
                       {service.short}
                     </p>
                     <ul className="mt-5 space-y-3">
@@ -121,7 +121,7 @@ export default function HealingPage() {
             <Reveal delay={0.18}>
               <Link
                 href={`/healing/${guidedMeditation.slug}`}
-                className="group relative mt-10 grid overflow-hidden rounded-[2rem] border border-gold/25 bg-charcoal p-6 shadow-[0_32px_95px_-42px_rgba(107,11,11,0.7)] transition-all duration-500 hover:-translate-y-1 hover:border-gold/60 md:grid-cols-[0.85fr_1.15fr] md:p-8"
+                className="group relative mt-7 grid overflow-hidden rounded-2xl border border-gold/25 bg-charcoal p-4 shadow-[0_32px_95px_-42px_rgba(107,11,11,0.7)] transition-all duration-500 hover:-translate-y-1 hover:border-gold/60 sm:mt-10 sm:rounded-[2rem] sm:p-6 md:grid-cols-[0.85fr_1.15fr] md:p-8"
               >
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_24%_20%,rgba(221,184,41,0.22),transparent_32%),radial-gradient(circle_at_88%_14%,rgba(180,20,20,0.22),transparent_34%)]" />
                 <svg
@@ -138,7 +138,7 @@ export default function HealingPage() {
                   </g>
                 </svg>
 
-                <div className="relative min-h-[260px] overflow-hidden rounded-[1.5rem] ring-1 ring-gold/25">
+                <div className="relative min-h-[190px] overflow-hidden rounded-xl ring-1 ring-gold/25 sm:min-h-[260px] sm:rounded-[1.5rem]">
                   <div
                     className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 group-hover:scale-[1.06]"
                     style={{ backgroundImage: `url(${guidedMeditation.image})` }}
@@ -146,19 +146,19 @@ export default function HealingPage() {
                   <div className="absolute inset-0 bg-gradient-to-t from-charcoal/70 via-charcoal/10 to-transparent" />
                 </div>
 
-                <div className="relative z-10 mt-7 flex flex-col justify-center md:mt-0 md:px-8">
+                <div className="relative z-10 mt-5 flex flex-col justify-center sm:mt-7 md:mt-0 md:px-8">
                   <span className="eyebrow text-gold-light">Longer guided tab</span>
-                  <h3 className="mt-4 font-display text-3xl font-bold leading-tight text-white sm:text-4xl">
+                  <h3 className="mt-2.5 font-display text-2xl font-bold leading-tight text-white sm:mt-4 sm:text-4xl">
                     {guidedMeditation.title}
                   </h3>
-                  <div className="mt-5 flex flex-wrap items-center gap-3">
-                    {guidedMeditation.price ? <span className="font-display text-2xl font-bold text-gold-light">{formatINR(guidedMeditation.price)}</span> : null}
-                    {guidedMeditation.format ? <span className="rounded-full border border-gold/35 bg-white/10 px-3 py-1.5 text-xs font-semibold text-white/85">{guidedMeditation.format}</span> : null}
+                  <div className="mt-3 flex flex-wrap items-center gap-3 sm:mt-5">
+                    {guidedMeditation.price ? <span className="font-display text-xl font-bold text-gold-light sm:text-2xl">{formatINR(guidedMeditation.price)}</span> : null}
+                    {guidedMeditation.format ? <span className="rounded-full border border-gold/35 bg-white/10 px-3 py-1 text-xs font-semibold text-white/85 sm:py-1.5">{guidedMeditation.format}</span> : null}
                   </div>
-                  <p className="mt-5 max-w-2xl text-sm leading-relaxed text-white/70 sm:text-base">
+                  <p className="mt-3 max-w-2xl text-sm leading-relaxed text-white/70 sm:mt-5 sm:text-base">
                     {guidedMeditation.description}
                   </p>
-                  <ul className="mt-6 grid gap-3 sm:grid-cols-2">
+                  <ul className="mt-4 grid gap-2.5 sm:mt-6 sm:grid-cols-2 sm:gap-3">
                     {guidedMeditation.features.map((feature) => (
                       <li
                         key={feature}
@@ -171,7 +171,7 @@ export default function HealingPage() {
                       </li>
                     ))}
                   </ul>
-                  <span className="mt-8 inline-flex w-fit items-center gap-2 rounded-full bg-gold px-6 py-3 text-xs font-bold uppercase tracking-[0.16em] text-primary-deeper shadow-lg shadow-gold/20 transition-all duration-300 group-hover:bg-gold-light">
+                  <span className="mt-5 inline-flex min-h-11 w-fit items-center gap-2 rounded-full bg-gold px-5 py-2.5 text-xs font-bold uppercase tracking-[0.16em] text-primary-deeper shadow-lg shadow-gold/20 transition-all duration-300 group-hover:bg-gold-light sm:mt-8 sm:px-6 sm:py-3">
                     Explore guided meditation
                     <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
                   </span>

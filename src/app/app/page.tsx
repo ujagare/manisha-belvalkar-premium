@@ -29,11 +29,11 @@ export default function AppPage() {
         subtitle="A thoughtful space for daily guidance, healing practices and sacred wisdom, designed to stay close wherever life takes you."
       />
 
-      <section className="py-20 lg:py-28">
-        <div className="mx-auto max-w-6xl px-6 lg:px-10">
+      <section className="py-12 sm:py-20 lg:py-28">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-10">
           <Reveal>
-            <div className="mb-14 border-y border-primary/15 bg-white/55 px-5 py-6 text-center sm:px-8">
-              <p className="font-display text-2xl font-semibold text-charcoal sm:text-3xl">
+            <div className="mb-8 sm:mb-14 border-y border-primary/15 bg-white/55 px-4 py-5 text-center sm:px-8 sm:py-6">
+              <p className="font-display text-xl font-semibold text-charcoal sm:text-3xl">
                 We are preparing something meaningful.
               </p>
               <p className="mx-auto mt-2 max-w-2xl text-sm leading-6 text-warmgray sm:text-base">
@@ -42,22 +42,22 @@ export default function AppPage() {
             </div>
           </Reveal>
 
-          <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
+          <div className="grid gap-8 sm:gap-12 lg:grid-cols-2 lg:items-center">
             <Reveal direction="right">
-              <div className="gold-border-gradient mx-auto flex h-96 w-64 flex-col items-center justify-center rounded-[2.5rem] bg-charcoal p-8 shadow-2xl shadow-gold/10">
-                <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-gold/20 text-gold">
-                  <Smartphone className="h-8 w-8" />
+              <div className="gold-border-gradient mx-auto flex h-72 w-56 sm:h-96 sm:w-64 flex-col items-center justify-center rounded-[2rem] sm:rounded-[2.5rem] bg-charcoal p-6 sm:p-8 shadow-2xl shadow-gold/10">
+                <div className="mb-4 sm:mb-6 flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-full bg-gold/20 text-gold">
+                  <Smartphone className="h-7 w-7 sm:h-8 sm:w-8" />
                 </div>
                 <div className="text-center">
-                  <div className="font-display text-2xl font-bold text-white">
+                  <div className="font-display text-xl sm:text-2xl font-bold text-white">
                     {appName}
                   </div>
-                  <div className="mt-2 text-xs text-white/60">
+                  <div className="mt-1.5 sm:mt-2 text-xs text-white/60">
                     Coming soon to your app store
                   </div>
                 </div>
-                <div className="mt-8 h-px w-24 bg-gold/30" />
-                <div className="mt-6 space-y-3 text-center">
+                <div className="mt-6 sm:mt-8 h-px w-24 bg-gold/30" />
+                <div className="mt-4 sm:mt-6 space-y-3 text-center">
                   <div className="text-[0.6rem] uppercase tracking-[0.25em] text-gold">
                     Guidance · Healing · Wisdom
                   </div>
@@ -71,9 +71,9 @@ export default function AppPage() {
                 title="Everything you need, beautifully together"
                 align="left"
               />
-              <ul className="mt-8 space-y-4">
+              <ul className="mt-6 sm:mt-8 space-y-3.5 sm:space-y-4">
                 {appFeatures.map((f) => (
-                  <li key={f.title} className="flex items-start gap-4">
+                  <li key={f.title} className="flex items-start gap-3 sm:gap-4">
                     <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary-soft text-primary">
                       <Check className="h-4 w-4" />
                     </span>
@@ -84,7 +84,7 @@ export default function AppPage() {
                   </li>
                 ))}
               </ul>
-              <div className="mt-9">
+              <div className="mt-7 sm:mt-9">
                 <Button href={brand.whatsappHref} size="lg" variant="gold">
                   Get notified on launch
                 </Button>

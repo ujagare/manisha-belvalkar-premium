@@ -71,14 +71,14 @@ export default function AuthShell({
           </div>
         </div>
 
-        <div className="relative flex items-center justify-center overflow-hidden px-4 py-8 pb-24 sm:px-10 sm:py-14 lg:px-14 lg:pb-14 xl:px-20">
+        <div className="relative flex items-center justify-center overflow-hidden px-4 py-6 pb-24 sm:px-10 sm:py-14 lg:px-14 lg:pb-14 xl:px-20">
           <div className="pointer-events-none absolute -right-24 top-20 h-72 w-72 rounded-full border border-gold/10" aria-hidden="true" />
           <div className="pointer-events-none absolute -right-8 top-36 h-40 w-40 rounded-full border border-gold/10" aria-hidden="true" />
 
           <div className="w-full max-w-[34rem]">
             <Link
               href="/"
-              className="mb-7 inline-flex items-center gap-3 text-white lg:hidden"
+              className="mb-5 sm:mb-7 inline-flex items-center gap-3 text-white lg:hidden"
               aria-label="Manisha Belvalkar home"
             >
               <Image
@@ -86,24 +86,24 @@ export default function AuthShell({
                 alt="Manisha Belvalkar logo"
                 width={44}
                 height={44}
-                className="h-11 w-11 rounded-full object-cover ring-1 ring-gold/40"
+                className="h-10 w-10 sm:h-11 sm:w-11 rounded-full object-cover ring-1 ring-gold/40"
               />
-              <span className="font-display text-lg font-bold tracking-tight">
+              <span className="font-display text-base sm:text-lg font-bold tracking-tight">
                 Manisha <span className="font-serif italic text-gold">Belvalkar</span>
               </span>
             </Link>
 
-            <div className="rounded-[2.25rem] bg-white/8 p-1.5 ring-1 ring-white/10 shadow-[0_30px_90px_rgba(0,0,0,0.26)]">
-              <div className="relative overflow-hidden rounded-[1.9rem] bg-[#fffaf2] px-6 py-8 shadow-[inset_0_1px_0_rgba(255,255,255,1)] sm:px-10 sm:py-10">
-                <div className="absolute right-0 top-0 h-24 w-24 rounded-bl-[5rem] bg-gold-soft/70" aria-hidden="true" />
-                <div className="relative mb-8">
-                  <div className="mb-5 inline-flex rounded-full bg-primary-soft px-3 py-1.5 text-[0.62rem] font-bold uppercase tracking-[0.2em] text-primary">
+            <div className="rounded-[1.75rem] sm:rounded-[2.25rem] bg-white/8 p-1.5 ring-1 ring-white/10 shadow-[0_30px_90px_rgba(0,0,0,0.26)]">
+              <div className="relative overflow-hidden rounded-[1.45rem] sm:rounded-[1.9rem] bg-[#fffaf2] px-5 py-6 sm:px-10 sm:py-10 shadow-[inset_0_1px_0_rgba(255,255,255,1)]">
+                <div className="absolute right-0 top-0 h-20 w-20 sm:h-24 sm:w-24 rounded-bl-[4rem] sm:rounded-bl-[5rem] bg-gold-soft/70" aria-hidden="true" />
+                <div className="relative mb-6 sm:mb-8">
+                  <div className="mb-3.5 sm:mb-5 inline-flex rounded-full bg-primary-soft px-3 py-1.5 text-[0.62rem] font-bold uppercase tracking-[0.2em] text-primary">
                     Private member access
                   </div>
-                  <h1 className="font-display text-[2.6rem] font-bold leading-[1.02] tracking-[-0.045em] text-charcoal sm:text-[3.25rem]">
+                  <h1 className="font-display text-[2rem] font-bold leading-[1.06] tracking-[-0.04em] text-charcoal sm:text-[3.25rem]">
                     {title}
                   </h1>
-                  <p className="mt-4 max-w-md text-[0.92rem] leading-6 text-warmgray">{subtitle}</p>
+                  <p className="mt-3 sm:mt-4 max-w-md text-sm sm:text-[0.92rem] leading-6 text-warmgray">{subtitle}</p>
                 </div>
 
                 {children}

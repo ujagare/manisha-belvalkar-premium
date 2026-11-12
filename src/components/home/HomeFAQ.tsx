@@ -43,7 +43,7 @@ const faqSchema = {
 
 export default function HomeFAQ() {
   return (
-    <section className="relative overflow-hidden bg-[#211815] py-24 text-white lg:py-32">
+    <section className="relative overflow-hidden bg-[#211815] py-12 sm:py-20 lg:py-32 text-white">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
@@ -57,29 +57,29 @@ export default function HomeFAQ() {
       <div className="absolute inset-0 bg-[linear-gradient(115deg,rgba(28,25,23,0.98)_0%,rgba(44,28,24,0.92)_46%,rgba(107,11,11,0.72)_100%)]" />
       <div className="absolute left-0 top-0 h-px w-full bg-gradient-to-r from-transparent via-gold/60 to-transparent" />
 
-      <div className="relative mx-auto max-w-7xl px-6 lg:px-10">
-        <div className="grid gap-12 lg:grid-cols-[0.82fr_1.18fr] lg:items-start lg:gap-16">
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
+        <div className="grid gap-8 sm:gap-12 lg:grid-cols-[0.82fr_1.18fr] lg:items-start lg:gap-16">
           <Reveal>
             <div className="lg:sticky lg:top-28">
               <div>
-                <div className="eyebrow mb-5 flex items-center gap-4 text-gold-light">
-                  <span className="hairline-gold w-10" />
+                <div className="eyebrow mb-3 sm:mb-5 flex items-center gap-3 sm:gap-4 text-gold-light">
+                  <span className="hairline-gold w-8 sm:w-10" />
                   Premium FAQ
                 </div>
-                <h2 className="font-display text-4xl font-bold leading-[1.04] text-white sm:text-5xl lg:text-6xl">
+                <h2 className="font-display text-[1.85rem] font-bold leading-[1.08] text-white sm:text-5xl lg:text-6xl">
                   Before you begin,{" "}
                   <span className="text-gold-shimmer">feel clear</span>
                 </h2>
-                <p className="mt-6 max-w-xl text-base leading-relaxed text-white/68 sm:text-lg">
+                <p className="mt-3 sm:mt-6 max-w-xl text-sm sm:text-base lg:text-lg leading-relaxed text-white/68">
                   A refined guide to sessions, online bookings, gifts and sacred
                   tools before you choose your next step.
                 </p>
               </div>
 
-              <div className="mt-10 overflow-hidden rounded-[2rem] border border-gold/25 bg-white/[0.08] shadow-[0_35px_90px_-45px_rgba(0,0,0,0.75)] backdrop-blur-xl">
-                <div className="relative min-h-[320px] bg-cover bg-center" style={{ backgroundImage: "url(/images/healing-candle-therapy.webp)" }}>
+              <div className="mt-6 sm:mt-10 overflow-hidden rounded-2xl sm:rounded-[2rem] border border-gold/25 bg-white/[0.08] shadow-[0_35px_90px_-45px_rgba(0,0,0,0.75)] backdrop-blur-xl">
+                <div className="relative min-h-[210px] sm:min-h-[320px] bg-cover bg-center" style={{ backgroundImage: "url(/images/healing-candle-therapy.webp)" }}>
                   <div className="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/45 to-transparent" />
-                  <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-7">
+                  <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-7">
                     <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-gold-light backdrop-blur-md">
                       <Moon className="h-4 w-4" />
                       Gentle first step
@@ -127,7 +127,7 @@ export default function HomeFAQ() {
 
             {faqs.map((item, index) => (
               <Reveal key={item.question} delay={index * 0.07}>
-                <article className="group grid gap-4 border-b border-white/10 px-5 py-6 transition-colors duration-300 last:border-b-0 hover:bg-white/[0.045] sm:grid-cols-[4.5rem_1fr] sm:gap-6 sm:px-7 sm:py-7">
+                <article className="group grid gap-2 sm:gap-6 border-b border-white/10 px-4 py-4 sm:px-7 sm:py-7 transition-colors duration-300 last:border-b-0 hover:bg-white/[0.045] sm:grid-cols-[4.5rem_1fr]">
                   <div className="flex items-center gap-3 sm:block">
                     <span className="font-display text-3xl font-bold text-gold/80 sm:text-4xl">
                       {String(index + 1).padStart(2, "0")}

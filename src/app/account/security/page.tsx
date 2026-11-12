@@ -6,5 +6,5 @@ export const metadata: Metadata = { title: "Account Security", robots: { index: 
 
 export default async function AccountSecurityPage() {
   await requireUser("/account/security");
-  return <section className="bg-ivory px-6 pb-24 pt-36"><div className="mx-auto max-w-2xl"><p className="eyebrow text-gold-dark">Account security</p><h1 className="mt-4 mb-9 font-display text-5xl font-bold text-charcoal">Two-step verification</h1><MfaSetup /></div></section>;
+  return <section className="bg-ivory px-4 sm:px-6 pb-24 pt-20 sm:pt-36"><div className="mx-auto max-w-2xl"><p className="eyebrow text-gold-dark">Account security</p><h1 className="mt-3 sm:mt-4 mb-6 sm:mb-9 font-display text-3xl sm:text-5xl font-bold text-charcoal">Two-step verification</h1><MfaSetup /></div></section>;
 }

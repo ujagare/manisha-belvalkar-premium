@@ -82,48 +82,48 @@ export default async function ServiceDetailPage({ params }: Props) {
         items={submenuItems}
         label="Services"
       />
-      <section className="relative overflow-hidden bg-ivory pb-16 pt-32 lg:pb-20 lg:pt-40">
+      <section className="relative overflow-hidden bg-ivory pb-10 pt-20 sm:pb-16 sm:pt-28 lg:pb-20 lg:pt-36">
         <div className="glow-gold absolute -right-32 -top-32 h-[400px] w-[400px]" />
-        <div className="relative mx-auto max-w-7xl px-6 lg:px-10">
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
           <Reveal>
             <Link
               href="/services"
-              className="inline-flex items-center gap-2 text-sm font-medium text-warmgray transition-colors hover:text-primary"
+              className="inline-flex min-h-10 items-center gap-2 text-sm font-medium text-warmgray transition-colors hover:text-primary"
             >
               <ArrowLeft className="h-4 w-4" />
               All services
             </Link>
           </Reveal>
 
-          <div className="mt-10 grid items-center gap-14 lg:grid-cols-2">
+          <div className="mt-5 grid items-center gap-7 sm:mt-10 sm:gap-12 lg:grid-cols-2 lg:gap-14">
             <div>
               <Reveal>
-                <div className="eyebrow mb-4 text-gold-dark">
+                <div className="eyebrow mb-2.5 text-gold-dark sm:mb-4">
                   {service.category.replace("-", " ")}
                 </div>
-                <h1 className="font-display text-5xl font-bold leading-[1.05] tracking-tight text-charcoal sm:text-6xl">
+                <h1 className="font-display text-[1.95rem] font-bold leading-[1.08] tracking-tight text-charcoal sm:text-5xl lg:text-6xl">
                   {service.title}
                 </h1>
               </Reveal>
               <Reveal delay={0.1}>
-                <p className="mt-6 text-lg leading-relaxed text-warmgray">
+                <p className="mt-4 text-base leading-relaxed text-warmgray sm:mt-6 sm:text-lg">
                   {service.description}
                 </p>
               </Reveal>
 
               <Reveal delay={0.2}>
-                <div className="mt-8 flex flex-wrap items-center gap-6">
+                <div className="mt-5 flex flex-wrap items-center gap-3 sm:mt-8 sm:gap-6">
                   <div className="flex items-center gap-2 text-sm text-warmgray">
                     <Clock className="h-4 w-4 text-gold" />
                     {service.duration}
                   </div>
                   {service.badge ? (
-                    <span className="rounded-full bg-gold-soft px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-gold-deep">
+                    <span className="rounded-full bg-gold-soft px-3.5 py-1 text-xs font-bold uppercase tracking-widest text-gold-deep sm:px-4 sm:py-1.5">
                       {service.badge}
                     </span>
                   ) : null}
                   {service.mostBooked ? (
-                    <span className="rounded-full bg-primary-soft px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-primary">
+                    <span className="rounded-full bg-primary-soft px-3.5 py-1 text-xs font-bold uppercase tracking-widest text-primary sm:px-4 sm:py-1.5">
                       Most Booked
                     </span>
                   ) : null}
@@ -131,16 +131,16 @@ export default async function ServiceDetailPage({ params }: Props) {
               </Reveal>
 
               <Reveal delay={0.3}>
-                <div className="mt-8 flex items-baseline gap-3">
+                <div className="mt-5 flex items-baseline gap-2.5 sm:mt-8 sm:gap-3">
                   {service.price > 0 ? (
                     <>
-                      <span className="font-display text-5xl font-bold text-primary">
+                      <span className="font-display text-3xl font-bold text-primary sm:text-5xl">
                         {formatINR(service.price)}
                       </span>
                       <span className="text-sm text-warmgray">/ session</span>
                     </>
                   ) : (
-                    <span className="font-display text-3xl font-bold text-primary">
+                    <span className="font-display text-2xl font-bold text-primary sm:text-3xl">
                       By Appointment
                     </span>
                   )}
@@ -148,7 +148,7 @@ export default async function ServiceDetailPage({ params }: Props) {
               </Reveal>
 
               <Reveal delay={0.4}>
-                <div className="mt-8 flex flex-wrap gap-4">
+                <div className="mt-6 flex flex-wrap gap-3 sm:mt-8 sm:gap-4">
                   <Button href={`/checkout/service/${service.slug}`} size="lg" variant="gold">
                     <Calendar className="h-4 w-4" />
                     Book this session
@@ -161,13 +161,13 @@ export default async function ServiceDetailPage({ params }: Props) {
             </div>
 
             <Reveal direction="left" delay={0.15}>
-              <div className="gold-border-gradient relative overflow-hidden rounded-[28px]">
+              <div className="gold-border-gradient relative overflow-hidden rounded-2xl sm:rounded-[28px]">
                 <Image
                   src={service.image}
                   alt={service.title}
                   width={900}
                   height={1000}
-                  className="h-[480px] w-full object-cover"
+                  className="h-64 w-full object-cover sm:h-96 lg:h-[480px]"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-charcoal/40 to-transparent" />
               </div>
@@ -177,24 +177,24 @@ export default async function ServiceDetailPage({ params }: Props) {
       </section>
 
       {/* What's included */}
-      <section className="py-20 lg:py-28">
-        <div className="mx-auto max-w-7xl px-6 lg:px-10">
-          <div className="grid gap-14 lg:grid-cols-5 lg:gap-20">
+      <section className="py-12 sm:py-20 lg:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
+          <div className="grid gap-7 sm:gap-12 lg:grid-cols-5 lg:gap-20">
             <Reveal className="lg:col-span-2">
-              <h2 className="font-display text-4xl font-bold leading-tight text-charcoal">
+              <h2 className="font-display text-2xl font-bold leading-tight text-charcoal sm:text-4xl">
                 What&apos;s <span className="text-crimson-gradient">included</span>
               </h2>
-              <p className="mt-4 leading-relaxed text-warmgray">
+              <p className="mt-3 text-sm leading-relaxed text-warmgray sm:mt-4 sm:text-base">
                 Every session is deeply personal, drawing on over 30 years of
                 practice to meet you exactly where you are.
               </p>
             </Reveal>
             <Reveal delay={0.1} className="lg:col-span-3">
-              <ul className="grid gap-4 sm:grid-cols-2">
+              <ul className="grid gap-3 sm:grid-cols-2 sm:gap-4">
                 {service.features.map((feature) => (
                   <li
                     key={feature}
-                    className="group flex items-start gap-3 rounded-[20px] border border-parchment bg-gradient-to-b from-white to-cream/70 p-5 shadow-[0_6px_24px_-16px_rgba(28,25,23,0.18)] transition-all duration-500 hover:-translate-y-0.5 hover:border-gold/50 hover:shadow-[0_18px_40px_-24px_rgba(221,184,41,0.4)]"
+                    className="group flex items-start gap-3 rounded-2xl border border-parchment bg-gradient-to-b from-white to-cream/70 p-4 shadow-[0_6px_24px_-16px_rgba(28,25,23,0.18)] transition-all duration-500 hover:-translate-y-0.5 hover:border-gold/50 hover:shadow-[0_18px_40px_-24px_rgba(221,184,41,0.4)] sm:rounded-[20px] sm:p-5"
                   >
                     <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-gold to-gold-dark shadow-sm shadow-gold/40">
                       <Check className="h-3.5 w-3.5 text-primary-deeper" strokeWidth={3} />
@@ -213,14 +213,14 @@ export default async function ServiceDetailPage({ params }: Props) {
       <GoldDivider />
 
       {/* Other services */}
-      <section className="py-20 lg:py-28">
-        <div className="mx-auto max-w-7xl px-6 lg:px-10">
-          <Reveal className="mb-12 text-center">
-            <h2 className="font-display text-4xl font-bold text-charcoal">
+      <section className="py-12 sm:py-20 lg:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
+          <Reveal className="mb-7 text-center sm:mb-12">
+            <h2 className="font-display text-2xl font-bold text-charcoal sm:text-4xl">
               Explore more <span className="text-gold">offerings</span>
             </h2>
           </Reveal>
-          <div className="grid gap-7 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-5 sm:gap-7 md:grid-cols-2 lg:grid-cols-3">
             {others.map((service, i) => (
               <Reveal key={service.slug} delay={i * 0.1}>
                 <ServiceCard service={service} compact />
