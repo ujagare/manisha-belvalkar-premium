@@ -7,6 +7,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import type { OrderItemType } from "@/lib/supabase/database.types";
 import { isSameOriginRequest } from "@/lib/security";
+import { calculateGstBreakdown } from "@/lib/gst";
 
 export const runtime = "nodejs";
 
@@ -118,6 +119,56 @@ export async function POST(request: Request) {
       return apiError("BAD_REQUEST", "Phone number and learning goals are required for course enrollment.", 422);
     }
 
+    // Check duplicate course enrollments for signed-in users
+    if (user && requestedItems.some((item) => item.type === "course")) {
+      const courseItems = requestedItems.filter((i) => i.type === "course");
+      for (const cItem of courseItems) {
+        const { data: existingEnrollment } = await admin
+          .from("course_enrollments")
+          .select("id")
+          .eq("user_id", user.id)
+          .eq("course_slug", cItem.slug)
+          .eq("status", "active")
+          .maybeSingle();
+
+        if (existingEnrollment) {
+          return apiError("CONFLICT", `You are already enrolled in this course (${cItem.slug}).`, 409);
+        }
+      }
+    }
+
+    // Check stock availability for physical products
+    const productItems = requestedItems.filter((i) => i.type === "product");
+    const matchedVariants: Array<{ variantId: string; quantity: number }> = [];
+
+    if (productItems.length > 0) {
+      for (const pItem of productItems) {
+        const { data: prod } = await admin.from("products").select("id,title").eq("slug", pItem.slug).maybeSingle();
+        if (prod) {
+          const { data: variant } = await admin
+            .from("product_variants")
+            .select("id,stock_on_hand,reserved_stock")
+            .eq("product_id", prod.id)
+            .eq("is_active", true)
+            .order("created_at", { ascending: true })
+            .limit(1)
+            .maybeSingle();
+
+          if (variant) {
+            const availableStock = variant.stock_on_hand - variant.reserved_stock;
+            if (availableStock < pItem.quantity) {
+              return apiError(
+                "CONFLICT",
+                `"${prod.title}" is out of stock or only ${Math.max(0, availableStock)} item(s) left.`,
+                409
+              );
+            }
+            matchedVariants.push({ variantId: variant.id, quantity: pItem.quantity });
+          }
+        }
+      }
+    }
+
     let existingQuery = admin
       .from("orders")
       .select("id,gateway_order_id,amount_subunits,currency")
@@ -135,6 +186,27 @@ export async function POST(request: Request) {
       });
     }
 
+    // Determine customer state for GST (CGST+SGST for Maharashtra, IGST for others)
+    let customerState: string | null = null;
+    if (pendingAddress?.state) {
+      customerState = pendingAddress.state;
+    } else if (addressId) {
+      const { data: addr } = await admin.from("addresses").select("state").eq("id", addressId).maybeSingle();
+      if (addr?.state) customerState = addr.state;
+    }
+
+    const itemTaxBreakdowns = resolved.map(({ requested, item }) => {
+      const lineTotalSubunits = Math.round(item!.price! * 100) * requested.quantity;
+      const breakdown = calculateGstBreakdown(item!.type, item!.slug, lineTotalSubunits, customerState);
+      return { requested, item: item!, breakdown, lineTotalSubunits };
+    });
+
+    const subtotalSubunits = itemTaxBreakdowns.reduce((sum, b) => sum + b.breakdown.taxableSubunits, 0);
+    const taxSubunits = itemTaxBreakdowns.reduce((sum, b) => sum + b.breakdown.taxSubunits, 0);
+    const cgstSubunits = itemTaxBreakdowns.reduce((sum, b) => sum + b.breakdown.cgstSubunits, 0);
+    const sgstSubunits = itemTaxBreakdowns.reduce((sum, b) => sum + b.breakdown.sgstSubunits, 0);
+    const igstSubunits = itemTaxBreakdowns.reduce((sum, b) => sum + b.breakdown.igstSubunits, 0);
+
     const { data: order, error: orderError } = await admin
       .from("orders")
       .insert({
@@ -146,6 +218,11 @@ export async function POST(request: Request) {
         item_title: orderTitle,
         amount: amountSubunits / 100,
         amount_subunits: amountSubunits,
+        subtotal_subunits: subtotalSubunits,
+        tax_subunits: taxSubunits,
+        cgst_subunits: cgstSubunits,
+        sgst_subunits: sgstSubunits,
+        igst_subunits: igstSubunits,
         currency: "INR",
         status: "pending",
         payment_status: "created",
@@ -156,16 +233,53 @@ export async function POST(request: Request) {
       .single();
     if (orderError || !order) throw new Error(`Order insert failed: ${orderError?.message ?? "unknown"}`);
 
-    const { error: itemsError } = await admin.from("order_items").insert(resolved.map(({ requested, item }) => ({
+    const { error: itemsError } = await admin.from("order_items").insert(itemTaxBreakdowns.map(({ requested, item, breakdown }) => ({
       order_id: order.id,
-      item_type: item!.type,
-      item_slug: item!.slug,
-      title: item!.title,
+      item_type: item.type,
+      item_slug: item.slug,
+      title: item.title,
       quantity: requested.quantity,
-      unit_amount_subunits: Math.round(item!.price! * 100),
-      metadata: item!.type === "course" && customerDetails ? customerDetails : {},
+      unit_amount_subunits: Math.round(item.price! * 100),
+      hsn_sac_code: breakdown.hsnSacCode,
+      tax_rate: breakdown.taxRatePercent,
+      tax_subunits: breakdown.taxSubunits,
+      metadata: item.type === "course" && customerDetails ? customerDetails : {},
     })));
     if (itemsError) throw new Error(`Order items insert failed: ${itemsError.message}`);
+
+    // Reserve inventory for products. The ledger row goes in first so the
+    // unique index on (order_id, variant_id, reason) makes the reservation
+    // idempotent — a retried create-order with the same idempotency key cannot
+    // reserve the same units twice.
+    for (const matched of matchedVariants) {
+      const { error: reserveError } = await admin.from("inventory_movements").insert({
+        variant_id: matched.variantId,
+        order_id: order.id,
+        quantity_delta: -matched.quantity,
+        reason: "reserve",
+        note: `Reserved ${matched.quantity} unit(s) for checkout order ${order.id.slice(0, 8)}`,
+      });
+      if (reserveError) {
+        if (reserveError.code !== "23505") console.error("[checkout:reserve]", reserveError);
+        continue;
+      }
+
+      const { data: currentVar } = await admin
+        .from("product_variants")
+        .select("reserved_stock")
+        .eq("id", matched.variantId)
+        .maybeSingle();
+
+      if (currentVar) {
+        await admin
+          .from("product_variants")
+          .update({
+            reserved_stock: currentVar.reserved_stock + matched.quantity,
+            updated_at: new Date().toISOString(),
+          })
+          .eq("id", matched.variantId);
+      }
+    }
 
     const gatewayOrder = await createRazorpayOrder({
       amount: amountSubunits,

@@ -130,7 +130,8 @@ export async function POST(request: Request) {
     .single();
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    console.error("[orders:create]", error);
+    return NextResponse.json({ error: "Could not create order. Please try again." }, { status: 500 });
   }
 
   const { error: itemError } = await admin.from("order_items").insert({

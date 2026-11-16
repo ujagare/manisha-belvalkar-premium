@@ -14,3 +14,24 @@ export function courseLessonCount(course: Course): number {
 export function findLesson(course: Course, lessonId: string): CourseLesson | undefined {
   return flattenLessons(course).find((l) => l.id === lessonId);
 }
+
+/**
+ * The course shape that may be handed to the client player.
+ *
+ * The whole course object is serialised into the RSC payload, so without this
+ * a preview visitor would receive the `videoUrl` of every paid lesson. Lesson
+ * titles, durations and ordering are always safe to send; the media URL is only
+ * kept for lessons the viewer is actually entitled to play.
+ */
+export function courseForViewer(course: Course, hasFullAccess: boolean): Course {
+  if (hasFullAccess || !course.curriculum) return course;
+  return {
+    ...course,
+    curriculum: course.curriculum.map((module) => ({
+      ...module,
+      lessons: module.lessons.map((lesson) =>
+        lesson.free ? lesson : { ...lesson, videoUrl: undefined },
+      ),
+    })),
+  };
+}

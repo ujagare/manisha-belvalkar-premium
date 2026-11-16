@@ -51,6 +51,29 @@ export async function fetchRazorpayPayment(paymentId: string) {
   };
 }
 
+export async function createRazorpayRefund(paymentId: string, input?: {
+  amount?: number;
+  notes?: Record<string, string>;
+  receipt?: string;
+}) {
+  const { keyId, keySecret } = credentials();
+  const response = await fetch(`${API}/payments/${encodeURIComponent(paymentId)}/refund`, {
+    method: "POST",
+    headers: {
+      Authorization: `Basic ${Buffer.from(`${keyId}:${keySecret}`).toString("base64")}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(input ?? {}),
+    signal: AbortSignal.timeout(10_000),
+    cache: "no-store",
+  });
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Razorpay refund failed (${response.status}): ${errorText}`);
+  }
+  return (await response.json()) as { id: string; amount: number; currency: string; status: string; payment_id: string };
+}
+
 export function verifyCheckoutSignature(orderId: string, paymentId: string, signature: string) {
   const secret = credentials().keySecret;
   const expected = createHmac("sha256", secret).update(`${orderId}|${paymentId}`).digest("hex");

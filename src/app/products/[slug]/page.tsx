@@ -15,6 +15,7 @@ import {
   Wand2,
 } from "lucide-react";
 import { formatINR } from "@/lib/utils";
+import { metaDescription } from "@/lib/seo";
 import { getProducts, getProductBySlug } from "@/lib/supabase/products";
 import Reveal from "@/components/ui/Reveal";
 import Button from "@/components/ui/Button";
@@ -37,8 +38,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const product = await getProductBySlug(slug);
   if (!product) return { title: "Shop item not found" };
   return {
-    title: `${product.title} - Shop`,
-    description: product.description,
+    title: product.seoTitle ?? `${product.title} - Shop`,
+    description: metaDescription(product.seoDescription ?? product.description),
     alternates: { canonical: `/products/${product.slug}` },
     openGraph: {
       type: "website",

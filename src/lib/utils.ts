@@ -17,3 +17,19 @@ export function slugify(text: string): string {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/(^-|-$)/g, "");
 }
+
+/**
+ * Escape a value for safe interpolation into HTML.
+ *
+ * Use for EVERY user- or order-supplied value rendered into a hand-built HTML
+ * string (invoice pages, email templates). Names and addresses reach these
+ * templates straight from checkout, so an unescaped value is stored XSS.
+ */
+export function escapeHtml(value: unknown): string {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}

@@ -4,7 +4,19 @@
    as typed data so components stay presentational.
    ============================================================ */
 
-export interface Service {
+/**
+ * Optional metadata overrides. Read only by `generateMetadata` — components
+ * never render these — so a page title or description can be tuned for search
+ * results without changing the copy shown in the UI.
+ */
+export interface SeoOverrides {
+  /** Page title, authored without the brand suffix (see src/lib/seo.ts). */
+  seoTitle?: string;
+  /** Meta description, ideally 120-158 characters. */
+  seoDescription?: string;
+}
+
+export interface Service extends SeoOverrides {
   slug: string;
   title: string;
   category: "tarot" | "wellbeing";
@@ -35,7 +47,7 @@ export interface CourseModule {
   lessons: CourseLesson[];
 }
 
-export interface Course {
+export interface Course extends SeoOverrides {
   slug: string;
   title: string;
   duration: string;
@@ -52,7 +64,7 @@ export interface Course {
 
 export type ProductCategory = "book" | "oracle" | "ritual";
 
-export interface Product {
+export interface Product extends SeoOverrides {
   slug: string;
   title: string;
   subtitle: string;
@@ -321,6 +333,7 @@ export const services: Service[] = [
   {
     slug: "soul-purpose-reading",
     title: "Soul Purpose Reading",
+    seoTitle: "Soul Purpose Reading Session",
     category: "tarot",
     short:
       "Discover the higher purpose of your journey through a profound Tarot session.",
@@ -339,6 +352,7 @@ export const services: Service[] = [
   {
     slug: "tarot-consultation-30",
     title: "Tarot Consultation",
+    seoTitle: "Tarot Consultation — 30 Minutes",
     category: "tarot",
     short:
       "Quick, actionable insights into your current challenges and decisions.",
@@ -356,6 +370,7 @@ export const services: Service[] = [
   {
     slug: "tarot-consultation-60",
     title: "Tarot Consultation",
+    seoTitle: "Tarot Consultation — 60 Minutes",
     category: "tarot",
     short: "A deeper exploration of multiple aspects of your life's questions.",
     description:
@@ -421,6 +436,8 @@ export const courses: Course[] = [
     ],
     description:
       "A structured live online course designed to help you understand Tarot deeply, read with confidence and develop the practical skills needed to guide clients professionally.",
+    seoDescription:
+      "The Professional Tarot Reader course is a structured live online training in card meanings, spreads and ethical client guidance, from beginner to advanced.",
     highlights: [
       "Learn Tarot foundations, symbols and card meanings",
       "Build confident and ethical reading skills",
@@ -441,6 +458,8 @@ export const courses: Course[] = [
     price: 24999,
     description:
       "A sacred journey of invoking Goddess Mahalakshmi and receiving her blessings for abundance, beauty, harmony, and grace. Once you enrol, the most suitable day to begin is decided on the basis of your intent and energy design. Every day you receive instructions in the form of voice notes, texts, and images.",
+    seoDescription:
+      "The Aishwarya Siddhi course is a guided online sadhana for invoking Goddess Mahalakshmi, with daily voice notes, texts and images for abundance and grace.",
     highlights: [
       "Guided online practice delivered through WhatsApp",
       "Remedies and rituals to tap into Goddess Lakshmi's abundance",
@@ -487,6 +506,8 @@ export const courses: Course[] = [
     price: 1200000,
     description:
       "An online course for opening the door to material and spiritual success. Discover the Mysteries of Shri Vidya — a profound journey designed to gently take you on the sacred path of Shri Vidya, connecting with the Sri Yantra as a living presence and the Goddess Tripura Sundari.",
+    seoDescription:
+      "The Shri Vidya course is an online journey into the Sri Yantra and Goddess Tripura Sundari, opening the door to material and spiritual growth.",
     highlights: [
       "Understanding Sri Vidya",
       "Deepening Your Connection with Goddess Tripura Sundari",
@@ -525,6 +546,8 @@ export const courses: Course[] = [
     price: 900000,
     description:
       "A two-year immersive program that takes you on a deep journey through the chakras to explore their energy, function, and role in healing and spiritual awakening. With a special focus on kundalini movement, the course includes hands-on exercises, energy healing, and in-depth exploration of each chakra.",
+    seoDescription:
+      "The Advanced Chakra course is a two-year immersive program exploring each chakra, kundalini movement, hands-on exercises and energy healing.",
     highlights: [
       "In-Depth Exploration: a profound understanding of each chakra",
       "Kundalini Activation: awaken spiritual energy for accelerated growth",
@@ -545,6 +568,8 @@ export const courses: Course[] = [
     price: 600000,
     description:
       "A deeply personalized journey to help you heal, grow, and thrive. Designed around your unique mental, energetic, and emotional blueprint, it empowers you to navigate life with confidence and positivity through ancient wisdom, practical tools, and modern insights.",
+    seoDescription:
+      "This Personalized Well-being course is built around your mental, energetic and emotional blueprint, with live online sessions and WhatsApp support.",
     highlights: [
       "Live online sessions through Zoom",
       "WhatsApp support with replies within 24 hours",
@@ -563,10 +588,13 @@ export const courses: Course[] = [
   {
     slug: "soul-purpose-reading-course",
     title: "Soul Purpose Reading",
+    seoTitle: "Online Soul Purpose Reading Course",
     duration: "Online reading · 3-day preparation",
     price: 99000,
     description:
       "A deeply prepared Soul Purpose Reading shaped around your birth details and personal questions, offering reflective guidance on your path, purpose and next steps.",
+    seoDescription:
+      "The Soul Purpose Reading course is an online reading prepared from your birth details and questions, with three days of preparation before your session.",
     highlights: [
       "Date, time and place of birth required",
       "Submit your questions before the reading begins",
@@ -587,10 +615,13 @@ export const products: Product[] = [
   {
     slug: "shakti-oracle-deck",
     title: "Card Deck",
+    seoTitle: "Shakti Oracle Deck — 52 Goddess Cards",
     subtitle: "SHAKTI Oracle Deck",
     category: "oracle",
     description:
       "Inspired by the sacred 51 Shakti Peethas, the Shakti Oracle Cards are a powerful tool for connecting with the divine feminine. Created from Dr. Manisha S. Belvalkar's profound experiences and meditations with the Goddesses, this beautifully illustrated deck offers daily guidance, positivity, and spiritual insights.",
+    seoDescription:
+      "The Shakti Oracle Deck holds 52 illustrated cards inspired by the 51 Shakti Peethas, with a booklet and box set for daily divine feminine guidance.",
     price: 1899,
     badge: "Best Seller",
     image: "/images/shakti-cards-and-book.webp",
@@ -622,10 +653,13 @@ export const products: Product[] = [
   {
     slug: "shakti-combo-pack",
     title: "Discounted Deck",
+    seoTitle: "Shakti Oracle Combo Pack — Deck & Book",
     subtitle: "Special price on the SHAKTI deck set",
     category: "oracle",
     description:
       "Gift the divine — the SHAKTI Oracle Deck and guidebook presented together as one sacred combo, handcrafted with intention and blessed before it reaches your altar. A complete spiritual toolkit for daily guidance.",
+    seoDescription:
+      "The Shakti Oracle combo pack brings the illustrated 52-card deck and guidebook together, handcrafted with intention and blessed before it reaches your altar.",
     price: 2993,
     badge: "Sacred Combo",
     image: "/images/shakti-cards-and-book.webp",
@@ -639,10 +673,13 @@ export const products: Product[] = [
   {
     slug: "sacred-salt-frame",
     title: "Magic Salt",
+    seoTitle: "Himalayan Salt Frame for Space Clearing",
     subtitle: "Cleanse your space with Himalayan crystal salt",
     category: "ritual",
     description:
       "A handcrafted Himalayan crystal salt frame infused with intention — a living tool for space clearing, protection and gentle energy cleansing. Place it near your entrance, altar or meditation corner to hold your space calm, clear and protected.",
+    seoDescription:
+      "A handcrafted Himalayan salt frame for space clearing, protection and gentle energy cleansing, placed at your entrance, altar or meditation corner.",
     price: 699,
     badge: "Handcrafted",
     image: "/images/magic-salt.png",
@@ -935,7 +972,7 @@ export const shaktiPillars: ShaktiPillar[] = [
 ];
 
 /* ---------- Mentoring ---------- */
-export interface MentoringArea {
+export interface MentoringArea extends SeoOverrides {
   slug: string;
   title: string;
   short: string;
@@ -1032,6 +1069,8 @@ export const mentoringAreas: MentoringArea[] = [
   {
     slug: "tarot-mentoring",
     title: "Mentoring through Tarot",
+    seoDescription:
+      "Mentoring through Tarot with Dr. Manisha Belvalkar — a reflective space to understand your patterns, relationships and decisions, and choose with clarity.",
     short: "Use Tarot as a premium mirror for self-understanding and conscious choice.",
     description:
       "A focused mentoring experience where Tarot becomes a reflective language for your inner world. Understand patterns, relationships, decisions and the deeper energy behind your current questions.",
@@ -1046,6 +1085,9 @@ export const mentoringAreas: MentoringArea[] = [
   {
     slug: "soul-purpose-reading",
     title: "Soul Purpose Reading",
+    seoTitle: "Soul Purpose Reading Mentoring",
+    seoDescription:
+      "A deeper soul-level mentoring session designed to illuminate your gifts, karmic themes and present path, aligning your choices with your purpose.",
     short: "Discover the higher purpose and direction of your journey.",
     description:
       "A deeper soul-level session designed to illuminate your gifts, karmic themes and present path. This reading helps you align your choices with the purpose your life is inviting you to live.",
@@ -1060,6 +1102,8 @@ export const mentoringAreas: MentoringArea[] = [
   {
     slug: "clarity-alignment",
     title: "Evolve through Clarity and Alignment",
+    seoDescription:
+      "A premium mentoring pathway through self-exploration, energetic clarity and practical alignment, moving you from confusion to confident direction.",
     short: "Refined guidance for specific questions and inner clarity.",
     description:
       "A premium mentoring pathway for those ready to evolve with intention. Through self-exploration, energetic clarity and practical alignment, you begin moving from confusion to confident direction.",
@@ -1074,7 +1118,7 @@ export const mentoringAreas: MentoringArea[] = [
 ];
 
 /* ---------- Healing ---------- */
-export interface HealingService {
+export interface HealingService extends SeoOverrides {
   slug: string;
   title: string;
   short: string;
@@ -1238,11 +1282,14 @@ export const healingServices: HealingService[] = [
   {
     slug: "mind-reprogramming",
     title: "Reprogramming Your Mind (Through Guided Meditation)",
+    seoTitle: "Mind Reprogramming Meditation",
     short: "A longer guided meditation pathway to release limiting beliefs and create new inner patterns.",
     price: 99000,
     format: "Live online · 3 sessions",
     description:
       "A deeper guided meditation offering designed to reprogram limiting beliefs, release old mental loops and create supportive inner pathways for positive thinking, clarity and empowered living.",
+    seoDescription:
+      "A deeper guided meditation offering designed to reprogram limiting beliefs, release old mental loops and create supportive inner pathways for clarity.",
     features: [
       "Extended guided meditation sessions",
       "Subconscious reprogramming",

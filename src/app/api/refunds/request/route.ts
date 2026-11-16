@@ -18,6 +18,18 @@ export async function POST(request: Request) {
     const { data: order } = await admin.from("orders").select("id,user_id,amount_subunits,payment_status").eq("id", orderId).eq("user_id", user.id).maybeSingle();
     if (!order) return apiError("NOT_FOUND", "Order not found.", 404);
     if (!order.amount_subunits || !["paid", "partially_refunded"].includes(order.payment_status)) return apiError("CONFLICT", "This order is not eligible for an online refund request.", 409);
+    
+    // Check for existing active refund request
+    const { data: existingRefund } = await admin
+      .from("refunds")
+      .select("id,status")
+      .eq("order_id", order.id)
+      .in("status", ["requested", "approved", "processing", "processed"])
+      .maybeSingle();
+    if (existingRefund) {
+      return apiError("CONFLICT", "A refund request for this order is already in progress.", 409);
+    }
+
     const { data: payment } = await admin.from("payments").select("id").eq("order_id", order.id).in("status", ["captured", "partially_refunded"]).maybeSingle();
     const { data, error } = await admin.from("refunds").insert({
       order_id: order.id, payment_id: payment?.id ?? null, amount_subunits: order.amount_subunits,

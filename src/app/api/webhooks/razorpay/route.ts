@@ -2,47 +2,15 @@ import { createHash } from "node:crypto";
 import { apiError, apiSuccess } from "@/lib/api";
 import { verifyWebhookSignature } from "@/lib/razorpay";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { DISTANCE_HEALING_SLUG, ensureDistanceHealingCase } from "@/lib/distance-healing";
-import { orderConfirmationEmail, sendEmail } from "@/lib/resend";
-import { formatINR } from "@/lib/utils";
+import {
+  activateOrderFulfilment,
+  revokeOrderFulfilment,
+  releaseReservedInventory,
+} from "@/lib/fulfillment";
 
 export const runtime = "nodejs";
 
 type RazorpayEntity = { id?: string; order_id?: string; payment_id?: string; status?: string; amount?: number; currency?: string; method?: string };
-
-async function activateFulfilment(admin: ReturnType<typeof createAdminClient>, providerOrderId: string) {
-  const { data: order } = await admin.from("orders").select("id,user_id,item_type,item_slug,item_title,amount,amount_subunits,guest_email,guest_name").eq("gateway_order_id", providerOrderId).maybeSingle();
-  if (!order) return;
-  if (order.item_type === "service" || order.item_type === "healing") {
-    await admin.from("bookings").upsert({
-      user_id: order.user_id, order_id: order.id, offering_type: order.item_type,
-      offering_slug: order.item_slug, format: "online", timezone: "Asia/Kolkata", status: "requested",
-    }, { onConflict: "order_id" });
-  }
-  if (order.item_type === "healing" && order.item_slug === DISTANCE_HEALING_SLUG) {
-    await ensureDistanceHealingCase(order.id, order.user_id);
-  }
-  if (order.item_type === "course") {
-    await admin.from("course_enrollments").upsert({
-      user_id: order.user_id, order_id: order.id, course_slug: order.item_slug,
-      status: "active", enrolled_at: new Date().toISOString(),
-    }, { onConflict: "order_id" });
-  }
-  // Guest orders are only captured here (the browser verify route needs a
-  // signed-in user) — send their confirmation email, best-effort.
-  if (order.guest_email) {
-    const { subject, html } = orderConfirmationEmail({
-      name: order.guest_name ?? order.guest_email.split("@")[0],
-      email: order.guest_email,
-      orderRef: order.id.slice(0, 8),
-      items: order.item_title,
-      totalLabel: order.amount_subunits != null ? formatINR(order.amount_subunits / 100) : order.amount != null ? formatINR(order.amount) : "—",
-      itemType: order.item_type,
-    });
-    const result = await sendEmail({ to: order.guest_email, subject, html });
-    console.log(`[webhook:email] order=${order.id.slice(0,8)}`, result.ok ? "sent" : `skipped: ${result.error}`);
-  }
-}
 
 export async function POST(request: Request) {
   const raw = await request.text();
@@ -82,16 +50,35 @@ export async function POST(request: Request) {
         }).eq("provider_order_id", payment.order_id);
         await admin.from("orders").update({
           payment_status: status === "captured" ? "paid" : status,
-          status: status === "captured" ? "confirmed" : "pending",
+          status: status === "captured" ? "confirmed" : status === "failed" ? "cancelled" : "pending",
           updated_at: new Date().toISOString(),
         }).eq("gateway_order_id", payment.order_id);
-        if (status === "captured") await activateFulfilment(admin, payment.order_id);
+
+        const { data: order } = await admin
+          .from("orders")
+          .select("id,user_id,item_type,item_slug,item_title,amount,amount_subunits,guest_email,guest_name")
+          .eq("gateway_order_id", payment.order_id)
+          .maybeSingle();
+
+        if (order) {
+          if (status === "captured") {
+            await activateOrderFulfilment(admin, order);
+          } else if (status === "failed") {
+            await releaseReservedInventory(admin, order.id);
+          }
+        }
       }
     }
     if (eventType === "refund.processed") {
       const refund = root?.refund?.entity;
       const paymentId = refund?.payment_id;
-      if (paymentId) await admin.from("payments").update({ status: "refunded", updated_at: new Date().toISOString() }).eq("provider_payment_id", paymentId);
+      if (paymentId) {
+        await admin.from("payments").update({ status: "refunded", updated_at: new Date().toISOString() }).eq("provider_payment_id", paymentId);
+        const { data: pay } = await admin.from("payments").select("order_id").eq("provider_payment_id", paymentId).maybeSingle();
+        if (pay?.order_id) {
+          await revokeOrderFulfilment(admin, pay.order_id, refund?.id);
+        }
+      }
     }
     await admin.from("payment_events").update({ processed_at: new Date().toISOString() }).eq("provider", "razorpay").eq("event_id", eventId);
     return apiSuccess({ received: true });

@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { healingServices } from "@/lib/data";
 import { formatINR } from "@/lib/utils";
+import { metaDescription } from "@/lib/seo";
 import SessionBookingForm from "@/components/services/SessionBookingForm";
 import InternalSubmenu from "@/components/layout/InternalSubmenu";
 import { isServerConfigured } from "@/lib/env";
@@ -43,8 +44,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const service = healingServices.find((item) => item.slug === slug);
   if (!service) return {};
   return {
-    title: service.title,
-    description: service.short,
+    title: service.seoTitle ?? service.title,
+    description: metaDescription(service.seoDescription ?? service.description),
     alternates: { canonical: `/healing/${service.slug}` },
     openGraph: { images: [service.image] },
   };

@@ -9,6 +9,16 @@ const nextConfig: NextConfig = {
     minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days
     remotePatterns: [], // no remote images; all local in /public
   },
+  async redirects() {
+    // /books was renamed to the Products storefront. These must be real HTTP
+    // 308s served from config — a permanentRedirect() inside a page component
+    // only redirects client-side, which leaves crawlers on an HTTP 200 page
+    // with an empty <main> and no canonical (a soft 404).
+    return [
+      { source: "/books", destination: "/products", permanent: true },
+      { source: "/books/:slug", destination: "/products/:slug", permanent: true },
+    ];
+  },
   async headers() {
     // Content-Security-Policy is generated per-request in src/proxy.ts
     // (nonce-based strict CSP — no 'unsafe-inline' for scripts).

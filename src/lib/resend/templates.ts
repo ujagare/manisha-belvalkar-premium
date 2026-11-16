@@ -1,12 +1,18 @@
 /**
  * Branded HTML email templates sent via Resend. Keep these inline (no external
  * CSS/assets) so they render consistently across email clients.
+ *
+ * Every customer- or order-supplied value MUST go through escapeHtml(): names,
+ * emails and free-text answers reach these templates straight from public forms
+ * and checkout, so raw interpolation is HTML injection inside the recipient's
+ * mail client.
  */
+import { escapeHtml } from "@/lib/utils";
 
 function layout(title: string, body: string): string {
   return `<!doctype html>
 <html lang="en">
-  <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${title}</title></head>
+  <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${escapeHtml(title)}</title></head>
   <body style="margin:0;padding:0;background:#faf7f2;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;">
     <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#faf7f2;padding:32px 0;">
       <tr><td align="center">
@@ -14,7 +20,7 @@ function layout(title: string, body: string): string {
           <tr>
             <td style="background:linear-gradient(135deg,#8a1c1c,#6b0b0b);padding:28px 32px;text-align:center;">
               <p style="margin:0;color:#f2d9a6;font-size:11px;letter-spacing:3px;text-transform:uppercase;">Manisha Belvalkar · Spiritual Mentor</p>
-              <p style="margin:10px 0 0;color:#ffffff;font-size:22px;font-weight:700;">${title}</p>
+              <p style="margin:10px 0 0;color:#ffffff;font-size:22px;font-weight:700;">${escapeHtml(title)}</p>
             </td>
           </tr>
           <tr><td style="padding:32px;">
@@ -34,10 +40,10 @@ function layout(title: string, body: string): string {
 }
 
 function infoRow(label: string, value: string): string {
-  const escaped = value.replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]!));
+  const escaped = escapeHtml(value);
   const multi = escaped.includes("\n");
   return `<tr>
-    <td style="padding:8px 16px;background:#faf7f2;border-radius:10px;font-size:12px;color:#9b8a75;vertical-align:top;${multi ? "white-space:pre-line;" : "white-space:nowrap;"}">${label}</td>
+    <td style="padding:8px 16px;background:#faf7f2;border-radius:10px;font-size:12px;color:#9b8a75;vertical-align:top;${multi ? "white-space:pre-line;" : "white-space:nowrap;"}">${escapeHtml(label)}</td>
     <td style="padding:8px 16px;font-size:14px;color:#2b2118;${multi ? "white-space:pre-line;" : ""}">${escaped}</td>
   </tr>`;
 }
@@ -73,25 +79,28 @@ export function enquiryAdminEmail(input: {
   };
 }
 
-/** Order/booking confirmation sent to the customer after a successful payment. */export function orderConfirmationEmail(input: {
+/** Order/booking confirmation sent to the customer after a successful payment. */
+export function orderConfirmationEmail(input: {
   name: string;
   email: string;
   orderRef: string;
   items: string;
   totalLabel: string;
   itemType: string;
+  invoicePath?: string | null;
 }): { subject: string; html: string } {
   return {
     subject: `Order confirmed — ${input.orderRef}`,
     html: layout("Order Confirmed", `
-      <p style="margin:0 0 8px;font-size:16px;color:#2b2118;">Dear ${input.name.replace(/[&<>]/g, " ").trim() || "there"},</p>
-      <p style="margin:0 0 16px;font-size:14px;line-height:1.7;color:#2b2118;">Thank you! Your <strong>${input.itemType}</strong> has been confirmed. Here are your details:</p>
+      <p style="margin:0 0 8px;font-size:16px;color:#2b2118;">Dear ${escapeHtml(input.name).trim() || "there"},</p>
+      <p style="margin:0 0 16px;font-size:14px;line-height:1.7;color:#2b2118;">Thank you! Your <strong>${escapeHtml(input.itemType)}</strong> has been confirmed. Here are your details:</p>
       ${detailsTable([
         { label: "Order Ref", value: input.orderRef },
         { label: "What you booked", value: input.items },
         { label: "Total", value: input.totalLabel },
       ])}
-      <p style="margin:24px 0 0;font-size:14px;line-height:1.7;color:#2b2118;">We will follow up with you personally at <strong>${input.email}</strong> regarding the next steps, scheduling and anything we need from you.</p>
+      ${input.invoicePath ? `<p style="margin:24px 0 0;font-size:14px;line-height:1.7;color:#2b2118;">Your GST tax invoice is ready: <a href="${input.invoicePath}" style="color:#8a1c1c;font-weight:600;">View / download invoice</a></p>` : ""}
+      <p style="margin:24px 0 0;font-size:14px;line-height:1.7;color:#2b2118;">We will follow up with you personally at <strong>${escapeHtml(input.email)}</strong> regarding the next steps, scheduling and anything we need from you.</p>
       <p style="margin:12px 0 0;font-size:14px;line-height:1.7;color:#2b2118;">With love &amp; light,<br>Manisha</p>
     `),
   };
@@ -134,8 +143,8 @@ export function requestConfirmationEmail(input: {
   summary: string;
   details?: { label: string; value: string }[];
 }): { subject: string; html: string } {
-  const safeName = input.name.replace(/[&<>]/g, " ").trim() || "there";
-  const safeType = input.requestType.replace(/[&<>]/g, " ");
+  const safeName = escapeHtml(input.name).trim() || "there";
+  const safeType = escapeHtml(input.requestType);
   const isContactEnquiry = input.requestType === "contact enquiry";
   const acknowledgement = isContactEnquiry
     ? `Thank you for contacting Manisha Belvalkar. We have received your <strong>${safeType}</strong>.`

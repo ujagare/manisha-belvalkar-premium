@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { Check, Clock, ArrowLeft, Calendar } from "lucide-react";
 import { services } from "@/lib/data";
 import { formatINR } from "@/lib/utils";
+import { metaDescription } from "@/lib/seo";
 import Reveal from "@/components/ui/Reveal";
 import Button from "@/components/ui/Button";
 import GoldDivider from "@/components/ui/GoldDivider";
@@ -25,8 +26,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const service = services.find((s) => s.slug === slug);
   if (!service) return { title: "Service not found" };
   return {
-    title: service.title,
-    description: service.short,
+    title: service.seoTitle ?? service.title,
+    description: metaDescription(service.seoDescription ?? service.description),
     alternates: { canonical: `/services/${service.slug}` },
     openGraph: { images: service.image ? [service.image] : undefined },
   };

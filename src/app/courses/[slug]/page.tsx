@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, Check, MessageCircle, CalendarDays, UserRound, PlayCircle, Lock, Clock3 } from "lucide-react";
 import { courses } from "@/lib/data";
 import { formatINR } from "@/lib/utils";
+import { metaDescription } from "@/lib/seo";
 import Reveal from "@/components/ui/Reveal";
 import Button from "@/components/ui/Button";
 import GoldDivider from "@/components/ui/GoldDivider";
@@ -22,8 +23,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const course = courses.find((c) => c.slug === slug);
   if (!course) return { title: "Course not found" };
   return {
-    title: course.title,
-    description: course.description,
+    title: course.seoTitle ?? course.title,
+    description: metaDescription(course.seoDescription ?? course.description),
     alternates: { canonical: `/courses/${course.slug}` },
     openGraph: { images: course.image ? [course.image] : undefined },
   };

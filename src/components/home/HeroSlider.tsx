@@ -50,7 +50,7 @@ const navigationSlides = [
     primary: { label: "Enter Shakti", href: "/shakti" },
     secondary: { label: "Visit the shop", href: "/products" },
     links: [
-      { label: "Books", detail: "Wisdom to keep", href: "/books" },
+      { label: "Books", detail: "Wisdom to keep", href: "/products" },
       { label: "Courses", detail: "Learn in depth", href: "/courses" },
       { label: "SHAKTI App", detail: "Guidance in your pocket", href: "/app" },
     ],

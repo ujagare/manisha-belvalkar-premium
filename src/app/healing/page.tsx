@@ -11,9 +11,9 @@ import DistanceHealingExperience from "@/components/home/DistanceHealingExperien
 import ChakraAssessment from "@/components/home/ChakraAssessment";
 
 export const metadata: Metadata = {
-  title: "Energy Healing & Distance Healing in Mumbai & Pune",
+  title: "Energy Healing in Mumbai & Pune",
   description:
-    "Energy healing, distance healing, Shakti healing, chakra balancing and guided mind reprogramming with Dr. Manisha Belvalkar — 30+ years of experience. Mumbai & Pune.",
+    "Energy healing, distance healing and chakra balancing with Dr. Manisha Belvalkar. In-person sessions in Mumbai and Pune, plus distance healing online.",
   alternates: { canonical: "/healing" },
 };
 

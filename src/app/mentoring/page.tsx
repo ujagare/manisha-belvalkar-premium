@@ -11,9 +11,9 @@ const premiumMentoringIntro =
   "A private guidance space for self-discovery, soul purpose and aligned action. Through Tarot, intuitive mentoring and deep reflection, Dr. Manisha Belvalkar helps you understand yourself and move forward with clarity.";
 
 export const metadata: Metadata = {
-  title: "Spiritual Mentoring & Soul Purpose Guidance",
+  title: "Spiritual Mentoring & Soul Purpose",
   description:
-    "Private mentoring through Tarot, soul purpose reading and clarity-alignment sessions with Dr. Manisha Belvalkar. Understand yourself and move forward with clarity — Mumbai, Pune & online.",
+    "Private mentoring through Tarot, soul purpose reading and clarity-alignment with Dr. Manisha Belvalkar. Sessions in Mumbai, Pune and online.",
   alternates: { canonical: "/mentoring" },
 };
 

@@ -1,3 +1,5 @@
+import type { SeoOverrides } from "./data";
+
 export type InsightCategory = "Foundations" | "Self-reflection" | "Preparation" | "Everyday practice";
 
 export interface InsightSection {
@@ -6,7 +8,7 @@ export interface InsightSection {
   points?: string[];
 }
 
-export interface InsightArticle {
+export interface InsightArticle extends SeoOverrides {
   slug: string;
   title: string;
   description: string;
@@ -35,6 +37,7 @@ export const insights: InsightArticle[] = [
   {
     slug: "choosing-the-right-spiritual-guidance-session",
     title: "How to choose the right guidance session for you",
+    seoTitle: "Choosing the Right Guidance Session",
     description: "A grounded way to match your present question with the kind of support you are seeking.",
     category: "Preparation",
     readTime: "6 min read",
@@ -137,6 +140,7 @@ export const insights: InsightArticle[] = [
   {
     slug: "building-a-simple-daily-reflection-practice",
     title: "A simple daily reflection practice that can last",
+    seoTitle: "A Simple Daily Reflection Practice",
     description: "A quiet ten-minute rhythm for noticing, writing, and choosing one intentional next step.",
     category: "Everyday practice",
     readTime: "4 min read",

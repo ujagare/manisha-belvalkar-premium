@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowUpRight, Clock3 } from "lucide-react";
 import { getInsight, insights } from "@/lib/insights";
+import { metaDescription } from "@/lib/seo";
 import { BreadcrumbJsonLd, JsonLd } from "@/components/seo/JsonLd";
 
 const BASE = "https://www.manishabelvalkar.com";
@@ -16,11 +17,13 @@ export async function generateMetadata({ params }: PageProps<"/insights/[slug]">
   const { slug } = await params;
   const article = getInsight(slug);
   if (!article) return {};
+  const title = article.seoTitle ?? article.title;
+  const description = metaDescription(article.seoDescription ?? article.description);
   return {
-    title: article.title,
-    description: article.description,
+    title,
+    description,
     alternates: { canonical: `/insights/${article.slug}` },
-    openGraph: { type: "article", title: article.title, description: article.description, url: `${BASE}/insights/${article.slug}`, publishedTime: article.datePublished, modifiedTime: article.dateModified, authors: [`${BASE}/about`], images: [{ url: article.image, alt: article.imageAlt }] },
+    openGraph: { type: "article", title, description, url: `${BASE}/insights/${article.slug}`, publishedTime: article.datePublished, modifiedTime: article.dateModified, authors: [`${BASE}/about`], images: [{ url: article.image, alt: article.imageAlt }] },
   };
 }
 

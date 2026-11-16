@@ -22,9 +22,9 @@ import {
 import { formatINR } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: "Tarot Consultation & Spiritual Healing Services in Mumbai & Pune",
+  title: "Tarot Consultation in Mumbai & Pune",
   description:
-    "Book a personal Tarot consultation, soul purpose reading, Goddess attunement, chakra therapy or transformational mentoring session with Dr. Manisha Belvalkar — 30+ years of experience in Mumbai & Pune.",
+    "Personal Tarot consultation, chakra therapy and soul purpose reading with Dr. Manisha Belvalkar — 30+ years of practice in Mumbai, Pune and online.",
   alternates: { canonical: "/services" },
 };
 

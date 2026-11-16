@@ -22,11 +22,11 @@ const lora = Lora({
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.manishabelvalkar.com"),
   title: {
-    default: "Manisha Belvalkar — Tarot Reading & Spiritual Healing in Mumbai",
+    default: "Manisha Belvalkar — Tarot Reading & Healing in Mumbai",
     template: "%s | Manisha Belvalkar",
   },
   description:
-    "A holistic well-being coach with over 30 years of experience in Tarot Consultation, Soul Purpose Reading, Goddess Attunement, and Chakra Therapy. Guidance for the soul.",
+    "A holistic well-being coach with 30+ years of experience in Tarot, Soul Purpose Reading, Goddess Attunement, Chakra Therapy. Mumbai, Pune and online sessions.",
   authors: [{ name: "Dr. Manisha Belvalkar", url: "/about" }],
   creator: "Dr. Manisha Belvalkar",
   publisher: "Manisha Belvalkar",

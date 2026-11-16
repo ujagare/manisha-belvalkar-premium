@@ -8,7 +8,7 @@ import LeadCaptureForm from "@/components/backend/LeadCaptureForm";
 import { isServerConfigured } from "@/lib/env";
 
 export const metadata: Metadata = {
-  title: "Magic Community — Monthly Spiritual Guidance",
+  title: "Magic Community — Monthly Guidance",
   description:
     "Join the Magic Community by Dr. Manisha Belvalkar for monthly moon-cycle guidance, spiritual tips, remedies and member-only offerings.",
   alternates: { canonical: "/community" },

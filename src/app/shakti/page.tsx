@@ -12,9 +12,9 @@ import LeadCaptureForm from "@/components/backend/LeadCaptureForm";
 import { isServerConfigured } from "@/lib/env";
 
 export const metadata: Metadata = {
-  title: "Shakti Oracle Deck & Divine Feminine Healing",
+  title: "Shakti Oracle Deck & Divine Feminine",
   description:
-    "Discover Shakti: divine feminine wisdom, the 52-card Shakti Oracle inspired by 51 Shakti Peethas, Goddess Invocation Sadhana, healing and a six-month transformation journey with Dr. Manisha Belvalkar.",
+    "Discover the Shakti Oracle Deck by Dr. Manisha Belvalkar — inspired by the 51 Shakti Peethas, with Goddess Invocation Sadhana and a six-month journey.",
   alternates: { canonical: "/shakti" },
   openGraph: {
     title: "Shakti — Divine Feminine Wisdom & Transformation",
@@ -26,6 +26,13 @@ export const metadata: Metadata = {
 export default function ShaktiPage() {
   return (
     <>
+      {/* The hero above is a wordmark image, so the page had no <h1> at all.
+          This keeps one real page heading for search engines and assistive
+          tech without altering the visual design. */}
+      <h1 className="sr-only">
+        Shakti Oracle Deck &amp; Divine Feminine Healing
+      </h1>
+
       <div id="oracle-reading" className="scroll-mt-24">
         <ShaktiCardReading />
       </div>

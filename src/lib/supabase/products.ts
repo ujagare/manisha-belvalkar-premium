@@ -34,11 +34,26 @@ function createCatalogClient() {
   );
 }
 
+/**
+ * SEO titles/descriptions have no column in the products table, so they are
+ * kept in the static catalog and merged onto DB rows by slug. Without this,
+ * the tuned metadata would silently disappear whenever Supabase is configured.
+ */
+const seoOverridesBySlug = new Map(
+  staticProducts.map((p) => [
+    p.slug,
+    { seoTitle: p.seoTitle, seoDescription: p.seoDescription },
+  ]),
+);
+
 /** Map a DB row (numeric → string, jsonb → Json) onto the UI Product shape. */
 function toProduct(row: ProductRow): Product {
+  const seo = seoOverridesBySlug.get(row.slug);
   return {
     slug: row.slug,
     title: row.title,
+    seoTitle: seo?.seoTitle,
+    seoDescription: seo?.seoDescription,
     subtitle: row.subtitle ?? "",
     description: row.description,
     category: row.category as ProductCategory,

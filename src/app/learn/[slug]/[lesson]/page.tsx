@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { courses } from "@/lib/data";
-import { flattenLessons } from "@/lib/course-content";
+import { courseForViewer, flattenLessons } from "@/lib/course-content";
 import CoursePlayer from "@/components/course/CoursePlayer";
 import { getCurrentUser, getMyCourseProgress, hasCourseAccess } from "@/lib/supabase/session";
 
@@ -34,5 +34,6 @@ export default async function LessonPage({ params }: Props) {
   if (!selectedLesson.free && !user) redirect(`/login?next=${encodeURIComponent(`/learn/${slug}/${lesson}`)}`);
   if (!selectedLesson.free && !fullAccess) redirect(`/courses/${slug}?access=required`);
   const progress = fullAccess ? await getMyCourseProgress(slug) : [];
-  return <CoursePlayer course={course} initialLessonId={lesson} hasFullAccess={fullAccess} initialProgress={progress} />;
+  // Only entitled lessons may carry their media URL into the client payload.
+  return <CoursePlayer course={courseForViewer(course, fullAccess)} initialLessonId={lesson} hasFullAccess={fullAccess} initialProgress={progress} />;
 }

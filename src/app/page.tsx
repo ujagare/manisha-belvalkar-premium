@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     absolute: "Manisha Belvalkar — Spiritual Mentor | Guidance For the Soul",
   },
   description:
-    "Book a Tarot Consultation, Soul Purpose Reading, Goddess Attunement or Chakra Therapy session with Dr. Manisha Belvalkar — 30+ years of experience. Mumbai & Pune.",
+    "Tarot consultation, soul purpose reading, Goddess attunement and chakra therapy with Dr. Manisha Belvalkar — 30+ years of practice. Mumbai, Pune and online.",
   alternates: { canonical: "/" },
 };
 

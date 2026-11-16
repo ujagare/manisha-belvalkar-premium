@@ -10,9 +10,9 @@ import Reveal from "@/components/ui/Reveal";
 import GoldDivider from "@/components/ui/GoldDivider";
 
 export const metadata: Metadata = {
-  title: "Tarot, Chakra & Spiritual Courses in Mumbai & Pune",
+  title: "Tarot & Chakra Courses, Mumbai & Pune",
   description:
-    "Learn Tarot reading, chakra therapy and Goddess attunement with Dr. Manisha Belvalkar. One-to-one courses, group workshops, Zoom and WhatsApp workshops — beginner to advanced.",
+    "Learn Tarot reading, chakra therapy and Goddess attunement with Dr. Manisha Belvalkar. One-to-one courses, group workshops and online sessions.",
   alternates: { canonical: "/courses" },
 };
 

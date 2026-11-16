@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound, permanentRedirect } from "next/navigation";
 import { Check, ArrowLeft } from "lucide-react";
 import { mentoringAreas, brand } from "@/lib/data";
+import { metaDescription } from "@/lib/seo";
 import PageHero from "@/components/ui/PageHero";
 import Button from "@/components/ui/Button";
 import Reveal from "@/components/ui/Reveal";
@@ -36,8 +37,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const area = mentoringAreas.find((a) => a.slug === slug);
   if (!area) return {};
   return {
-    title: area.title,
-    description: area.short,
+    title: area.seoTitle ?? area.title,
+    description: metaDescription(area.seoDescription ?? area.description),
     alternates: { canonical: `/mentoring/${area.slug}` },
   };
 }

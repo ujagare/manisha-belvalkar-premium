@@ -15,6 +15,18 @@ export const serverEnv = {
   razorpayWebhookSecret: () => read("RAZORPAY_WEBHOOK_SECRET"),
   resendApiKey: () => read("RESEND_API_KEY"),
   resendFromEmail: () => read("RESEND_FROM_EMAIL"),
+  /**
+   * Signs guest invoice links. A guest order has no session to authenticate
+   * with, so the invoice URL carries an HMAC of the order id — only a holder of
+   * the emailed link can open it. Falls back to the Supabase secret so existing
+   * deployments keep working without a new env var.
+   */
+  invoiceLinkSecret: () =>
+    read("INVOICE_LINK_SECRET") ??
+    read("SUPABASE_SECRET_KEY") ??
+    read("SUPABASE_SERVICE_ROLE_KEY"),
+  /** Seller GSTIN printed on tax invoices. Optional until GST registration. */
+  sellerGstin: () => read("GSTIN") ?? read("SELLER_GSTIN"),
 };
 
 export function isEmailConfigured() {

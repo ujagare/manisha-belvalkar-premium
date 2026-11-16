@@ -8,8 +8,9 @@ import { awards, brand } from "@/lib/data";
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
-  title: "About Dr. Manisha Belvalkar — Spiritual Mentor with 30+ Years Experience",
-  description: "Meet Dr. Manisha Belvalkar, a holistic well-being coach with over 30 years of experience in Tarot consultation, Soul Purpose Reading, Goddess Attunement and Chakra Therapy in Mumbai & Pune.",
+  title: "Spiritual Mentor in Mumbai — 30+ Years",
+  description:
+    "Meet Dr. Manisha Belvalkar, a spiritual mentor in Mumbai with 30+ years of experience in Tarot, Soul Purpose Reading, Goddess Attunement and Chakra Therapy.",
   alternates: { canonical: "/about" },
 };
 

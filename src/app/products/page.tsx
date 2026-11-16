@@ -9,7 +9,7 @@ import AddToCartButton from "@/components/cart/AddToCartButton";
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
-  title: "Shakti Oracle Deck, Rituals & Sacred Products",
+  title: "Shakti Oracle Deck & Sacred Products",
   description: "Buy the Shakti Oracle deck, guidebook, magic salt, vastu healing frames, abundance rituals and Tarot Reading by Dr. Manisha Belvalkar. Ships across India.",
   alternates: { canonical: "/products" },
 };

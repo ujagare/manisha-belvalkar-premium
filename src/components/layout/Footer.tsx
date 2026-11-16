@@ -248,9 +248,9 @@ export default function Footer() {
 
             {/* Navigate */}
             <Reveal delay={0.1}>
-              <h4 className="mb-3.5 font-serif text-lg font-semibold text-white">
+              <h2 className="mb-3.5 font-serif text-lg font-semibold text-white">
                 Navigate
-              </h4>
+              </h2>
               <ul className="grid grid-cols-2 gap-x-6 gap-y-2.5">
                 {navigation.map((item) => (
                   <li key={item.href}>
@@ -268,9 +268,9 @@ export default function Footer() {
 
             {/* Offerings */}
             <Reveal delay={0.2}>
-              <h4 className="mb-3.5 font-serif text-lg font-semibold text-white">
+              <h2 className="mb-3.5 font-serif text-lg font-semibold text-white">
                 Offerings
-              </h4>
+              </h2>
               <ul className="space-y-2.5">
                 {services.slice(0, 3).map((s) => (
                   <li key={s.slug}>
@@ -308,9 +308,9 @@ export default function Footer() {
 
             {/* Contact */}
             <Reveal delay={0.3}>
-              <h4 className="mb-3.5 font-serif text-lg font-semibold text-white">
+              <h2 className="mb-3.5 font-serif text-lg font-semibold text-white">
                 Connect
-              </h4>
+              </h2>
               <ul className="space-y-2.5">
                 <li>
                   <a
