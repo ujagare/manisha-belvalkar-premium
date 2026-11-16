@@ -3,7 +3,8 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { DISTANCE_HEALING_SLUG, ensureDistanceHealingCase } from "@/lib/distance-healing";
 import { orderConfirmationEmail, sendEmail } from "@/lib/resend";
 import { formatINR } from "@/lib/utils";
-import { assignOrderInvoiceNumber } from "@/lib/invoice";
+import { assignOrderInvoiceNumber, orderInvoiceToken } from "@/lib/invoice";
+import { getSiteUrl } from "@/lib/site-url";
 
 type AdminClient = ReturnType<typeof createAdminClient>;
 
@@ -17,6 +18,8 @@ interface OrderRecord {
   amount_subunits: number | null;
   guest_email: string | null;
   guest_name: string | null;
+  user_email?: string | null;
+  user_name?: string | null;
 }
 
 /**
@@ -146,9 +149,9 @@ export async function activateOrderFulfilment(admin: AdminClient, order: OrderRe
   // emailed, so a logged-in buyer never received a receipt.
   const recipientEmail = order.guest_email ?? order.user_email ?? null;
   if (recipientEmail && !alreadyFulfilled) {
-    const invoiceToken = orderInvoiceToken(order.id);
-    const invoicePath = invoiceToken
-      ? `${SITE_URL}/api/orders/${order.id}/invoice?token=${invoiceToken}`
+    const token = orderInvoiceToken(order.id);
+    const invoicePath = token
+      ? `${getSiteUrl()}/api/orders/${order.id}/invoice?token=${token}`
       : null;
     const { subject, html } = orderConfirmationEmail({
       name: order.guest_name ?? order.user_name ?? recipientEmail.split("@")[0],

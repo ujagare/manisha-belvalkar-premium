@@ -1,8 +1,22 @@
 import "server-only";
+import { createHmac } from "node:crypto";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { getCurrentFinancialYear } from "@/lib/gst";
+import { serverEnv } from "@/lib/env";
 
 type AdminClient = ReturnType<typeof createAdminClient>;
+
+/**
+ * Signed link token for a guest invoice.
+ * A guest order has no session to authenticate with, so the invoice URL carries
+ * an HMAC over the order id.
+ */
+export function orderInvoiceToken(orderId: string): string | null {
+  const secret = serverEnv.invoiceLinkSecret();
+  if (!secret) return null;
+  return createHmac("sha256", secret).update(`invoice:${orderId}`).digest("hex").slice(0, 32);
+}
+
 
 /**
  * Generates and assigns a sequential Tax Invoice number for a confirmed order.

@@ -1,7 +1,7 @@
-import { createHmac } from "node:crypto";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { serverEnv } from "@/lib/env";
+import { orderInvoiceToken } from "@/lib/invoice";
 import { constantTimeEqualHex } from "@/lib/security";
 import { escapeHtml, formatINR } from "@/lib/utils";
 
@@ -12,21 +12,8 @@ interface Params {
   params: Promise<{ orderId: string }>;
 }
 
-/**
- * Signed link token for a guest invoice.
- *
- * A guest order has no session to authenticate with, so the invoice URL carries
- * an HMAC over the order id. Dummy values keep every order id producing the
- * same token shape even when the secret is missing.
- */
-export function invoiceToken(orderId: string): string | null {
-  const secret = serverEnv.invoiceLinkSecret();
-  if (!secret) return null;
-  return createHmac("sha256", secret).update(`invoice:${orderId}`).digest("hex").slice(0, 32);
-}
-
 function tokenMatches(orderId: string, provided: string | null): boolean {
-  const expected = invoiceToken(orderId);
+  const expected = orderInvoiceToken(orderId);
   if (!expected || !provided) return false;
   return constantTimeEqualHex(expected, provided);
 }
