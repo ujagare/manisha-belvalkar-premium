@@ -8,6 +8,8 @@ import { createClient } from "@/lib/supabase/server";
 import type { OrderItemType } from "@/lib/supabase/database.types";
 import { isSameOriginRequest } from "@/lib/security";
 import { calculateGstBreakdown } from "@/lib/gst";
+import { releaseAvailabilitySlot, reserveAvailabilitySlot } from "@/lib/bookings";
+import { assertDatabaseSuccess, sessionCheckoutIssue } from "@/lib/payment-safety";
 
 export const runtime = "nodejs";
 
@@ -20,6 +22,7 @@ export async function POST(request: Request) {
     }
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return apiError("UNAUTHORIZED", "Please sign in to continue to secure payment.", 401);
     const body = await readJsonObject(request);
 
     // Guest checkout: allow an order without an account as long as a valid
@@ -52,6 +55,12 @@ export async function POST(request: Request) {
           slug: typeof body.slug === "string" ? body.slug.trim() : "",
           quantity: typeof body.quantity === "number" && Number.isInteger(body.quantity) ? body.quantity : 1,
         }];
+    const sessionBody = body.session && typeof body.session === "object" ? body.session as Record<string, unknown> : null;
+    const sessionSlotId = typeof sessionBody?.slotId === "string" ? sessionBody.slotId.trim() : null;
+    const sessionFormat = typeof sessionBody?.format === "string" && ["online", "mumbai", "pune", "other"].includes(sessionBody.format)
+      ? sessionBody.format
+      : null;
+    const sessionNotes = typeof sessionBody?.notes === "string" ? sessionBody.notes.trim().slice(0, 1500) : null;
     const idempotencyKey = request.headers.get("idempotency-key")?.trim();
     const totalQuantity = requestedItems.reduce((sum, item) => sum + item.quantity, 0);
     if (!requestedItems.length || totalQuantity > 20 || requestedItems.some((item) => !orderTypes.includes(item.type) || !/^[a-z0-9-]{1,100}$/.test(item.slug) || item.quantity < 1 || item.quantity > 20)) {
@@ -60,6 +69,14 @@ export async function POST(request: Request) {
     if (!idempotencyKey || !/^[A-Za-z0-9_-]{16,100}$/.test(idempotencyKey)) {
       return apiError("BAD_REQUEST", "A valid idempotency key is required.", 422);
     }
+    const sessionIssue = sessionCheckoutIssue({
+      itemTypes: requestedItems.map((item) => item.type),
+      userId: user?.id ?? null,
+      slotId: sessionSlotId,
+      format: sessionFormat,
+    });
+    if (sessionIssue === "SIGN_IN_REQUIRED") return apiError("UNAUTHORIZED", "Please sign in to book a paid session.", 401);
+    if (sessionIssue === "SLOT_REQUIRED") return apiError("BAD_REQUEST", "Select an available session time before payment.", 422);
 
     // Optional delivery address: either an existing saved address (id) or a
     // one-time address object. Physical orders should carry a valid address.
@@ -247,6 +264,31 @@ export async function POST(request: Request) {
     })));
     if (itemsError) throw new Error(`Order items insert failed: ${itemsError.message}`);
 
+    if (sessionSlotId && sessionFormat && user) {
+      const reservation = await reserveAvailabilitySlot(admin, sessionSlotId, sessionFormat);
+      if (!reservation.success || !reservation.startsAt) {
+        await admin.from("orders").update({ status: "cancelled", payment_status: "failed" }).eq("id", order.id);
+        return apiError("CONFLICT", "The selected session time is no longer available.", 409);
+      }
+      const bookingResult = await admin.from("bookings").insert({
+        user_id: user.id,
+        order_id: order.id,
+        offering_type: primary.type,
+        offering_slug: primary.slug,
+        format: sessionFormat,
+        requested_start: reservation.startsAt,
+        timezone: "Asia/Kolkata",
+        slot_id: sessionSlotId,
+        notes: sessionNotes,
+        meeting_url: null,
+        status: "payment_pending",
+      });
+      if (bookingResult.error) {
+        await releaseAvailabilitySlot(admin, sessionSlotId);
+        throw new Error(`Session booking insert failed: ${bookingResult.error.message}`);
+      }
+    }
+
     // Reserve inventory for products. The ledger row goes in first so the
     // unique index on (order_id, variant_id, reason) makes the reservation
     // idempotent — a retried create-order with the same idempotency key cannot
@@ -287,9 +329,9 @@ export async function POST(request: Request) {
       receipt: order.id.slice(0, 40),
       notes: { internal_order_id: order.id, user_id: user?.id ?? "guest", item_count: String(totalQuantity) },
     });
-    const { error: updateError } = await admin.from("orders").update({ gateway_order_id: gatewayOrder.id }).eq("id", order.id);
-    if (updateError) throw new Error(`Order gateway update failed: ${updateError.message}`);
-    const { error: paymentError } = await admin.from("payments").insert({
+    const gatewayUpdate = await admin.from("orders").update({ gateway_order_id: gatewayOrder.id }).eq("id", order.id);
+    assertDatabaseSuccess(gatewayUpdate, "Order gateway update");
+    const paymentInsert = await admin.from("payments").insert({
       order_id: order.id,
       provider: "razorpay",
       provider_order_id: gatewayOrder.id,
@@ -297,7 +339,7 @@ export async function POST(request: Request) {
       currency: "INR",
       status: "created",
     });
-    if (paymentError) throw new Error(`Payment insert failed: ${paymentError.message}`);
+    assertDatabaseSuccess(paymentInsert, "Payment insert");
 
     return apiSuccess({
       orderId: order.id,

@@ -13,6 +13,7 @@ import { shouldUseManualFlow } from "@/lib/manual-flow";
 
 interface Props {
   params: Promise<{ type: string; slug: string }>;
+  searchParams?: Promise<{ slotId?: string; format?: string; notes?: string }>;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -32,7 +33,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
  * unauthenticated visitors to /login?next=… — this re-checks server-side
  * so the page is safe even when reached directly.
  */
-export default async function CheckoutPage({ params }: Props) {
+export default async function CheckoutPage({ params, searchParams }: Props) {
   const { type, slug } = await params;
 
   if (!orderTypes.includes(type as OrderItemType)) notFound();
@@ -50,15 +51,26 @@ export default async function CheckoutPage({ params }: Props) {
 
   const configured = isSupabaseConfigured();
   const isCourse = type === "course";
+  const isSession = ["service", "healing", "mentoring"].includes(type);
   const paymentsConfigured = isPaymentsConfigured();
   const manualMode = shouldUseManualFlow(isServerConfigured(), paymentsConfigured);
+  const query = await searchParams;
+  const initialSession = query?.slotId && query?.format
+    ? { slotId: query.slotId, format: query.format, notes: query.notes ?? "" }
+    : undefined;
   const reassuranceItems = isCourse
     ? [
         { icon: CalendarCheck, title: "Personal onboarding", copy: "Schedule confirmed with you" },
         { icon: BookOpenCheck, title: "Guided learning", copy: "Program materials and support" },
         { icon: Headphones, title: "Human support", copy: "Direct updates from our team" },
       ]
-    : [
+    : isSession
+      ? [
+        { icon: LockKeyhole, title: manualMode ? "Personal confirmation" : "Secure payment", copy: manualMode ? "Completed with the team on WhatsApp" : "Encrypted Razorpay checkout" },
+        { icon: CalendarCheck, title: "Live availability", copy: "Choose a currently open time" },
+        { icon: Headphones, title: "Booking support", copy: "Updates shared by email" },
+      ]
+      : [
         { icon: LockKeyhole, title: manualMode ? "Personal confirmation" : "Secure payment", copy: manualMode ? "Completed with the team on WhatsApp" : "Encrypted Razorpay checkout" },
         { icon: PackageCheck, title: "Careful packing", copy: "Prepared for safe dispatch" },
         { icon: Truck, title: "Order updates", copy: "Shared by email and phone" },
@@ -78,14 +90,14 @@ export default async function CheckoutPage({ params }: Props) {
         </Link>
 
         <div className="mt-4 sm:mt-7 flex flex-wrap items-center gap-2 sm:gap-3 text-xs font-medium text-warmgray">
-          <span className="text-primary">{isCourse ? "Program" : "Bag"}</span><span className="h-px w-6 sm:w-8 bg-gold/60" /><span className="font-semibold text-charcoal">{isCourse ? "Learner details" : "Details & payment"}</span><span className="h-px w-6 sm:w-8 bg-parchment" /><span>Confirmation</span>
+          <span className="text-primary">{isCourse ? "Program" : isSession ? "Session" : "Bag"}</span><span className="h-px w-6 sm:w-8 bg-gold/60" /><span className="font-semibold text-charcoal">{isCourse ? "Learner details" : isSession ? "Time & payment" : "Details & payment"}</span><span className="h-px w-6 sm:w-8 bg-parchment" /><span>Confirmation</span>
         </div>
 
         <div className="mt-6 sm:mt-10 grid items-start gap-7 sm:gap-10 lg:grid-cols-[minmax(0,1fr)_30rem] lg:gap-16">
           <section>
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-gold-deep">{manualMode ? "Personal confirmation" : "Secure checkout"}</p>
-            <h1 className="mt-2.5 sm:mt-3 max-w-xl text-balance font-display text-[1.9rem] font-semibold leading-[1.08] tracking-[-0.025em] text-charcoal sm:text-5xl">{isCourse ? "Begin with a thoughtful introduction." : "Complete your order with confidence."}</h1>
-            <p className="mt-3 sm:mt-4 max-w-xl text-pretty text-sm sm:text-base leading-6 sm:leading-7 text-warmgray">{isCourse ? "Tell us a little about your goals so we can confirm the right format, schedule, and next steps for your learning journey." : manualMode ? "Review your selection, add delivery details, and send the prepared request on WhatsApp. No payment is taken on this website." : "Review your selection, add delivery details, and pay securely. Our team will confirm your order and delivery details after payment."}</p>
+            <h1 className="mt-2.5 sm:mt-3 max-w-xl text-balance font-display text-[1.9rem] font-semibold leading-[1.08] tracking-[-0.025em] text-charcoal sm:text-5xl">{isCourse ? "Begin with a thoughtful introduction." : isSession ? "Choose your time and confirm securely." : "Complete your order with confidence."}</h1>
+            <p className="mt-3 sm:mt-4 max-w-xl text-pretty text-sm sm:text-base leading-6 sm:leading-7 text-warmgray">{isCourse ? "Tell us a little about your goals so we can confirm the right format, schedule, and next steps for your learning journey." : isSession ? (manualMode ? "Send a session request on WhatsApp; no online payment is taken." : "Choose a live available time and complete payment securely. Your booking is confirmed only after capture.") : manualMode ? "Review your selection, add delivery details, and send the prepared request on WhatsApp. No payment is taken on this website." : "Review your selection, add delivery details, and pay securely. Our team will confirm your order and delivery details after payment."}</p>
 
             <article className="mt-6 sm:mt-10 overflow-hidden rounded-2xl sm:rounded-[1.75rem] bg-[#201b18] text-white shadow-[0_28px_70px_-40px_rgba(62,38,25,0.65)]">
               <div className="grid sm:grid-cols-[13rem_1fr]">
@@ -125,7 +137,7 @@ export default async function CheckoutPage({ params }: Props) {
               ))}
             </div>
 
-            <div className="mt-6 sm:mt-10 flex items-start gap-3 rounded-2xl bg-white/65 p-4 sm:p-5 text-sm leading-6 text-warmgray ring-1 ring-parchment/80"><Check className="mt-0.5 h-4 w-4 shrink-0 text-gold-deep" /><p>{isCourse ? "After you submit, our team reviews your goals and contacts you to confirm suitability, program fee, schedule, and onboarding." : "Need help before ordering? Contact us on WhatsApp. Our team can assist with product and delivery questions."}</p></div>
+            <div className="mt-6 sm:mt-10 flex items-start gap-3 rounded-2xl bg-white/65 p-4 sm:p-5 text-sm leading-6 text-warmgray ring-1 ring-parchment/80"><Check className="mt-0.5 h-4 w-4 shrink-0 text-gold-deep" /><p>{isCourse ? "After you submit, our team reviews your goals and contacts you to confirm suitability, program fee, schedule, and onboarding." : isSession ? "Need help choosing a time? Contact the team on WhatsApp before payment." : "Need help before ordering? Contact us on WhatsApp. Our team can assist with product and delivery questions."}</p></div>
 
             {!configured ? (
               <div className="mt-8 rounded-2xl border border-gold/40 bg-gold-soft p-5 text-sm text-gold-deep">
@@ -149,6 +161,7 @@ export default async function CheckoutPage({ params }: Props) {
                     addresses={addresses}
                     manualMode={manualMode}
                     strictPayment={isDistanceHealing && paymentsConfigured}
+                    initialSession={initialSession}
                   />
             </div>
           </aside>

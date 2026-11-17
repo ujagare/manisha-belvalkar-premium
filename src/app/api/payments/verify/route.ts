@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 import { isSameOriginRequest } from "@/lib/security";
 import { DISTANCE_HEALING_SLUG } from "@/lib/distance-healing";
 import { activateOrderFulfilment } from "@/lib/fulfillment";
+import { assertDatabaseSuccess, successfulPaymentStatus } from "@/lib/payment-safety";
 
 export const runtime = "nodejs";
 
@@ -39,34 +40,36 @@ export async function POST(request: Request) {
     if (remote.order_id !== order.gateway_order_id || remote.amount !== order.amount_subunits || remote.currency !== order.currency) {
       return apiError("BAD_REQUEST", "Payment details do not match the order.", 400);
     }
-    const paid = remote.status === "captured";
-    await admin.from("payments").update({
+    const paid = successfulPaymentStatus(remote.status);
+    const paymentUpdate = await admin.from("payments").update({
       provider_payment_id: remote.id,
       status: paid ? "captured" : remote.status,
       method: remote.method ?? null,
       captured_at: paid ? new Date().toISOString() : null,
       updated_at: new Date().toISOString(),
     }).eq("provider_order_id", order.gateway_order_id);
-    await admin.from("orders").update({
+    assertDatabaseSuccess(paymentUpdate, "Payment record update");
+    const orderUpdate = await admin.from("orders").update({
       payment_status: paid ? "paid" : "authorized",
       status: paid ? "confirmed" : "pending",
       updated_at: new Date().toISOString(),
     }).eq("id", order.id);
+    assertDatabaseSuccess(orderUpdate, "Order payment update");
 
-    if (paid) {
-      await activateOrderFulfilment(admin, {
-        ...order,
-        guest_email: order.guest_email ?? user.email ?? null,
-        guest_name: order.guest_name ?? user.user_metadata?.name ?? null,
-      });
-    }
+    if (!paid) return apiError("CONFLICT", "Payment is authorized but not captured yet. Please wait for confirmation.", 409);
 
-    const isDistanceHealing = paid && order.item_type === "healing" && order.item_slug === DISTANCE_HEALING_SLUG;
+    await activateOrderFulfilment(admin, {
+      ...order,
+      guest_email: order.guest_email ?? user.email ?? null,
+      guest_name: order.guest_name ?? user.user_metadata?.name ?? null,
+    });
+
+    const isDistanceHealing = order.item_type === "healing" && order.item_slug === DISTANCE_HEALING_SLUG;
 
     return apiSuccess({
       orderId: order.id,
-      paymentStatus: paid ? "paid" : "authorized",
-      learningUrl: paid && order.item_type === "course" ? `/learn/${order.item_slug}` : null,
+      paymentStatus: "paid",
+      learningUrl: order.item_type === "course" ? `/learn/${order.item_slug}` : null,
       healingUrl: isDistanceHealing ? `/distance-healing/${order.id}` : null,
     });
   } catch (error) {

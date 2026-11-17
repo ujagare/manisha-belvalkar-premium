@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useTransition } from "react";
+import { useEffect, useMemo, useState, useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Check, ChevronDown, Loader2, LockKeyhole, MapPin, ShieldCheck, UserRound } from "lucide-react";
@@ -28,6 +28,8 @@ type AddressFields = {
   state: string;
   postal_code: string;
 };
+
+type SessionSlot = { id: string; starts_at: string; ends_at: string; format: string };
 
 const EMPTY_ADDRESS: AddressFields = {
   recipient_name: "",
@@ -62,6 +64,7 @@ export default function CheckoutForm({
   addresses,
   manualMode,
   strictPayment = false,
+  initialSession,
 }: {
   type: OrderItemType;
   slug: string;
@@ -73,10 +76,12 @@ export default function CheckoutForm({
   addresses: UserAddress[];
   manualMode: boolean;
   strictPayment?: boolean;
+  initialSession?: { slotId: string; format: string; notes: string };
 }) {
   const router = useRouter();
   const isPhysicalProduct = type === "product";
   const isCourse = type === "course";
+  const isSession = ["service", "healing", "mentoring"].includes(type);
   const [error, setError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [created, setCreated] = useState<{ id: string; manual: boolean } | null>(null);
@@ -94,8 +99,29 @@ export default function CheckoutForm({
     experienceLevel: "Beginning my journey",
     learningGoal: "",
   });
+  const [sessionFormat, setSessionFormat] = useState(initialSession?.format ?? "online");
+  const [sessionSlots, setSessionSlots] = useState<SessionSlot[]>([]);
+  const [sessionSlotId, setSessionSlotId] = useState(initialSession?.slotId ?? "");
+  const [sessionNotes, setSessionNotes] = useState(initialSession?.notes ?? "");
   const [idempotencyKey] = useState(() => crypto.randomUUID().replaceAll("-", ""));
   const [isPending, startTransition] = useTransition();
+
+  useEffect(() => {
+    if (!isSession || manualMode) return;
+    const controller = new AbortController();
+    fetch(`/api/bookings?format=${encodeURIComponent(sessionFormat)}`, { signal: controller.signal })
+      .then(async (response) => {
+        const data = await response.json().catch(() => null);
+        if (!response.ok) throw new Error(data?.error?.message ?? "Could not load session times.");
+        setSessionSlots(data?.slots ?? []);
+      })
+      .catch((loadError) => {
+        if (loadError instanceof DOMException && loadError.name === "AbortError") return;
+        setSessionSlots([]);
+        setError(loadError instanceof Error ? loadError.message : "Could not load session times.");
+      });
+    return () => controller.abort();
+  }, [isSession, manualMode, sessionFormat]);
 
   const selectedSavedAddress = addresses.find((entry) => entry.id === selectedAddress);
   const totalLabel = price ? formatINR(price * quantity) : priceLabel;
@@ -121,6 +147,7 @@ export default function CheckoutForm({
       if (courseDetails.learningGoal.trim().length < 20) nextErrors.learningGoal = "Please share at least a few sentences so we can guide you well.";
       if (!acceptedCourseDisclaimer) nextErrors.courseDisclaimer = "Please confirm the course acknowledgement.";
     }
+    if (isSession && !manualMode && !sessionSlotId) nextErrors.sessionSlot = "Select an available session time.";
     if (isPhysicalProduct && !selectedSavedAddress) {
       if (!address.recipient_name.trim()) nextErrors.recipient_name = "Recipient name is required.";
       if (!/^[+0-9][0-9\s-]{7,18}$/.test(address.phone.trim())) nextErrors.phone = "Enter a valid phone number.";
@@ -157,7 +184,7 @@ export default function CheckoutForm({
         name: activeName,
         email: activeEmail,
         reference,
-        requestType: isCourse ? "course enrollment" : "product order",
+        requestType: isCourse ? "course enrollment" : isSession ? "session booking" : "product order",
         summary: `${itemTitle} - ${totalLabel}`,
         details: isCourse
           ? [
@@ -171,8 +198,15 @@ export default function CheckoutForm({
               { label: "Experience level", value: courseDetails.experienceLevel },
               { label: "Learning goal", value: courseDetails.learningGoal.trim() },
             ]
+          : isSession
+            ? [
+              { label: "Session", value: itemTitle },
+              { label: "Estimated fee", value: totalLabel },
+              { label: "Customer name", value: activeName },
+              { label: "Email", value: activeEmail },
+            ]
           : [
-              { label: "Product", value: itemTitle },
+              { label: isSession ? "Session" : "Product", value: itemTitle },
               { label: "Quantity", value: String(quantity) },
               { label: "Estimated total", value: totalLabel },
               { label: "Customer name", value: activeName },
@@ -200,6 +234,7 @@ export default function CheckoutForm({
           experienceLevel: courseDetails.experienceLevel,
           learningGoal: courseDetails.learningGoal.trim(),
         } : null,
+        session: isSession ? { slotId: sessionSlotId, format: sessionFormat, notes: sessionNotes } : null,
       };
       const paymentResponse = await fetch("/api/checkout/create-order", {
         method: "POST",
@@ -236,7 +271,7 @@ export default function CheckoutForm({
               }),
             });
             const verifyData = await verify.json().catch(() => null);
-            router.push(verify.ok
+            router.push(verify.ok && verifyData?.paymentStatus === "paid"
               ? (isCourse && verifyData?.learningUrl
                 ? verifyData.learningUrl
                 : verifyData?.healingUrl
@@ -258,8 +293,8 @@ export default function CheckoutForm({
         return;
       }
 
-      if (strictPayment) {
-        setError(paymentData?.error?.message ?? "Verified online payment is required for Distance Healing.");
+      if (strictPayment || isSession) {
+        setError(paymentData?.error?.message ?? "A verified online payment and available time are required for this session.");
         return;
       }
 
@@ -278,7 +313,7 @@ export default function CheckoutForm({
   }
 
   const whatsappUrl = created
-    ? `https://wa.me/919922246111?text=${encodeURIComponent(`Namaste Manisha ji, I would like to confirm my ${isCourse ? "enrollment request" : "order"}:\n\nReference: ${created.id}\n${isCourse ? "Course" : "Product"}: ${itemTitle}${isPhysicalProduct ? `\nQuantity: ${quantity}` : ""}\nEstimated total: ${totalLabel}\n\n${isCourse ? "Student" : "Customer"} name: ${userEmail ? userName : guestName}\nEmail: ${userEmail || guestEmail}${isCourse ? `\nPhone / WhatsApp: ${courseDetails.phone}\nPreferred contact: ${courseDetails.preferredContact}\nPreferred language: ${courseDetails.preferredLanguage}\nExperience level: ${courseDetails.experienceLevel}\nLearning goal: ${courseDetails.learningGoal}` : `\nPhone: ${deliveryPhone}`}${deliverySummary ? `\nDelivery address: ${deliverySummary}` : ""}\n\nPlease confirm availability, final amount, ${isCourse ? "onboarding" : "shipping"}, and next steps.`)}`
+    ? `https://wa.me/919922246111?text=${encodeURIComponent(`Namaste Manisha ji, I would like to confirm my ${isCourse ? "enrollment request" : isSession ? "session request" : "order"}:\n\nReference: ${created.id}\n${isCourse ? "Course" : isSession ? "Session" : "Product"}: ${itemTitle}${isPhysicalProduct ? `\nQuantity: ${quantity}` : ""}\nEstimated total: ${totalLabel}\n\n${isCourse ? "Student" : "Customer"} name: ${userEmail ? userName : guestName}\nEmail: ${userEmail || guestEmail}${isCourse ? `\nPhone / WhatsApp: ${courseDetails.phone}\nPreferred contact: ${courseDetails.preferredContact}\nPreferred language: ${courseDetails.preferredLanguage}\nExperience level: ${courseDetails.experienceLevel}\nLearning goal: ${courseDetails.learningGoal}` : isPhysicalProduct ? `\nPhone: ${deliveryPhone}` : ""}${deliverySummary ? `\nDelivery address: ${deliverySummary}` : ""}\n\nPlease confirm availability, final amount, ${isCourse ? "onboarding" : isSession ? "session time" : "shipping"}, and next steps.`)}`
     : brand.whatsappHref;
 
   if (created) {
@@ -307,7 +342,7 @@ export default function CheckoutForm({
       {manualMode ? <div className="mb-5 rounded-xl bg-gold-soft/70 px-4 py-3 text-xs leading-5 text-gold-deep ring-1 ring-gold/30"><strong>Personal confirmation:</strong> Online payment is not active yet. Complete the details below, then send the prepared request on WhatsApp. The team will confirm availability, final amount, and payment instructions.</div> : null}
       <div className="flex items-center gap-3 border-b border-parchment pb-5">
         <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-xs font-bold text-white">1</span>
-        <div><h2 className="text-sm font-semibold text-charcoal">Contact information</h2><p className="mt-0.5 text-xs text-warmgray">For order updates and delivery communication</p></div>
+        <div><h2 className="text-sm font-semibold text-charcoal">Contact information</h2><p className="mt-0.5 text-xs text-warmgray">{isSession ? "For booking and payment updates" : "For order updates and delivery communication"}</p></div>
       </div>
 
       <div className="mt-5 grid gap-4 sm:grid-cols-2">
@@ -322,6 +357,20 @@ export default function CheckoutForm({
           {fieldErrors.email ? <p className="mt-1.5 text-xs text-primary">{fieldErrors.email}</p> : null}
         </div>
       </div>
+
+      {isSession && !manualMode ? (
+        <div className="mt-8">
+          <div className="flex items-center gap-3 border-b border-parchment pb-5">
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-xs font-bold text-white">2</span>
+            <div><h2 className="text-sm font-semibold text-charcoal">Choose your session</h2><p className="mt-0.5 text-xs text-warmgray">This time is reserved while you complete payment</p></div>
+          </div>
+          <div className="mt-5 grid gap-4">
+            <div><label htmlFor="session-format" className="mb-2 block text-xs font-semibold text-charcoal">Format</label><select id="session-format" value={sessionFormat} onChange={(event) => { setSessionFormat(event.target.value); setSessionSlotId(""); }} className={inputClass}><option value="online">Online</option><option value="mumbai">Mumbai</option><option value="pune">Pune</option><option value="other">Other / to be confirmed</option></select></div>
+            <div><label htmlFor="session-slot" className="mb-2 block text-xs font-semibold text-charcoal">Available time</label><select id="session-slot" value={sessionSlotId} onChange={(event) => { setSessionSlotId(event.target.value); setFieldErrors((current) => ({ ...current, sessionSlot: "" })); }} aria-invalid={Boolean(fieldErrors.sessionSlot)} className={cn(inputClass, fieldErrors.sessionSlot && "border-primary")}><option value="">Select a time</option>{sessionSlots.map((slot) => <option key={slot.id} value={slot.id}>{new Date(slot.starts_at).toLocaleString("en-IN", { timeZone: "Asia/Kolkata", weekday: "short", day: "numeric", month: "short", hour: "numeric", minute: "2-digit" })} IST</option>)}</select>{fieldErrors.sessionSlot ? <p className="mt-1.5 text-xs text-primary">{fieldErrors.sessionSlot}</p> : null}{!sessionSlots.length ? <p className="mt-1.5 text-xs text-warmgray">No open times for this format. Please choose another format or contact the team.</p> : null}</div>
+            <div><label htmlFor="session-notes" className="mb-2 block text-xs font-semibold text-charcoal">What would you like support with? <span className="font-normal text-warmgray">(optional)</span></label><textarea id="session-notes" value={sessionNotes} onChange={(event) => setSessionNotes(event.target.value)} maxLength={1500} rows={4} className="w-full rounded-xl border border-parchment bg-white px-4 py-3 text-sm text-charcoal outline-none focus:border-gold-dark focus:ring-4 focus:ring-gold/10" /></div>
+          </div>
+        </div>
+      ) : null}
 
       {isCourse ? (
         <div className="mt-8">
@@ -396,7 +445,7 @@ export default function CheckoutForm({
         <div className="flex items-center justify-between gap-4 text-sm"><span className="text-warmgray">{itemTitle}</span><span className="shrink-0 font-semibold text-charcoal">{priceLabel}</span></div>
         {isPhysicalProduct ? <div className="mt-4 flex items-center justify-between border-t border-parchment pt-4 text-sm"><label htmlFor="checkout-quantity" className="text-warmgray">Quantity</label><select id="checkout-quantity" value={quantity} onChange={(event) => setQuantity(Number(event.target.value))} className="rounded-lg border border-parchment bg-white px-3 py-2 font-semibold outline-none focus:border-gold-dark">{[1, 2, 3, 4, 5].map((value) => <option key={value}>{value}</option>)}</select></div> : null}
         <div className="mt-4 flex items-end justify-between border-t border-parchment pt-4"><span className="text-sm font-semibold text-charcoal">Order total</span><span className="font-display text-2xl font-semibold tabular-nums text-primary">{totalLabel}</span></div>
-        <p className="mt-2 text-right text-[11px] text-warmgray">{isCourse ? (price ? "Inclusive of all taxes · Access details shared after confirmation" : "Fee and schedule are confirmed personally after review") : "Inclusive of all taxes · Shipping confirmed before dispatch"}</p>
+        <p className="mt-2 text-right text-[11px] text-warmgray">{isCourse ? (price ? "Inclusive of all taxes · Access details shared after confirmation" : "Fee and schedule are confirmed personally after review") : isSession ? "Inclusive of all taxes · Your selected time is confirmed after payment" : "Inclusive of all taxes · Shipping confirmed before dispatch"}</p>
       </div>
 
       <label className="mt-5 flex cursor-pointer items-start gap-3 text-xs leading-5 text-warmgray">

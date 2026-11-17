@@ -8,6 +8,7 @@ import { isSameOriginRequest } from "@/lib/security";
 import { sendEmail } from "@/lib/resend/client";
 import { requestConfirmationEmail } from "@/lib/resend/templates";
 import { consumeRateLimit } from "@/lib/rate-limit";
+import { sessionOrderTypes } from "@/lib/payment-safety";
 
 /**
  * POST /api/orders — create a purchase/booking order for an authenticated
@@ -66,6 +67,9 @@ export async function POST(request: Request) {
 
   if (!orderTypes.includes(type) || !slug) {
     return NextResponse.json({ error: "Unknown item" }, { status: 400 });
+  }
+  if (sessionOrderTypes.includes(type as (typeof sessionOrderTypes)[number])) {
+    return NextResponse.json({ error: "Sessions must use the slot-aware booking checkout." }, { status: 409 });
   }
 
   const item = await getCatalogItem(type, slug);

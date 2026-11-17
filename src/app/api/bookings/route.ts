@@ -7,7 +7,7 @@ import { isSameOriginRequest } from "@/lib/security";
 import { sendEmail } from "@/lib/resend/client";
 import { bookingAdminEmail, requestConfirmationEmail } from "@/lib/resend/templates";
 import { brand } from "@/lib/data";
-import { generateMeetingUrl, reserveAvailabilitySlot } from "@/lib/bookings";
+import { releaseAvailabilitySlot, reserveAvailabilitySlot } from "@/lib/bookings";
 
 export async function GET(request: Request) {
   try {
@@ -48,6 +48,7 @@ export async function POST(request: Request) {
       : type === "healing" ? healingServices.some((item) => item.slug === slug)
         : type === "mentoring" ? mentoringAreas.some((item) => item.slug === slug) : false;
     if (!valid) return apiError("BAD_REQUEST", "Unknown offering.", 422);
+    if (!slotId) return apiError("BAD_REQUEST", "Select an available time slot.", 422);
 
     let requestedStart = typeof body.requestedStart === "string" && !Number.isNaN(Date.parse(body.requestedStart)) ? new Date(body.requestedStart).toISOString() : null;
     const notes = typeof body.notes === "string" ? body.notes.trim().slice(0, 1500) : null;
@@ -60,22 +61,16 @@ export async function POST(request: Request) {
     const admin = createAdminClient();
 
     // If a specific availability slot was selected, atomically reserve it to prevent double-booking
-    if (slotId) {
-      const slotReservation = await reserveAvailabilitySlot(admin, slotId);
-      if (!slotReservation.success) {
-        return apiError("CONFLICT", "The selected time slot is no longer available. Please select another slot.", 409);
-      }
-      if (slotReservation.startsAt) {
-        requestedStart = slotReservation.startsAt;
-      }
-      if (slotReservation.timezone) {
-        timezone = slotReservation.timezone;
-      }
+    const slotReservation = await reserveAvailabilitySlot(admin, slotId, format);
+    if (!slotReservation.success) {
+      return apiError("CONFLICT", "The selected time slot is no longer available. Please select another slot.", 409);
     }
-
-    // Generate meeting URL for online sessions
-    const bookingTempId = crypto.randomUUID().slice(0, 8);
-    const meetingUrl = format === "online" ? generateMeetingUrl(bookingTempId, slug) : null;
+    if (slotReservation.startsAt) {
+      requestedStart = slotReservation.startsAt;
+    }
+    if (slotReservation.timezone) {
+      timezone = slotReservation.timezone;
+    }
 
     const { data, error } = await admin.from("bookings").insert({
       user_id: user.id,
@@ -86,10 +81,13 @@ export async function POST(request: Request) {
       notes,
       timezone,
       slot_id: slotId,
-      meeting_url: meetingUrl,
+      meeting_url: null,
       status: "requested",
     }).select("id,status,meeting_url,requested_start").single();
-    if (error) throw error;
+    if (error) {
+      await releaseAvailabilitySlot(admin, slotId);
+      throw error;
+    }
 
     // Notify the studio of the new booking request (best-effort)
     const bookingRef = data.id.slice(0, 8);
@@ -109,7 +107,7 @@ export async function POST(request: Request) {
         name: user.user_metadata?.full_name ?? user.email.split("@")[0],
         reference: bookingRef,
         requestType: "session booking",
-        summary: `${offering} - ${format}${requestedStart ? ` - ${new Date(requestedStart).toLocaleString("en-IN", { timeZone: timezone })}` : ""}${meetingUrl ? `\nMeeting Link: ${meetingUrl}` : ""}`,
+        summary: `${offering} - ${format}${requestedStart ? ` - ${new Date(requestedStart).toLocaleString("en-IN", { timeZone: timezone })}` : ""}`,
       });
       await sendEmail({ to: user.email, subject: customer.subject, html: customer.html });
     }

@@ -6,7 +6,7 @@ import { requestConfirmationEmail } from "@/lib/resend/templates";
 import { isSameOriginRequest } from "@/lib/security";
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const allowedTypes = new Set(["contact enquiry", "product order", "course enrollment", "cart order"]);
+const allowedTypes = new Set(["contact enquiry", "product order", "course enrollment", "cart order", "session booking"]);
 const text = (value: unknown, max: number) => typeof value === "string" ? value.trim().slice(0, max) : "";
 
 export async function POST(request: Request) {

@@ -18,7 +18,7 @@ export function sendManualConfirmation(input: {
   name: string;
   email: string;
   reference: string;
-  requestType: "contact enquiry" | "product order" | "course enrollment" | "cart order";
+  requestType: "contact enquiry" | "product order" | "course enrollment" | "cart order" | "session booking";
   summary: string;
   details?: { label: string; value: string }[];
 }) {

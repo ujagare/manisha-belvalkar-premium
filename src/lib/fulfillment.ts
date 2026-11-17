@@ -5,6 +5,8 @@ import { orderConfirmationEmail, sendEmail } from "@/lib/resend";
 import { formatINR } from "@/lib/utils";
 import { assignOrderInvoiceNumber, orderInvoiceToken } from "@/lib/invoice";
 import { getSiteUrl } from "@/lib/site-url";
+import { assertDatabaseSuccess } from "@/lib/payment-safety";
+import { generateMeetingUrl, releaseAvailabilitySlot } from "@/lib/bookings";
 
 type AdminClient = ReturnType<typeof createAdminClient>;
 
@@ -42,22 +44,25 @@ export async function activateOrderFulfilment(admin: AdminClient, order: OrderRe
     .maybeSingle();
   const alreadyFulfilled = Boolean(priorInvoice.data?.invoice_number);
 
-  await assignOrderInvoiceNumber(admin, order.id);
-
   // 1. Service / Healing booking
-  if (order.item_type === "service" || order.item_type === "healing") {
-    await admin.from("bookings").upsert(
-      {
-        user_id: order.user_id,
-        order_id: order.id,
-        offering_type: order.item_type,
-        offering_slug: order.item_slug,
-        format: "online",
-        timezone: "Asia/Kolkata",
-        status: "requested",
-      },
-      { onConflict: "order_id" }
-    );
+  if (["service", "healing", "mentoring"].includes(order.item_type)) {
+    if (!order.user_id) throw new Error("Paid sessions require an authenticated customer.");
+    const bookingResult = await admin
+      .from("bookings")
+      .update({ status: "confirmed", updated_at: new Date().toISOString() })
+      .eq("order_id", order.id)
+      .eq("user_id", order.user_id)
+      .select("id,format,meeting_url");
+    assertDatabaseSuccess(bookingResult, "Session booking confirmation");
+    if (!bookingResult.data?.length) throw new Error("Session booking confirmation: booking was not prepared before payment.");
+    const booking = bookingResult.data[0];
+    if (booking.format === "online" && !booking.meeting_url) {
+      const meetingUpdate = await admin
+        .from("bookings")
+        .update({ meeting_url: generateMeetingUrl(order.id.slice(0, 8), order.item_slug) })
+        .eq("id", booking.id);
+      assertDatabaseSuccess(meetingUpdate, "Session meeting link creation");
+    }
   }
 
   // 2. Distance healing intake case
@@ -67,7 +72,7 @@ export async function activateOrderFulfilment(admin: AdminClient, order: OrderRe
 
   // 3. Course enrollment
   if (order.user_id && order.item_type === "course") {
-    await admin.from("course_enrollments").upsert(
+    const enrollmentResult = await admin.from("course_enrollments").upsert(
       {
         user_id: order.user_id,
         order_id: order.id,
@@ -77,6 +82,7 @@ export async function activateOrderFulfilment(admin: AdminClient, order: OrderRe
       },
       { onConflict: "order_id" }
     );
+    assertDatabaseSuccess(enrollmentResult, "Course enrollment activation");
   }
 
   // 4. Physical product inventory: convert reserved stock into sale
@@ -144,6 +150,8 @@ export async function activateOrderFulfilment(admin: AdminClient, order: OrderRe
     }
   }
 
+  await assignOrderInvoiceNumber(admin, order.id);
+
   // 5. Send order confirmation email (best-effort).
   // Signed-in customers get it too — previously only guest orders were
   // emailed, so a logged-in buyer never received a receipt.
@@ -180,6 +188,8 @@ export async function activateOrderFulfilment(admin: AdminClient, order: OrderRe
  * - Returns physical stock to inventory (reason: 'return')
  */
 export async function revokeOrderFulfilment(admin: AdminClient, orderId: string, providerRefundId?: string | null) {
+  const booking = await admin.from("bookings").select("slot_id").eq("order_id", orderId).maybeSingle();
+  assertDatabaseSuccess(booking, "Refund booking lookup");
   // 1. Update order status
   await admin.from("orders").update({
     payment_status: "refunded",
@@ -193,10 +203,12 @@ export async function revokeOrderFulfilment(admin: AdminClient, orderId: string,
   }).eq("order_id", orderId);
 
   // 3. Cancel booking
-  await admin.from("bookings").update({
+  const bookingCancellation = await admin.from("bookings").update({
     status: "cancelled",
     updated_at: new Date().toISOString(),
   }).eq("order_id", orderId);
+  assertDatabaseSuccess(bookingCancellation, "Refund booking cancellation");
+  if (booking.data?.slot_id) await releaseAvailabilitySlot(admin, booking.data.slot_id);
 
   // 4. Update internal refunds record if requested
   await admin.from("refunds").update({
@@ -274,4 +286,20 @@ export async function releaseReservedInventory(admin: AdminClient, orderId: stri
       }
     }
   }
+}
+
+export async function releasePendingSessionBooking(admin: AdminClient, orderId: string) {
+  const booking = await admin
+    .from("bookings")
+    .select("id,slot_id,status")
+    .eq("order_id", orderId)
+    .maybeSingle();
+  assertDatabaseSuccess(booking, "Pending session lookup");
+  if (!booking.data || !["payment_pending", "requested"].includes(booking.data.status)) return;
+  if (booking.data.slot_id) await releaseAvailabilitySlot(admin, booking.data.slot_id);
+  const cancelled = await admin
+    .from("bookings")
+    .update({ status: "cancelled", updated_at: new Date().toISOString() })
+    .eq("id", booking.data.id);
+  assertDatabaseSuccess(cancelled, "Pending session cancellation");
 }

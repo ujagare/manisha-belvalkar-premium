@@ -18,7 +18,9 @@ import { formatINR } from "@/lib/utils";
 import { metaDescription } from "@/lib/seo";
 import SessionBookingForm from "@/components/services/SessionBookingForm";
 import InternalSubmenu from "@/components/layout/InternalSubmenu";
-import { isServerConfigured } from "@/lib/env";
+import { isPaymentsConfigured, isServerConfigured } from "@/lib/env";
+import { getCatalogItem } from "@/lib/checkout";
+import { shouldUseManualFlow } from "@/lib/manual-flow";
 import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 
 interface Props {
@@ -57,6 +59,9 @@ export default async function HealingDetailPage({ params }: Props) {
 
   const service = healingServices.find((item) => item.slug === slug);
   if (!service) notFound();
+  const catalogItem = await getCatalogItem("healing", service.slug);
+  const paymentsConfigured = isPaymentsConfigured();
+  const manualMode = shouldUseManualFlow(isServerConfigured(), paymentsConfigured);
 
   return (
     <>
@@ -174,7 +179,7 @@ export default async function HealingDetailPage({ params }: Props) {
             </article>
 
             <aside id="book-session" className="min-w-0 scroll-mt-28">
-              <SessionBookingForm type="healing" slug={service.slug} title={service.title} manualMode={!isServerConfigured()} />
+              <SessionBookingForm type="healing" slug={service.slug} title={service.title} manualMode={manualMode} paymentRequired={paymentsConfigured && catalogItem?.price != null} />
             </aside>
           </div>
         </div>

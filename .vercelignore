@@ -8,6 +8,8 @@ output
 .playwright-cli
 .playwright-mcp
 .impeccable
+.claude
+.superpowers
 *.log
 .env*
 !.env.example

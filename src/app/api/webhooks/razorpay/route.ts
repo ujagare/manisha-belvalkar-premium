@@ -4,9 +4,11 @@ import { verifyWebhookSignature } from "@/lib/razorpay";
 import { createAdminClient } from "@/lib/supabase/admin";
 import {
   activateOrderFulfilment,
+  releasePendingSessionBooking,
   revokeOrderFulfilment,
   releaseReservedInventory,
 } from "@/lib/fulfillment";
+import { assertDatabaseSuccess } from "@/lib/payment-safety";
 
 export const runtime = "nodejs";
 
@@ -29,8 +31,12 @@ export async function POST(request: Request) {
   const { error: eventError } = await admin.from("payment_events").insert({
     provider: "razorpay", event_id: eventId, event_type: eventType, payload,
   });
-  if (eventError?.code === "23505") return apiSuccess({ received: true, duplicate: true });
-  if (eventError) {
+  if (eventError?.code === "23505") {
+    const existingEvent = await admin.from("payment_events").select("processed_at").eq("provider", "razorpay").eq("event_id", eventId).maybeSingle();
+    assertDatabaseSuccess(existingEvent, "Webhook event retry lookup");
+    if (existingEvent.data?.processed_at) return apiSuccess({ received: true, duplicate: true });
+  }
+  if (eventError && eventError.code !== "23505") {
     console.error("[razorpay:webhook:event]", eventError);
     return apiError("INTERNAL_ERROR", "Webhook could not be recorded.", 500);
   }
@@ -41,18 +47,25 @@ export async function POST(request: Request) {
     if (payment?.order_id) {
       const status = eventType === "payment.captured" ? "captured" : eventType === "payment.failed" ? "failed" : payment.status;
       if (status && ["authorized", "captured", "failed"].includes(status)) {
-        await admin.from("payments").update({
+        const paymentRecord = await admin.from("payments").select("amount_subunits,currency").eq("provider_order_id", payment.order_id).maybeSingle();
+        assertDatabaseSuccess(paymentRecord, "Webhook payment lookup");
+        if (!paymentRecord.data || payment.amount !== paymentRecord.data.amount_subunits || payment.currency !== paymentRecord.data.currency) {
+          throw new Error("Webhook payment amount or currency does not match the order.");
+        }
+        const paymentUpdate = await admin.from("payments").update({
           provider_payment_id: payment.id ?? null,
           status,
           method: payment.method ?? null,
           captured_at: status === "captured" ? new Date().toISOString() : null,
           updated_at: new Date().toISOString(),
         }).eq("provider_order_id", payment.order_id);
-        await admin.from("orders").update({
+        assertDatabaseSuccess(paymentUpdate, "Webhook payment update");
+        const orderUpdate = await admin.from("orders").update({
           payment_status: status === "captured" ? "paid" : status,
           status: status === "captured" ? "confirmed" : status === "failed" ? "cancelled" : "pending",
           updated_at: new Date().toISOString(),
         }).eq("gateway_order_id", payment.order_id);
+        assertDatabaseSuccess(orderUpdate, "Webhook order update");
 
         const { data: order } = await admin
           .from("orders")
@@ -65,6 +78,7 @@ export async function POST(request: Request) {
             await activateOrderFulfilment(admin, order);
           } else if (status === "failed") {
             await releaseReservedInventory(admin, order.id);
+            await releasePendingSessionBooking(admin, order.id);
           }
         }
       }
@@ -80,7 +94,8 @@ export async function POST(request: Request) {
         }
       }
     }
-    await admin.from("payment_events").update({ processed_at: new Date().toISOString() }).eq("provider", "razorpay").eq("event_id", eventId);
+    const processed = await admin.from("payment_events").update({ processed_at: new Date().toISOString(), error: null }).eq("provider", "razorpay").eq("event_id", eventId);
+    assertDatabaseSuccess(processed, "Webhook completion update");
     return apiSuccess({ received: true });
   } catch (error) {
     console.error("[razorpay:webhook:process]", error);

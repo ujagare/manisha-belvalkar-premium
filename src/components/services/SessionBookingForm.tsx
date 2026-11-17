@@ -15,7 +15,7 @@ import {
   Sparkles,
   Video,
 } from "lucide-react";
-import { manualReference, sessionWhatsAppMessage, whatsappUrl } from "@/lib/manual-flow";
+import { sessionWhatsAppMessage, whatsappUrl } from "@/lib/manual-flow";
 import type { OrderItemType } from "@/lib/supabase/database.types";
 
 const FORMATS = [
@@ -27,12 +27,14 @@ const FORMATS = [
 
 const TIME_SLOTS = ["09:30", "11:00", "12:30", "15:00", "16:30", "18:00"];
 const STEPS = ["Format", "Time", "Intention", "Review"];
+type AvailabilitySlot = { id: string; starts_at: string; ends_at: string; format: string };
 
 interface SessionBookingFormProps {
   type: OrderItemType;
   slug: string;
   title: string;
   manualMode?: boolean;
+  paymentRequired?: boolean;
 }
 
 function toDateValue(date: Date) {
@@ -48,7 +50,7 @@ function displayDate(value: string, options?: Intl.DateTimeFormatOptions) {
   );
 }
 
-export default function SessionBookingForm({ type, slug, title, manualMode = false }: SessionBookingFormProps) {
+export default function SessionBookingForm({ type, slug, title, manualMode = false, paymentRequired = false }: SessionBookingFormProps) {
   const router = useRouter();
   const [step, setStep] = useState(0);
   const [format, setFormat] = useState("online");
@@ -59,9 +61,10 @@ export default function SessionBookingForm({ type, slug, title, manualMode = fal
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<{ id: string; manual: boolean } | null>(null);
   const [pending, startTransition] = useTransition();
+  const [availabilitySlots, setAvailabilitySlots] = useState<AvailabilitySlot[]>([]);
   const draftHydrated = useRef(false);
 
-  const dates = useMemo(() => {
+  const manualDates = useMemo(() => {
     const result: string[] = [];
     const cursor = new Date();
     cursor.setHours(12, 0, 0, 0);
@@ -71,6 +74,10 @@ export default function SessionBookingForm({ type, slug, title, manualMode = fal
     }
     return result;
   }, []);
+  const slotDate = (iso: string) => new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Kolkata", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date(iso));
+  const slotTime = (iso: string) => new Intl.DateTimeFormat("en-GB", { timeZone: "Asia/Kolkata", hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).format(new Date(iso));
+  const dates = manualMode ? manualDates : [...new Set(availabilitySlots.map((slot) => slotDate(slot.starts_at)))];
+  const times = manualMode ? TIME_SLOTS : availabilitySlots.filter((slot) => slotDate(slot.starts_at) === date).map((slot) => slotTime(slot.starts_at));
 
   const selectedFormat = FORMATS.find((item) => item.value === format) ?? FORMATS[0];
   const storageKey = `session-request:${type}:${slug}`;
@@ -97,6 +104,23 @@ export default function SessionBookingForm({ type, slug, title, manualMode = fal
     }, 0);
     return () => window.clearTimeout(timer);
   }, [storageKey]);
+
+  useEffect(() => {
+    if (manualMode) return;
+    const controller = new AbortController();
+    fetch(`/api/bookings?format=${encodeURIComponent(format)}`, { signal: controller.signal })
+      .then(async (response) => {
+        const data = await response.json().catch(() => null);
+        if (!response.ok) throw new Error(data?.error?.message ?? "Could not load available times.");
+        setAvailabilitySlots(data?.slots ?? []);
+      })
+      .catch((loadError) => {
+        if (loadError instanceof DOMException && loadError.name === "AbortError") return;
+        setAvailabilitySlots([]);
+        setError(loadError instanceof Error ? loadError.message : "Could not load available times.");
+      });
+    return () => controller.abort();
+  }, [format, manualMode]);
 
   useEffect(() => {
     if (success || !draftHydrated.current) return;
@@ -130,14 +154,23 @@ export default function SessionBookingForm({ type, slug, title, manualMode = fal
       return;
     }
 
-    // The booking calendar is explicitly shown in IST, independent of the visitor's device timezone.
-    const requestedStart = new Date(`${date}T${time}:00+05:30`).toISOString();
+    const selectedSlot = availabilitySlots.find((slot) => slotDate(slot.starts_at) === date && slotTime(slot.starts_at) === time);
+    if (!selectedSlot) {
+      setStep(1);
+      setError("This time is no longer available. Please select another slot.");
+      return;
+    }
+    if (paymentRequired) {
+      const query = new URLSearchParams({ slotId: selectedSlot.id, format, notes });
+      router.push(`/checkout/${type}/${slug}?${query.toString()}`);
+      return;
+    }
     startTransition(async () => {
       try {
         const res = await fetch("/api/bookings", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ type, slug, format, requestedStart, notes, timezone: "Asia/Kolkata" }),
+          body: JSON.stringify({ type, slug, format, slotId: selectedSlot.id, notes, timezone: "Asia/Kolkata" }),
         });
         if (res.status === 401) {
           router.push(`/login?next=${encodeURIComponent(window.location.pathname)}%23book-session`);
@@ -145,15 +178,13 @@ export default function SessionBookingForm({ type, slug, title, manualMode = fal
         }
         const data = await res.json().catch(() => null);
         if (!res.ok || !data?.booking?.id) {
-          setSuccess({ id: manualReference("BOOKING"), manual: true });
-          window.sessionStorage.removeItem(storageKey);
+          setError(data?.error?.message ?? "Could not create the booking request. Please try again.");
           return;
         }
         setSuccess({ ...data.booking, manual: false });
         window.sessionStorage.removeItem(storageKey);
       } catch {
-        setSuccess({ id: manualReference("BOOKING"), manual: true });
-        window.sessionStorage.removeItem(storageKey);
+        setError("Could not create the booking request. Please check your connection and try again.");
       }
     });
   }
@@ -193,7 +224,7 @@ export default function SessionBookingForm({ type, slug, title, manualMode = fal
           <div className="min-w-0">
             <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-gold-deep"><Sparkles className="h-3.5 w-3.5" /> Private booking</p>
             <h2 className="mt-1.5 sm:mt-2 text-balance font-display text-2xl sm:text-3xl font-semibold leading-tight text-charcoal">Reserve your session</h2>
-            <p className="mt-1.5 sm:mt-2 max-w-xl text-sm leading-6 text-warmgray">Choose a preferred time in a few steps. No payment is taken until availability and the session fee are confirmed.</p>
+            <p className="mt-1.5 sm:mt-2 max-w-xl text-sm leading-6 text-warmgray">{paymentRequired ? "Choose an available time, then continue to secure payment." : "Choose a preferred time in a few steps. No payment is taken until availability and the session fee are confirmed."}</p>
           </div>
           <div className="min-w-0 rounded-2xl bg-white/70 px-4 py-2.5 sm:py-3 text-left ring-1 ring-parchment/80">
             <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-warmgray">Booking for</p>
@@ -221,7 +252,7 @@ export default function SessionBookingForm({ type, slug, title, manualMode = fal
               {FORMATS.map(({ value, label, detail, icon: Icon }) => {
                 const active = format === value;
                 return (
-                  <button key={value} type="button" onClick={() => setFormat(value)} className={`group flex min-h-14 items-center gap-3.5 sm:gap-4 rounded-2xl p-3.5 sm:p-4 text-left ring-1 transition-all duration-200 active:scale-[0.99] ${active ? "bg-primary text-white ring-primary shadow-lg shadow-primary/15" : "bg-ivory/45 text-charcoal ring-parchment hover:bg-cream hover:ring-gold/60"}`}>
+                  <button key={value} type="button" onClick={() => { setFormat(value); setDate(""); setTime(""); }} className={`group flex min-h-14 items-center gap-3.5 sm:gap-4 rounded-2xl p-3.5 sm:p-4 text-left ring-1 transition-all duration-200 active:scale-[0.99] ${active ? "bg-primary text-white ring-primary shadow-lg shadow-primary/15" : "bg-ivory/45 text-charcoal ring-parchment hover:bg-cream hover:ring-gold/60"}`}>
                     <span className={`grid h-10 w-10 sm:h-11 sm:w-11 shrink-0 place-items-center rounded-xl ${active ? "bg-white/12" : "bg-white text-primary shadow-sm"}`}><Icon className="h-5 w-5" /></span>
                     <span className="flex-1"><span className="block text-sm font-semibold">{label}</span><span className={`mt-0.5 block text-xs ${active ? "text-white/65" : "text-warmgray"}`}>{detail}</span></span>
                     {active ? <Check className="h-5 w-5 text-gold-light" /> : null}
@@ -246,7 +277,7 @@ export default function SessionBookingForm({ type, slug, title, manualMode = fal
             <div className={`mt-5 sm:mt-7 transition-opacity ${date ? "opacity-100" : "pointer-events-none opacity-35"}`}>
               <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-warmgray"><Clock3 className="h-4 w-4" /> Preferred start time</p>
               <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">
-                {TIME_SLOTS.map((value) => <button key={value} type="button" onClick={() => { setTime(value); setError(null); }} className={`min-h-11 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-sm font-semibold tabular-nums ring-1 transition ${time === value ? "bg-primary text-white ring-primary" : "bg-white text-charcoal ring-parchment hover:ring-gold"}`}>{value} <span className="text-[10px] font-normal opacity-65">IST</span></button>)}
+                {times.map((value) => <button key={value} type="button" onClick={() => { setTime(value); setError(null); }} className={`min-h-11 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-sm font-semibold tabular-nums ring-1 transition ${time === value ? "bg-primary text-white ring-primary" : "bg-white text-charcoal ring-parchment hover:ring-gold"}`}>{value} <span className="text-[10px] font-normal opacity-65">IST</span></button>)}
               </div>
             </div>
           </section>
@@ -267,14 +298,14 @@ export default function SessionBookingForm({ type, slug, title, manualMode = fal
           <section aria-labelledby="review-heading">
             <p className="text-xs font-semibold text-gold-deep">Step 4 of 4</p>
             <h3 id="review-heading" className="mt-1.5 sm:mt-2 font-display text-xl sm:text-2xl font-semibold text-charcoal">Review your request</h3>
-            <p className="mt-1.5 sm:mt-2 text-sm text-warmgray">Nothing is charged today. The team will confirm availability, fee, and next steps personally.</p>
+            <p className="mt-1.5 sm:mt-2 text-sm text-warmgray">{paymentRequired ? "Your selected time will be held while you complete secure payment." : "Nothing is charged today. The team will confirm availability, fee, and next steps personally."}</p>
             <dl className="mt-5 sm:mt-7 divide-y divide-parchment overflow-hidden rounded-2xl bg-ivory/45 px-4 sm:px-5 ring-1 ring-parchment">
               <div className="flex items-center justify-between gap-4 py-3 sm:py-4"><dt className="text-sm text-warmgray">Session</dt><dd className="text-right text-sm font-semibold text-charcoal">{title}</dd></div>
               <div className="flex items-center justify-between gap-4 py-3 sm:py-4"><dt className="text-sm text-warmgray">Format</dt><dd className="text-right text-sm font-semibold text-charcoal">{selectedFormat.label} · {selectedFormat.detail}</dd></div>
               <div className="flex items-center justify-between gap-4 py-3 sm:py-4"><dt className="text-sm text-warmgray">Preferred time</dt><dd className="text-right text-sm font-semibold text-charcoal">{displayDate(date)} · {time} IST</dd></div>
               <div className="flex items-start justify-between gap-6 py-3 sm:py-4"><dt className="text-sm text-warmgray">Intention</dt><dd className="max-w-sm text-right text-sm leading-6 text-charcoal">{notes || "I’ll share during the session"}</dd></div>
             </dl>
-            <div className="mt-4 sm:mt-5 flex items-start gap-3 rounded-2xl bg-gold-soft/50 p-3.5 sm:p-4 text-xs leading-5 text-gold-deep"><ShieldCheck className="mt-0.5 h-4 w-4 shrink-0" /><p>Submitting creates a booking request, not a confirmed appointment. The team will contact you before any payment.</p></div>
+            <div className="mt-4 sm:mt-5 flex items-start gap-3 rounded-2xl bg-gold-soft/50 p-3.5 sm:p-4 text-xs leading-5 text-gold-deep"><ShieldCheck className="mt-0.5 h-4 w-4 shrink-0" /><p>{paymentRequired ? "The appointment is confirmed only after Razorpay reports a captured payment." : "Submitting creates a booking request, not a confirmed appointment. The team will contact you before any payment."}</p></div>
             <label className="mt-3 sm:mt-4 flex cursor-pointer items-start gap-3 rounded-2xl bg-white p-3.5 sm:p-4 text-xs leading-5 text-warmgray ring-1 ring-parchment">
               <input type="checkbox" checked={privacyAccepted} onChange={(event) => { setPrivacyAccepted(event.target.checked); setError(null); }} className="mt-0.5 h-4 w-4 shrink-0 accent-[var(--color-primary)]" />
               <span>I consent to these details being used to respond to my booking request. I understand this is a wellbeing service, not medical or psychological treatment.</span>
@@ -291,7 +322,7 @@ export default function SessionBookingForm({ type, slug, title, manualMode = fal
           <button type="button" onClick={continueFlow} className="inline-flex min-h-11 items-center gap-2 rounded-full bg-primary px-6 sm:px-7 py-3 sm:py-3.5 text-sm font-bold text-white shadow-lg shadow-primary/20 transition hover:-translate-y-0.5 hover:brightness-110 active:translate-y-0">Continue <ArrowRight className="h-4 w-4" /></button>
         ) : (
           <button type="button" onClick={requestBooking} disabled={pending} className="inline-flex min-h-11 items-center gap-2 rounded-full bg-primary px-5 sm:px-7 py-3 sm:py-3.5 text-sm font-bold text-white shadow-lg shadow-primary/20 transition hover:-translate-y-0.5 hover:brightness-110 disabled:cursor-wait disabled:opacity-60">
-            {pending ? <Loader2 className="h-4 w-4 animate-spin" /> : <CalendarDays className="h-4 w-4" />}{pending ? "Sending request…" : "Request this session"}
+            {pending ? <Loader2 className="h-4 w-4 animate-spin" /> : <CalendarDays className="h-4 w-4" />}{pending ? "Preparing…" : paymentRequired ? "Continue to secure payment" : "Request this session"}
           </button>
         )}
       </footer>

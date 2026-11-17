@@ -1,7 +1,8 @@
 import { apiError, apiSuccess } from "@/lib/api";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { releaseReservedInventory } from "@/lib/fulfillment";
+import { releasePendingSessionBooking, releaseReservedInventory } from "@/lib/fulfillment";
 import { SOURCE_BUCKET } from "@/lib/distance-healing";
+import { extendDefaultAvailability } from "@/lib/bookings";
 
 export const runtime = "nodejs";
 
@@ -28,10 +29,12 @@ export async function GET(request: Request) {
   const results = {
     mediaCleaned: 0,
     abandonedOrdersReleased: 0,
+    slotsAdded: 0,
     timestamp: new Date().toISOString(),
   };
 
   try {
+    results.slotsAdded = await extendDefaultAvailability(admin);
     // 1. Media Retention Cleanup for Distance Healing Cases
     const now = new Date().toISOString();
     const { data: expiredCases, error: caseError } = await admin
@@ -85,6 +88,7 @@ export async function GET(request: Request) {
     } else if (abandonedOrders && abandonedOrders.length > 0) {
       for (const order of abandonedOrders) {
         await releaseReservedInventory(admin, order.id);
+        await releasePendingSessionBooking(admin, order.id);
         await admin
           .from("orders")
           .update({

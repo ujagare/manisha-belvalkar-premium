@@ -41,7 +41,8 @@ export function isPaymentsConfigured() {
     serverEnv.supabaseUrl() &&
       serverEnv.supabaseSecretKey() &&
       serverEnv.razorpayKeyId() &&
-      serverEnv.razorpayKeySecret(),
+      serverEnv.razorpayKeySecret() &&
+      serverEnv.razorpayWebhookSecret(),
   );
 }
 
