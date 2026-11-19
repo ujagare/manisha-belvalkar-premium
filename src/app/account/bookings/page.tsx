@@ -11,11 +11,27 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default async function MyBookingsPage() {
+const NOTICE_MESSAGES: Record<string, { tone: "info" | "warn"; text: string }> = {
+  rescheduled: { tone: "info", text: "Your session has been rescheduled and your private Daily.co video room has been updated." },
+  cancelled: { tone: "info", text: "Your booking has been cancelled and the time slot has been released." },
+  cancel_locked_24h: { tone: "warn", text: "Confirmed sessions cannot be cancelled within 24 hours of start time. Contact support for urgent assistance." },
+  reschedule_locked_24h: { tone: "warn", text: "Confirmed sessions can only be rescheduled at least 24 hours before start time." },
+  reschedule_limit_reached: { tone: "warn", text: "You have already used your complimentary reschedule for this session. Contact support for further changes." },
+  slot_unavailable: { tone: "warn", text: "That slot was just claimed by another client. Please choose another available time." },
+  reschedule_failed: { tone: "warn", text: "Could not reschedule right now. Please try again." },
+};
+
+export default async function MyBookingsPage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ notice?: string }>;
+}) {
   const user = await getCurrentUser();
   if (!user) redirect("/login?next=/account/bookings");
   const configured = isSupabaseConfigured();
   const bookings = configured ? await getMyBookings(50) : [];
+  const params = await searchParams;
+  const notice = params?.notice ? NOTICE_MESSAGES[params.notice] : null;
 
   return (
     <section className="relative overflow-hidden bg-ivory pb-24 pt-20 sm:pt-32 lg:pt-40">
@@ -29,6 +45,12 @@ export default async function MyBookingsPage() {
           <h1 className="mt-2 sm:mt-3 font-display text-3xl font-bold text-charcoal sm:text-5xl">My Bookings</h1>
           <p className="mt-2 sm:mt-3 text-sm sm:text-base text-warmgray">Aapki healing aur mentoring session requests — status, meeting details, reschedule aur cancel ke saath.</p>
         </div>
+
+        {notice ? (
+          <div className={`mt-6 rounded-2xl border p-4 text-sm ${notice.tone === "warn" ? "border-primary/25 bg-primary-soft text-primary" : "border-green-200 bg-green-50 text-green-800"}`}>
+            {notice.text}
+          </div>
+        ) : null}
 
         {!configured ? (
           <div className="mt-6 sm:mt-8 rounded-2xl border border-gold/40 bg-gold-soft p-4 sm:p-5 text-sm text-gold-deep">

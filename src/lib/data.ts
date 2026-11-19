@@ -217,7 +217,7 @@ export const legacyHeroSlides: Record<string, unknown>[] = [
 
 const heroSlideCatalog: HeroSlide[] = [
   {
-    image: "/images/manisha-portrait.webp",
+    image: "/images/manisha/manisha-about-presence.webp",
     eyebrow: "About Manisha",
     headline: "Meet the mentor behind",
     headlineHighlight: "sacred transformation",
@@ -244,7 +244,7 @@ const heroSlideCatalog: HeroSlide[] = [
         title: "Featured voice",
       },
       {
-        image: "/images/manisha-portrait-meditation.webp",
+        image: "/images/manisha/manisha-courses-mentor.webp",
         alt: "Dr. Manisha Belvalkar profile image",
         title: "Holistic guide",
       },
@@ -317,7 +317,7 @@ const heroSlideCatalog: HeroSlide[] = [
         title: "Goddess attunement",
       },
       {
-        image: "/images/home-cards/healing-session.webp",
+        image: "/images/energy-healing.webp",
         alt: "Energy healing session",
         title: "Energy healing",
       },
@@ -832,8 +832,8 @@ export const mediaItems: MediaItem[] = [
       "A conversation with Dr. Manisha Belvalkar on her journey, her work, and how Tarot reveals the connection between our inner world and outer reality.",
     quote:
       "As within, so without. This statement is completely accurate when it comes to Tarot reading — our outer reality reflects our inner world.",
-    image: "/images/manisha-success-story.webp",
-    href: "/images/manisha-success-story.webp",
+    image: "/images/manisha/manisha-success-today-award.webp",
+    href: "/images/manisha/manisha-success-today-award.webp",
   },
   {
     id: "citadel",
@@ -843,8 +843,8 @@ export const mediaItems: MediaItem[] = [
       "A profile on Manisha's three decades of spiritual practice — from her early exploration of esoteric tools to becoming one of the most trusted Tarot mentors in Mumbai.",
     quote:
       "When people come to me with their problems, I hold a space where they can open their hearts and receive unconditional support.",
-    image: "/images/manisha-article-press.webp",
-    href: "/images/manisha-article-press.webp",
+    image: "/images/manisha-portrait-meditation.webp",
+    href: "/images/manisha-portrait-meditation.webp",
   },
   {
     id: "health-mag",
@@ -854,8 +854,8 @@ export const mediaItems: MediaItem[] = [
       "An exploration of energy healing and Chakra Therapy — and how balancing the body's energy centres supports holistic well-being.",
     quote:
       "Healing begins when we return to balance — across the body, mind and spirit.",
-    image: "/images/manisha-health-magazine.webp",
-    href: "/images/manisha-health-magazine.webp",
+    image: "/images/manisha-article-press.webp",
+    href: "/images/manisha-article-press.webp",
   },
 ];
 
@@ -871,7 +871,7 @@ export const awards: Award[] = [
     title: "International Excellence Award",
     description:
       "Receiving the International Excellence Award for Tarot Reading from actor Sonu Sood — an honour recognising her mastery and years of dedicated service.",
-    image: "/images/manisha-portrait-healer.webp",
+    image: "/images/manisha-health-magazine.webp",
   },
 ];
 
@@ -946,7 +946,7 @@ export const shaktiPillars: ShaktiPillar[] = [
     tagline: "Honour your feminine essence",
     description:
       "A sacred space designed to feel seen, heard and understood as you navigate life's many roles.",
-    image: "/images/manisha-portrait.webp",
+    image: "/images/manisha/manisha-mentoring-portrait.webp",
   },
   {
     title: "Empowerment",
@@ -996,7 +996,7 @@ export const legacyMentoringAreas: MentoringArea[] = [
       "Clarity on your current life questions",
       "Actionable next steps & accountability",
     ],
-    image: "/images/manisha-portrait.webp",
+    image: "/images/manisha/manisha-services-mentor.webp",
   },
   {
     slug: "tarot-mentoring",
@@ -1080,7 +1080,7 @@ export const mentoringAreas: MentoringArea[] = [
       "Empowered, conscious decision-making",
       "Clear next steps after every session",
     ],
-    image: "/images/tarot.webp",
+    image: "/images/mentoring/tarot-mentoring.webp",
   },
   {
     slug: "soul-purpose-reading",
@@ -1097,7 +1097,7 @@ export const mentoringAreas: MentoringArea[] = [
       "Practical guidance for aligned action",
       "Personalised remedies and reflection points",
     ],
-    image: "/images/spiritual-golden-texture.webp",
+    image: "/images/mentoring/soul-purpose.webp",
   },
   {
     slug: "clarity-alignment",
@@ -1113,7 +1113,7 @@ export const mentoringAreas: MentoringArea[] = [
       "Practical solutions for a brighter future",
       "Support for purpose-led transformation",
     ],
-    image: "/images/manisha-portrait.webp",
+    image: "/images/mentoring/clarity-alignment.webp",
   },
 ];
 
@@ -1146,7 +1146,7 @@ export const legacyHealingServices: HealingService[] = [
       "Chakra & aura balancing",
       "Intuitive guidance & aftercare",
     ],
-    image: "/images/home-cards/healing-session.webp",
+    image: "/images/energy-healing.webp",
   },
   {
     slug: "distance-healing",
@@ -1189,7 +1189,7 @@ export const legacyHealingServices: HealingService[] = [
       "Emotional & spiritual restoration",
       "Sacred practices for self-healing",
     ],
-    image: "/images/home-cards/goddess-attunement.webp",
+    image: "/images/shakti-healing.webp",
   },
   {
     slug: "mind-reprogramming",
@@ -1247,7 +1247,7 @@ export const healingServices: HealingService[] = [
       "Aura and energy balancing",
       "Intuitive guidance and aftercare",
     ],
-    image: "/images/home-cards/healing-session.webp",
+    image: "/images/energy-healing.webp",
   },
   {
     slug: "distance-healing",
@@ -1277,7 +1277,7 @@ export const healingServices: HealingService[] = [
       "Shakti guidance and blessings",
       "Emotional and spiritual restoration",
     ],
-    image: "/images/home-cards/goddess-attunement.webp",
+    image: "/images/shakti-healing.webp",
   },
   {
     slug: "mind-reprogramming",

@@ -2,11 +2,17 @@ import "server-only";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { DISTANCE_HEALING_SLUG, ensureDistanceHealingCase } from "@/lib/distance-healing";
 import { orderConfirmationEmail, sendEmail } from "@/lib/resend";
-import { formatINR } from "@/lib/utils";
+import { formatCurrencySubunits, normalizeCurrency } from "@/lib/currency";
 import { assignOrderInvoiceNumber, orderInvoiceToken } from "@/lib/invoice";
 import { getSiteUrl } from "@/lib/site-url";
-import { assertDatabaseSuccess } from "@/lib/payment-safety";
-import { generateMeetingUrl, releaseAvailabilitySlot } from "@/lib/bookings";
+import { assertDatabaseSuccess, isAsyncHealingItem } from "@/lib/payment-safety";
+import {
+  provisionDailyBookingRoom,
+  releaseAvailabilitySlot,
+  revokeBookingVideoRoom,
+} from "@/lib/bookings";
+import { buildSessionIcs } from "@/lib/ics";
+import { brand } from "@/lib/data";
 
 type AdminClient = ReturnType<typeof createAdminClient>;
 
@@ -18,6 +24,7 @@ interface OrderRecord {
   item_title: string;
   amount: number | null;
   amount_subunits: number | null;
+  currency?: string | null;
   guest_email: string | null;
   guest_name: string | null;
   user_email?: string | null;
@@ -26,17 +33,13 @@ interface OrderRecord {
 
 /**
  * Activates order fulfillment upon successful payment capture:
- * - Bookings for service/healing
- * - Distance healing case creation
+ * - Bookings for live service/healing/mentoring + private Daily.co room provisioning
+ * - Distance healing async case creation (no live video slot needed)
  * - Recorded course enrollments
  * - Inventory decrement (reserved stock -> sold)
- * - Confirmation email (idempotent, once per order)
+ * - Confirmation email with .ics calendar invite & protected Join Room link (idempotent)
  */
 export async function activateOrderFulfilment(admin: AdminClient, order: OrderRecord) {
-  // Generate & assign sequential GST Tax Invoice Number. Returns the number
-  // that was already present when this order had been fulfilled once before,
-  // which is how we keep the confirmation email to a single send — both the
-  // browser verify route and the webhook call this function for one payment.
   const priorInvoice = await admin
     .from("orders")
     .select("invoice_number")
@@ -44,28 +47,51 @@ export async function activateOrderFulfilment(admin: AdminClient, order: OrderRe
     .maybeSingle();
   const alreadyFulfilled = Boolean(priorInvoice.data?.invoice_number);
 
-  // 1. Service / Healing booking
-  if (["service", "healing", "mentoring"].includes(order.item_type)) {
+  let confirmedBooking: {
+    id: string;
+    format: string;
+    requested_start: string | null;
+    timezone: string | null;
+    meeting_url: string | null;
+  } | null = null;
+
+  const isAsyncDistanceHealing = isAsyncHealingItem(order.item_type, order.item_slug);
+
+  // 1. Live Service / Healing / Mentoring booking (skip for async distance healing)
+  if (["service", "healing", "mentoring"].includes(order.item_type) && !isAsyncDistanceHealing) {
     if (!order.user_id) throw new Error("Paid sessions require an authenticated customer.");
     const bookingResult = await admin
       .from("bookings")
-      .update({ status: "confirmed", updated_at: new Date().toISOString() })
+      .update({
+        status: "confirmed",
+        hold_expires_at: null,
+        updated_at: new Date().toISOString(),
+      })
       .eq("order_id", order.id)
       .eq("user_id", order.user_id)
-      .select("id,format,meeting_url");
+      .select("id,format,requested_start,timezone,meeting_url,daily_room_name");
     assertDatabaseSuccess(bookingResult, "Session booking confirmation");
-    if (!bookingResult.data?.length) throw new Error("Session booking confirmation: booking was not prepared before payment.");
-    const booking = bookingResult.data[0];
-    if (booking.format === "online" && !booking.meeting_url) {
-      const meetingUpdate = await admin
-        .from("bookings")
-        .update({ meeting_url: generateMeetingUrl(order.id.slice(0, 8), order.item_slug) })
-        .eq("id", booking.id);
-      assertDatabaseSuccess(meetingUpdate, "Session meeting link creation");
+    if (!bookingResult.data?.length) {
+      throw new Error("Session booking confirmation: booking was not prepared before payment.");
     }
+    const booking = bookingResult.data[0];
+    if (booking.format === "online" && !booking.daily_room_name) {
+      try {
+        const room = await provisionDailyBookingRoom(admin, {
+          id: booking.id,
+          offering_slug: order.item_slug,
+          requested_start: booking.requested_start,
+        });
+        if (room) booking.meeting_url = room.roomUrl;
+      } catch (dailyErr) {
+        // Log loudly, but do NOT roll back a paid booking — room can be lazily provisioned on join.
+        console.error("[fulfillment:daily]", { bookingId: booking.id, dailyErr });
+      }
+    }
+    confirmedBooking = booking;
   }
 
-  // 2. Distance healing intake case
+  // 2. Distance healing intake case (async photo workflow)
   if (order.user_id && order.item_type === "healing" && order.item_slug === DISTANCE_HEALING_SLUG) {
     await ensureDistanceHealingCase(order.id, order.user_id);
   }
@@ -152,30 +178,78 @@ export async function activateOrderFulfilment(admin: AdminClient, order: OrderRe
 
   await assignOrderInvoiceNumber(admin, order.id);
 
-  // 5. Send order confirmation email (best-effort).
-  // Signed-in customers get it too — previously only guest orders were
-  // emailed, so a logged-in buyer never received a receipt.
-  const recipientEmail = order.guest_email ?? order.user_email ?? null;
+  // 5. Send order confirmation email (best-effort, idempotent).
+  let recipientEmail = order.guest_email ?? order.user_email ?? null;
+  let recipientName = order.guest_name ?? order.user_name ?? null;
+  if (!recipientEmail && order.user_id) {
+    const { data: profile } = await admin
+      .from("profiles")
+      .select("email,full_name")
+      .eq("id", order.user_id)
+      .maybeSingle();
+    recipientEmail = profile?.email ?? null;
+    recipientName = recipientName ?? profile?.full_name ?? null;
+  }
+
   if (recipientEmail && !alreadyFulfilled) {
+    const siteUrl = getSiteUrl();
     const token = orderInvoiceToken(order.id);
-    const invoicePath = token
-      ? `${getSiteUrl()}/api/orders/${order.id}/invoice?token=${token}`
+    const invoicePath = token ? `${siteUrl}/api/orders/${order.id}/invoice?token=${token}` : null;
+    const currency = normalizeCurrency(order.currency);
+    const totalLabel = order.amount_subunits != null
+      ? formatCurrencySubunits(order.amount_subunits, currency)
+      : order.amount != null
+        ? formatCurrencySubunits(Math.round(order.amount * 100), currency)
+        : "—";
+
+    const sessionJoinUrl = confirmedBooking && confirmedBooking.format === "online"
+      ? `${siteUrl}/account/bookings/${confirmedBooking.id}/room`
       : null;
+    const sessionStartLabel = confirmedBooking?.requested_start
+      ? `${new Date(confirmedBooking.requested_start).toLocaleString("en-IN", {
+          timeZone: "Asia/Kolkata",
+          weekday: "short",
+          day: "numeric",
+          month: "short",
+          year: "numeric",
+          hour: "numeric",
+          minute: "2-digit",
+        })} IST`
+      : null;
+    const healingPortalUrl = isAsyncDistanceHealing
+      ? `${siteUrl}/distance-healing/${order.id}`
+      : null;
+
     const { subject, html } = orderConfirmationEmail({
-      name: order.guest_name ?? order.user_name ?? recipientEmail.split("@")[0],
+      name: recipientName ?? recipientEmail.split("@")[0],
       email: recipientEmail,
-      orderRef: order.id.slice(0, 8),
+      orderRef: order.id.slice(0, 8).toUpperCase(),
       items: order.item_title,
-      totalLabel:
-        order.amount_subunits != null
-          ? formatINR(order.amount_subunits / 100)
-          : order.amount != null
-            ? formatINR(order.amount)
-            : "—",
+      totalLabel,
       itemType: order.item_type,
       invoicePath,
+      sessionStartLabel,
+      sessionFormat: confirmedBooking?.format === "online" ? "Online (Private Video Room)" : confirmedBooking?.format ?? null,
+      sessionJoinUrl,
+      healingPortalUrl,
     });
-    const result = await sendEmail({ to: recipientEmail, subject, html });
+
+    const attachments = confirmedBooking?.requested_start && sessionJoinUrl
+      ? [{
+          filename: `manisha-belvalkar-session-${order.id.slice(0, 8)}.ics`,
+          content: buildSessionIcs({
+            bookingId: confirmedBooking.id,
+            title: order.item_title,
+            startsAtIso: confirmedBooking.requested_start,
+            joinUrl: sessionJoinUrl,
+            organizerEmail: brand.email,
+            attendeeEmail: recipientEmail,
+          }),
+          contentType: "text/calendar; charset=utf-8; method=REQUEST",
+        }]
+      : undefined;
+
+    const result = await sendEmail({ to: recipientEmail, subject, html, attachments });
     console.log(`[fulfillment:email] order=${order.id.slice(0, 8)}`, result.ok ? "sent" : `skipped: ${result.error}`);
   }
 }
@@ -184,11 +258,11 @@ export async function activateOrderFulfilment(admin: AdminClient, order: OrderRe
  * Revokes access and cancels orders/bookings when a refund is processed:
  * - Cancels order & sets payment_status = 'refunded'
  * - Revokes course access ('refunded')
- * - Cancels bookings
+ * - Cancels bookings, deletes private Daily.co room, releases slot
  * - Returns physical stock to inventory (reason: 'return')
  */
 export async function revokeOrderFulfilment(admin: AdminClient, orderId: string, providerRefundId?: string | null) {
-  const booking = await admin.from("bookings").select("slot_id").eq("order_id", orderId).maybeSingle();
+  const booking = await admin.from("bookings").select("slot_id,daily_room_name").eq("order_id", orderId).maybeSingle();
   assertDatabaseSuccess(booking, "Refund booking lookup");
   // 1. Update order status
   await admin.from("orders").update({
@@ -202,13 +276,14 @@ export async function revokeOrderFulfilment(admin: AdminClient, orderId: string,
     status: "refunded",
   }).eq("order_id", orderId);
 
-  // 3. Cancel booking
+  // 3. Cancel booking & revoke video room
   const bookingCancellation = await admin.from("bookings").update({
     status: "cancelled",
     updated_at: new Date().toISOString(),
   }).eq("order_id", orderId);
   assertDatabaseSuccess(bookingCancellation, "Refund booking cancellation");
   if (booking.data?.slot_id) await releaseAvailabilitySlot(admin, booking.data.slot_id);
+  if (booking.data?.daily_room_name) await revokeBookingVideoRoom(booking.data.daily_room_name);
 
   // 4. Update internal refunds record if requested
   await admin.from("refunds").update({

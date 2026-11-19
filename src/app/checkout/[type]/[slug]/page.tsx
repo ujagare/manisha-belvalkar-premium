@@ -43,9 +43,16 @@ export default async function CheckoutPage({ params, searchParams }: Props) {
   // Guest checkout: an account is optional (contact email collected in the
   // form below). Re-check the session so signed-in users are prefilled.
   const user = await getCurrentUser();
+  const query = await searchParams;
   const isDistanceHealing = type === "healing" && slug === "distance-healing";
   if (isPaymentsConfigured() && !user) {
-    redirect(`/login?next=${encodeURIComponent(`/checkout/${type}/${slug}`)}`);
+    const preserved = new URLSearchParams();
+    if (query?.slotId) preserved.set("slotId", query.slotId);
+    if (query?.format) preserved.set("format", query.format);
+    if (query?.notes) preserved.set("notes", query.notes);
+    const qs = preserved.toString();
+    const returnPath = `/checkout/${type}/${slug}${qs ? `?${qs}` : ""}`;
+    redirect(`/login?next=${encodeURIComponent(returnPath)}`);
   }
   const addresses = user && type === "product" ? await getMyAddresses() : [];
 
@@ -54,8 +61,7 @@ export default async function CheckoutPage({ params, searchParams }: Props) {
   const isSession = ["service", "healing", "mentoring"].includes(type);
   const paymentsConfigured = isPaymentsConfigured();
   const manualMode = shouldUseManualFlow(isServerConfigured(), paymentsConfigured);
-  const query = await searchParams;
-  const initialSession = query?.slotId && query?.format
+  const initialSession = !isDistanceHealing && query?.slotId && query?.format
     ? { slotId: query.slotId, format: query.format, notes: query.notes ?? "" }
     : undefined;
   const reassuranceItems = isCourse

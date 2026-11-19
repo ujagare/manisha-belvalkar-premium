@@ -1,0 +1,199 @@
+/* Services page editorial motion, sticky-stack & interactive refinements */
+
+.choreographyRoot :global(.services-line-mask),
+.heroHeadline :global(.services-line-mask) {
+  padding-top: 0.06em;
+  margin-top: -0.06em;
+  padding-bottom: 0.16em;
+  margin-bottom: -0.16em;
+}
+
+/* Responsive sticky offsets for the Healing stacking card deck */
+.healingStickyCard {
+  position: sticky;
+  top: var(--sticky-mobile, 128px);
+  z-index: var(--sticky-z, 10);
+}
+
+@media (min-width: 1024px) {
+  .healingStickyCard {
+    top: var(--sticky-desktop, 112px);
+  }
+}
+
+/* Subtle pointer-tracked spotlight sheen on interactive cards (desktop fine pointer) */
+.spotlightCard {
+  position: relative;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .spotlightCard::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    background: radial-gradient(
+      340px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+      rgba(221, 184, 41, 0.14),
+      transparent 65%
+    );
+    transition: opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .spotlightCard:hover::after {
+    opacity: 1;
+  }
+}
+
+/* Finder result smooth entry */
+@keyframes finder-panel-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.finderPanelEnter {
+  animation: finder-panel-in 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Continuous marquee track (velocity-modulated via GSAP timeScale) */
+.marqueeTrack {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+}
+
+.bevelButton {
+  position: relative;
+  isolation: isolate;
+  transition:
+    transform 0.45s cubic-bezier(0.32, 0.72, 0, 1),
+    background-color 0.35s cubic-bezier(0.32, 0.72, 0, 1),
+    color 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.bevelButton::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  border: 2px solid var(--bevel-border, currentColor);
+  opacity: 0.38;
+  transform: translate3d(-4px, 4px, 0);
+  transition:
+    transform 0.45s cubic-bezier(0.32, 0.72, 0, 1),
+    opacity 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .bevelButton:hover::before {
+    transform: translate3d(0, 0, 0);
+    opacity: 0.85;
+  }
+
+  .bevelButton:hover {
+    transform: translate3d(-1.5px, -1.5px, 0);
+  }
+}
+
+.bevelButton:active {
+  transform: scale(0.98);
+}
+
+.hoverZoomMedia {
+  transform: scale(1);
+  transition: transform var(--motion-duration-base) var(--motion-ease-editorial);
+}
+
+.ctaArrow {
+  transition: transform var(--motion-duration-fast) var(--motion-ease-editorial);
+}
+
+.ctaArrowDiagonal {
+  transition: transform var(--motion-duration-fast) var(--motion-ease-editorial);
+}
+
+.cardSurface {
+  transition:
+    transform var(--motion-duration-fast) var(--motion-ease-editorial),
+    border-color var(--motion-duration-fast) var(--motion-ease-editorial),
+    box-shadow var(--motion-duration-base) var(--motion-ease-editorial),
+    background-color var(--motion-duration-fast) var(--motion-ease-editorial);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .hoverZoomFrame:hover .hoverZoomMedia {
+    transform: scale(1.035);
+  }
+
+  .cardSurface:hover {
+    transform: translate3d(0, -4px, 0);
+  }
+
+  :global(.group):hover .ctaArrow,
+  a:hover .ctaArrow {
+    transform: translate3d(var(--motion-hover-arrow), 0, 0);
+  }
+
+  :global(.group):hover .ctaArrowDiagonal,
+  a:hover .ctaArrowDiagonal {
+    transform: translate3d(
+      var(--motion-hover-arrow),
+      calc(var(--motion-hover-arrow) * -1),
+      0
+    );
+  }
+}
+
+:global(.group):focus-within .ctaArrow,
+a:focus-visible .ctaArrow {
+  transform: translate3d(var(--motion-hover-arrow), 0, 0);
+}
+
+:global(.group):focus-within .ctaArrowDiagonal,
+a:focus-visible .ctaArrowDiagonal {
+  transform: translate3d(
+    var(--motion-hover-arrow),
+    calc(var(--motion-hover-arrow) * -1),
+    0
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .finderPanelEnter {
+    animation: none;
+  }
+
+  .bevelButton,
+  .bevelButton::before,
+  .hoverZoomMedia,
+  .ctaArrow,
+  .ctaArrowDiagonal,
+  .cardSurface,
+  .spotlightCard::after {
+    transition: none;
+  }
+
+  .bevelButton:hover,
+  .bevelButton:hover::before,
+  .hoverZoomFrame:hover .hoverZoomMedia,
+  .cardSurface:hover,
+  :global(.group):hover .ctaArrow,
+  a:hover .ctaArrow,
+  :global(.group):focus-within .ctaArrow,
+  a:focus-visible .ctaArrow,
+  :global(.group):hover .ctaArrowDiagonal,
+  a:hover .ctaArrowDiagonal,
+  :global(.group):focus-within .ctaArrowDiagonal,
+  a:focus-visible .ctaArrowDiagonal {
+    transform: none;
+  }
+}

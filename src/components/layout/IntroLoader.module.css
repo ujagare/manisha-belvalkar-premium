@@ -66,6 +66,7 @@
 
 .leaving {
   visibility: hidden;
+  pointer-events: none;
   transition: visibility 0s 900ms;
 }
 

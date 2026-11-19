@@ -15,9 +15,13 @@ import {
 import {
   assertDatabaseSuccess,
   defaultAvailabilityStarts,
+  isAsyncHealingItem,
+  isWithinModificationWindow,
   sessionCheckoutIssue,
   successfulPaymentStatus,
 } from "../src/lib/payment-safety.ts";
+import { convertInrToSubunits, formatCurrencySubunits, normalizeCurrency } from "../src/lib/currency.ts";
+import { buildSessionIcs } from "../src/lib/ics.ts";
 
 test("product order keeps its item, total, customer and delivery details", () => {
   const message = purchaseWhatsAppMessage({ reference: "ORDER-1", kind: "product", item: "Shakti Oracle Deck", total: "₹2,499", name: "Asha", email: "asha@example.com", details: "Delivery: Mumbai 400028" });
@@ -112,4 +116,60 @@ test("every selectable Shakti card resolves to an existing image", () => {
       `Missing image for Shakti card ${cardNumber}: ${publicPath}`,
     );
   }
+});
+
+test("async distance healing bypasses live slot requirement while live healing enforces it", () => {
+  assert.equal(isAsyncHealingItem("healing", "distance-healing"), true);
+  assert.equal(isAsyncHealingItem("healing", "shakti-healing"), false);
+  assert.equal(
+    sessionCheckoutIssue({
+      itemTypes: ["healing"],
+      itemSlugs: ["distance-healing"],
+      userId: "user-1",
+      slotId: null,
+      format: null,
+    }),
+    null,
+  );
+  assert.equal(
+    sessionCheckoutIssue({
+      itemTypes: ["healing"],
+      itemSlugs: ["shakti-healing"],
+      userId: "user-1",
+      slotId: null,
+      format: "online",
+    }),
+    "SLOT_REQUIRED",
+  );
+});
+
+test("INR and USD Razorpay currency conversion is authoritative and rounded cleanly", () => {
+  assert.equal(normalizeCurrency("usd"), "USD");
+  assert.equal(normalizeCurrency("EUR"), "INR");
+  assert.equal(convertInrToSubunits(24000, "INR"), 2400000);
+  const usdSubunits = convertInrToSubunits(24000, "USD");
+  assert.equal(usdSubunits % 100, 0);
+  assert.ok(usdSubunits >= 10000);
+  assert.match(formatCurrencySubunits(usdSubunits, "USD"), /^\$/);
+});
+
+test("booking 24-hour cancel/reschedule window is strictly enforced", () => {
+  const now = Date.parse("2026-11-20T10:00:00.000Z");
+  assert.equal(isWithinModificationWindow("2026-11-21T10:01:00.000Z", now), true);
+  assert.equal(isWithinModificationWindow("2026-11-21T09:59:00.000Z", now), false);
+});
+
+test("session calendar invite builds valid RFC 5545 VCALENDAR output", () => {
+  const ics = buildSessionIcs({
+    bookingId: "booking-123",
+    title: "Shakti Healing",
+    startsAtIso: "2026-12-01T04:30:00.000Z",
+    joinUrl: "https://www.manishabelvalkar.com/account/bookings/booking-123/room",
+    organizerEmail: "manishabelvalkar@gmail.com",
+    attendeeEmail: "client@example.com",
+  });
+  assert.match(ics, /BEGIN:VCALENDAR/);
+  assert.match(ics, /DTSTART:20261201T043000Z/);
+  assert.match(ics, /\/account\/bookings\/booking-123\/room/);
+  assert.match(ics, /END:VCALENDAR/);
 });

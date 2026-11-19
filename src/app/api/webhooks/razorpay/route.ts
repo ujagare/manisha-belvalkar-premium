@@ -9,10 +9,22 @@ import {
   releaseReservedInventory,
 } from "@/lib/fulfillment";
 import { assertDatabaseSuccess } from "@/lib/payment-safety";
+import { paymentDisputeAdminEmail, sendEmail } from "@/lib/resend";
+import { brand } from "@/lib/data";
+import { formatCurrencySubunits, normalizeCurrency } from "@/lib/currency";
 
 export const runtime = "nodejs";
 
-type RazorpayEntity = { id?: string; order_id?: string; payment_id?: string; status?: string; amount?: number; currency?: string; method?: string };
+type RazorpayEntity = {
+  id?: string;
+  order_id?: string;
+  payment_id?: string;
+  status?: string;
+  amount?: number;
+  currency?: string;
+  method?: string;
+  reason_code?: string;
+};
 
 export async function POST(request: Request) {
   const raw = await request.text();
@@ -42,7 +54,11 @@ export async function POST(request: Request) {
   }
 
   try {
-    const root = payload.payload as { payment?: { entity?: RazorpayEntity }; refund?: { entity?: RazorpayEntity } } | undefined;
+    const root = payload.payload as {
+      payment?: { entity?: RazorpayEntity };
+      refund?: { entity?: RazorpayEntity };
+      dispute?: { entity?: RazorpayEntity };
+    } | undefined;
     const payment = root?.payment?.entity;
     if (payment?.order_id) {
       const status = eventType === "payment.captured" ? "captured" : eventType === "payment.failed" ? "failed" : payment.status;
@@ -69,7 +85,7 @@ export async function POST(request: Request) {
 
         const { data: order } = await admin
           .from("orders")
-          .select("id,user_id,item_type,item_slug,item_title,amount,amount_subunits,guest_email,guest_name")
+          .select("id,user_id,item_type,item_slug,item_title,amount,amount_subunits,currency,guest_email,guest_name")
           .eq("gateway_order_id", payment.order_id)
           .maybeSingle();
 
@@ -92,6 +108,27 @@ export async function POST(request: Request) {
         if (pay?.order_id) {
           await revokeOrderFulfilment(admin, pay.order_id, refund?.id);
         }
+      }
+    }
+    if (eventType === "payment.dispute.created") {
+      const dispute = root?.dispute?.entity;
+      if (dispute?.id && dispute.payment_id) {
+        const { data: pay } = await admin
+          .from("payments")
+          .select("order_id,amount_subunits,currency")
+          .eq("provider_payment_id", dispute.payment_id)
+          .maybeSingle();
+        const alert = paymentDisputeAdminEmail({
+          disputeId: dispute.id,
+          paymentId: dispute.payment_id,
+          orderId: pay?.order_id ?? "unknown",
+          amountLabel: formatCurrencySubunits(
+            dispute.amount ?? pay?.amount_subunits ?? 0,
+            normalizeCurrency(dispute.currency ?? pay?.currency),
+          ),
+          reason: dispute.reason_code ?? "unspecified",
+        });
+        await sendEmail({ to: brand.email, subject: alert.subject, html: alert.html });
       }
     }
     const processed = await admin.from("payment_events").update({ processed_at: new Date().toISOString(), error: null }).eq("provider", "razorpay").eq("event_id", eventId);

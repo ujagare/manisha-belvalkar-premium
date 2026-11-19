@@ -80,7 +80,8 @@ export async function getCatalogItem(
   if (type === "healing") {
     const h = healingServices.find((x) => x.slug === slug);
     if (!h) return null;
-    let price: number | null = null;
+    // Start with authoritative catalog price, then allow an active DB offering row to override it.
+    let price: number | null = h.price && h.price > 0 ? h.price : null;
     if (isServerConfigured()) {
       const admin = createAdminClient();
       const { data } = await admin
@@ -101,7 +102,7 @@ export async function getCatalogItem(
       description: h.description,
       image: h.image,
       price,
-      priceLabel: price ? `₹${price.toLocaleString("en-IN")}` : "Price setup pending",
+      priceLabel: price ? `₹${price.toLocaleString("en-IN")}` : "By consultation",
       href: itemHref(type, h.slug),
     };
   }

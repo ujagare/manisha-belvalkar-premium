@@ -7,11 +7,12 @@ import { isSameOriginRequest } from "@/lib/security";
 import { sendEmail } from "@/lib/resend/client";
 import { bookingAdminEmail, requestConfirmationEmail } from "@/lib/resend/templates";
 import { brand } from "@/lib/data";
-import { releaseAvailabilitySlot, reserveAvailabilitySlot } from "@/lib/bookings";
+import { releaseAvailabilitySlot, releaseExpiredSlotHolds, reserveAvailabilitySlot } from "@/lib/bookings";
 
 export async function GET(request: Request) {
   try {
     const admin = createAdminClient();
+    await releaseExpiredSlotHolds(admin).catch((err) => console.warn("[bookings:release-holds]", err));
     const { searchParams } = new URL(request.url);
     const format = searchParams.get("format") || "online";
 

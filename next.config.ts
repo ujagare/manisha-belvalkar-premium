@@ -32,6 +32,12 @@ const nextConfig: NextConfig = {
         { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
       ],
     }, {
+      // Allow camera/microphone strictly inside the authenticated Daily.co video session room.
+      source: "/account/bookings/:id/room",
+      headers: [
+        { key: "Permissions-Policy", value: "camera=*, microphone=*, fullscreen=*, display-capture=*, geolocation=()" },
+      ],
+    }, {
       source: "/images/:path*",
       headers: [{ key: "Cache-Control", value: "public, max-age=86400, stale-while-revalidate=604800" }],
     }, {

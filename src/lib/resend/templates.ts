@@ -88,20 +88,87 @@ export function orderConfirmationEmail(input: {
   totalLabel: string;
   itemType: string;
   invoicePath?: string | null;
+  sessionStartLabel?: string | null;
+  sessionFormat?: string | null;
+  sessionJoinUrl?: string | null;
+  healingPortalUrl?: string | null;
+}): { subject: string; html: string } {
+  const rows = [
+    { label: "Order Ref", value: input.orderRef },
+    { label: "What you booked", value: input.items },
+    { label: "Total Paid", value: input.totalLabel },
+  ];
+  if (input.sessionFormat) rows.push({ label: "Format", value: input.sessionFormat });
+  if (input.sessionStartLabel) rows.push({ label: "Confirmed Time", value: input.sessionStartLabel });
+
+  return {
+    subject: `Booking confirmed — ${input.orderRef}`,
+    html: layout("Booking & Payment Confirmed", `
+      <p style="margin:0 0 8px;font-size:16px;color:#2b2118;">Dear ${escapeHtml(input.name).trim() || "there"},</p>
+      <p style="margin:0 0 16px;font-size:14px;line-height:1.7;color:#2b2118;">Thank you! Your payment has been verified and your <strong>${escapeHtml(input.itemType)}</strong> is confirmed.</p>
+      ${detailsTable(rows)}
+      ${input.sessionJoinUrl ? `<div style="margin:24px 0;padding:20px;border-radius:12px;background:#faf7f2;border:1px solid #eee3d3;">
+        <p style="margin:0 0 10px;font-size:14px;font-weight:700;color:#2b2118;">Your Private Online Session Room</p>
+        <p style="margin:0 0 14px;font-size:13px;line-height:1.6;color:#5c4d3e;">Your encrypted video room opens 15 minutes before your scheduled time. Sign in to your account to enter (no app download required).</p>
+        <a href="${input.sessionJoinUrl}" style="display:inline-block;padding:12px 24px;border-radius:999px;background:#6b0b0b;color:#ffffff;font-size:13px;font-weight:700;text-decoration:none;">Open Private Session Room</a>
+        <p style="margin:12px 0 0;font-size:12px;color:#7a6b5a;">Preparation: Find a quiet, uninterrupted space, keep water nearby, and use headphones if comfortable. A calendar invite (.ics) is attached to this email.</p>
+      </div>` : ""}
+      ${input.healingPortalUrl ? `<div style="margin:24px 0;padding:20px;border-radius:12px;background:#faf7f2;border:1px solid #eee3d3;">
+        <p style="margin:0 0 10px;font-size:14px;font-weight:700;color:#2b2118;">Next Step: Submit Your Distance Healing Photograph</p>
+        <a href="${input.healingPortalUrl}" style="display:inline-block;padding:12px 24px;border-radius:999px;background:#6b0b0b;color:#ffffff;font-size:13px;font-weight:700;text-decoration:none;">Open Private Distance Healing Portal</a>
+      </div>` : ""}
+      ${input.invoicePath ? `<p style="margin:20px 0 0;font-size:14px;line-height:1.7;color:#2b2118;">Your tax invoice is ready: <a href="${input.invoicePath}" style="color:#8a1c1c;font-weight:600;">View / download invoice</a></p>` : ""}
+      <p style="margin:20px 0 0;font-size:13px;line-height:1.7;color:#5c4d3e;">Need to reschedule? You may reschedule once free of charge up to 24 hours before your session from <strong>My Account → My Bookings</strong>.</p>
+      <p style="margin:12px 0 0;font-size:14px;line-height:1.7;color:#2b2118;">With love &amp; light,<br>Dr. Manisha Belvalkar</p>
+    `),
+  };
+}
+
+/** Automated T-24h / T-1h session reminder email. */
+export function sessionReminderEmail(input: {
+  name: string;
+  title: string;
+  startsAtLabel: string;
+  joinUrl: string;
+  windowLabel: "24 hours" | "1 hour";
 }): { subject: string; html: string } {
   return {
-    subject: `Order confirmed — ${input.orderRef}`,
-    html: layout("Order Confirmed", `
+    subject: `Reminder: Your ${input.title} starts in ${input.windowLabel}`,
+    html: layout(`Session Reminder (${input.windowLabel})`, `
       <p style="margin:0 0 8px;font-size:16px;color:#2b2118;">Dear ${escapeHtml(input.name).trim() || "there"},</p>
-      <p style="margin:0 0 16px;font-size:14px;line-height:1.7;color:#2b2118;">Thank you! Your <strong>${escapeHtml(input.itemType)}</strong> has been confirmed. Here are your details:</p>
+      <p style="margin:0 0 16px;font-size:14px;line-height:1.7;color:#2b2118;">This is a gentle reminder that your private online session begins in <strong>${escapeHtml(input.windowLabel)}</strong>.</p>
       ${detailsTable([
-        { label: "Order Ref", value: input.orderRef },
-        { label: "What you booked", value: input.items },
-        { label: "Total", value: input.totalLabel },
+        { label: "Session", value: input.title },
+        { label: "Scheduled Time", value: input.startsAtLabel },
       ])}
-      ${input.invoicePath ? `<p style="margin:24px 0 0;font-size:14px;line-height:1.7;color:#2b2118;">Your GST tax invoice is ready: <a href="${input.invoicePath}" style="color:#8a1c1c;font-weight:600;">View / download invoice</a></p>` : ""}
-      <p style="margin:24px 0 0;font-size:14px;line-height:1.7;color:#2b2118;">We will follow up with you personally at <strong>${escapeHtml(input.email)}</strong> regarding the next steps, scheduling and anything we need from you.</p>
-      <p style="margin:12px 0 0;font-size:14px;line-height:1.7;color:#2b2118;">With love &amp; light,<br>Manisha</p>
+      <div style="margin:24px 0;">
+        <a href="${input.joinUrl}" style="display:inline-block;padding:12px 24px;border-radius:999px;background:#6b0b0b;color:#ffffff;font-size:13px;font-weight:700;text-decoration:none;">Enter Private Video Room</a>
+      </div>
+      <p style="margin:0;font-size:13px;line-height:1.6;color:#5c4d3e;">Your private room opens 15 minutes before start time. Please test your camera and microphone from a quiet space.</p>
+    `),
+  };
+}
+
+/** Urgent admin alert when Razorpay reports a chargeback / payment dispute. */
+export function paymentDisputeAdminEmail(input: {
+  disputeId: string;
+  paymentId: string;
+  orderId: string;
+  amountLabel: string;
+  reason: string;
+}): { subject: string; html: string } {
+  return {
+    subject: `URGENT: Razorpay Payment Dispute (${input.disputeId})`,
+    html: layout("Payment Dispute Alert", `
+      <p style="margin:0 0 12px;font-size:15px;color:#6b0b0b;font-weight:700;">A payment dispute / chargeback has been opened on Razorpay.</p>
+      ${detailsTable([
+        { label: "Dispute ID", value: input.disputeId },
+        { label: "Payment ID", value: input.paymentId },
+        { label: "Internal Order", value: input.orderId },
+        { label: "Amount", value: input.amountLabel },
+        { label: "Reason", value: input.reason },
+      ])}
+      <p style="margin:20px 0 0;font-size:13px;line-height:1.6;color:#2b2118;">Export the consent log from <code>booking_consents</code>, GST invoice, confirmation email proof, and Daily.co attendance timestamps (<code>client_joined_at</code> / <code>host_joined_at</code>) before submitting evidence in Razorpay Dashboard.</p>
     `),
   };
 }

@@ -1,0 +1,93 @@
+/* Shakti page — Sacred Luxury editorial surfaces, spotlight sheen & motion */
+
+.spotlightSurface {
+  position: relative;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .spotlightSurface::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    background: radial-gradient(
+      380px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+      rgba(232, 201, 106, 0.13),
+      transparent 65%
+    );
+    transition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    z-index: 2;
+  }
+
+  .spotlightSurface:hover::after {
+    opacity: 1;
+  }
+}
+
+@keyframes shakti-panel-enter {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.panelEnter {
+  animation: shakti-panel-enter 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.tactileButton {
+  transition:
+    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    color 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.tactileButton:active {
+  transform: scale(0.98);
+}
+
+.archHalo {
+  background:
+    radial-gradient(circle at 50% 24%, rgba(180, 34, 24, 0.92) 0%, rgba(101, 16, 13, 0.96) 54%, rgba(40, 8, 7, 1) 100%);
+  box-shadow:
+    0 38px 90px -42px rgba(78, 14, 10, 0.72),
+    inset 0 1px 0 rgba(240, 208, 96, 0.28);
+}
+
+.plaqueGlass {
+  background: rgba(253, 248, 240, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow:
+    0 24px 48px -20px rgba(56, 10, 8, 0.34),
+    inset 0 1px 0 rgba(255, 255, 255, 0.85);
+}
+
+.mediaZoom {
+  transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mediaZoomFrame:hover .mediaZoom {
+    transform: scale(1.035);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panelEnter {
+    animation: none;
+  }
+
+  .mediaZoom,
+  .tactileButton {
+    transition: none;
+  }
+}

@@ -58,9 +58,9 @@ export const metadata: Metadata = {
     locale: "en_IN",
     images: [
       {
-        url: "/images/manisha-portrait.webp",
-        width: 1200,
-        height: 1800,
+        url: "/images/manisha/manisha-courses-mentor.webp",
+        width: 1024,
+        height: 819,
         alt: "Dr. Manisha Belvalkar — Spiritual Mentor",
       },
     ],
@@ -70,7 +70,7 @@ export const metadata: Metadata = {
     title: "Manisha Belvalkar — Spiritual Mentor",
     description:
       "Guidance For the Soul. Tarot, Healing, and Well-being sessions.",
-    images: ["/images/manisha-portrait.webp"],
+    images: ["/images/manisha/manisha-courses-mentor.webp"],
   },
   robots: {
     index: true,
@@ -90,7 +90,7 @@ const personSchema = {
   "@type": "Person",
   name: "Dr. Manisha Belvalkar",
   url: "https://www.manishabelvalkar.com",
-  image: "https://www.manishabelvalkar.com/images/manisha-portrait.webp",
+  image: "https://www.manishabelvalkar.com/images/manisha/manisha-courses-mentor.webp",
   jobTitle: "Spiritual Mentor & Holistic Well-being Coach",
   description:
     "A holistic well-being coach with over 30 years of experience in Tarot Consultation, Soul Purpose Reading, Goddess Attunement, and Chakra Therapy.",
@@ -126,7 +126,7 @@ const orgSchema = {
   "@type": "ProfessionalService",
   name: "Manisha Belvalkar — Guidance For the Soul",
   url: "https://www.manishabelvalkar.com",
-  image: "https://www.manishabelvalkar.com/images/manisha-portrait.webp",
+  image: "https://www.manishabelvalkar.com/images/manisha/manisha-courses-mentor.webp",
   telephone: "+91-9922246111",
   email: "manishabelvalkar@gmail.com",
   priceRange: "₹899 - ₹25,000",

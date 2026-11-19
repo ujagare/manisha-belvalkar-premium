@@ -2,7 +2,9 @@ import { apiError, apiSuccess } from "@/lib/api";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { releasePendingSessionBooking, releaseReservedInventory } from "@/lib/fulfillment";
 import { SOURCE_BUCKET } from "@/lib/distance-healing";
-import { extendDefaultAvailability } from "@/lib/bookings";
+import { extendDefaultAvailability, releaseExpiredSlotHolds } from "@/lib/bookings";
+import { sendEmail, sessionReminderEmail } from "@/lib/resend";
+import { getSiteUrl } from "@/lib/site-url";
 
 export const runtime = "nodejs";
 
@@ -29,12 +31,15 @@ export async function GET(request: Request) {
   const results = {
     mediaCleaned: 0,
     abandonedOrdersReleased: 0,
+    expiredHoldsReleased: 0,
+    remindersSent: 0,
     slotsAdded: 0,
     timestamp: new Date().toISOString(),
   };
 
   try {
     results.slotsAdded = await extendDefaultAvailability(admin);
+    results.expiredHoldsReleased = await releaseExpiredSlotHolds(admin);
     // 1. Media Retention Cleanup for Distance Healing Cases
     const now = new Date().toISOString();
     const { data: expiredCases, error: caseError } = await admin
@@ -99,6 +104,63 @@ export async function GET(request: Request) {
           .eq("id", order.id);
 
         results.abandonedOrdersReleased++;
+      }
+    }
+
+    // 3. Automated Session Reminders (T-24h & T-1h for confirmed online sessions)
+    const nowMs = Date.now();
+    const in25HoursIso = new Date(nowMs + 25 * 60 * 60 * 1000).toISOString();
+    const { data: upcomingSessions } = await admin
+      .from("bookings")
+      .select("id,user_id,offering_slug,requested_start,reminder_24h_sent_at,reminder_1h_sent_at")
+      .eq("status", "confirmed")
+      .eq("format", "online")
+      .gte("requested_start", now)
+      .lte("requested_start", in25HoursIso)
+      .limit(40);
+
+    if (upcomingSessions?.length) {
+      const siteUrl = getSiteUrl();
+      for (const session of upcomingSessions) {
+        if (!session.requested_start) continue;
+        const msUntil = Date.parse(session.requested_start) - nowMs;
+        const needs1h = msUntil <= 90 * 60 * 1000 && msUntil > 0 && !session.reminder_1h_sent_at;
+        const needs24h = msUntil <= 25 * 60 * 60 * 1000 && msUntil > 2 * 60 * 60 * 1000 && !session.reminder_24h_sent_at;
+        if (!needs1h && !needs24h) continue;
+
+        const { data: profile } = await admin
+          .from("profiles")
+          .select("email,full_name")
+          .eq("id", session.user_id)
+          .maybeSingle();
+        if (!profile?.email) continue;
+
+        const title = session.offering_slug.replace(/-/g, " ").replace(/\b\w/g, (ch: string) => ch.toUpperCase());
+        const startsAtLabel = `${new Date(session.requested_start).toLocaleString("en-IN", {
+          timeZone: "Asia/Kolkata",
+          weekday: "short",
+          day: "numeric",
+          month: "short",
+          hour: "numeric",
+          minute: "2-digit",
+        })} IST`;
+
+        const mail = sessionReminderEmail({
+          name: profile.full_name ?? profile.email.split("@")[0],
+          title,
+          startsAtLabel,
+          joinUrl: `${siteUrl}/account/bookings/${session.id}/room`,
+          windowLabel: needs1h ? "1 hour" : "24 hours",
+        });
+
+        const sent = await sendEmail({ to: profile.email, subject: mail.subject, html: mail.html });
+        if (sent.ok) {
+          await admin
+            .from("bookings")
+            .update(needs1h ? { reminder_1h_sent_at: now } : { reminder_24h_sent_at: now })
+            .eq("id", session.id);
+          results.remindersSent++;
+        }
       }
     }
 

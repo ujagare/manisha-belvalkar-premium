@@ -3,7 +3,8 @@ import { createClient } from "@/lib/supabase/server";
 import { serverEnv } from "@/lib/env";
 import { orderInvoiceToken } from "@/lib/invoice";
 import { constantTimeEqualHex } from "@/lib/security";
-import { escapeHtml, formatINR } from "@/lib/utils";
+import { escapeHtml } from "@/lib/utils";
+import { formatCurrencyAmount, normalizeCurrency } from "@/lib/currency";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -65,7 +66,13 @@ export async function GET(request: Request, { params }: Params) {
 
   const customerName = order.guest_name ?? user?.user_metadata?.name ?? order.guest_email?.split("@")[0] ?? "Valued Customer";
   const customerEmail = order.guest_email ?? user?.email ?? "—";
-  const placeOfSupply = address?.state ? `${address.state} (India)` : "Maharashtra (27)";
+  const currency = normalizeCurrency(order.currency);
+  const fmt = (amount: number) => formatCurrencyAmount(amount, currency);
+  const placeOfSupply = currency !== "INR"
+    ? "Outside India (Export of Services)"
+    : address?.state
+      ? `${address.state} (India)`
+      : "Maharashtra (27)";
 
   const subtotal = order.subtotal_subunits != null ? order.subtotal_subunits / 100 : (order.amount ?? 0);
   const cgst = (order.cgst_subunits ?? 0) / 100;
@@ -88,10 +95,10 @@ export async function GET(request: Request, { params }: Params) {
             <td><strong>${escapeHtml(item.title)}</strong><br><span style="font-size: 11px; color: #64748b;">${escapeHtml(item.item_slug)}</span></td>
             <td>${escapeHtml(item.hsn_sac_code ?? "999799")}</td>
             <td class="text-right">${qty}</td>
-            <td class="text-right">${formatINR(unitRate)}</td>
-            <td class="text-right">${formatINR(taxable)}</td>
-            <td class="text-right">${escapeHtml(item.tax_rate ?? 18)}%</td>
-            <td class="text-right"><strong>${formatINR(lineTotal)}</strong></td>
+            <td class="text-right">${fmt(unitRate)}</td>
+            <td class="text-right">${fmt(taxable)}</td>
+            <td class="text-right">${escapeHtml(item.tax_rate ?? (currency === "INR" ? 18 : 0))}%</td>
+            <td class="text-right"><strong>${fmt(lineTotal)}</strong></td>
           </tr>`;
   }).join("");
 
@@ -181,23 +188,23 @@ export async function GET(request: Request, { params }: Params) {
     <table class="summary-table">
       <tr>
         <td>Taxable Amount:</td>
-        <td class="text-right">${formatINR(subtotal)}</td>
+        <td class="text-right">${fmt(subtotal)}</td>
       </tr>
       ${cgst > 0 ? `<tr>
         <td>CGST:</td>
-        <td class="text-right">${formatINR(cgst)}</td>
+        <td class="text-right">${fmt(cgst)}</td>
       </tr>` : ""}
       ${sgst > 0 ? `<tr>
         <td>SGST:</td>
-        <td class="text-right">${formatINR(sgst)}</td>
+        <td class="text-right">${fmt(sgst)}</td>
       </tr>` : ""}
       ${igst > 0 ? `<tr>
         <td>IGST:</td>
-        <td class="text-right">${formatINR(igst)}</td>
+        <td class="text-right">${fmt(igst)}</td>
       </tr>` : ""}
       <tr class="total-row">
-        <td>Total Paid:</td>
-        <td class="text-right">${formatINR(grandTotal)}</td>
+        <td>Total Paid (${escapeHtml(currency)}):</td>
+        <td class="text-right">${fmt(grandTotal)}</td>
       </tr>
     </table>
 

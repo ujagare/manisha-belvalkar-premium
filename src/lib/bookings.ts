@@ -1,7 +1,8 @@
-import { randomBytes } from "node:crypto";
 import "server-only";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { assertDatabaseSuccess, defaultAvailabilityStarts } from "@/lib/payment-safety";
+import { createPrivateDailyRoom, deleteDailyRoom } from "@/lib/daily";
+import { isDailyConfigured } from "@/lib/env";
 
 type AdminClient = ReturnType<typeof createAdminClient>;
 
@@ -16,28 +17,46 @@ export interface AvailabilitySlotItem {
 }
 
 /**
- * Generate an unguessable meeting room URL for an online booking.
- *
- * The room name carries 128 bits of randomness. An earlier version derived it
- * from the booking reference (4 bytes) plus the public offering slug, which let
- * anyone who knew an offering enumerate rooms and join a private consultation.
+ * Provision a private, waiting-room-protected Daily.co video room for a confirmed
+ * online booking. Never falls back to unauthenticated public meet.jit.si rooms.
  */
-export function generateMeetingUrl(bookingRef: string, offeringSlug: string): string {
-  const sanitizedSlug = offeringSlug.replace(/[^a-z0-9-]/gi, "");
-  const secret = randomBytes(16).toString("hex");
-  const roomName = `mb-${sanitizedSlug}-${bookingRef}-${secret}`.toLowerCase();
-  return `https://meet.jit.si/${roomName}`;
+export async function provisionDailyBookingRoom(
+  admin: AdminClient,
+  booking: { id: string; offering_slug: string; requested_start: string | null },
+): Promise<{ roomName: string; roomUrl: string } | null> {
+  if (!isDailyConfigured()) {
+    console.warn("[bookings:daily] DAILY_API_KEY is not configured; room provisioning deferred.");
+    return null;
+  }
+
+  const room = await createPrivateDailyRoom({
+    bookingId: booking.id,
+    offeringSlug: booking.offering_slug,
+    startsAtIso: booking.requested_start,
+    durationMinutes: 60,
+  });
+
+  const updateResult = await admin
+    .from("bookings")
+    .update({
+      video_provider: "daily",
+      daily_room_name: room.roomName,
+      meeting_url: room.roomUrl,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", booking.id);
+  assertDatabaseSuccess(updateResult, "Daily.co booking room update");
+
+  return room;
+}
+
+export async function revokeBookingVideoRoom(roomName: string | null | undefined) {
+  if (!roomName) return;
+  await deleteDailyRoom(roomName);
 }
 
 /**
- * Atomically claim one seat on an availability slot.
- *
- * Uses a compare-and-set: the UPDATE is filtered on the exact `reserved_count`
- * that was read, and `.select()` makes PostgREST return the affected rows. When
- * a concurrent booking has already claimed the last seat the filter matches no
- * rows, so `data` comes back empty and we treat the slot as taken. Without the
- * `.select()` this was a no-op guard — PostgREST reports no error when an
- * UPDATE matches zero rows — and two customers could book the same time.
+ * Atomically claim one seat on an availability slot via compare-and-set.
  */
 export async function reserveAvailabilitySlot(
   admin: AdminClient,
@@ -61,7 +80,7 @@ export async function reserveAvailabilitySlot(
     .from("availability_slots")
     .update({ reserved_count: nextReserved, status: nextStatus })
     .eq("id", slot.id)
-    .eq("reserved_count", slot.reserved_count) // compare-and-set
+    .eq("reserved_count", slot.reserved_count)
     .select("id");
 
   if (updateError || !claimed || claimed.length !== 1) return { success: false };
@@ -70,7 +89,7 @@ export async function reserveAvailabilitySlot(
 }
 
 /**
- * Releases a previously reserved availability slot upon cancellation/refund
+ * Releases a previously reserved availability slot upon cancellation, refund, or hold expiry.
  */
 export async function releaseAvailabilitySlot(admin: AdminClient, slotId: string) {
   const { data: slot } = await admin
@@ -89,6 +108,47 @@ export async function releaseAvailabilitySlot(admin: AdminClient, slotId: string
       })
       .eq("id", slot.id);
   }
+}
+
+/**
+ * Releases expired 15-minute checkout holds lazily (called before slot listing/booking
+ * and from scheduled cleanup) so abandoned Razorpay checkouts never ghost-lock slots.
+ */
+export async function releaseExpiredSlotHolds(admin: AdminClient): Promise<number> {
+  const nowIso = new Date().toISOString();
+  const { data: expired, error } = await admin
+    .from("bookings")
+    .select("id,slot_id,order_id")
+    .eq("status", "payment_pending")
+    .not("hold_expires_at", "is", null)
+    .lte("hold_expires_at", nowIso)
+    .limit(25);
+
+  if (error || !expired?.length) return 0;
+
+  let releasedCount = 0;
+  for (const row of expired) {
+    const { data: cancelled } = await admin
+      .from("bookings")
+      .update({ status: "cancelled", updated_at: nowIso })
+      .eq("id", row.id)
+      .eq("status", "payment_pending")
+      .select("id");
+
+    if (!cancelled?.length) continue;
+    if (row.slot_id) await releaseAvailabilitySlot(admin, row.slot_id);
+    if (row.order_id) {
+      await admin
+        .from("orders")
+        .update({ status: "cancelled", payment_status: "failed", updated_at: nowIso })
+        .eq("id", row.order_id)
+        .eq("status", "pending")
+        .eq("payment_status", "created");
+    }
+    releasedCount += 1;
+  }
+
+  return releasedCount;
 }
 
 export async function extendDefaultAvailability(admin: AdminClient, workingDays = 14) {

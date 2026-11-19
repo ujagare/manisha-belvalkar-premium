@@ -16,9 +16,44 @@ export function startLenis() {
   lenisInstance?.start();
 }
 
+function getAnchorOffset(target: Element): number {
+  const scrollMargin = Number.parseFloat(
+    window.getComputedStyle(target).scrollMarginTop || "0",
+  );
+  // Lenis already subtracts `scrollMarginTop` internally, so only add navbar
+  // clearance when the element does not declare its own scroll-margin.
+  return scrollMargin > 0 ? 0 : -84;
+}
+
+/** Smoothly scroll to an in-page selector or element on both desktop and mobile. */
+export function scrollToSection(hashOrSelector: string) {
+  const target = hashOrSelector.startsWith("#")
+    ? document.getElementById(hashOrSelector.slice(1)) ??
+      document.querySelector(hashOrSelector)
+    : document.querySelector(hashOrSelector);
+  if (!target) return;
+
+  if (lenisInstance) {
+    lenisInstance.scrollTo(target as HTMLElement, {
+      offset: getAnchorOffset(target),
+      duration: 1.05,
+    });
+    return;
+  }
+
+  const top =
+    target.getBoundingClientRect().top + window.scrollY + getAnchorOffset(target);
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  window.scrollTo({
+    top: Math.max(0, top),
+    behavior: reduced ? "auto" : "smooth",
+  });
+}
+
 /**
- * Global smooth scrolling powered by Lenis, synced with GSAP ScrollTrigger.
- * Also upgrades in-page anchor links (#...) to glide instead of jump.
+ * Global smooth scrolling powered by Lenis across desktop and mobile,
+ * synced with GSAP ScrollTrigger. Upgrades in-page anchor links (#...) to
+ * glide smoothly with fixed-header awareness.
  */
 export default function SmoothScrollProvider({
   children,
@@ -26,58 +61,89 @@ export default function SmoothScrollProvider({
   children: ReactNode;
 }) {
   useEffect(() => {
-    if (window.matchMedia("(pointer: coarse)").matches) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const onAnchorClick = (event: MouseEvent) => {
+      if (event.defaultPrevented || event.button !== 0) return;
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+
+      const anchor = (event.target as HTMLElement | null)?.closest?.(
+        'a[href^="#"]',
+      ) as HTMLAnchorElement | null;
+      const hash = anchor?.getAttribute("href");
+      if (!hash || hash === "#") return;
+
+      const target =
+        document.getElementById(hash.slice(1)) ?? document.querySelector(hash);
+      if (!target) return;
+
+      event.preventDefault();
+      scrollToSection(hash);
+      history.replaceState(null, "", hash);
+    };
+
+    document.addEventListener("click", onAnchorClick);
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return () => {
+        document.removeEventListener("click", onAnchorClick);
+      };
+    }
 
     let disposed = false;
-    let raf = 0;
-    let onClick: ((event: MouseEvent) => void) | undefined;
+    let cleanupTicker: (() => void) | undefined;
 
     const initialize = async () => {
-      const { default: Lenis } = await import("lenis");
+      const [{ default: Lenis }, { gsap, ScrollTrigger }] = await Promise.all([
+        import("lenis"),
+        import("@/lib/gsap"),
+      ]);
       if (disposed) return;
 
+      ScrollTrigger.config({ ignoreMobileResize: true });
+
+      const isCoarsePointer = window.matchMedia("(pointer: coarse)").matches;
       const lenis = new Lenis({
-        duration: 1.15,
+        duration: isCoarsePointer ? 0.95 : 1.15,
         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         smoothWheel: true,
+        syncTouch: true,
+        syncTouchLerp: 0.095,
+        touchInertiaExponent: 1.65,
+        touchMultiplier: 1.15,
+        wheelMultiplier: 0.95,
+        allowNestedScroll: true,
+        prevent: (node) =>
+          Boolean(
+            node.closest?.(
+              "[data-lenis-prevent], [data-lenis-prevent-touch], [data-radix-scroll-area-viewport]",
+            ),
+          ),
       });
       lenisInstance = lenis;
 
-      const frame = (time: number) => {
-        lenis.raf(time);
-        raf = requestAnimationFrame(frame);
-      };
-      raf = requestAnimationFrame(frame);
+      const onScroll = () => ScrollTrigger.update();
+      lenis.on("scroll", onScroll);
 
-      onClick = (event: MouseEvent) => {
-        const anchor = (event.target as HTMLElement | null)?.closest?.(
-          'a[href^="#"]',
-        ) as HTMLAnchorElement | null;
-        const hash = anchor?.getAttribute("href");
-        if (!hash || hash === "#") return;
-        const target = document.querySelector(hash);
-        if (!target) return;
-        event.preventDefault();
-        lenis.scrollTo(target as HTMLElement, { offset: -80 });
-        history.replaceState(null, "", hash);
+      const tick = (time: number) => {
+        lenis.raf(time * 1000);
       };
-      document.addEventListener("click", onClick);
+      gsap.ticker.add(tick);
+      gsap.ticker.lagSmoothing(0);
+
+      cleanupTicker = () => {
+        lenis.off("scroll", onScroll);
+        gsap.ticker.remove(tick);
+      };
+
+      ScrollTrigger.refresh();
     };
 
-    const idleWindow = window as typeof window & {
-      requestIdleCallback?: (callback: () => void, options?: { timeout: number }) => number;
-      cancelIdleCallback?: (id: number) => void;
-    };
-    const idleId = idleWindow.requestIdleCallback?.(() => void initialize(), { timeout: 2500 });
-    const timerId = idleId === undefined ? window.setTimeout(() => void initialize(), 1500) : undefined;
+    const rafId = requestAnimationFrame(() => void initialize());
 
     return () => {
       disposed = true;
-      if (idleId !== undefined) idleWindow.cancelIdleCallback?.(idleId);
-      if (timerId !== undefined) window.clearTimeout(timerId);
-      if (onClick) document.removeEventListener("click", onClick);
-      cancelAnimationFrame(raf);
+      cancelAnimationFrame(rafId);
+      document.removeEventListener("click", onAnchorClick);
+      cleanupTicker?.();
       lenisInstance?.destroy();
       lenisInstance = null;
     };

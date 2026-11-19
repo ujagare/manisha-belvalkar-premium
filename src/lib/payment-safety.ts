@@ -1,20 +1,44 @@
 export const sessionOrderTypes = ["service", "healing", "mentoring"] as const;
+export const SLOT_HOLD_MINUTES = 15;
+export const BOOKING_MODIFICATION_HOURS = 24;
+
+/** Async distance healing uses the private photo portal rather than a live video slot. */
+export function isAsyncHealingItem(itemType: string, itemSlug?: string | null) {
+  return itemType === "healing" && itemSlug === "distance-healing";
+}
 
 export function sessionCheckoutIssue({
   itemTypes,
+  itemSlugs = [],
   userId,
   slotId,
   format,
 }: {
   itemTypes: string[];
+  itemSlugs?: string[];
   userId: string | null;
   slotId: string | null;
   format: string | null;
 }) {
-  if (!itemTypes.some((type) => sessionOrderTypes.includes(type as (typeof sessionOrderTypes)[number]))) return null;
+  const hasSessionType = itemTypes.some((type) =>
+    sessionOrderTypes.includes(type as (typeof sessionOrderTypes)[number]),
+  );
+  if (!hasSessionType) return null;
   if (!userId) return "SIGN_IN_REQUIRED" as const;
-  if (!slotId || !format) return "SLOT_REQUIRED" as const;
+
+  const requiresLiveSlot = itemTypes.some((type, index) => {
+    if (!sessionOrderTypes.includes(type as (typeof sessionOrderTypes)[number])) return false;
+    return !isAsyncHealingItem(type, itemSlugs[index]);
+  });
+  if (requiresLiveSlot && (!slotId || !format)) return "SLOT_REQUIRED" as const;
   return null;
+}
+
+export function isWithinModificationWindow(startsAtIso: string | null | undefined, nowMs = Date.now()) {
+  if (!startsAtIso) return true;
+  const startsMs = Date.parse(startsAtIso);
+  if (!Number.isFinite(startsMs)) return true;
+  return startsMs - nowMs >= BOOKING_MODIFICATION_HOURS * 60 * 60 * 1000;
 }
 
 export function successfulPaymentStatus(status: string) {

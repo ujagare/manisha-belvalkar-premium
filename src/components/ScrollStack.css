@@ -52,19 +52,19 @@
 
 .shakti-nurture-stack .scroll-stack-inner {
   min-height: 100vh;
-  padding: 14vh 0 10rem;
+  padding: 12vh 0 9rem;
 }
 
 .shakti-nurture-stack .scroll-stack-card {
   height: 25rem;
   margin: 0;
-  padding: clamp(1.75rem, 4vw, 3.25rem);
-  border: 1px solid rgba(240, 208, 96, 0.28);
+  padding: clamp(1.5rem, 3.5vw, 2.75rem);
+  border: 1px solid rgba(240, 208, 96, 0.34);
   border-radius: 1.75rem;
   color: #fdf8f0;
   box-shadow:
-    0 1.8rem 4.5rem rgba(56, 5, 5, 0.2),
-    inset 0 1px 0 rgba(255, 243, 196, 0.16);
+    0 2.2rem 4.8rem -1.2rem rgba(56, 8, 7, 0.34),
+    inset 0 1px 0 rgba(255, 243, 196, 0.22);
   isolation: isolate;
   overflow: hidden;
 }
@@ -75,60 +75,65 @@
   inset: 0;
   z-index: -1;
   background:
-    radial-gradient(circle at 85% 8%, rgba(240, 208, 96, 0.16), transparent 32%),
-    linear-gradient(145deg, rgba(255, 255, 255, 0.055), transparent 35%);
+    radial-gradient(circle at 86% 10%, rgba(240, 208, 96, 0.18), transparent 36%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.06), transparent 40%);
 }
 
-.shakti-nurture-card--1 { background-color: #5b0c12; }
-.shakti-nurture-card--2 { background-color: #68100f; }
-.shakti-nurture-card--3 { background-color: #74150f; }
-.shakti-nurture-card--4 { background-color: #48100f; }
+.shakti-nurture-card--1 { background-color: #540b10; }
+.shakti-nurture-card--2 { background-color: #63100f; }
+.shakti-nurture-card--3 { background-color: #70150f; }
+.shakti-nurture-card--4 { background-color: #3f0c0b; }
 
 /* Native sticky mode avoids per-frame JS layout reads and releases with its parent. */
 .shakti-nurture-stack .scroll-stack-card {
   position: sticky;
-  margin: 0 0 clamp(6rem, 18vh, 11rem);
+  margin: 0 0 clamp(5.5rem, 15vh, 9.5rem);
   transform: none;
   filter: none;
   will-change: auto;
 }
 
-.shakti-nurture-stack .scroll-stack-card:nth-child(1) { top: 14vh; z-index: 1; }
-.shakti-nurture-stack .scroll-stack-card:nth-child(2) { top: calc(14vh + 1rem); z-index: 2; }
-.shakti-nurture-stack .scroll-stack-card:nth-child(3) { top: calc(14vh + 2rem); z-index: 3; }
+.shakti-nurture-stack .scroll-stack-card:nth-child(1) { top: 13vh; z-index: 1; }
+.shakti-nurture-stack .scroll-stack-card:nth-child(2) { top: calc(13vh + 1.15rem); z-index: 2; }
+.shakti-nurture-stack .scroll-stack-card:nth-child(3) { top: calc(13vh + 2.3rem); z-index: 3; }
 .shakti-nurture-stack .scroll-stack-card:nth-child(4) {
-  top: calc(14vh + 3rem);
+  top: calc(13vh + 3.45rem);
   z-index: 4;
   margin-bottom: 0;
 }
 
 @media (max-width: 1023px) {
   .shakti-nurture-stack .scroll-stack-inner {
-    padding: 4rem 0 8rem;
+    min-height: auto;
+    padding: 2rem 0 4rem;
   }
 
   .shakti-nurture-stack .scroll-stack-card {
-    height: 23rem;
+    height: 21rem;
+    margin-bottom: 3.5rem;
   }
 
-  .shakti-nurture-stack .scroll-stack-card:nth-child(1) { top: 6rem; }
-  .shakti-nurture-stack .scroll-stack-card:nth-child(2) { top: 7rem; }
-  .shakti-nurture-stack .scroll-stack-card:nth-child(3) { top: 8rem; }
-  .shakti-nurture-stack .scroll-stack-card:nth-child(4) { top: 9rem; }
+  .shakti-nurture-stack .scroll-stack-card:nth-child(1) { top: 5.5rem; }
+  .shakti-nurture-stack .scroll-stack-card:nth-child(2) { top: 6.4rem; }
+  .shakti-nurture-stack .scroll-stack-card:nth-child(3) { top: 7.3rem; }
+  .shakti-nurture-stack .scroll-stack-card:nth-child(4) {
+    top: 8.2rem;
+    margin-bottom: 0;
+  }
 }
 
 @media (max-width: 639px) {
   .shakti-nurture-stack .scroll-stack-inner {
-    padding-top: 1.5rem;
-    padding-bottom: 3rem;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
   }
 
   .shakti-nurture-stack .scroll-stack-card {
     height: auto;
-    min-height: 16rem;
-    padding: 1.5rem;
-    border-radius: 1.25rem;
-    margin-bottom: 4.5rem;
+    min-height: 15.5rem;
+    padding: 1.35rem;
+    border-radius: 1.35rem;
+    margin-bottom: 2.5rem;
   }
   .shakti-nurture-stack .scroll-stack-card:nth-child(1) { top: 5rem; }
   .shakti-nurture-stack .scroll-stack-card:nth-child(2) { top: 5.75rem; }

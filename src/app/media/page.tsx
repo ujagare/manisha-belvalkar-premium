@@ -52,7 +52,7 @@ export default function MediaPage() {
                           alt={item.title}
                           fill
                           sizes="(max-width: 768px) 100vw, 50vw"
-                          className="object-cover transition-transform duration-1000 ease-out group-hover:scale-[1.05]"
+                          className="object-cover object-[50%_18%] transition-transform duration-1000 ease-out group-hover:scale-[1.05]"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent md:bg-gradient-to-r" />
                         <div className="absolute left-3.5 top-3.5 sm:left-5 sm:top-5 flex items-center gap-2 rounded-full bg-white/95 px-3.5 py-1 sm:px-4 sm:py-1.5 shadow-md backdrop-blur">

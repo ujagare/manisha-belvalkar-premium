@@ -18,6 +18,7 @@ export async function sendEmail(input: {
   subject: string;
   html: string;
   replyTo?: string;
+  attachments?: Array<{ filename: string; content: string | Buffer; contentType?: string }>;
 }): Promise<{ ok: boolean; error?: string }> {
   try {
     const client = getResend();
@@ -29,6 +30,7 @@ export async function sendEmail(input: {
       replyTo: input.replyTo,
       subject: input.subject,
       html: input.html,
+      attachments: input.attachments,
     });
     if (error) return { ok: false, error: error.message };
     if (!data?.id) return { ok: false, error: "Resend returned no message id" };

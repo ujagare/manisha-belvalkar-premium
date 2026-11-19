@@ -72,9 +72,26 @@ export function calculateGstBreakdown(
   itemType: string,
   slug: string,
   totalSubunits: number,
-  customerState?: string | null
+  customerState?: string | null,
+  currency: "INR" | "USD" = "INR"
 ): TaxBreakdown {
   const { hsnSacCode, rate } = getHsnSacAndRate(itemType, slug);
+
+  // International USD orders qualify as Export of Services (zero-rated under GST LUT).
+  if (currency !== "INR") {
+    return {
+      hsnSacCode,
+      taxRatePercent: 0,
+      totalSubunits,
+      taxableSubunits: totalSubunits,
+      taxSubunits: 0,
+      cgstSubunits: 0,
+      sgstSubunits: 0,
+      igstSubunits: 0,
+      isInterState: true,
+    };
+  }
+
   const isInter = !isIntraStateSupply(customerState);
 
   if (rate <= 0) {

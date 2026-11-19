@@ -144,7 +144,7 @@ body {
   color: var(--color-ink);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 /* ============ Lenis smooth scroll ============ */
@@ -249,15 +249,17 @@ html.lenis body {
     linear-gradient(135deg, #ddb829, #f0d060, #a8871a) border-box;
 }
 
-/* Subtle film grain overlay */
-.grain::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 90;
-  pointer-events: none;
-  opacity: 0.035;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+/* Subtle film grain overlay (desktop/tablet only to keep mobile touch scrolling 60fps) */
+@media (min-width: 768px) {
+  .grain::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
 }
 
 /* Fine hairline with gold sheen */
@@ -398,6 +400,16 @@ html.lenis body {
   --sidebar-accent-foreground: #a8871a;
   --sidebar-border: #efe5d2;
   --sidebar-ring: #c9a520;
+
+  /* Motion tokens */
+  --motion-duration-fast: 0.3s;
+  --motion-duration-base: 0.7s;
+  --motion-duration-slow: 0.95s;
+  --motion-ease-editorial: cubic-bezier(0.22, 1, 0.36, 1);
+  --motion-ease-settle: cubic-bezier(0.16, 1, 0.3, 1);
+  --motion-distance-subtle: 12px;
+  --motion-distance-reveal: 18px;
+  --motion-hover-arrow: 4px;
 }
 
 .dark {

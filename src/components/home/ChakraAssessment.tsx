@@ -179,135 +179,140 @@ export default function ChakraAssessment() {
   const activeOptions = activeQuestion.kind === "chakra" ? yesNoOptions : healingOptions;
 
   return (
-    <section className="relative overflow-hidden bg-[#f6eddf] px-4 py-12 sm:px-8 sm:py-20 lg:px-10 lg:py-28" aria-labelledby="chakra-assessment-title">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_15%,rgba(221,184,41,0.18),transparent_25%),radial-gradient(circle_at_90%_80%,rgba(180,20,20,0.08),transparent_28%)]" />
-      <div className="relative mx-auto max-w-7xl">
-        <div className="mb-6 flex items-end justify-between gap-6 border-b border-gold/25 pb-5 sm:mb-10 sm:gap-8 sm:pb-8">
-          <div>
-            <p className="font-serif text-lg italic tracking-[0.05em] text-primary sm:text-xl">A quiet check-in with yourself</p>
-            <h2 id="chakra-assessment-title" className="mt-2 text-balance font-display text-[1.85rem] font-semibold leading-[1.06] tracking-[-0.03em] text-charcoal sm:mt-3 sm:text-6xl lg:text-7xl">
-              Discover your <span className="text-crimson-gradient">chakra</span>
-            </h2>
-          </div>
-          <p className="hidden max-w-sm text-sm leading-7 text-warmgray lg:block">The complete client questionnaire with seven chakra sections and a healing needs assessment.</p>
+    <section className="relative overflow-hidden bg-[#fdf8f0] px-4 py-16 sm:px-10 sm:py-24 lg:py-32" aria-labelledby="chakra-assessment-title">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_15%,rgba(221,184,41,0.14),transparent_28%),radial-gradient(circle_at_90%_80%,rgba(180,20,20,0.06),transparent_28%)]" />
+      <div className="relative mx-auto max-w-[1200px]">
+        <div className="mb-8 max-w-2xl border-b border-[#6b0b0b]/12 pb-6 sm:mb-12 sm:pb-8">
+          <p className="font-serif text-base text-[#981313] sm:text-lg">A quiet check-in with yourself</p>
+          <h2 id="chakra-assessment-title" className="mt-2 text-balance font-serif text-[1.95rem] leading-[1.06] tracking-[-0.02em] text-[#292524] sm:mt-3 sm:text-5xl lg:text-6xl">
+            Discover your <span className="text-[#a81414]">chakra</span>
+          </h2>
+          <p className="mt-3 max-w-xl text-sm leading-6 text-[#57534e] sm:mt-4 sm:text-base sm:leading-7">
+            The complete seven-chakra questionnaire paired with a gentle wellbeing reflection.
+          </p>
         </div>
 
-        <div className="grid overflow-hidden rounded-2xl border border-gold/25 bg-white shadow-[0_38px_100px_-55px_rgba(92,19,14,0.42)] sm:rounded-[1.75rem] lg:min-h-[38rem] lg:grid-cols-[0.78fr_1.22fr] lg:rounded-[2.25rem]">
-          <div className="relative min-h-[14rem] overflow-hidden bg-[#24110e] sm:min-h-[20rem] lg:min-h-full">
-            <Image src="/images/chakra-energy-diagram.webp" alt="The seven chakra energy centres" fill sizes="(max-width: 1024px) 100vw, 40vw" className="object-cover object-center opacity-90" />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#24110e] via-[#24110e]/15 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-[#24110e]/38" />
-            <div className="absolute inset-x-5 bottom-5 text-white sm:inset-x-10 sm:bottom-9">
-              <div className="flex items-center gap-3 text-gold-light">
-                <Sparkles className="h-4 w-4" />
-                <span className="text-[0.62rem] font-semibold uppercase tracking-[0.25em]">Seven energy centres</span>
+        <div className="rounded-[2rem] bg-[#efe5d2]/80 p-2 ring-1 ring-[#c7a23b]/35 shadow-[0_38px_90px_-50px_rgba(92,19,14,0.42)]">
+          <div className="grid overflow-hidden rounded-[calc(2rem-0.5rem)] bg-[#fffdf9] lg:min-h-[38rem] lg:grid-cols-[0.78fr_1.22fr]">
+            <div className="relative flex flex-col justify-end min-h-[15rem] overflow-hidden bg-[#24110e] sm:min-h-[21rem] lg:min-h-full">
+              <Image src="/images/chakra-energy-diagram.webp" alt="The seven chakra energy centres" fill sizes="(max-width: 1024px) 100vw, 40vw" className="object-cover object-center opacity-90" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#1c1917] via-[#1c1917]/25 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:via-[#1c1917]/15 lg:to-[#1c1917]/45" />
+              <div className="relative z-10 border-t border-[#ddb829]/30 bg-[#1c1917]/88 px-5 py-4 text-white backdrop-blur-md sm:px-8 sm:py-6">
+                <div className="flex items-center gap-2.5 text-[#f0d060]">
+                  <Sparkles className="h-4 w-4" strokeWidth={1.5} />
+                  <span className="text-xs font-semibold tracking-[0.06em]">Seven energy centres</span>
+                </div>
+                <p className="mt-2 max-w-sm font-serif text-base leading-snug text-[#fdf8f0] sm:text-xl">Notice what is asking for your care, not what needs to be fixed.</p>
               </div>
-              <p className="mt-2 max-w-sm font-serif text-lg italic leading-snug text-white/92 sm:mt-3 sm:text-2xl">Notice what is asking for your care—not what needs to be “fixed”.</p>
             </div>
-          </div>
 
-          <div className="relative flex flex-col bg-[#fffdf9] p-5 sm:min-h-[32rem] sm:p-10 lg:p-12">
-            {stage === "intro" && (
-              <div className="my-auto max-w-2xl animate-fade-up">
-                <p className="text-[0.65rem] font-semibold uppercase tracking-[0.28em] text-gold-deep">Complimentary self-assessment</p>
-                <h3 className="mt-3 text-balance font-display text-2xl font-semibold leading-[1.08] tracking-[-0.025em] text-charcoal sm:mt-5 sm:text-4xl lg:text-5xl">Listen to what your energy is saying.</h3>
-                <p className="mt-4 max-w-xl text-sm leading-7 text-warmgray sm:mt-6 sm:text-base sm:leading-8">Answer each chakra question honestly, then reflect on how often you have experienced the listed concerns during the last four to six weeks.</p>
-                <div className="mt-5 grid gap-2.5 sm:mt-8 sm:grid-cols-3 sm:gap-3">
-                  {["38 questions", "Original answer scale", "Instant reflection"].map((item) => (
-                    <div key={item} className="border-l border-gold/45 bg-gold-soft/45 px-3.5 py-2.5 text-xs font-semibold text-charcoal sm:px-4 sm:py-3 sm:text-sm">{item}</div>
-                  ))}
-                </div>
-                <button type="button" onClick={() => setStage("questions")} className="group mt-6 inline-flex min-h-11 items-center gap-3 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white shadow-[0_15px_35px_-16px_rgba(107,11,11,0.7)] transition duration-300 hover:-translate-y-1 hover:bg-primary-dark sm:mt-10 sm:px-7 sm:py-3.5">
-                  Begin assessment<ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </button>
-                <p className="mt-4 text-xs leading-5 text-warmgray/75 sm:mt-5">For self-reflection only. This assessment is not a medical or psychological diagnosis.</p>
-              </div>
-            )}
-
-            {stage === "questions" && (
-              <div className="flex h-full flex-col animate-fade-up" key={current}>
-                <div>
-                  <div className="flex items-center justify-between gap-5">
-                    <p className="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gold-deep">Question {current + 1} of {questions.length}</p>
-                    <p className="font-serif text-sm italic text-warmgray">
-                      {activeChakra ? `${activeChakra.name} · ${activeChakra.sanskrit}` : "Healing Needs Assessment"}
-                    </p>
-                  </div>
-                  <div className="mt-4 h-1 overflow-hidden rounded-full bg-parchment">
-                    <div className="h-full rounded-full transition-all duration-500" style={{ width: `${progress}%`, backgroundColor: activeColor }} />
-                  </div>
-                </div>
-
-                <div className="my-auto py-5 sm:py-10">
-                  <div className="mb-4 flex items-center gap-3 sm:mb-6">
-                    <span className="h-3 w-3 rounded-full" style={{ backgroundColor: activeColor, boxShadow: `0 0 0 6px ${activeColor}18` }} />
-                    <span className="text-xs font-semibold uppercase tracking-[0.2em] text-warmgray">
-                      {activeQuestion.kind === "chakra" ? "Choose Yes or No" : "Think about the last 4 to 6 weeks"}
-                    </span>
-                  </div>
-                  <h3 className="max-w-3xl text-pretty font-display text-xl font-semibold leading-[1.22] tracking-[-0.02em] text-charcoal sm:text-3xl lg:text-4xl">{activeQuestion.question}</h3>
-                  <div className="mt-5 grid gap-2.5 sm:mt-8 sm:grid-cols-2 sm:gap-3">
-                    {activeOptions.map((option, index) => (
-                      <button
-                        key={option.label}
-                        type="button"
-                        onClick={() => selectAnswer(option.value)}
-                        className={cn(
-                          "group flex min-h-11 items-center gap-3 rounded-xl border p-3.5 text-left transition-all duration-300 sm:gap-4 sm:rounded-2xl sm:p-5",
-                          answers[current] === option.value
-                            ? "border-primary bg-primary text-white shadow-lg shadow-primary/15"
-                            : "border-parchment bg-white text-charcoal hover:-translate-y-0.5 hover:border-gold hover:bg-gold-soft/40",
-                        )}
-                      >
-                        <span className={cn("grid h-9 w-9 shrink-0 place-items-center rounded-full border font-display text-sm font-semibold", answers[current] === option.value ? "border-white/35 bg-white/12" : "border-gold/35 bg-gold-soft text-gold-deep")}>{String.fromCharCode(65 + index)}</span>
-                        <span><span className="block text-sm font-semibold">{option.label}</span><span className={cn("mt-0.5 block text-xs", answers[current] === option.value ? "text-white/65" : "text-warmgray")}>{option.note}</span></span>
-                      </button>
+            <div className="relative flex flex-col bg-[#fffdf9] p-5 sm:min-h-[32rem] sm:p-10 lg:p-12">
+              {stage === "intro" && (
+                <div className="my-auto max-w-2xl animate-fade-up">
+                  <p className="text-xs font-semibold tracking-[0.08em] text-[#a8871a]">Complimentary self-assessment</p>
+                  <h3 className="mt-3 text-balance font-serif text-2xl leading-[1.08] tracking-[-0.02em] text-[#292524] sm:mt-4 sm:text-4xl lg:text-5xl">Listen to what your energy is saying.</h3>
+                  <p className="mt-4 max-w-xl text-sm leading-7 text-[#57534e] sm:mt-6 sm:text-base sm:leading-8">Answer each chakra question honestly, then reflect on how often you have experienced the listed concerns during the last four to six weeks.</p>
+                  <div className="mt-5 grid gap-2.5 sm:mt-8 sm:grid-cols-3 sm:gap-3">
+                    {["38 questions", "Original answer scale", "Instant reflection"].map((item) => (
+                      <div key={item} className="border-l-2 border-[#ddb829]/70 bg-[#faf3dc]/60 px-3.5 py-2.5 text-xs font-semibold text-[#292524] sm:px-4 sm:py-3 sm:text-sm">{item}</div>
                     ))}
                   </div>
+                  <button type="button" onClick={() => setStage("questions")} className="group mt-6 inline-flex min-h-12 items-center gap-3 rounded-full bg-[#b41414] py-2.5 pl-6 pr-2.5 text-sm font-semibold text-white shadow-[0_15px_35px_-16px_rgba(107,11,11,0.7)] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-0.5 hover:bg-[#8b0f0f] active:scale-[0.98] sm:mt-10 sm:pl-7 sm:pr-3">
+                    <span>Begin assessment</span>
+                    <span className="grid size-8 place-items-center rounded-full bg-white/15 transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-x-0.5 group-hover:scale-105">
+                      <ArrowRight className="h-4 w-4" strokeWidth={1.6} />
+                    </span>
+                  </button>
+                  <p className="mt-4 text-xs leading-5 text-[#57534e] sm:mt-5">For self-reflection only. This assessment is not a medical or psychological diagnosis.</p>
                 </div>
+              )}
 
-                <div className="flex items-center justify-between border-t border-parchment pt-5">
-                  <button type="button" disabled={current === 0} onClick={() => setCurrent((value) => value - 1)} className="inline-flex items-center gap-2 text-sm font-medium text-warmgray transition hover:text-primary disabled:invisible"><ArrowLeft className="h-4 w-4" />Previous</button>
-                  <span className="text-xs text-warmgray">Your answers stay on this page only.</span>
-                </div>
-              </div>
-            )}
-
-            {stage === "result" && (
-              <div className="my-auto animate-fade-up">
-                <div className="flex items-center gap-3 text-emerald-700"><span className="grid h-8 w-8 place-items-center rounded-full bg-emerald-50"><Check className="h-4 w-4" /></span><span className="text-xs font-semibold uppercase tracking-[0.23em]">Your reflection is ready</span></div>
-                <p className="mt-5 font-serif text-lg italic text-warmgray sm:mt-8 sm:text-xl">Your energy may benefit from attention around</p>
-                <div className="mt-2.5 flex items-center gap-3 sm:mt-3 sm:items-end sm:gap-4">
-                  <span className="h-3.5 w-3.5 shrink-0 rounded-full sm:mb-3 sm:h-4 sm:w-4" style={{ backgroundColor: result.chakra.color, boxShadow: `0 0 0 8px ${result.chakra.color}16` }} />
-                  <h3 className="font-display text-3xl font-semibold leading-none tracking-[-0.04em] text-charcoal sm:text-5xl lg:text-6xl">{result.chakra.name}</h3>
-                </div>
-                <p className="mt-2 font-serif text-xl italic sm:mt-3 sm:text-2xl" style={{ color: result.chakra.color }}>{result.chakra.sanskrit}</p>
-                <p className="mt-4 max-w-xl text-sm leading-7 text-warmgray sm:mt-7 sm:text-base sm:leading-8">This chakra is associated with {result.chakra.focus}. {result.chakra.guidance}</p>
-
-                <div className="mt-5 border-l border-gold/50 bg-gold-soft/40 px-4 py-3 sm:mt-7 sm:px-5 sm:py-4">
-                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gold-deep">Healing Needs Assessment</p>
-                  <p className="mt-1.5 text-sm leading-6 text-warmgray sm:mt-2">
-                    Your wellbeing reflection score is <strong className="text-charcoal">{result.healingScore} out of 21</strong>. A higher score means these concerns were experienced less often.
-                  </p>
-                </div>
-
-                <div className="mt-6 grid grid-cols-7 gap-1.5 sm:mt-8 sm:gap-2" aria-label="Chakra score overview">
-                  {chakras.map((chakra, index) => (
-                    <div key={chakra.name} className="min-w-0 text-center">
-                      <div className="flex h-16 items-end overflow-hidden rounded-full bg-parchment/70 p-1 sm:h-20">
-                        <div className="w-full rounded-full transition-all duration-700" style={{ height: `${Math.max(12, (result.scores[index] / chakra.questions.length) * 100)}%`, backgroundColor: chakra.color, opacity: index === result.highest ? 1 : 0.48 }} />
-                      </div>
-                      <span className="mt-1.5 block truncate text-[0.52rem] font-semibold text-warmgray sm:mt-2 sm:text-[0.56rem]">{chakra.name}</span>
+              {stage === "questions" && (
+                <div className="flex h-full flex-col animate-fade-up" key={current}>
+                  <div>
+                    <div className="flex items-center justify-between gap-5">
+                      <p className="text-xs font-semibold tracking-[0.08em] text-[#a8871a]">Question {current + 1} of {questions.length}</p>
+                      <p className="font-serif text-sm text-[#57534e]">
+                        {activeChakra ? `${activeChakra.name} · ${activeChakra.sanskrit}` : "Healing Needs Assessment"}
+                      </p>
                     </div>
-                  ))}
-                </div>
+                    <div className="mt-4 h-1 overflow-hidden rounded-full bg-parchment">
+                      <div className="h-full rounded-full transition-all duration-500" style={{ width: `${progress}%`, backgroundColor: activeColor }} />
+                    </div>
+                  </div>
 
-                <div className="mt-9 flex flex-wrap gap-4">
-                  <Link href="/healing/shakti-healing" className="inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3.5 text-sm font-semibold text-white transition hover:bg-primary-dark">Explore healing support<ArrowRight className="h-4 w-4" /></Link>
-                  <button type="button" onClick={restart} className="inline-flex items-center gap-2 rounded-full border border-parchment px-6 py-3 text-sm font-semibold text-charcoal transition hover:border-gold hover:text-primary"><RotateCcw className="h-4 w-4" />Retake</button>
+                  <div className="my-auto py-5 sm:py-10">
+                    <div className="mb-4 flex items-center gap-3 sm:mb-6">
+                      <span className="h-3 w-3 rounded-full" style={{ backgroundColor: activeColor, boxShadow: `0 0 0 6px ${activeColor}18` }} />
+                      <span className="text-xs font-semibold tracking-[0.06em] text-[#57534e]">
+                        {activeQuestion.kind === "chakra" ? "Choose Yes or No" : "Think about the last 4 to 6 weeks"}
+                      </span>
+                    </div>
+                    <h3 className="max-w-3xl text-pretty font-serif text-xl leading-[1.22] tracking-[-0.02em] text-[#292524] sm:text-3xl lg:text-4xl">{activeQuestion.question}</h3>
+                    <div className="mt-5 grid gap-2.5 sm:mt-8 sm:grid-cols-2 sm:gap-3">
+                      {activeOptions.map((option, index) => (
+                        <button
+                          key={option.label}
+                          type="button"
+                          onClick={() => selectAnswer(option.value)}
+                          className={cn(
+                            "group flex min-h-11 items-center gap-3 rounded-xl border p-3.5 text-left transition-all duration-300 active:scale-[0.98] sm:gap-4 sm:rounded-2xl sm:p-5",
+                            answers[current] === option.value
+                              ? "border-primary bg-primary text-white shadow-lg shadow-primary/15"
+                              : "border-parchment bg-white text-charcoal hover:-translate-y-0.5 hover:border-gold hover:bg-gold-soft/40",
+                          )}
+                        >
+                          <span className={cn("grid h-9 w-9 shrink-0 place-items-center rounded-full border font-display text-sm font-semibold", answers[current] === option.value ? "border-white/35 bg-white/12" : "border-gold/35 bg-gold-soft text-gold-deep")}>{String.fromCharCode(65 + index)}</span>
+                          <span><span className="block text-sm font-semibold">{option.label}</span><span className={cn("mt-0.5 block text-xs", answers[current] === option.value ? "text-white/65" : "text-warmgray")}>{option.note}</span></span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between border-t border-parchment pt-5">
+                    <button type="button" disabled={current === 0} onClick={() => setCurrent((value) => value - 1)} className="inline-flex items-center gap-2 text-sm font-medium text-warmgray transition hover:text-primary disabled:invisible"><ArrowLeft className="h-4 w-4" />Previous</button>
+                    <span className="text-xs text-warmgray">Your answers stay on this page only.</span>
+                  </div>
                 </div>
-                <p className="mt-5 text-xs leading-5 text-warmgray/75">This result offers reflective guidance, not a diagnosis. For persistent physical or emotional concerns, consult a qualified healthcare professional.</p>
-              </div>
-            )}
+              )}
+
+              {stage === "result" && (
+                <div className="my-auto animate-fade-up">
+                  <div className="flex items-center gap-3 text-emerald-800"><span className="grid h-8 w-8 place-items-center rounded-full bg-emerald-50"><Check className="h-4 w-4" /></span><span className="text-xs font-semibold tracking-[0.08em]">Your reflection is ready</span></div>
+                  <p className="mt-5 font-serif text-lg text-[#57534e] sm:mt-8 sm:text-xl">Your energy may benefit from attention around</p>
+                  <div className="mt-2.5 flex items-center gap-3 sm:mt-3 sm:items-end sm:gap-4">
+                    <span className="h-3.5 w-3.5 shrink-0 rounded-full sm:mb-3 sm:h-4 sm:w-4" style={{ backgroundColor: result.chakra.color, boxShadow: `0 0 0 8px ${result.chakra.color}16` }} />
+                    <h3 className="font-serif text-3xl leading-none tracking-[-0.03em] text-[#292524] sm:text-5xl lg:text-6xl">{result.chakra.name}</h3>
+                  </div>
+                  <p className="mt-2 font-serif text-xl sm:mt-3 sm:text-2xl" style={{ color: result.chakra.color }}>{result.chakra.sanskrit}</p>
+                  <p className="mt-4 max-w-xl text-sm leading-7 text-[#57534e] sm:mt-7 sm:text-base sm:leading-8">This chakra is associated with {result.chakra.focus}. {result.chakra.guidance}</p>
+
+                  <div className="mt-5 border-l-2 border-[#ddb829]/60 bg-[#faf3dc]/50 px-4 py-3 sm:mt-7 sm:px-5 sm:py-4">
+                    <p className="text-xs font-semibold tracking-[0.06em] text-[#a8871a]">Healing Needs Assessment</p>
+                    <p className="mt-1.5 text-sm leading-6 text-[#57534e] sm:mt-2">
+                      Your wellbeing reflection score is <strong className="text-[#292524]">{result.healingScore} out of 21</strong>. A higher score means these concerns were experienced less often.
+                    </p>
+                  </div>
+
+                  <div className="mt-6 grid grid-cols-7 gap-1.5 sm:mt-8 sm:gap-2" aria-label="Chakra score overview">
+                    {chakras.map((chakra, index) => (
+                      <div key={chakra.name} className="min-w-0 text-center">
+                        <div className="flex h-16 items-end overflow-hidden rounded-full bg-parchment/70 p-1 sm:h-20">
+                          <div className="w-full rounded-full transition-all duration-700" style={{ height: `${Math.max(12, (result.scores[index] / chakra.questions.length) * 100)}%`, backgroundColor: chakra.color, opacity: index === result.highest ? 1 : 0.48 }} />
+                        </div>
+                        <span className="mt-1.5 block truncate text-[0.52rem] font-semibold text-warmgray sm:mt-2 sm:text-[0.56rem]">{chakra.name}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="mt-9 flex flex-wrap gap-4">
+                    <Link href="/healing/shakti-healing" className="inline-flex items-center gap-2 rounded-full bg-[#b41414] px-7 py-3.5 text-sm font-semibold text-white transition hover:bg-[#8b0f0f] active:scale-[0.98]">Explore healing support<ArrowRight className="h-4 w-4" /></Link>
+                    <button type="button" onClick={restart} className="inline-flex items-center gap-2 rounded-full border border-[#d8c8ae] px-6 py-3 text-sm font-semibold text-[#292524] transition hover:border-[#ddb829] hover:text-[#981313] active:scale-[0.98]"><RotateCcw className="h-4 w-4" />Retake</button>
+                  </div>
+                  <p className="mt-5 text-xs leading-5 text-[#57534e]">This result offers reflective guidance, not a diagnosis. For persistent physical or emotional concerns, consult a qualified healthcare professional.</p>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

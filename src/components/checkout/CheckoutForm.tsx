@@ -3,9 +3,15 @@
 import { useEffect, useMemo, useState, useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Check, ChevronDown, Loader2, LockKeyhole, MapPin, ShieldCheck, UserRound } from "lucide-react";
+import { Check, ChevronDown, Globe, IndianRupee, Loader2, LockKeyhole, MapPin, ShieldCheck, UserRound } from "lucide-react";
 import { brand } from "@/lib/data";
-import { cn, formatINR } from "@/lib/utils";
+import { cn } from "@/lib/utils";
+import {
+  convertInrToSubunits,
+  formatCurrencySubunits,
+  type SupportedCurrency,
+} from "@/lib/currency";
+import { isAsyncHealingItem } from "@/lib/payment-safety";
 import type { OrderItemType } from "@/lib/supabase/database.types";
 import type { UserAddress } from "@/lib/supabase/models";
 import { sendManualConfirmation } from "@/lib/manual-flow";
@@ -81,12 +87,16 @@ export default function CheckoutForm({
   const router = useRouter();
   const isPhysicalProduct = type === "product";
   const isCourse = type === "course";
+  const isAsyncHealing = isAsyncHealingItem(type, slug);
   const isSession = ["service", "healing", "mentoring"].includes(type);
+  const needsLiveSlot = isSession && !isAsyncHealing;
   const [error, setError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [created, setCreated] = useState<{ id: string; manual: boolean } | null>(null);
   const [acceptedPolicies, setAcceptedPolicies] = useState(false);
+  const [acceptedWellbeingWaiver, setAcceptedWellbeingWaiver] = useState(false);
   const [acceptedCourseDisclaimer, setAcceptedCourseDisclaimer] = useState(false);
+  const [currency, setCurrency] = useState<SupportedCurrency>("INR");
   const [guestName, setGuestName] = useState(userName ?? "");
   const [guestEmail, setGuestEmail] = useState(userEmail);
   const [quantity, setQuantity] = useState(1);
@@ -103,11 +113,15 @@ export default function CheckoutForm({
   const [sessionSlots, setSessionSlots] = useState<SessionSlot[]>([]);
   const [sessionSlotId, setSessionSlotId] = useState(initialSession?.slotId ?? "");
   const [sessionNotes, setSessionNotes] = useState(initialSession?.notes ?? "");
-  const [idempotencyKey] = useState(() => crypto.randomUUID().replaceAll("-", ""));
+  const [idempotencyKey, setIdempotencyKey] = useState(() => crypto.randomUUID().replaceAll("-", ""));
   const [isPending, startTransition] = useTransition();
 
+  function refreshIdempotencyKey() {
+    setIdempotencyKey(crypto.randomUUID().replaceAll("-", ""));
+  }
+
   useEffect(() => {
-    if (!isSession || manualMode) return;
+    if (!needsLiveSlot || manualMode) return;
     const controller = new AbortController();
     fetch(`/api/bookings?format=${encodeURIComponent(sessionFormat)}`, { signal: controller.signal })
       .then(async (response) => {
@@ -121,10 +135,11 @@ export default function CheckoutForm({
         setError(loadError instanceof Error ? loadError.message : "Could not load session times.");
       });
     return () => controller.abort();
-  }, [isSession, manualMode, sessionFormat]);
+  }, [needsLiveSlot, manualMode, sessionFormat]);
 
   const selectedSavedAddress = addresses.find((entry) => entry.id === selectedAddress);
-  const totalLabel = price ? formatINR(price * quantity) : priceLabel;
+  const displayUnitLabel = price ? formatCurrencySubunits(convertInrToSubunits(price, currency), currency) : priceLabel;
+  const totalLabel = price ? formatCurrencySubunits(convertInrToSubunits(price, currency) * quantity, currency) : priceLabel;
   const addressPayload = useMemo(() => {
     if (!isPhysicalProduct) return null;
     if (selectedSavedAddress) return { savedAddressId: selectedSavedAddress.id };
@@ -147,7 +162,8 @@ export default function CheckoutForm({
       if (courseDetails.learningGoal.trim().length < 20) nextErrors.learningGoal = "Please share at least a few sentences so we can guide you well.";
       if (!acceptedCourseDisclaimer) nextErrors.courseDisclaimer = "Please confirm the course acknowledgement.";
     }
-    if (isSession && !manualMode && !sessionSlotId) nextErrors.sessionSlot = "Select an available session time.";
+    if (needsLiveSlot && !manualMode && !sessionSlotId) nextErrors.sessionSlot = "Select an available session time.";
+    if (isSession && !acceptedWellbeingWaiver) nextErrors.wellbeingWaiver = "Please confirm the wellbeing guidance acknowledgement.";
     if (isPhysicalProduct && !selectedSavedAddress) {
       if (!address.recipient_name.trim()) nextErrors.recipient_name = "Recipient name is required.";
       if (!/^[+0-9][0-9\s-]{7,18}$/.test(address.phone.trim())) nextErrors.phone = "Enter a valid phone number.";
@@ -224,6 +240,7 @@ export default function CheckoutForm({
         type,
         slug,
         quantity,
+        currency,
         guestEmail: userEmail ? "" : activeEmail,
         guestName: userEmail ? "" : activeName,
         address: addressPayload,
@@ -234,7 +251,7 @@ export default function CheckoutForm({
           experienceLevel: courseDetails.experienceLevel,
           learningGoal: courseDetails.learningGoal.trim(),
         } : null,
-        session: isSession ? { slotId: sessionSlotId, format: sessionFormat, notes: sessionNotes } : null,
+        session: needsLiveSlot ? { slotId: sessionSlotId, format: sessionFormat, notes: sessionNotes } : null,
       };
       const paymentResponse = await fetch("/api/checkout/create-order", {
         method: "POST",
@@ -258,7 +275,12 @@ export default function CheckoutForm({
           order_id: paymentData.razorpayOrderId,
           prefill: { name: activeName, email: activeEmail, contact: isCourse ? courseDetails.phone : selectedSavedAddress?.phone ?? address.phone },
           theme: { color: "#6b0b0b" },
-          modal: { ondismiss: () => router.push(`/checkout/failure?order=${encodeURIComponent(paymentData.orderId)}&reason=cancelled`) },
+          modal: {
+            ondismiss: () => {
+              refreshIdempotencyKey();
+              router.push(`/checkout/failure?order=${encodeURIComponent(paymentData.orderId)}&reason=cancelled`);
+            },
+          },
           handler: async (response: Record<string, string>) => {
             const verify = await fetch("/api/payments/verify", {
               method: "POST",
@@ -281,6 +303,7 @@ export default function CheckoutForm({
           },
         });
         checkout.on("payment.failed", (response) => {
+          refreshIdempotencyKey();
           setError(response.error?.description ?? "Payment failed. Please retry or use another payment method.");
           router.push(`/checkout/failure?order=${encodeURIComponent(paymentData.orderId)}&reason=payment`);
         });
@@ -358,17 +381,23 @@ export default function CheckoutForm({
         </div>
       </div>
 
-      {isSession && !manualMode ? (
+      {needsLiveSlot && !manualMode ? (
         <div className="mt-8">
           <div className="flex items-center gap-3 border-b border-parchment pb-5">
             <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-xs font-bold text-white">2</span>
-            <div><h2 className="text-sm font-semibold text-charcoal">Choose your session</h2><p className="mt-0.5 text-xs text-warmgray">This time is reserved while you complete payment</p></div>
+            <div><h2 className="text-sm font-semibold text-charcoal">Choose your session</h2><p className="mt-0.5 text-xs text-warmgray">Held for 15 minutes while you complete secure payment</p></div>
           </div>
           <div className="mt-5 grid gap-4">
-            <div><label htmlFor="session-format" className="mb-2 block text-xs font-semibold text-charcoal">Format</label><select id="session-format" value={sessionFormat} onChange={(event) => { setSessionFormat(event.target.value); setSessionSlotId(""); }} className={inputClass}><option value="online">Online</option><option value="mumbai">Mumbai</option><option value="pune">Pune</option><option value="other">Other / to be confirmed</option></select></div>
-            <div><label htmlFor="session-slot" className="mb-2 block text-xs font-semibold text-charcoal">Available time</label><select id="session-slot" value={sessionSlotId} onChange={(event) => { setSessionSlotId(event.target.value); setFieldErrors((current) => ({ ...current, sessionSlot: "" })); }} aria-invalid={Boolean(fieldErrors.sessionSlot)} className={cn(inputClass, fieldErrors.sessionSlot && "border-primary")}><option value="">Select a time</option>{sessionSlots.map((slot) => <option key={slot.id} value={slot.id}>{new Date(slot.starts_at).toLocaleString("en-IN", { timeZone: "Asia/Kolkata", weekday: "short", day: "numeric", month: "short", hour: "numeric", minute: "2-digit" })} IST</option>)}</select>{fieldErrors.sessionSlot ? <p className="mt-1.5 text-xs text-primary">{fieldErrors.sessionSlot}</p> : null}{!sessionSlots.length ? <p className="mt-1.5 text-xs text-warmgray">No open times for this format. Please choose another format or contact the team.</p> : null}</div>
+            <div><label htmlFor="session-format" className="mb-2 block text-xs font-semibold text-charcoal">Format</label><select id="session-format" value={sessionFormat} onChange={(event) => { setSessionFormat(event.target.value); setSessionSlotId(""); refreshIdempotencyKey(); }} className={inputClass}><option value="online">Online (Private Daily.co Video Room)</option><option value="mumbai">Mumbai</option><option value="pune">Pune</option><option value="other">Other / to be confirmed</option></select></div>
+            <div><label htmlFor="session-slot" className="mb-2 block text-xs font-semibold text-charcoal">Available time</label><select id="session-slot" value={sessionSlotId} onChange={(event) => { setSessionSlotId(event.target.value); setFieldErrors((current) => ({ ...current, sessionSlot: "" })); refreshIdempotencyKey(); }} aria-invalid={Boolean(fieldErrors.sessionSlot)} className={cn(inputClass, fieldErrors.sessionSlot && "border-primary")}><option value="">Select a time</option>{sessionSlots.map((slot) => <option key={slot.id} value={slot.id}>{new Date(slot.starts_at).toLocaleString("en-IN", { timeZone: "Asia/Kolkata", weekday: "short", day: "numeric", month: "short", hour: "numeric", minute: "2-digit" })} IST</option>)}</select>{fieldErrors.sessionSlot ? <p className="mt-1.5 text-xs text-primary">{fieldErrors.sessionSlot}</p> : null}{!sessionSlots.length ? <p className="mt-1.5 text-xs text-warmgray">No open times for this format. Please choose another format or contact the team.</p> : null}</div>
             <div><label htmlFor="session-notes" className="mb-2 block text-xs font-semibold text-charcoal">What would you like support with? <span className="font-normal text-warmgray">(optional)</span></label><textarea id="session-notes" value={sessionNotes} onChange={(event) => setSessionNotes(event.target.value)} maxLength={1500} rows={4} className="w-full rounded-xl border border-parchment bg-white px-4 py-3 text-sm text-charcoal outline-none focus:border-gold-dark focus:ring-4 focus:ring-gold/10" /></div>
           </div>
+        </div>
+      ) : null}
+
+      {isAsyncHealing && !manualMode ? (
+        <div className="mt-6 rounded-2xl border border-gold/35 bg-gold-soft/45 p-4 text-xs leading-5 text-gold-deep">
+          <strong>Instant Private Portal Access:</strong> Distance Healing does not require a live video call slot. Immediately after Razorpay confirms your payment, you will be directed to your private portal to securely upload your photograph and intention.
         </div>
       ) : null}
 
@@ -441,11 +470,45 @@ export default function CheckoutForm({
         </div>
       ) : null}
 
-      <div className="mt-8 rounded-2xl bg-ivory/70 p-5">
-        <div className="flex items-center justify-between gap-4 text-sm"><span className="text-warmgray">{itemTitle}</span><span className="shrink-0 font-semibold text-charcoal">{priceLabel}</span></div>
-        {isPhysicalProduct ? <div className="mt-4 flex items-center justify-between border-t border-parchment pt-4 text-sm"><label htmlFor="checkout-quantity" className="text-warmgray">Quantity</label><select id="checkout-quantity" value={quantity} onChange={(event) => setQuantity(Number(event.target.value))} className="rounded-lg border border-parchment bg-white px-3 py-2 font-semibold outline-none focus:border-gold-dark">{[1, 2, 3, 4, 5].map((value) => <option key={value}>{value}</option>)}</select></div> : null}
+      {!manualMode && price ? (
+        <div className="mt-7">
+          <p className="mb-2.5 text-xs font-semibold text-charcoal">Payment Currency (India &amp; International)</p>
+          <div className="grid grid-cols-2 gap-2.5">
+            <button
+              type="button"
+              onClick={() => { setCurrency("INR"); refreshIdempotencyKey(); }}
+              className={cn(
+                "flex items-center gap-2.5 rounded-xl border px-3.5 py-2.5 text-left text-xs transition",
+                currency === "INR"
+                  ? "border-primary bg-primary-soft/60 font-semibold text-primary"
+                  : "border-parchment bg-white text-warmgray hover:border-gold",
+              )}
+            >
+              <IndianRupee className="h-4 w-4 shrink-0" />
+              <span><span className="block">India (INR)</span><span className="block text-[10px] font-normal opacity-80">UPI, Cards, NetBanking</span></span>
+            </button>
+            <button
+              type="button"
+              onClick={() => { setCurrency("USD"); refreshIdempotencyKey(); }}
+              className={cn(
+                "flex items-center gap-2.5 rounded-xl border px-3.5 py-2.5 text-left text-xs transition",
+                currency === "USD"
+                  ? "border-primary bg-primary-soft/60 font-semibold text-primary"
+                  : "border-parchment bg-white text-warmgray hover:border-gold",
+              )}
+            >
+              <Globe className="h-4 w-4 shrink-0" />
+              <span><span className="block">International (USD)</span><span className="block text-[10px] font-normal opacity-80">Global Cards · NRI</span></span>
+            </button>
+          </div>
+        </div>
+      ) : null}
+
+      <div className="mt-6 rounded-2xl bg-ivory/70 p-5">
+        <div className="flex items-center justify-between gap-4 text-sm"><span className="text-warmgray">{itemTitle}</span><span className="shrink-0 font-semibold text-charcoal">{displayUnitLabel}</span></div>
+        {isPhysicalProduct ? <div className="mt-4 flex items-center justify-between border-t border-parchment pt-4 text-sm"><label htmlFor="checkout-quantity" className="text-warmgray">Quantity</label><select id="checkout-quantity" value={quantity} onChange={(event) => { setQuantity(Number(event.target.value)); refreshIdempotencyKey(); }} className="rounded-lg border border-parchment bg-white px-3 py-2 font-semibold outline-none focus:border-gold-dark">{[1, 2, 3, 4, 5].map((value) => <option key={value}>{value}</option>)}</select></div> : null}
         <div className="mt-4 flex items-end justify-between border-t border-parchment pt-4"><span className="text-sm font-semibold text-charcoal">Order total</span><span className="font-display text-2xl font-semibold tabular-nums text-primary">{totalLabel}</span></div>
-        <p className="mt-2 text-right text-[11px] text-warmgray">{isCourse ? (price ? "Inclusive of all taxes · Access details shared after confirmation" : "Fee and schedule are confirmed personally after review") : isSession ? "Inclusive of all taxes · Your selected time is confirmed after payment" : "Inclusive of all taxes · Shipping confirmed before dispatch"}</p>
+        <p className="mt-2 text-right text-[11px] text-warmgray">{isCourse ? (price ? "Inclusive of all taxes · Access details shared after confirmation" : "Fee and schedule are confirmed personally after review") : isAsyncHealing ? "Verified Razorpay checkout · Instant private portal access" : isSession ? (currency === "USD" ? "International Razorpay checkout · Private Daily.co room issued on capture" : "Inclusive of GST · Private Daily.co room issued on capture") : "Inclusive of all taxes · Shipping confirmed before dispatch"}</p>
       </div>
 
       <label className="mt-5 flex cursor-pointer items-start gap-3 text-xs leading-5 text-warmgray">
@@ -453,6 +516,15 @@ export default function CheckoutForm({
         <span>I agree to the <Link className="font-semibold text-primary underline underline-offset-2" href="/terms-and-conditions" target="_blank">Terms</Link>, <Link className="font-semibold text-primary underline underline-offset-2" href="/refund-cancellation-policy" target="_blank">refund policy</Link>, and <Link className="font-semibold text-primary underline underline-offset-2" href="/privacy-policy" target="_blank">privacy policy</Link>.</span>
       </label>
       {fieldErrors.policies ? <p className="mt-2 text-xs text-primary">{fieldErrors.policies}</p> : null}
+      {isSession ? (
+        <>
+          <label className="mt-3 flex cursor-pointer items-start gap-3 text-xs leading-5 text-warmgray">
+            <input type="checkbox" checked={acceptedWellbeingWaiver} onChange={(event) => { setAcceptedWellbeingWaiver(event.target.checked); setFieldErrors((current) => ({ ...current, wellbeingWaiver: "" })); }} className="mt-0.5 h-4 w-4 shrink-0 accent-[var(--color-primary)]" />
+            <span>I understand this is a holistic wellbeing and spiritual guidance service, not medical or psychological diagnosis or treatment, as stated in the <Link className="font-semibold text-primary underline underline-offset-2" href="/disclaimer" target="_blank">Disclaimer</Link>.</span>
+          </label>
+          {fieldErrors.wellbeingWaiver ? <p className="mt-2 text-xs text-primary">{fieldErrors.wellbeingWaiver}</p> : null}
+        </>
+      ) : null}
       {isCourse ? (
         <>
           <label className="mt-3 flex cursor-pointer items-start gap-3 text-xs leading-5 text-warmgray">

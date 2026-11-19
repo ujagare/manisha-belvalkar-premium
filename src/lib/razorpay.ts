@@ -3,6 +3,8 @@ import { createHmac } from "node:crypto";
 import { serverEnv } from "@/lib/env";
 import { constantTimeEqualHex } from "@/lib/security";
 
+import type { SupportedCurrency } from "@/lib/currency";
+
 const API = "https://api.razorpay.com/v1";
 
 function credentials() {
@@ -14,7 +16,7 @@ function credentials() {
 
 export async function createRazorpayOrder(input: {
   amount: number;
-  currency: "INR";
+  currency: SupportedCurrency;
   receipt: string;
   notes: Record<string, string>;
 }) {
@@ -72,6 +74,27 @@ export async function createRazorpayRefund(paymentId: string, input?: {
     throw new Error(`Razorpay refund failed (${response.status}): ${errorText}`);
   }
   return (await response.json()) as { id: string; amount: number; currency: string; status: string; payment_id: string };
+}
+
+export async function fetchRazorpayOrderPayments(orderId: string) {
+  const { keyId, keySecret } = credentials();
+  const response = await fetch(`${API}/orders/${encodeURIComponent(orderId)}/payments`, {
+    headers: { Authorization: `Basic ${Buffer.from(`${keyId}:${keySecret}`).toString("base64")}` },
+    signal: AbortSignal.timeout(10_000),
+    cache: "no-store",
+  });
+  if (!response.ok) throw new Error(`Razorpay order payments fetch failed (${response.status})`);
+  const data = (await response.json()) as {
+    items?: Array<{
+      id: string;
+      order_id: string;
+      amount: number;
+      currency: string;
+      status: "created" | "authorized" | "captured" | "refunded" | "failed";
+      method?: string;
+    }>;
+  };
+  return data.items ?? [];
 }
 
 export function verifyCheckoutSignature(orderId: string, paymentId: string, signature: string) {

@@ -179,7 +179,39 @@ export default async function HealingDetailPage({ params }: Props) {
             </article>
 
             <aside id="book-session" className="min-w-0 scroll-mt-28">
-              <SessionBookingForm type="healing" slug={service.slug} title={service.title} manualMode={manualMode} paymentRequired={paymentsConfigured && catalogItem?.price != null} />
+              {service.slug === "distance-healing" ? (
+                <div className="overflow-hidden rounded-2xl bg-white p-6 shadow-[0_30px_90px_-48px_rgba(62,38,25,0.5)] ring-1 ring-parchment sm:rounded-[2rem] sm:p-8">
+                  <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-gold-deep">
+                    <Sparkles className="h-3.5 w-3.5" /> Private Remote Healing
+                  </p>
+                  <h2 className="mt-2 font-display text-2xl font-semibold text-charcoal sm:text-3xl">
+                    Book Distance Healing
+                  </h2>
+                  <p className="mt-2 text-sm leading-6 text-warmgray">
+                    No live video slot required. Complete secure INR or International USD payment via Razorpay to unlock your private photograph submission portal immediately.
+                  </p>
+                  <div className="mt-5 rounded-2xl bg-ivory/75 p-4">
+                    <div className="flex items-baseline justify-between gap-3">
+                      <span className="text-xs font-semibold uppercase tracking-wider text-warmgray">Session fee</span>
+                      <span className="font-display text-2xl font-bold text-primary">{catalogItem?.priceLabel ?? formatINR(service.price ?? 15000)}</span>
+                    </div>
+                    <p className="mt-1 text-right text-[11px] text-warmgray">India (INR) &amp; International (USD) supported via Razorpay</p>
+                  </div>
+                  <ul className="mt-5 space-y-2.5 text-xs leading-5 text-charcoal">
+                    <li className="flex items-start gap-2"><Check className="mt-0.5 h-4 w-4 shrink-0 text-gold-deep" /> Instant access to private encrypted upload portal</li>
+                    <li className="flex items-start gap-2"><Check className="mt-0.5 h-4 w-4 shrink-0 text-gold-deep" /> Receive private result photograph &amp; healing music</li>
+                    <li className="flex items-start gap-2"><Check className="mt-0.5 h-4 w-4 shrink-0 text-gold-deep" /> Source photo automatically deleted after 30 days</li>
+                  </ul>
+                  <Link
+                    href="/checkout/healing/distance-healing"
+                    className="mt-6 flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-primary px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-primary/20 transition hover:brightness-110"
+                  >
+                    <LockKeyhole className="h-4 w-4" /> Continue to Secure Payment
+                  </Link>
+                </div>
+              ) : (
+                <SessionBookingForm type="healing" slug={service.slug} title={service.title} manualMode={manualMode} paymentRequired={paymentsConfigured && catalogItem?.price != null} />
+              )}
             </aside>
           </div>
         </div>

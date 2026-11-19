@@ -27,7 +27,15 @@ export const serverEnv = {
     read("SUPABASE_SERVICE_ROLE_KEY"),
   /** Seller GSTIN printed on tax invoices. Optional until GST registration. */
   sellerGstin: () => read("GSTIN") ?? read("SELLER_GSTIN"),
+  /** Daily.co private video room API key (server-only). */
+  dailyApiKey: () => read("DAILY_API_KEY"),
+  /** Optional Daily.co subdomain (e.g. manishabelvalkar.daily.co). */
+  dailyDomain: () => read("DAILY_DOMAIN"),
 };
+
+export function isDailyConfigured() {
+  return Boolean(serverEnv.dailyApiKey());
+}
 
 export function isEmailConfigured() {
   return Boolean(

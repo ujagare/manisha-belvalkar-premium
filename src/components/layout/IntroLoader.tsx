@@ -19,10 +19,17 @@ export default function IntroLoader() {
     };
   }, []);
 
+  useEffect(() => {
+    if (leaving) {
+      window.dispatchEvent(new CustomEvent("intro-loader:leaving"));
+    }
+  }, [leaving]);
+
   if (!visible) return null;
 
   return (
     <div
+      data-intro-loader={leaving ? "leaving" : "active"}
       className={`${styles.loader} ${leaving ? styles.leaving : ""}`}
       aria-hidden="true"
     >

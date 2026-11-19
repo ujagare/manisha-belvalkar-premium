@@ -3,7 +3,48 @@ import Link from "next/link";
 import { ArrowDown, ArrowUpRight, Check, Sparkles } from "lucide-react";
 import Reveal from "@/components/ui/Reveal";
 import ViewportVideo from "@/components/ui/ViewportVideo";
-import { appFeatures, transformationProgram } from "@/lib/data";
+import { appFeatures, products, transformationProgram } from "@/lib/data";
+import { formatINR } from "@/lib/utils";
+import styles from "@/app/shakti/shakti.module.css";
+
+const shaktiChapters = [
+  { number: "01", label: "Oracle Reading", href: "#oracle-reading" },
+  { number: "02", label: "The Shakti Book", href: "#shakti-book" },
+  { number: "03", label: "Sacred Programs", href: "#shakti-programs" },
+  { number: "04", label: "Four Pillars", href: "#shakti-nurtures" },
+  { number: "05", label: "Stay Close", href: "#shakti-waitlist" },
+] as const;
+
+export function ShaktiChapterNav() {
+  return (
+    <nav
+      aria-label="Shakti page sections"
+      className="relative border-y border-gold/22 bg-[#1c0807] text-cream/85"
+    >
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 overflow-x-auto px-4 py-3.5 hide-scrollbar sm:px-6 lg:justify-center lg:gap-10 lg:px-10">
+        {shaktiChapters.map((chapter, index) => (
+          <div key={chapter.href} className="flex shrink-0 items-center gap-3 lg:gap-10">
+            <a
+              href={chapter.href}
+              className="group inline-flex min-h-9 items-center gap-2 whitespace-nowrap text-xs font-medium tracking-[0.14em] text-cream/72 transition-colors duration-300 hover:text-gold-light focus-visible:text-gold-light"
+            >
+              <span className="font-serif text-[0.72rem] italic text-gold/80 tabular-nums transition-colors group-hover:text-gold-light">
+                {chapter.number}
+              </span>
+              <span className="uppercase">{chapter.label}</span>
+            </a>
+            {index < shaktiChapters.length - 1 ? (
+              <span
+                aria-hidden="true"
+                className="h-1.5 w-1.5 rotate-45 border border-gold/45 bg-gold/15"
+              />
+            ) : null}
+          </div>
+        ))}
+      </div>
+    </nav>
+  );
+}
 
 const pathways = [
   {
@@ -55,7 +96,7 @@ export function ShaktiIntro() {
                 Draw your Shakti card
                 <ArrowDown className="h-4 w-4 transition-transform group-hover:translate-y-1" />
               </Link>
-              <Link href="/contact" className="inline-flex min-h-11 items-center gap-3 rounded-full border border-white/22 bg-white/[0.04] px-6 py-3 text-sm font-medium text-white backdrop-blur-sm transition duration-300 hover:border-gold/60 hover:bg-white/[0.08] sm:px-7 sm:py-3.5">
+              <Link href="/mentoring" className="inline-flex min-h-11 items-center gap-3 rounded-full border border-white/22 bg-white/[0.04] px-6 py-3 text-sm font-medium text-white backdrop-blur-sm transition duration-300 hover:border-gold/60 hover:bg-white/[0.08] sm:px-7 sm:py-3.5">
                 Speak with Manisha
                 <ArrowUpRight className="h-4 w-4" />
               </Link>
@@ -114,28 +155,92 @@ export function ShaktiPathways() {
 }
 
 export function ShaktiOracleCollection() {
+  const shaktiBook = products.find((p) => p.slug === "shakti-deck-guidebook");
+  const shaktiCombo = products.find((p) => p.slug === "shakti-combo-pack");
+  const bookPrice = formatINR(shaktiBook?.price ?? 1999);
+  const comboPrice = formatINR(shaktiCombo?.price ?? 2993);
+
   return (
-    <section className="relative overflow-hidden bg-white px-4 py-12 sm:px-6 sm:py-20 lg:px-10 lg:py-28" aria-labelledby="oracle-collection-title">
-      <div className="absolute -right-44 top-0 h-[32rem] w-[32rem] rounded-full bg-gold/10 blur-3xl" />
-      <div className="relative mx-auto grid max-w-7xl gap-8 sm:gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:items-center lg:gap-24">
-        <Reveal direction="right" className="relative min-h-[20rem] sm:min-h-[34rem] lg:min-h-[42rem]">
-          <div className="absolute inset-[8%_5%_2%_14%] rounded-[45%_45%_2rem_2rem] bg-[#6f100d] shadow-[0_42px_100px_-45px_rgba(91,20,13,0.75)]" />
-          <Image src="/images/shakti-goddess-oracle-book.png" alt="Shakti Symbols and Guidance book by Dr. Manisha Belvalkar" fill sizes="(max-width: 1024px) 100vw, 48vw" className="object-contain drop-shadow-[0_32px_38px_rgba(80,20,12,0.26)]" />
-          <div className="absolute bottom-3 left-2 border border-gold/30 bg-[#fffaf2]/92 px-4 py-3 shadow-xl backdrop-blur-md sm:bottom-4 sm:left-5 sm:px-5 sm:py-4">
-            <p className="text-[0.6rem] font-bold uppercase tracking-[0.24em] text-gold-deep">Shakti Book</p>
-            <p className="mt-0.5 font-display text-2xl font-semibold text-primary sm:mt-1 sm:text-3xl">₹2,799</p>
+    <section
+      id="shakti-book"
+      className="relative scroll-mt-20 overflow-hidden bg-cream px-4 py-16 sm:px-6 sm:py-24 lg:px-10 lg:py-32"
+      aria-labelledby="oracle-collection-title"
+    >
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -right-44 top-0 h-[34rem] w-[34rem] rounded-full bg-gold/12 blur-3xl"
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -left-32 bottom-10 h-[26rem] w-[26rem] rounded-full bg-primary/[0.045] blur-3xl"
+      />
+
+      <div className="relative mx-auto grid max-w-7xl gap-10 sm:gap-14 lg:grid-cols-[0.94fr_1.06fr] lg:items-center lg:gap-20">
+        <Reveal direction="right" className="relative min-h-[23rem] sm:min-h-[34rem] lg:min-h-[42rem]">
+          {/* Subtle sacred orbital geometry behind the arch */}
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 360 360"
+            fill="none"
+            stroke="currentColor"
+            className="pointer-events-none absolute -right-6 -top-6 h-56 w-56 text-gold/30 sm:h-72 sm:w-72"
+          >
+            <circle cx="180" cy="180" r="168" strokeWidth="0.7" strokeDasharray="3 7" />
+            <circle cx="180" cy="180" r="132" strokeWidth="0.6" />
+            <circle cx="180" cy="180" r="88" strokeWidth="0.5" strokeOpacity="0.6" />
+          </svg>
+
+          {/* Sacred temple arch plinth */}
+          <div className={`${styles.archHalo} absolute inset-[7%_4%_3%_12%] overflow-hidden rounded-[46%_46%_1.75rem_1.75rem] border border-gold/35`}>
+            <div className="pointer-events-none absolute inset-3 rounded-[44%_44%_1.35rem_1.35rem] border border-gold/18" />
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/40 to-transparent" />
+          </div>
+
+          <div className={`${styles.mediaZoomFrame} relative h-full min-h-[23rem] sm:min-h-[34rem] lg:min-h-[42rem]`}>
+            <Image
+              src="/images/shakti-goddess-oracle-book.png"
+              alt="Shakti Symbols and Guidance book by Dr. Manisha Belvalkar"
+              fill
+              sizes="(max-width: 1024px) 100vw, 48vw"
+              className={`${styles.mediaZoom} object-contain drop-shadow-[0_34px_42px_rgba(68,14,10,0.34)]`}
+            />
+          </div>
+
+          {/* Artisanal collector's price plaque */}
+          <div className={`${styles.plaqueGlass} absolute bottom-3 left-1 rounded-2xl border border-gold/40 px-4 py-3.5 sm:bottom-5 sm:left-4 sm:px-6 sm:py-4`}>
+            <div className="flex items-center gap-2">
+              <span className="h-1.5 w-1.5 rotate-45 bg-gold-deep" aria-hidden="true" />
+              <p className="text-[0.6rem] font-semibold uppercase tracking-[0.26em] text-gold-deep">
+                Shakti Companion Book
+              </p>
+            </div>
+            <div className="mt-1 flex items-baseline gap-2.5">
+              <p className="font-display text-2xl font-semibold text-primary tabular-nums sm:text-3xl">
+                {bookPrice}
+              </p>
+              <span className="text-[0.68rem] font-medium text-warmgray">
+                52 Goddesses
+              </span>
+            </div>
           </div>
         </Reveal>
 
         <Reveal direction="left">
-          <p className="font-serif text-lg italic text-primary sm:text-xl">Symbols, stories and sacred guidance</p>
-          <h2 id="oracle-collection-title" className="mt-3 text-balance font-display text-[1.85rem] font-semibold leading-[1.06] tracking-[-0.03em] text-charcoal sm:mt-4 sm:text-5xl lg:text-6xl">
+          <span className="inline-flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.24em] text-primary-dark">
+            <span className="h-px w-8 bg-primary/70" aria-hidden="true" />
+            Symbols, stories &amp; sacred guidance
+          </span>
+          <h2
+            id="oracle-collection-title"
+            className="mt-4 text-balance font-display text-[2rem] font-semibold leading-[1.06] tracking-[-0.02em] text-charcoal sm:mt-5 sm:text-5xl lg:text-[3.5rem]"
+          >
             Meet the Goddesses through the <span className="text-crimson-gradient">Shakti Book.</span>
           </h2>
-          <p className="mt-4 max-w-2xl text-pretty text-sm leading-7 text-warmgray sm:mt-7 sm:text-base sm:leading-8">
+          <p className="mt-5 max-w-[62ch] text-pretty text-sm leading-7 text-warmgray sm:mt-6 sm:text-base sm:leading-8">
             Shakti: Symbols &amp; Guidance brings together 52 Goddess illustrations inspired by the sacred 51 Shakti Peethas. Created by Dr. Manisha S. Belvalkar, it offers meaningful guidance for reflection, spiritual practice and a deeper connection with the divine feminine.
           </p>
-          <ul className="mt-8 grid gap-4 sm:grid-cols-2">
+
+          <ul className="mt-8 grid gap-x-6 gap-y-3 border-y border-gold/25 py-6 sm:grid-cols-2">
             {[
               "52 beautifully illustrated Goddesses",
               "Symbols and guidance for reflection",
@@ -144,17 +249,46 @@ export function ShaktiOracleCollection() {
               "Created by Dr. Manisha S. Belvalkar",
               "A meaningful book for sacred practice",
             ].map((item) => (
-              <li key={item} className="flex items-start gap-3 text-sm leading-6 text-charcoal/78">
-                <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-gold-soft text-primary"><Check className="h-3 w-3" strokeWidth={3} /></span>
-                {item}
+              <li key={item} className="flex items-start gap-3 text-sm leading-6 text-charcoal/85">
+                <span className="mt-1 grid h-4 w-4 shrink-0 place-items-center rounded-sm border border-gold/55 bg-gold-soft/80 text-primary">
+                  <Check className="h-2.5 w-2.5" strokeWidth={3} aria-hidden="true" />
+                </span>
+                <span>{item}</span>
               </li>
             ))}
           </ul>
-          <div className="mt-10 flex flex-wrap items-center gap-5">
-            <Link href="/checkout/product/shakti-deck-guidebook" className="group inline-flex items-center gap-3 rounded-full bg-primary px-7 py-3.5 text-sm font-semibold text-white shadow-[0_16px_36px_-16px_rgba(107,11,11,0.7)] transition duration-300 hover:-translate-y-1 hover:bg-primary-dark">
-              Buy the Shakti Book<ArrowUpRight className="h-4 w-4" />
+
+          <div className="mt-8 flex flex-wrap items-center gap-4 sm:gap-6">
+            <Link
+              href="/checkout/product/shakti-deck-guidebook"
+              className={`${styles.tactileButton} group inline-flex min-h-12 items-center gap-3 rounded-full bg-primary px-7 py-3.5 text-sm font-semibold text-white shadow-[0_18px_38px_-16px_rgba(107,11,11,0.72)] hover:-translate-y-0.5 hover:bg-primary-dark hover:shadow-[0_22px_42px_-16px_rgba(107,11,11,0.82)]`}
+            >
+              Buy the Shakti Book
+              <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
             </Link>
-            <Link href="/products/shakti-deck-guidebook" className="text-sm font-semibold text-primary underline decoration-gold/45 underline-offset-8 hover:decoration-primary">View book details</Link>
+            <Link
+              href="/products/shakti-deck-guidebook"
+              className="group inline-flex min-h-11 items-center gap-1.5 text-sm font-semibold text-primary underline decoration-gold/60 underline-offset-8 transition-colors hover:text-primary-dark hover:decoration-primary"
+            >
+              View book details
+              <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
+            </Link>
+          </div>
+
+          <div className="mt-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-gold/25 bg-ivory/80 px-5 py-3.5 text-xs text-warmgray sm:text-sm">
+            <span>
+              Want both the 52-card deck &amp; book together?{" "}
+              <strong className="font-semibold text-charcoal tabular-nums">
+                Sacred Combo · {comboPrice}
+              </strong>
+            </span>
+            <Link
+              href="/products/shakti-combo-pack"
+              className="inline-flex items-center gap-1 font-semibold text-primary transition-colors hover:text-primary-dark"
+            >
+              Explore combo
+              <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+            </Link>
           </div>
         </Reveal>
       </div>
@@ -197,7 +331,7 @@ export function ShaktiTransformationMap() {
             <p className="text-[0.62rem] font-semibold uppercase tracking-[0.26em] text-gold-light/65">Personalised guided programme</p>
             <p className="mt-1.5 font-serif text-xl italic text-white/88 sm:mt-2 sm:text-2xl">Availability and investment shared by consultation.</p>
           </div>
-          <Link href="/contact" className="inline-flex min-h-11 w-fit items-center gap-3 rounded-full bg-gold px-6 py-3 text-sm font-semibold text-[#3b0b08] transition duration-300 hover:-translate-y-1 hover:bg-gold-light sm:px-7 sm:py-3.5">Enquire about the journey<ArrowUpRight className="h-4 w-4" /></Link>
+          <Link href="/courses/personalized-wellbeing" className="inline-flex min-h-11 w-fit items-center gap-3 rounded-full bg-gold px-6 py-3 text-sm font-semibold text-[#3b0b08] transition duration-300 hover:-translate-y-1 hover:bg-gold-light sm:px-7 sm:py-3.5">Explore the journey<ArrowUpRight className="h-4 w-4" /></Link>
         </Reveal>
       </div>
     </section>

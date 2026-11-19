@@ -1,5 +1,7 @@
+import { createHash } from "node:crypto";
 import { apiError, apiSuccess, readJsonObject, requestId } from "@/lib/api";
 import { getCatalogItem, orderTypes } from "@/lib/checkout";
+import { convertInrToSubunits, normalizeCurrency } from "@/lib/currency";
 import { isPaymentsConfigured, serverEnv } from "@/lib/env";
 import { consumeRateLimit } from "@/lib/rate-limit";
 import { createRazorpayOrder } from "@/lib/razorpay";
@@ -8,13 +10,33 @@ import { createClient } from "@/lib/supabase/server";
 import type { OrderItemType } from "@/lib/supabase/database.types";
 import { isSameOriginRequest } from "@/lib/security";
 import { calculateGstBreakdown } from "@/lib/gst";
-import { releaseAvailabilitySlot, reserveAvailabilitySlot } from "@/lib/bookings";
-import { assertDatabaseSuccess, sessionCheckoutIssue } from "@/lib/payment-safety";
+import {
+  releaseAvailabilitySlot,
+  releaseExpiredSlotHolds,
+  reserveAvailabilitySlot,
+} from "@/lib/bookings";
+import {
+  assertDatabaseSuccess,
+  isAsyncHealingItem,
+  sessionCheckoutIssue,
+  SLOT_HOLD_MINUTES,
+} from "@/lib/payment-safety";
 
 export const runtime = "nodejs";
 
+function hashClientIp(request: Request): string | null {
+  const raw = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim()
+    ?? request.headers.get("x-real-ip")?.trim();
+  if (!raw) return null;
+  return createHash("sha256").update(raw).digest("hex");
+}
+
 export async function POST(request: Request) {
   const traceId = requestId(request);
+  let reservedSlotId: string | null = null;
+  let createdOrderId: string | null = null;
+  const admin = createAdminClient();
+
   try {
     if (!isSameOriginRequest(request)) return apiError("FORBIDDEN", "Request origin is not allowed.", 403);
     if (!isPaymentsConfigured()) {
@@ -25,21 +47,18 @@ export async function POST(request: Request) {
     if (!user) return apiError("UNAUTHORIZED", "Please sign in to continue to secure payment.", 401);
     const body = await readJsonObject(request);
 
-    // Guest checkout: allow an order without an account as long as a valid
-    // contact email is supplied. Signed-in users are unaffected.
     const guestEmail =
       typeof body.guestEmail === "string" && /.+@.+\..+/.test(body.guestEmail.trim())
         ? body.guestEmail.trim().slice(0, 320)
         : null;
     const guestName =
       typeof body.guestName === "string" ? body.guestName.trim().slice(0, 100) : null;
-    if (!user && !guestEmail) {
-      return apiError("UNAUTHORIZED", "Please sign in or enter your email to continue.", 401);
-    }
-    const rateKey = user?.id ?? guestEmail!;
+    const rateKey = user.id;
     if (!(await consumeRateLimit(request, "checkout", 8, 600, rateKey))) {
       return apiError("RATE_LIMITED", "Too many checkout attempts. Please try again shortly.", 429);
     }
+
+    const currency = normalizeCurrency(body.currency);
     const cartItems = Array.isArray(body.items) ? body.items : null;
     const requestedItems = cartItems
       ? cartItems.slice(0, 20).map((raw) => {
@@ -56,7 +75,7 @@ export async function POST(request: Request) {
           quantity: typeof body.quantity === "number" && Number.isInteger(body.quantity) ? body.quantity : 1,
         }];
     const sessionBody = body.session && typeof body.session === "object" ? body.session as Record<string, unknown> : null;
-    const sessionSlotId = typeof sessionBody?.slotId === "string" ? sessionBody.slotId.trim() : null;
+    const sessionSlotId = typeof sessionBody?.slotId === "string" && sessionBody.slotId.trim() ? sessionBody.slotId.trim() : null;
     const sessionFormat = typeof sessionBody?.format === "string" && ["online", "mumbai", "pune", "other"].includes(sessionBody.format)
       ? sessionBody.format
       : null;
@@ -69,17 +88,17 @@ export async function POST(request: Request) {
     if (!idempotencyKey || !/^[A-Za-z0-9_-]{16,100}$/.test(idempotencyKey)) {
       return apiError("BAD_REQUEST", "A valid idempotency key is required.", 422);
     }
+
     const sessionIssue = sessionCheckoutIssue({
       itemTypes: requestedItems.map((item) => item.type),
-      userId: user?.id ?? null,
+      itemSlugs: requestedItems.map((item) => item.slug),
+      userId: user.id,
       slotId: sessionSlotId,
       format: sessionFormat,
     });
     if (sessionIssue === "SIGN_IN_REQUIRED") return apiError("UNAUTHORIZED", "Please sign in to book a paid session.", 401);
     if (sessionIssue === "SLOT_REQUIRED") return apiError("BAD_REQUEST", "Select an available session time before payment.", 422);
 
-    // Optional delivery address: either an existing saved address (id) or a
-    // one-time address object. Physical orders should carry a valid address.
     const addressBody = body.address && typeof body.address === "object" ? body.address as Record<string, unknown> : null;
     const customerDetailsBody = body.customerDetails && typeof body.customerDetails === "object" ? body.customerDetails as Record<string, unknown> : null;
     const customerDetails = customerDetailsBody
@@ -110,22 +129,27 @@ export async function POST(request: Request) {
       return apiError("CONFLICT", "This offering requires confirmation before payment.", 409);
     }
 
-    const amountSubunits = resolved.reduce((sum, { requested, item }) => sum + Math.round(item!.price! * 100) * requested.quantity, 0);
+    const amountSubunits = resolved.reduce(
+      (sum, { requested, item }) => sum + convertInrToSubunits(item!.price!, currency) * requested.quantity,
+      0,
+    );
     if (!Number.isSafeInteger(amountSubunits) || amountSubunits < 100) {
-      return apiError("BAD_REQUEST", "Payment amount must be at least ₹1.", 422);
+      return apiError("BAD_REQUEST", "Payment amount is below the minimum supported total.", 422);
     }
     const primary = resolved[0].item!;
     const orderTitle = resolved.length === 1 ? primary.title : `${primary.title} + ${resolved.length - 1} more`;
-    const admin = createAdminClient();
+    const isAsyncDistanceHealing = resolved.length === 1 && isAsyncHealingItem(primary.type, primary.slug);
 
-    // Resolve the chosen delivery address to an address_id (saved or new).
+    // Release expired 15-minute checkout holds before claiming availability.
+    await releaseExpiredSlotHolds(admin).catch((err) => console.warn("[checkout:release-holds]", err));
+
     let addressId: string | null = null;
-    if (savedAddressId && user) {
+    if (savedAddressId) {
       const { data: saved } = await admin.from("addresses").select("id").eq("id", savedAddressId).eq("user_id", user.id).maybeSingle();
       if (!saved) return apiError("NOT_FOUND", "Selected address could not be verified.", 404);
       addressId = saved.id;
     } else if (pendingAddress && pendingAddress.recipient_name && pendingAddress.phone && pendingAddress.line1 && pendingAddress.city && pendingAddress.state && /^[0-9]{3,6}([-\s]?[0-9]{1,3})?$/.test(pendingAddress.postal_code)) {
-      const { data: created, error: addrError } = await admin.from("addresses").insert({ user_id: user?.id ?? null, ...pendingAddress }).select("id").single();
+      const { data: created, error: addrError } = await admin.from("addresses").insert({ user_id: user.id, ...pendingAddress }).select("id").single();
       if (addrError || !created) throw new Error(`Address insert failed: ${addrError?.message ?? "unknown"}`);
       addressId = created.id;
     }
@@ -136,8 +160,7 @@ export async function POST(request: Request) {
       return apiError("BAD_REQUEST", "Phone number and learning goals are required for course enrollment.", 422);
     }
 
-    // Check duplicate course enrollments for signed-in users
-    if (user && requestedItems.some((item) => item.type === "course")) {
+    if (requestedItems.some((item) => item.type === "course")) {
       const courseItems = requestedItems.filter((i) => i.type === "course");
       for (const cItem of courseItems) {
         const { data: existingEnrollment } = await admin
@@ -154,7 +177,6 @@ export async function POST(request: Request) {
       }
     }
 
-    // Check stock availability for physical products
     const productItems = requestedItems.filter((i) => i.type === "product");
     const matchedVariants: Array<{ variantId: string; quantity: number }> = [];
 
@@ -177,7 +199,7 @@ export async function POST(request: Request) {
               return apiError(
                 "CONFLICT",
                 `"${prod.title}" is out of stock or only ${Math.max(0, availableStock)} item(s) left.`,
-                409
+                409,
               );
             }
             matchedVariants.push({ variantId: variant.id, quantity: pItem.quantity });
@@ -186,14 +208,20 @@ export async function POST(request: Request) {
       }
     }
 
-    let existingQuery = admin
+    // Only reuse an existing idempotent order if it is still pending/unpaid and matches currency + amount.
+    const { data: existing } = await admin
       .from("orders")
-      .select("id,gateway_order_id,amount_subunits,currency")
-      .eq("user_id", user?.id ?? null)
-      .eq("idempotency_key", idempotencyKey);
-    if (!user && guestEmail) existingQuery = existingQuery.eq("guest_email", guestEmail);
-    const { data: existing } = await existingQuery.maybeSingle();
-    if (existing?.gateway_order_id) {
+      .select("id,gateway_order_id,amount_subunits,currency,status,payment_status")
+      .eq("user_id", user.id)
+      .eq("idempotency_key", idempotencyKey)
+      .maybeSingle();
+    if (
+      existing?.gateway_order_id &&
+      existing.status === "pending" &&
+      existing.payment_status === "created" &&
+      existing.currency === currency &&
+      existing.amount_subunits === amountSubunits
+    ) {
       return apiSuccess({
         orderId: existing.id,
         razorpayOrderId: existing.gateway_order_id,
@@ -203,7 +231,6 @@ export async function POST(request: Request) {
       });
     }
 
-    // Determine customer state for GST (CGST+SGST for Maharashtra, IGST for others)
     let customerState: string | null = null;
     if (pendingAddress?.state) {
       customerState = pendingAddress.state;
@@ -213,8 +240,8 @@ export async function POST(request: Request) {
     }
 
     const itemTaxBreakdowns = resolved.map(({ requested, item }) => {
-      const lineTotalSubunits = Math.round(item!.price! * 100) * requested.quantity;
-      const breakdown = calculateGstBreakdown(item!.type, item!.slug, lineTotalSubunits, customerState);
+      const lineTotalSubunits = convertInrToSubunits(item!.price!, currency) * requested.quantity;
+      const breakdown = calculateGstBreakdown(item!.type, item!.slug, lineTotalSubunits, customerState, currency);
       return { requested, item: item!, breakdown, lineTotalSubunits };
     });
 
@@ -227,9 +254,9 @@ export async function POST(request: Request) {
     const { data: order, error: orderError } = await admin
       .from("orders")
       .insert({
-        user_id: user?.id ?? null,
-        guest_email: guestEmail,
-        guest_name: guestName,
+        user_id: user.id,
+        guest_email: guestEmail ?? user.email ?? null,
+        guest_name: guestName ?? (user.user_metadata?.full_name as string | undefined) ?? (user.user_metadata?.name as string | undefined) ?? null,
         item_type: primary.type,
         item_slug: primary.slug,
         item_title: orderTitle,
@@ -240,7 +267,7 @@ export async function POST(request: Request) {
         cgst_subunits: cgstSubunits,
         sgst_subunits: sgstSubunits,
         igst_subunits: igstSubunits,
-        currency: "INR",
+        currency,
         status: "pending",
         payment_status: "created",
         idempotency_key: idempotencyKey,
@@ -249,6 +276,7 @@ export async function POST(request: Request) {
       .select("id")
       .single();
     if (orderError || !order) throw new Error(`Order insert failed: ${orderError?.message ?? "unknown"}`);
+    createdOrderId = order.id;
 
     const { error: itemsError } = await admin.from("order_items").insert(itemTaxBreakdowns.map(({ requested, item, breakdown }) => ({
       order_id: order.id,
@@ -256,7 +284,7 @@ export async function POST(request: Request) {
       item_slug: item.slug,
       title: item.title,
       quantity: requested.quantity,
-      unit_amount_subunits: Math.round(item.price! * 100),
+      unit_amount_subunits: convertInrToSubunits(item.price!, currency),
       hsn_sac_code: breakdown.hsnSacCode,
       tax_rate: breakdown.taxRatePercent,
       tax_subunits: breakdown.taxSubunits,
@@ -264,12 +292,16 @@ export async function POST(request: Request) {
     })));
     if (itemsError) throw new Error(`Order items insert failed: ${itemsError.message}`);
 
-    if (sessionSlotId && sessionFormat && user) {
+    // Reserve live slot with 15-minute checkout hold TTL (skip for async Distance Healing)
+    if (sessionSlotId && sessionFormat && !isAsyncDistanceHealing) {
       const reservation = await reserveAvailabilitySlot(admin, sessionSlotId, sessionFormat);
       if (!reservation.success || !reservation.startsAt) {
         await admin.from("orders").update({ status: "cancelled", payment_status: "failed" }).eq("id", order.id);
         return apiError("CONFLICT", "The selected session time is no longer available.", 409);
       }
+      reservedSlotId = sessionSlotId;
+
+      const holdExpiresAt = new Date(Date.now() + SLOT_HOLD_MINUTES * 60 * 1000).toISOString();
       const bookingResult = await admin.from("bookings").insert({
         user_id: user.id,
         order_id: order.id,
@@ -281,18 +313,31 @@ export async function POST(request: Request) {
         slot_id: sessionSlotId,
         notes: sessionNotes,
         meeting_url: null,
+        video_provider: "daily",
+        hold_expires_at: holdExpiresAt,
         status: "payment_pending",
       });
       if (bookingResult.error) {
-        await releaseAvailabilitySlot(admin, sessionSlotId);
         throw new Error(`Session booking insert failed: ${bookingResult.error.message}`);
       }
     }
 
-    // Reserve inventory for products. The ledger row goes in first so the
-    // unique index on (order_id, variant_id, reason) makes the reservation
-    // idempotent — a retried create-order with the same idempotency key cannot
-    // reserve the same units twice.
+    // Record immutable electronic consent / non-medical waiver audit log (best-effort if migration pending)
+    await admin.from("booking_consents").insert({
+      order_id: order.id,
+      user_id: user.id,
+      item_type: primary.type,
+      item_slug: primary.slug,
+      currency,
+      amount_subunits: amountSubunits,
+      disclaimer_version: "2026-11",
+      refund_policy_version: "2026-11",
+      ip_hash: hashClientIp(request),
+      user_agent: (request.headers.get("user-agent") ?? "").slice(0, 300) || null,
+    }).then(({ error }) => {
+      if (error) console.warn("[checkout:consent-log]", error.message);
+    });
+
     for (const matched of matchedVariants) {
       const { error: reserveError } = await admin.from("inventory_movements").insert({
         variant_id: matched.variantId,
@@ -325,9 +370,15 @@ export async function POST(request: Request) {
 
     const gatewayOrder = await createRazorpayOrder({
       amount: amountSubunits,
-      currency: "INR",
+      currency,
       receipt: order.id.slice(0, 40),
-      notes: { internal_order_id: order.id, user_id: user?.id ?? "guest", item_count: String(totalQuantity) },
+      notes: {
+        internal_order_id: order.id,
+        user_id: user.id,
+        item_slug: primary.slug,
+        currency,
+        item_count: String(totalQuantity),
+      },
     });
     const gatewayUpdate = await admin.from("orders").update({ gateway_order_id: gatewayOrder.id }).eq("id", order.id);
     assertDatabaseSuccess(gatewayUpdate, "Order gateway update");
@@ -336,23 +387,37 @@ export async function POST(request: Request) {
       provider: "razorpay",
       provider_order_id: gatewayOrder.id,
       amount_subunits: amountSubunits,
-      currency: "INR",
+      currency,
       status: "created",
     });
     assertDatabaseSuccess(paymentInsert, "Payment insert");
+
+    // Payment order succeeded; prevent catch block from releasing the claimed slot.
+    reservedSlotId = null;
+    createdOrderId = null;
 
     return apiSuccess({
       orderId: order.id,
       razorpayOrderId: gatewayOrder.id,
       amount: amountSubunits,
-      currency: "INR",
+      currency,
       keyId: serverEnv.razorpayKeyId(),
     }, 201);
   } catch (error) {
+    // Immediate rollback so failed Razorpay API calls NEVER ghost-lock a slot.
+    if (reservedSlotId) {
+      await releaseAvailabilitySlot(admin, reservedSlotId).catch(() => null);
+    }
+    if (createdOrderId) {
+      const nowIso = new Date().toISOString();
+      await admin.from("bookings").update({ status: "cancelled", updated_at: nowIso }).eq("order_id", createdOrderId).eq("status", "payment_pending");
+      await admin.from("orders").update({ status: "cancelled", payment_status: "failed", updated_at: nowIso }).eq("id", createdOrderId).eq("payment_status", "created");
+    }
+
     console.error("[checkout:create-order]", { traceId, error });
     const message = error instanceof Error && ["CONTENT_TYPE", "BODY_TOO_LARGE", "INVALID_BODY"].includes(error.message)
       ? "Invalid request body."
-      : "Could not start checkout. Please try again.";
+      : "Could not start secure Razorpay checkout. Please try again.";
     return apiError("INTERNAL_ERROR", message, 500, { traceId });
   }
 }

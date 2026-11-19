@@ -48,9 +48,9 @@ const slideLibrary = [
     eyebrow: "Meet the person behind the practice",
     title: "Know the journey. Join the living community.",
     description: "Explore Manisha’s three-decade path, hear from the people she has guided and find live ways to learn, gather and connect.",
-    image: "/images/manisha-about-hero.webp",
-    imageClass: "object-cover object-[50%_28%] sm:object-center",
-    alt: "Dr. Manisha Belvalkar with Tarot cards",
+    image: "/images/manisha/manisha-connect-portrait.webp",
+    imageClass: "object-cover object-[50%_16%]",
+    alt: "Dr. Manisha Belvalkar — Spiritual Mentor",
     primary: ["Meet Manisha", "/about"],
     secondary: ["Start a conversation", "/contact"],
     links: [

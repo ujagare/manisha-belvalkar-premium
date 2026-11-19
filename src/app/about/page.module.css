@@ -15,7 +15,6 @@
   color: #ddb829;
   opacity: 0.34;
   translate: -50% -50%;
-  animation: mandala-spin 120s linear infinite;
   pointer-events: none;
 }
 
