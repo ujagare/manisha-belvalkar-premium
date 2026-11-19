@@ -59,6 +59,7 @@ export default async function HealingDetailPage({ params }: Props) {
 
   const service = healingServices.find((item) => item.slug === slug);
   if (!service) notFound();
+  const isDistanceHealing = service.slug === "distance-healing";
   const catalogItem = await getCatalogItem("healing", service.slug);
   const paymentsConfigured = isPaymentsConfigured();
   const manualMode = shouldUseManualFlow(isServerConfigured(), paymentsConfigured);
@@ -125,12 +126,12 @@ export default async function HealingDetailPage({ params }: Props) {
 
                     <div className="mt-5 grid gap-2.5 sm:mt-7 sm:grid-cols-2 sm:gap-3">
                       <div className="flex items-center gap-3 rounded-xl bg-ivory/70 p-3.5 sm:rounded-2xl sm:p-4">
-                        <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-white text-primary shadow-sm sm:h-10 sm:w-10"><Video className="h-4 w-4 sm:h-5 sm:w-5" /></span>
-                        <div><p className="text-sm font-semibold text-charcoal">Online available</p><p className="mt-0.5 text-xs text-warmgray">Private video session</p></div>
+                        <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-white text-primary shadow-sm sm:h-10 sm:w-10">{isDistanceHealing ? <LockKeyhole className="h-4 w-4 sm:h-5 sm:w-5" /> : <Video className="h-4 w-4 sm:h-5 sm:w-5" />}</span>
+                        <div><p className="text-sm font-semibold text-charcoal">{isDistanceHealing ? "Private photo portal" : "Online available"}</p><p className="mt-0.5 text-xs text-warmgray">{isDistanceHealing ? "Remote energy healing" : "Private Daily.co video room"}</p></div>
                       </div>
                       <div className="flex items-center gap-3 rounded-xl bg-ivory/70 p-3.5 sm:rounded-2xl sm:p-4">
                         <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-white text-primary shadow-sm sm:h-10 sm:w-10"><Clock3 className="h-4 w-4 sm:h-5 sm:w-5" /></span>
-                        <div><p className="text-sm font-semibold text-charcoal">IST scheduling</p><p className="mt-0.5 text-xs text-warmgray">Choose your preferred slot</p></div>
+                        <div><p className="text-sm font-semibold text-charcoal">{isDistanceHealing ? "No live slot needed" : "IST scheduling"}</p><p className="mt-0.5 text-xs text-warmgray">{isDistanceHealing ? "Submit anytime after payment" : "Choose your preferred slot"}</p></div>
                       </div>
                     </div>
 
@@ -160,14 +161,21 @@ export default async function HealingDetailPage({ params }: Props) {
               </section>
 
               <section className="mt-12 max-w-3xl">
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gold-deep">How your online session works</p>
-                <h2 className="mt-3 text-balance font-display text-3xl font-semibold text-charcoal sm:text-4xl">A calm, simple path from booking to aftercare.</h2>
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gold-deep">{isDistanceHealing ? "How Distance Healing works" : "How your online session works"}</p>
+                <h2 className="mt-3 text-balance font-display text-3xl font-semibold text-charcoal sm:text-4xl">{isDistanceHealing ? "A private, effortless path from payment to delivery." : "A calm, simple path from booking to aftercare."}</h2>
                 <ol className="mt-7 grid gap-5 sm:grid-cols-3">
-                  {[
-                    ["01", "Choose a time", "Select online and share your preferred date and IST time."],
-                    ["02", "Get confirmation", "The team confirms availability, fee and video details on WhatsApp."],
-                    ["03", "Join privately", "Meet from a quiet space and receive your personal aftercare guidance."],
-                  ].map(([number, title, copy]) => (
+                  {(isDistanceHealing
+                    ? [
+                        ["01", "Pay securely", "Complete INR or International USD payment via Razorpay."],
+                        ["02", "Upload photograph", "Submit your photograph & intention in your encrypted portal."],
+                        ["03", "Receive healing", "Download your private result photograph & healing music."],
+                      ]
+                    : [
+                        ["01", "Choose a time", "Select an open IST slot and share your intention."],
+                        ["02", "Pay securely", "Confirm via Razorpay (INR or USD) to receive your .ics invite."],
+                        ["03", "Join privately", "Enter your encrypted Daily.co video room from My Bookings."],
+                      ]
+                  ).map(([number, title, copy]) => (
                     <li key={number} className="rounded-2xl bg-white/65 p-5 ring-1 ring-parchment/80">
                       <span className="font-mono text-xs font-bold text-gold-deep">{number}</span>
                       <h3 className="mt-3 text-sm font-semibold text-charcoal">{title}</h3>

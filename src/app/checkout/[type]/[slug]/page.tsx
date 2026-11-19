@@ -70,12 +70,18 @@ export default async function CheckoutPage({ params, searchParams }: Props) {
         { icon: BookOpenCheck, title: "Guided learning", copy: "Program materials and support" },
         { icon: Headphones, title: "Human support", copy: "Direct updates from our team" },
       ]
-    : isSession
-      ? [
-        { icon: LockKeyhole, title: manualMode ? "Personal confirmation" : "Secure payment", copy: manualMode ? "Completed with the team on WhatsApp" : "Encrypted Razorpay checkout" },
-        { icon: CalendarCheck, title: "Live availability", copy: "Choose a currently open time" },
-        { icon: Headphones, title: "Booking support", copy: "Updates shared by email" },
-      ]
+      : isDistanceHealing
+        ? [
+          { icon: LockKeyhole, title: manualMode ? "Personal confirmation" : "Secure payment", copy: manualMode ? "Completed with the team on WhatsApp" : "Encrypted Razorpay (INR & USD)" },
+          { icon: Sparkles, title: "Instant portal access", copy: "Upload photograph right after payment" },
+          { icon: Headphones, title: "Private delivery", copy: "Result photo & music in your account" },
+        ]
+      : isSession
+        ? [
+          { icon: LockKeyhole, title: manualMode ? "Personal confirmation" : "Secure payment", copy: manualMode ? "Completed with the team on WhatsApp" : "Encrypted Razorpay (INR & USD)" },
+          { icon: CalendarCheck, title: "Private Daily.co room", copy: "Token-protected 1:1 video session" },
+          { icon: Headphones, title: "Calendar & reminders", copy: ".ics invite and email updates" },
+        ]
       : [
         { icon: LockKeyhole, title: manualMode ? "Personal confirmation" : "Secure payment", copy: manualMode ? "Completed with the team on WhatsApp" : "Encrypted Razorpay checkout" },
         { icon: PackageCheck, title: "Careful packing", copy: "Prepared for safe dispatch" },
@@ -96,14 +102,14 @@ export default async function CheckoutPage({ params, searchParams }: Props) {
         </Link>
 
         <div className="mt-4 sm:mt-7 flex flex-wrap items-center gap-2 sm:gap-3 text-xs font-medium text-warmgray">
-          <span className="text-primary">{isCourse ? "Program" : isSession ? "Session" : "Bag"}</span><span className="h-px w-6 sm:w-8 bg-gold/60" /><span className="font-semibold text-charcoal">{isCourse ? "Learner details" : isSession ? "Time & payment" : "Details & payment"}</span><span className="h-px w-6 sm:w-8 bg-parchment" /><span>Confirmation</span>
+          <span className="text-primary">{isCourse ? "Program" : isDistanceHealing ? "Distance Healing" : isSession ? "Session" : "Bag"}</span><span className="h-px w-6 sm:w-8 bg-gold/60" /><span className="font-semibold text-charcoal">{isCourse ? "Learner details" : isDistanceHealing ? "Secure payment" : isSession ? "Time & payment" : "Details & payment"}</span><span className="h-px w-6 sm:w-8 bg-parchment" /><span>{isDistanceHealing ? "Photo portal" : "Confirmation"}</span>
         </div>
 
         <div className="mt-6 sm:mt-10 grid items-start gap-7 sm:gap-10 lg:grid-cols-[minmax(0,1fr)_30rem] lg:gap-16">
           <section>
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-gold-deep">{manualMode ? "Personal confirmation" : "Secure checkout"}</p>
-            <h1 className="mt-2.5 sm:mt-3 max-w-xl text-balance font-display text-[1.9rem] font-semibold leading-[1.08] tracking-[-0.025em] text-charcoal sm:text-5xl">{isCourse ? "Begin with a thoughtful introduction." : isSession ? "Choose your time and confirm securely." : "Complete your order with confidence."}</h1>
-            <p className="mt-3 sm:mt-4 max-w-xl text-pretty text-sm sm:text-base leading-6 sm:leading-7 text-warmgray">{isCourse ? "Tell us a little about your goals so we can confirm the right format, schedule, and next steps for your learning journey." : isSession ? (manualMode ? "Send a session request on WhatsApp; no online payment is taken." : "Choose a live available time and complete payment securely. Your booking is confirmed only after capture.") : manualMode ? "Review your selection, add delivery details, and send the prepared request on WhatsApp. No payment is taken on this website." : "Review your selection, add delivery details, and pay securely. Our team will confirm your order and delivery details after payment."}</p>
+            <h1 className="mt-2.5 sm:mt-3 max-w-xl text-balance font-display text-[1.9rem] font-semibold leading-[1.08] tracking-[-0.025em] text-charcoal sm:text-5xl">{isCourse ? "Begin with a thoughtful introduction." : isDistanceHealing ? "Complete payment to begin your healing." : isSession ? "Choose your time and confirm securely." : "Complete your order with confidence."}</h1>
+            <p className="mt-3 sm:mt-4 max-w-xl text-pretty text-sm sm:text-base leading-6 sm:leading-7 text-warmgray">{isCourse ? "Tell us a little about your goals so we can confirm the right format, schedule, and next steps for your learning journey." : isDistanceHealing ? (manualMode ? "Send a Distance Healing request on WhatsApp; no online payment is taken." : "Pay securely in INR or International USD via Razorpay. Your private photograph submission portal unlocks immediately upon capture.") : isSession ? (manualMode ? "Send a session request on WhatsApp; no online payment is taken." : "Choose a live available time and complete payment securely. Your booking and private Daily.co video room are confirmed only after capture.") : manualMode ? "Review your selection, add delivery details, and send the prepared request on WhatsApp. No payment is taken on this website." : "Review your selection, add delivery details, and pay securely. Our team will confirm your order and delivery details after payment."}</p>
 
             <article className="mt-6 sm:mt-10 overflow-hidden rounded-2xl sm:rounded-[1.75rem] bg-[#201b18] text-white shadow-[0_28px_70px_-40px_rgba(62,38,25,0.65)]">
               <div className="grid sm:grid-cols-[13rem_1fr]">

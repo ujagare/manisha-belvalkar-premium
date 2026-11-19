@@ -1,6 +1,7 @@
 import { cache } from "react";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { isSupabaseConfigured } from "@/lib/supabase/config";
 import type { SessionUser, UserProfile, UserOrder, UserAddress } from "@/lib/supabase/models";
 
 /**
@@ -11,6 +12,7 @@ import type { SessionUser, UserProfile, UserOrder, UserAddress } from "@/lib/sup
 
 /** Fetch the signed-in user as a typed SessionUser (null when signed out). */
 export const getCurrentUser = cache(async (): Promise<SessionUser | null> => {
+  if (!isSupabaseConfigured()) return null;
   const supabase = await createClient();
   const {
     data: { user },
