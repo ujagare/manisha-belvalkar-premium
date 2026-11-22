@@ -15,6 +15,7 @@ import { isAsyncHealingItem } from "@/lib/payment-safety";
 import type { OrderItemType } from "@/lib/supabase/database.types";
 import type { UserAddress } from "@/lib/supabase/models";
 import { sendManualConfirmation } from "@/lib/manual-flow";
+import PincodeChecker from "@/components/shipping/PincodeChecker";
 
 declare global {
   interface Window {
@@ -351,21 +352,22 @@ export default function CheckoutForm({
     );
   }
 
-  const inputClass = "h-11 sm:h-12 w-full rounded-xl border border-parchment bg-white px-4 text-base sm:text-sm text-charcoal outline-none transition placeholder:text-warmgray/45 focus:border-gold-dark focus:ring-4 focus:ring-gold/10";
+  const inputClass =
+    "h-11 w-full rounded-lg border border-charcoal/12 bg-white px-3.5 text-sm text-charcoal outline-none transition-colors duration-150 placeholder:text-warmgray/55 focus:border-charcoal/40 focus:ring-2 focus:ring-charcoal/10";
   const field = (name: keyof AddressFields, label: string, options?: { wide?: boolean; optional?: boolean; autoComplete?: string; inputMode?: "text" | "tel" | "numeric" }) => (
     <div className={options?.wide ? "sm:col-span-2" : ""}>
-      <label htmlFor={`checkout-${name}`} className="mb-2 block text-xs font-semibold text-charcoal">{label}{options?.optional ? <span className="ml-1 font-normal text-warmgray">(optional)</span> : null}</label>
-      <input id={`checkout-${name}`} value={address[name]} onChange={(event) => updateAddress(name, event.target.value)} autoComplete={options?.autoComplete} inputMode={options?.inputMode} aria-invalid={Boolean(fieldErrors[name])} className={cn(inputClass, fieldErrors[name] && "border-primary focus:border-primary focus:ring-primary/10")} />
+      <label htmlFor={`checkout-${name}`} className="mb-1.5 block text-xs font-medium text-charcoal">{label}{options?.optional ? <span className="ml-1 font-normal text-warmgray">(optional)</span> : null}</label>
+      <input id={`checkout-${name}`} value={address[name]} onChange={(event) => updateAddress(name, event.target.value)} autoComplete={options?.autoComplete} inputMode={options?.inputMode} aria-invalid={Boolean(fieldErrors[name])} className={cn(inputClass, fieldErrors[name] && "border-primary focus:border-primary focus:ring-primary/15")} />
       {fieldErrors[name] ? <p className="mt-1.5 text-xs text-primary">{fieldErrors[name]}</p> : null}
     </div>
   );
 
   return (
     <div>
-      {manualMode ? <div className="mb-5 rounded-xl bg-gold-soft/70 px-4 py-3 text-xs leading-5 text-gold-deep ring-1 ring-gold/30"><strong>Personal confirmation:</strong> Online payment is not active yet. Complete the details below, then send the prepared request on WhatsApp. The team will confirm availability, final amount, and payment instructions.</div> : null}
-      <div className="flex items-center gap-3 border-b border-parchment pb-5">
-        <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-xs font-bold text-white">1</span>
-        <div><h2 className="text-sm font-semibold text-charcoal">Contact information</h2><p className="mt-0.5 text-xs text-warmgray">{isSession ? "For booking and payment updates" : "For order updates and delivery communication"}</p></div>
+      {manualMode ? <div className="mb-5 rounded-lg border border-charcoal/12 bg-ivory px-4 py-3 text-xs leading-5 text-charcoal"><span className="font-medium">Personal confirmation:</span> Online payment is inactive. Complete the details below to send your request on WhatsApp.</div> : null}
+      <div className="flex items-center gap-3 border-b border-charcoal/10 pb-4">
+        <span className="flex h-7 w-7 items-center justify-center rounded-full border border-primary bg-primary font-mono text-xs font-medium text-white">1</span>
+        <div><h2 className="text-sm font-medium text-charcoal">Contact information</h2><p className="mt-0.5 text-xs text-warmgray">{isSession ? "For booking and payment updates" : "For order updates and delivery tracking"}</p></div>
       </div>
 
       <div className="mt-5 grid gap-4 sm:grid-cols-2">
@@ -436,25 +438,25 @@ export default function CheckoutForm({
       ) : null}
 
       {isPhysicalProduct ? (
-        <div className="mt-8">
-          <div className="flex items-center gap-3 border-b border-parchment pb-5">
-            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-xs font-bold text-white">2</span>
-            <div><h2 className="text-sm font-semibold text-charcoal">Delivery address</h2><p className="mt-0.5 text-xs text-warmgray">Where should we send your order?</p></div>
+        <div className="mt-6">
+          <div className="flex items-center gap-3 border-b border-charcoal/10 pb-4">
+            <span className="flex h-7 w-7 items-center justify-center rounded-full border border-primary bg-primary font-mono text-xs font-medium text-white">2</span>
+            <div><h2 className="text-sm font-medium text-charcoal">Delivery address</h2><p className="mt-0.5 text-xs text-warmgray">Where should we dispatch your parcel</p></div>
           </div>
 
           {addresses.length ? (
-            <div className="relative mt-5">
-              <MapPin className="pointer-events-none absolute left-4 top-4 h-4 w-4 text-gold-deep" />
-              <select value={selectedAddress} onChange={(event) => setSelectedAddress(event.target.value)} className="h-11 sm:h-12 w-full appearance-none rounded-xl border border-parchment bg-white pl-11 pr-10 text-base sm:text-sm text-charcoal outline-none focus:border-gold-dark focus:ring-4 focus:ring-gold/10">
+            <div className="relative mt-4">
+              <MapPin className="pointer-events-none absolute left-3.5 top-3.5 h-4 w-4 text-warmgray" strokeWidth={1.5} />
+              <select value={selectedAddress} onChange={(event) => setSelectedAddress(event.target.value)} className="h-11 w-full appearance-none rounded-lg border border-charcoal/12 bg-white pl-10 pr-10 text-sm text-charcoal outline-none transition-colors duration-150 focus:border-charcoal/40 focus:ring-2 focus:ring-charcoal/10">
                 {addresses.map((entry) => <option key={entry.id} value={entry.id}>{entry.label || "Saved address"} — {entry.line1}, {entry.city}</option>)}
                 <option value="new">Use a new address</option>
               </select>
-              <ChevronDown className="pointer-events-none absolute right-4 top-4 h-4 w-4 text-warmgray" />
+              <ChevronDown className="pointer-events-none absolute right-3.5 top-3.5 h-4 w-4 text-warmgray" strokeWidth={1.5} />
             </div>
           ) : null}
 
           {!selectedSavedAddress ? (
-            <div className="mt-5 grid gap-4 sm:grid-cols-2">
+            <div className="mt-4 grid gap-4 sm:grid-cols-2">
               {field("recipient_name", "Recipient name", { autoComplete: "shipping name" })}
               {field("phone", "Phone number", { autoComplete: "shipping tel", inputMode: "tel" })}
               {field("line1", "House / flat, street", { wide: true, autoComplete: "shipping address-line1" })}
@@ -462,53 +464,62 @@ export default function CheckoutForm({
               {field("city", "City", { autoComplete: "shipping address-level2" })}
               {field("state", "State", { autoComplete: "shipping address-level1" })}
               {field("postal_code", "PIN code", { autoComplete: "shipping postal-code", inputMode: "numeric" })}
-              <div><label className="mb-2 block text-xs font-semibold text-charcoal">Country</label><div className="flex h-12 items-center rounded-xl border border-parchment bg-ivory/70 px-4 text-sm text-charcoal">India</div></div>
+              <div><label className="mb-1.5 block text-xs font-medium text-charcoal">Country</label><div className="flex h-11 items-center rounded-lg border border-charcoal/12 bg-ivory px-3.5 text-sm text-charcoal">India</div></div>
             </div>
           ) : (
-            <div className="mt-4 rounded-xl bg-ivory/70 p-4 text-sm leading-6 text-warmgray"><span className="font-semibold text-charcoal">{selectedSavedAddress.recipient_name}</span><br />{selectedSavedAddress.line1}{selectedSavedAddress.line2 ? `, ${selectedSavedAddress.line2}` : ""}<br />{selectedSavedAddress.city}, {selectedSavedAddress.state} {selectedSavedAddress.postal_code}<br />{selectedSavedAddress.phone}</div>
+            <div className="mt-4 rounded-xl border border-charcoal/8 bg-ivory p-4 text-sm leading-6 text-warmgray"><span className="font-medium text-charcoal">{selectedSavedAddress.recipient_name}</span><br />{selectedSavedAddress.line1}{selectedSavedAddress.line2 ? `, ${selectedSavedAddress.line2}` : ""}<br />{selectedSavedAddress.city}, {selectedSavedAddress.state} <span className="font-mono tabular-nums">{selectedSavedAddress.postal_code}</span><br /><span className="font-mono tabular-nums">{selectedSavedAddress.phone}</span></div>
           )}
+
+          <div className="mt-4">
+            <PincodeChecker
+              productSlug={slug}
+              quantity={quantity}
+              autoPincode={selectedSavedAddress ? selectedSavedAddress.postal_code : address.postal_code}
+              compact
+            />
+          </div>
         </div>
       ) : null}
 
       {!manualMode && price ? (
-        <div className="mt-7">
-          <p className="mb-2.5 text-xs font-semibold text-charcoal">Payment Currency (India &amp; International)</p>
-          <div className="grid grid-cols-2 gap-2.5">
+        <div className="mt-6">
+          <p className="mb-2 text-xs font-medium text-charcoal">Payment currency</p>
+          <div className="grid grid-cols-2 gap-3">
             <button
               type="button"
               onClick={() => { setCurrency("INR"); refreshIdempotencyKey(); }}
               className={cn(
-                "flex items-center gap-2.5 rounded-xl border px-3.5 py-2.5 text-left text-xs transition",
+                "flex items-center gap-2.5 rounded-lg border px-3 py-2.5 text-left text-xs transition-colors duration-150",
                 currency === "INR"
-                  ? "border-primary bg-primary-soft/60 font-semibold text-primary"
-                  : "border-parchment bg-white text-warmgray hover:border-gold",
+                  ? "border-primary bg-primary-soft/60 font-medium text-primary"
+                  : "border-charcoal/12 bg-white text-warmgray hover:border-charcoal/30 hover:text-charcoal",
               )}
             >
-              <IndianRupee className="h-4 w-4 shrink-0" />
-              <span><span className="block">India (INR)</span><span className="block text-[10px] font-normal opacity-80">UPI, Cards, NetBanking</span></span>
+              <IndianRupee className="h-4 w-4 shrink-0" strokeWidth={1.5} />
+              <span><span className="block">India (INR)</span><span className="block text-xs font-normal text-warmgray">UPI, Cards</span></span>
             </button>
             <button
               type="button"
               onClick={() => { setCurrency("USD"); refreshIdempotencyKey(); }}
               className={cn(
-                "flex items-center gap-2.5 rounded-xl border px-3.5 py-2.5 text-left text-xs transition",
+                "flex items-center gap-2.5 rounded-lg border px-3 py-2.5 text-left text-xs transition-colors duration-150",
                 currency === "USD"
-                  ? "border-primary bg-primary-soft/60 font-semibold text-primary"
-                  : "border-parchment bg-white text-warmgray hover:border-gold",
+                  ? "border-primary bg-primary-soft/60 font-medium text-primary"
+                  : "border-charcoal/12 bg-white text-warmgray hover:border-charcoal/30 hover:text-charcoal",
               )}
             >
-              <Globe className="h-4 w-4 shrink-0" />
-              <span><span className="block">International (USD)</span><span className="block text-[10px] font-normal opacity-80">Global Cards · NRI</span></span>
+              <Globe className="h-4 w-4 shrink-0" strokeWidth={1.5} />
+              <span><span className="block">International (USD)</span><span className="block text-xs font-normal text-warmgray">Global cards</span></span>
             </button>
           </div>
         </div>
       ) : null}
 
-      <div className="mt-6 rounded-2xl bg-ivory/70 p-5">
-        <div className="flex items-center justify-between gap-4 text-sm"><span className="text-warmgray">{itemTitle}</span><span className="shrink-0 font-semibold text-charcoal">{displayUnitLabel}</span></div>
-        {isPhysicalProduct ? <div className="mt-4 flex items-center justify-between border-t border-parchment pt-4 text-sm"><label htmlFor="checkout-quantity" className="text-warmgray">Quantity</label><select id="checkout-quantity" value={quantity} onChange={(event) => { setQuantity(Number(event.target.value)); refreshIdempotencyKey(); }} className="rounded-lg border border-parchment bg-white px-3 py-2 font-semibold outline-none focus:border-gold-dark">{[1, 2, 3, 4, 5].map((value) => <option key={value}>{value}</option>)}</select></div> : null}
-        <div className="mt-4 flex items-end justify-between border-t border-parchment pt-4"><span className="text-sm font-semibold text-charcoal">Order total</span><span className="font-display text-2xl font-semibold tabular-nums text-primary">{totalLabel}</span></div>
-        <p className="mt-2 text-right text-[11px] text-warmgray">{isCourse ? (price ? "Inclusive of all taxes · Access details shared after confirmation" : "Fee and schedule are confirmed personally after review") : isAsyncHealing ? "Verified Razorpay checkout · Instant private portal access" : isSession ? (currency === "USD" ? "International Razorpay checkout · Private Daily.co room issued on capture" : "Inclusive of GST · Private Daily.co room issued on capture") : "Inclusive of all taxes · Shipping confirmed before dispatch"}</p>
+      <div className="mt-6 rounded-xl border border-charcoal/10 bg-ivory p-4">
+        <div className="flex items-center justify-between gap-4 text-sm"><span className="text-warmgray">{itemTitle}</span><span className="shrink-0 font-mono font-medium tabular-nums text-charcoal">{displayUnitLabel}</span></div>
+        {isPhysicalProduct ? <div className="mt-3 flex items-center justify-between border-t border-charcoal/10 pt-3 text-sm"><label htmlFor="checkout-quantity" className="text-warmgray">Quantity</label><select id="checkout-quantity" value={quantity} onChange={(event) => { setQuantity(Number(event.target.value)); refreshIdempotencyKey(); }} className="h-9 rounded-lg border border-charcoal/12 bg-white px-3 font-mono text-sm font-medium tabular-nums outline-none focus:border-charcoal/40">{[1, 2, 3, 4, 5].map((value) => <option key={value}>{value}</option>)}</select></div> : null}
+        <div className="mt-3 flex items-baseline justify-between border-t border-charcoal/10 pt-3"><span className="text-sm font-medium text-charcoal">Order total</span><span className="font-mono text-2xl font-medium tabular-nums text-charcoal">{totalLabel}</span></div>
+        <p className="mt-2 text-right text-xs text-warmgray">{isCourse ? (price ? "Inclusive of taxes · Access shared after confirmation" : "Fee and schedule confirmed after review") : isAsyncHealing ? "Verified Razorpay checkout · Instant portal access" : isSession ? (currency === "USD" ? "International checkout · Daily.co room issued on capture" : "Inclusive of GST · Daily.co room issued on capture") : "Inclusive of taxes · Shiprocket tracking after dispatch"}</p>
       </div>
 
       <label className="mt-5 flex cursor-pointer items-start gap-3 text-xs leading-5 text-warmgray">
@@ -534,13 +545,13 @@ export default function CheckoutForm({
           {fieldErrors.courseDisclaimer ? <p className="mt-2 text-xs text-primary">{fieldErrors.courseDisclaimer}</p> : null}
         </>
       ) : null}
-      {error ? <div role="alert" className="mt-5 rounded-xl border border-primary/20 bg-primary-soft px-4 py-3 text-sm text-primary">{error}</div> : null}
+      {error ? <div role="alert" className="mt-5 rounded-lg border border-primary/20 bg-primary-soft px-4 py-3 text-sm text-primary">{error}</div> : null}
 
-      <button type="button" onClick={handleConfirm} disabled={isPending} className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-6 py-4 text-sm font-semibold text-white shadow-[0_14px_30px_-14px_rgba(107,11,11,0.75)] transition duration-300 hover:-translate-y-0.5 hover:bg-primary-dark hover:shadow-[0_18px_36px_-14px_rgba(107,11,11,0.85)] active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60">
-        {isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <LockKeyhole className="h-4 w-4" />}
-        {isPending ? "Preparing your request…" : manualMode ? (isCourse ? "Prepare enrollment request" : "Prepare WhatsApp order") : price ? `Pay ${totalLabel} securely` : isCourse ? "Request enrollment" : "Confirm order"}
+      <button type="button" onClick={handleConfirm} disabled={isPending} className="mt-6 flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-primary px-6 text-sm font-medium text-white transition-colors duration-150 hover:bg-primary-dark active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60">
+        {isPending ? <Loader2 className="h-4 w-4 animate-spin" strokeWidth={1.5} /> : <LockKeyhole className="h-4 w-4" strokeWidth={1.5} />}
+        {isPending ? "Preparing request" : manualMode ? (isCourse ? "Prepare enrollment request" : "Prepare WhatsApp order") : price ? `Pay ${totalLabel}` : isCourse ? "Request enrollment" : "Confirm order"}
       </button>
-      <div className="mt-4 flex items-center justify-center gap-2 text-center text-[11px] text-warmgray"><ShieldCheck className="h-3.5 w-3.5 shrink-0 text-gold-deep" />{manualMode ? "No payment is taken on this website in personal-confirmation mode" : price ? "Payments are encrypted and processed by Razorpay" : "No payment is taken until your enrollment is confirmed"}</div>
+      <div className="mt-3 flex items-center justify-center gap-2 text-center text-xs text-warmgray"><ShieldCheck className="h-4 w-4 shrink-0 text-warmgray" strokeWidth={1.5} />{manualMode ? "No online payment taken in personal-confirmation mode" : price ? "Encrypted payment via Razorpay" : "No payment taken until enrollment is confirmed"}</div>
     </div>
   );
 }

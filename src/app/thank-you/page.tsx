@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CalendarDays, CheckCircle2, PackageCheck, Video } from "lucide-react";
+import { CalendarDays, CheckCircle2, PackageCheck, Truck, Video } from "lucide-react";
 import { getMyOrderById, requireUser } from "@/lib/supabase/session";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { isServerConfigured } from "@/lib/env";
@@ -67,6 +67,10 @@ export default async function ThankYouPage({ searchParams }: { searchParams: Pro
           ) : booking && booking.format === "online" && booking.status === "confirmed" ? (
             <Link href={`/account/bookings/${booking.id}/room`} className="inline-flex min-h-11 items-center gap-2 rounded-full bg-primary px-6 sm:px-7 py-3 text-sm sm:text-base font-semibold text-white">
               <Video className="h-4 w-4" /> Open Private Video Room
+            </Link>
+          ) : order?.item_type === "product" ? (
+            <Link href={`/account/orders/${order.id}`} className="inline-flex min-h-11 items-center gap-2 rounded-full bg-primary px-6 sm:px-7 py-3 text-sm sm:text-base font-semibold text-white">
+              <Truck className="h-4 w-4" /> Track Your Order
             </Link>
           ) : (
             <Link href="/account/bookings" className="inline-flex min-h-11 items-center rounded-full bg-primary px-6 sm:px-7 py-3 text-sm sm:text-base font-semibold text-white">

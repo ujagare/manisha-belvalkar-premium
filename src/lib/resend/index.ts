@@ -5,5 +5,8 @@ export {
   bookingAdminEmail,
   sessionReminderEmail,
   paymentDisputeAdminEmail,
+  shipmentDispatchedEmail,
+  shipmentOutForDeliveryEmail,
+  shipmentDeliveredEmail,
 } from "./templates";
 export { isEmailConfigured } from "@/lib/env";

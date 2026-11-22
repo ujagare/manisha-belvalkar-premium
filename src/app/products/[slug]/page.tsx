@@ -23,6 +23,7 @@ import GoldDivider from "@/components/ui/GoldDivider";
 import AddToCartButton from "@/components/cart/AddToCartButton";
 import ProductCard, { categoryMeta } from "@/components/products/ProductCard";
 import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
+import PincodeChecker from "@/components/shipping/PincodeChecker";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -196,8 +197,11 @@ export default async function ProductDetailPage({ params }: Props) {
                   </Button>
                 </div>
                 <p className="mt-3 text-xs text-warmgray">
-                  No sign-in required · Final confirmation on WhatsApp
+                  No sign-in required · Live courier tracking via Shiprocket after dispatch
                 </p>
+                <div className="mt-5">
+                  <PincodeChecker productSlug={product.slug} />
+                </div>
               </Reveal>
 
               {/* Details */}

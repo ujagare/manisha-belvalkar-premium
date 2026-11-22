@@ -8,6 +8,9 @@ export type ApiErrorCode =
   | "CONFLICT"
   | "RATE_LIMITED"
   | "PAYMENTS_NOT_CONFIGURED"
+  | "NOT_CONFIGURED"
+  | "SERVICE_UNAVAILABLE"
+  | "BAD_GATEWAY"
   | "INTERNAL_ERROR";
 
 export function apiError(code: ApiErrorCode, message: string, status: number, details?: unknown) {

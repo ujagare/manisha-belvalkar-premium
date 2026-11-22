@@ -9,6 +9,8 @@ import { formatINR } from "@/lib/utils";
 import type { UserAddress } from "@/lib/supabase/models";
 import { cartWhatsAppMessage, manualReference, sendManualConfirmation, whatsappUrl } from "@/lib/manual-flow";
 import { cartState } from "@/lib/cart";
+import PincodeChecker from "@/components/shipping/PincodeChecker";
+import { calculateParcelSpec } from "@/lib/shiprocket-utils";
 
 declare global {
   interface Window {
@@ -226,6 +228,13 @@ export default function CartCheckoutForm({ userEmail, userName, addresses, manua
         </div>
       )}
       <p className="mt-3 text-[11px] leading-5 text-warmgray/70">Used to ship physical orders (decks, books, rituals).{userEmail ? <> You can save addresses in <Link href="/account/addresses" className="font-semibold text-primary underline">My Account</Link>.</> : null}</p>
+      <div className="mt-3">
+        <PincodeChecker
+          weightKg={calculateParcelSpec(items.map((i) => ({ slug: i.slug, quantity: i.quantity }))).weightKg}
+          autoPincode={selectedSavedAddress ? selectedSavedAddress.postal_code : newAddress.postal_code}
+          compact
+        />
+      </div>
     </div>
 
     <label className="mt-6 flex items-start gap-3 rounded-2xl bg-ivory p-4 text-xs leading-5 text-warmgray"><input type="checkbox" checked={accepted} onChange={(event) => setAccepted(event.target.checked)} className="mt-1 h-4 w-4 accent-[var(--color-primary)]" /><span>I agree to the <Link href="/terms-and-conditions" target="_blank" className="font-semibold text-primary underline">Terms</Link>, <Link href="/refund-cancellation-policy" target="_blank" className="font-semibold text-primary underline">refund policy</Link> and <Link href="/privacy-policy" target="_blank" className="font-semibold text-primary underline">privacy policy</Link>.</span></label>

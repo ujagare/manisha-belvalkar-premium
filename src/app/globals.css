@@ -489,3 +489,30 @@ blockquote i {
   font-weight: inherit !important;
   letter-spacing: inherit !important;
 }
+
+/* ============ Industry-standard mobile polish (<640px) ============ */
+@media (max-width: 639px) {
+  body {
+    text-rendering: optimizeLegibility;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Prevent Safari iOS auto-zoom when focusing form fields */
+  input:not([type="checkbox"]):not([type="radio"]),
+  textarea,
+  select {
+    font-size: 16px;
+  }
+
+  /* Keep section eyebrows crisp on narrow 360px–430px viewports */
+  .eyebrow {
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+  }
+
+  /* Hide oversized ambient glow blobs on mobile for cleaner visual density & GPU performance */
+  .glow-gold,
+  .glow-crimson {
+    opacity: 0.45;
+  }
+}

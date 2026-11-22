@@ -88,29 +88,29 @@ function SyllabusDrawer({
 
   return (
     <div
-      className={`mt-5 border-t pt-4 ${
+      className={`mt-3.5 border-t pt-3 sm:mt-5 sm:pt-4 ${
         dark ? "border-[#ddb829]/20" : "border-[#efe5d2]"
       }`}
     >
-      <div className="flex flex-wrap items-center justify-between gap-3">
+      <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-3">
         <button
           type="button"
           onClick={() => setOpen((prev) => !prev)}
           aria-expanded={open}
-          className={`inline-flex min-h-10 cursor-pointer items-center gap-2 rounded-full border px-4 py-1.5 text-xs font-semibold tracking-[0.06em] transition-all duration-300 active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 ${
+          className={`inline-flex min-h-9 cursor-pointer items-center gap-1.5 rounded-full border px-3 py-1 text-[11px] font-semibold tracking-[0.04em] transition-all duration-300 active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 sm:min-h-10 sm:gap-2 sm:px-4 sm:py-1.5 sm:text-xs sm:tracking-[0.06em] ${
             dark
               ? "border-[#ddb829]/40 bg-[#2c2521] text-[#f0d060] hover:border-[#f0d060] focus-visible:outline-[#f0d060]"
               : "border-[#d8c8ae] bg-[#faf6ef] text-[#6b0b0b] hover:border-[#a8871a] hover:bg-[#faf3dc] focus-visible:outline-[#a81414]"
           }`}
         >
-          <BookOpen className="size-3.5" strokeWidth={1.7} />
+          <BookOpen className="size-3 sm:size-3.5" strokeWidth={1.7} />
           <span>
             {open
               ? "Hide syllabus"
               : `Preview syllabus (${course.curriculum.length} modules · ${totalLessons} lessons)`}
           </span>
           <ChevronDown
-            className={`size-3.5 transition-transform duration-300 ${
+            className={`size-3 transition-transform duration-300 sm:size-3.5 ${
               open ? "rotate-180" : ""
             }`}
             strokeWidth={1.8}
@@ -120,13 +120,13 @@ function SyllabusDrawer({
         {freeLesson ? (
           <Link
             href={`/learn/${course.slug}/${freeLesson.id}`}
-            className={`inline-flex min-h-10 items-center gap-1.5 text-xs font-semibold underline underline-offset-4 transition-colors ${
+            className={`inline-flex min-h-9 items-center gap-1.5 text-[11px] font-semibold underline underline-offset-4 transition-colors sm:min-h-10 sm:text-xs ${
               dark
                 ? "text-[#f0d060] hover:text-white"
                 : "text-[#981313] hover:text-[#6b0b0b]"
             }`}
           >
-            <PlayCircle className="size-3.5" strokeWidth={1.7} />
+            <PlayCircle className="size-3 sm:size-3.5" strokeWidth={1.7} />
             Preview free lesson
           </Link>
         ) : null}
@@ -134,7 +134,7 @@ function SyllabusDrawer({
 
       {open ? (
         <div
-          className={`mt-4 grid gap-3 rounded-2xl border p-4 sm:p-5 ${
+          className={`mt-3 grid gap-2.5 rounded-xl border p-3 sm:mt-4 sm:gap-3 sm:rounded-2xl sm:p-5 ${
             dark
               ? "border-[#ddb829]/25 bg-[#181412]"
               : "border-[#e6dac3] bg-[#faf6ef]"
@@ -145,7 +145,7 @@ function SyllabusDrawer({
               key={mod.module}
               className={
                 index > 0
-                  ? `border-t pt-3 ${
+                  ? `border-t pt-2.5 sm:pt-3 ${
                       dark ? "border-[#ddb829]/15" : "border-[#e6dac3]"
                     }`
                   : ""
@@ -153,32 +153,32 @@ function SyllabusDrawer({
             >
               <div className="flex items-baseline justify-between gap-2">
                 <p
-                  className={`font-serif text-sm font-semibold ${
+                  className={`font-serif text-[13px] font-semibold sm:text-sm ${
                     dark ? "text-[#f0d060]" : "text-[#292524]"
                   }`}
                 >
                   {String(index + 1).padStart(2, "0")}. {mod.module}
                 </p>
                 <span
-                  className={`text-[11px] tabular-nums ${
+                  className={`text-[10.5px] tabular-nums sm:text-[11px] ${
                     dark ? "text-[#d6cfc2]/75" : "text-[#57534e]"
                   }`}
                 >
                   {mod.lessons.length} lessons
                 </span>
               </div>
-              <ul className="mt-2 space-y-1.5">
+              <ul className="mt-1.5 space-y-1 sm:mt-2 sm:space-y-1.5">
                 {mod.lessons.map((lesson) => (
                   <li
                     key={lesson.id}
-                    className={`flex items-center justify-between gap-3 text-xs leading-5 ${
+                    className={`flex items-center justify-between gap-2.5 text-[11.5px] leading-5 sm:gap-3 sm:text-xs ${
                       dark ? "text-[#efe5d2]" : "text-[#44403c]"
                     }`}
                   >
-                    <span className="flex min-w-0 items-center gap-2">
+                    <span className="flex min-w-0 items-center gap-1.5 sm:gap-2">
                       {lesson.free ? (
                         <PlayCircle
-                          className={`size-3.5 shrink-0 ${
+                          className={`size-3 shrink-0 sm:size-3.5 ${
                             dark ? "text-[#f0d060]" : "text-[#b41414]"
                           }`}
                           strokeWidth={1.8}
@@ -234,11 +234,11 @@ function CourseActionButton({
     return (
       <Link
         href={href}
-        className="group/btn inline-flex min-h-11 items-center gap-3 whitespace-nowrap rounded-full bg-[#ddb829] py-2 pl-5 pr-2 text-xs font-bold uppercase tracking-[0.14em] text-[#1c1917] shadow-[0_14px_34px_-16px_rgba(221,184,41,0.55)] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-0.5 hover:bg-[#f0d060] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#f0d060]"
+        className="group/btn inline-flex min-h-10 items-center gap-2 whitespace-nowrap rounded-full bg-[#ddb829] py-1.5 pl-4 pr-1.5 text-[11px] font-bold uppercase tracking-[0.1em] text-[#1c1917] shadow-[0_14px_34px_-16px_rgba(221,184,41,0.55)] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-0.5 hover:bg-[#f0d060] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#f0d060] sm:min-h-11 sm:gap-3 sm:py-2 sm:pl-5 sm:pr-2 sm:text-xs sm:tracking-[0.14em]"
       >
         <span>{label}</span>
-        <span className="grid size-7 place-items-center rounded-full bg-[#1c1917]/12 transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-px group-hover/btn:scale-105">
-          <ArrowUpRight className="size-3.5" strokeWidth={1.6} />
+        <span className="grid size-6 place-items-center rounded-full bg-[#1c1917]/12 transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-px group-hover/btn:scale-105 sm:size-7">
+          <ArrowUpRight className="size-3 sm:size-3.5" strokeWidth={1.6} />
         </span>
       </Link>
     );
@@ -248,11 +248,11 @@ function CourseActionButton({
     return (
       <Link
         href={href}
-        className="group/btn inline-flex min-h-11 items-center gap-3 whitespace-nowrap rounded-full border border-[#c7a23b] bg-[#faf3dc]/70 py-2 pl-5 pr-2 text-xs font-semibold uppercase tracking-[0.14em] text-[#6b0b0b] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-0.5 hover:bg-[#ddb829] hover:text-[#1c1917] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#a8871a]"
+        className="group/btn inline-flex min-h-10 items-center gap-2 whitespace-nowrap rounded-full border border-[#c7a23b] bg-[#faf3dc]/70 py-1.5 pl-4 pr-1.5 text-[11px] font-semibold uppercase tracking-[0.1em] text-[#6b0b0b] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-0.5 hover:bg-[#ddb829] hover:text-[#1c1917] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#a8871a] sm:min-h-11 sm:gap-3 sm:py-2 sm:pl-5 sm:pr-2 sm:text-xs sm:tracking-[0.14em]"
       >
         <span>{label}</span>
-        <span className="grid size-7 place-items-center rounded-full bg-[#6b0b0b]/10 transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-px group-hover/btn:scale-105">
-          <ArrowUpRight className="size-3.5" strokeWidth={1.6} />
+        <span className="grid size-6 place-items-center rounded-full bg-[#6b0b0b]/10 transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-px group-hover/btn:scale-105 sm:size-7">
+          <ArrowUpRight className="size-3 sm:size-3.5" strokeWidth={1.6} />
         </span>
       </Link>
     );
@@ -261,11 +261,11 @@ function CourseActionButton({
   return (
     <Link
       href={href}
-      className="group/btn inline-flex min-h-11 items-center gap-3 whitespace-nowrap rounded-full bg-[#b41414] py-2 pl-5 pr-2 text-xs font-semibold uppercase tracking-[0.14em] text-white shadow-[0_14px_34px_-16px_rgba(180,20,20,0.85)] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-0.5 hover:bg-[#8b0f0f] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#a81414]"
+      className="group/btn inline-flex min-h-10 items-center gap-2 whitespace-nowrap rounded-full bg-[#b41414] py-1.5 pl-4 pr-1.5 text-[11px] font-semibold uppercase tracking-[0.1em] text-white shadow-[0_14px_34px_-16px_rgba(180,20,20,0.85)] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-0.5 hover:bg-[#8b0f0f] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#a81414] sm:min-h-11 sm:gap-3 sm:py-2 sm:pl-5 sm:pr-2 sm:text-xs sm:tracking-[0.14em]"
     >
       <span>{label}</span>
-      <span className="grid size-7 place-items-center rounded-full bg-white/15 transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-px group-hover/btn:scale-105">
-        <ArrowUpRight className="size-3.5" strokeWidth={1.6} />
+      <span className="grid size-6 place-items-center rounded-full bg-white/15 transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-px group-hover/btn:scale-105 sm:size-7">
+        <ArrowUpRight className="size-3 sm:size-3.5" strokeWidth={1.6} />
       </span>
     </Link>
   );
@@ -274,7 +274,7 @@ function CourseActionButton({
 function StandardCourseCard({
   course,
   variant = "crimson",
-  aspect = "aspect-[4/3]",
+  aspect = "aspect-[16/9] sm:aspect-[4/3]",
   imageFit = "cover",
 }: {
   course: Course;
@@ -285,13 +285,13 @@ function StandardCourseCard({
   const imageSrc = getCourseImage(course);
 
   return (
-    <div className="h-full rounded-[2rem] bg-[#efe5d2]/75 p-2 ring-1 ring-[#c7a23b]/35 shadow-[0_32px_70px_-48px_rgba(107,11,11,0.45)] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:ring-[#c9a520]">
+    <div className="h-full rounded-2xl bg-[#efe5d2]/75 p-1.5 ring-1 ring-[#c7a23b]/35 shadow-[0_24px_55px_-40px_rgba(107,11,11,0.4)] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:ring-[#c9a520] sm:rounded-[2rem] sm:p-2 sm:shadow-[0_32px_70px_-48px_rgba(107,11,11,0.45)]">
       <article
         id={course.slug}
-        className="group flex h-full flex-col overflow-hidden rounded-[calc(2rem-0.5rem)] bg-[#fffdf9] p-4 shadow-[inset_0_1px_1px_rgba(255,255,255,0.9)] sm:p-7"
+        className="group flex h-full flex-col overflow-hidden rounded-[calc(1rem-0.375rem)] bg-[#fffdf9] p-3 shadow-[inset_0_1px_1px_rgba(255,255,255,0.9)] sm:rounded-[calc(2rem-0.5rem)] sm:p-7"
       >
         <div
-          className={`relative overflow-hidden rounded-[1.25rem] ${aspect} ${
+          className={`relative overflow-hidden rounded-xl sm:rounded-[1.25rem] ${aspect} ${
             imageFit === "contain-light"
               ? "bg-[#fdf8f0] ring-1 ring-[#efe5d2]"
               : "bg-[#efe5d2]"
@@ -304,62 +304,62 @@ function StandardCourseCard({
             sizes="(max-width: 1024px) 100vw, 48vw"
             className={
               imageFit === "contain-light"
-                ? "object-contain p-4 transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-[1.02]"
+                ? "object-contain p-2.5 transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-[1.02] sm:p-4"
                 : "object-cover object-top transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-[1.03]"
             }
           />
         </div>
 
-        <div className="mt-6 flex flex-1 flex-col">
-          <div className="flex flex-wrap items-baseline justify-between gap-2 border-b border-[#efe5d2] pb-4">
-            <span className="text-xs font-semibold uppercase tracking-[0.16em] text-[#a8871a]">
+        <div className="mt-3.5 flex flex-1 flex-col sm:mt-6">
+          <div className="flex flex-wrap items-baseline justify-between gap-2 border-b border-[#efe5d2] pb-2.5 sm:pb-4">
+            <span className="text-[10.5px] font-semibold uppercase tracking-[0.14em] text-[#a8871a] sm:text-xs sm:tracking-[0.16em]">
               {COURSE_TRACK_LABEL[course.slug] ?? course.duration}
             </span>
-            <span className="font-serif text-xl tabular-nums text-[#981313] sm:text-2xl">
+            <span className="font-serif text-lg tabular-nums text-[#981313] sm:text-2xl">
               {getCoursePriceLabel(course)}
             </span>
           </div>
 
-          <h3 className="mt-5 font-serif text-2xl leading-tight text-[#292524] transition-colors duration-300 group-hover:text-[#981313] sm:text-3xl">
+          <h3 className="mt-2.5 font-serif text-xl leading-snug text-[#292524] transition-colors duration-300 group-hover:text-[#981313] sm:mt-5 sm:text-3xl sm:leading-tight">
             {course.title}
           </h3>
 
-          <p className="mt-1.5 text-xs font-medium tracking-[0.04em] text-[#57534e]">
+          <p className="mt-1 text-[11px] font-medium tracking-[0.04em] text-[#57534e] sm:mt-1.5 sm:text-xs">
             {course.duration}
           </p>
 
-          <p className="mt-3 max-w-xl text-pretty text-sm leading-6 text-[#57534e] sm:text-base sm:leading-7">
+          <p className="mt-1.5 max-w-xl text-pretty text-[13px] leading-[1.55] text-[#57534e] sm:mt-3 sm:text-base sm:leading-7">
             {course.description}
           </p>
 
           {course.pricingOptions?.length ? (
-            <div className="mt-5 grid gap-2.5 sm:grid-cols-2">
+            <div className="mt-3 grid grid-cols-2 gap-2 sm:mt-5 sm:gap-2.5">
               {course.pricingOptions.map((option) => (
                 <div
                   key={option.label}
-                  className="rounded-xl border border-[#e6dac3] bg-[#faf6ef] px-4 py-3"
+                  className="rounded-lg border border-[#e6dac3] bg-[#faf6ef] px-2.5 py-2 sm:rounded-xl sm:px-4 sm:py-3"
                 >
-                  <div className="flex items-baseline justify-between gap-2">
-                    <span className="text-xs font-semibold uppercase tracking-[0.14em] text-[#8b0f0f]">
+                  <div className="flex flex-wrap items-baseline justify-between gap-1 sm:gap-2">
+                    <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-[#8b0f0f] sm:text-xs sm:tracking-[0.14em]">
                       {option.label}
                     </span>
-                    <span className="font-serif text-lg font-semibold tabular-nums text-[#292524]">
+                    <span className="font-serif text-sm font-semibold tabular-nums text-[#292524] sm:text-lg">
                       {formatINR(option.price)}
                     </span>
                   </div>
-                  <p className="mt-1 text-xs text-[#57534e]">{option.format}</p>
+                  <p className="mt-0.5 text-[10.5px] leading-snug text-[#57534e] sm:mt-1 sm:text-xs">{option.format}</p>
                 </div>
               ))}
             </div>
           ) : null}
 
-          <ul className="mt-5 space-y-2.5">
+          <ul className="mt-3 space-y-1.5 sm:mt-5 sm:space-y-2.5">
             {course.highlights.slice(0, 4).map((highlight) => (
               <li
                 key={highlight}
-                className="flex items-start gap-2.5 text-sm leading-6 text-[#292524]"
+                className="flex items-start gap-2 text-xs leading-5 text-[#292524] sm:gap-2.5 sm:text-sm sm:leading-6"
               >
-                <span className="mt-1 grid size-4.5 shrink-0 place-items-center rounded-full bg-[#faf3dc] text-[#8b0f0f] ring-1 ring-[#ddb829]/55">
+                <span className="mt-0.5 grid size-4 shrink-0 place-items-center rounded-full bg-[#faf3dc] text-[#8b0f0f] ring-1 ring-[#ddb829]/55 sm:mt-1 sm:size-4.5">
                   <Check className="size-2.5" strokeWidth={2.5} />
                 </span>
                 <span>{highlight}</span>
@@ -369,7 +369,7 @@ function StandardCourseCard({
 
           <SyllabusDrawer course={course} />
 
-          <div className="mt-auto pt-7">
+          <div className="mt-auto pt-4 sm:pt-7">
             <CourseActionButton
               href={`/courses/${course.slug}`}
               variant={variant}
@@ -418,7 +418,7 @@ export default function CourseCatalogExplorer({
     <div>
       {/* Pathway Filter Bar — wraps cleanly on all viewports */}
       <div
-        className="mt-8 flex flex-wrap items-center gap-2.5 border-b border-[#6b0b0b]/12 pb-6 sm:mt-10"
+        className="mt-4 flex flex-wrap items-center gap-1.5 border-b border-[#6b0b0b]/12 pb-4 sm:mt-10 sm:gap-2.5 sm:pb-6"
         role="group"
         aria-label="Filter courses by study format"
       >
@@ -430,7 +430,7 @@ export default function CourseCatalogExplorer({
               type="button"
               onClick={() => setActiveFilter(option.id)}
               aria-pressed={isActive}
-              className={`inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-full border px-4 py-2 text-xs font-semibold tracking-[0.06em] transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#a81414] sm:px-5 ${
+              className={`inline-flex min-h-9 cursor-pointer items-center gap-1.5 rounded-full border px-3 py-1.5 text-[11px] font-semibold tracking-[0.04em] transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#a81414] sm:min-h-11 sm:gap-2 sm:px-5 sm:py-2 sm:text-xs sm:tracking-[0.06em] ${
                 isActive
                   ? "border-[#b41414] bg-[#b41414] text-white shadow-[0_12px_28px_-14px_rgba(180,20,20,0.8)]"
                   : "border-[#d8c8ae] bg-[#fffdf9] text-[#292524] hover:border-[#c9a520] hover:bg-[#faf3dc]"
@@ -438,7 +438,7 @@ export default function CourseCatalogExplorer({
             >
               <span>{option.label}</span>
               <span
-                className={`tabular-nums text-[11px] ${
+                className={`tabular-nums text-[10.5px] sm:text-[11px] ${
                   isActive ? "text-[#f0d060]" : "text-[#a8871a]"
                 }`}
               >
@@ -450,15 +450,15 @@ export default function CourseCatalogExplorer({
       </div>
 
       {activeFilter === "all" ? (
-        <div className="mt-10 space-y-6 sm:mt-12 sm:space-y-8">
+        <div className="mt-5 space-y-4 sm:mt-12 sm:space-y-8">
           {/* Row 1: Asymmetric 7/5 Bento — Professional Tarot + Personalized Well-being */}
-          <div className="grid gap-6 lg:grid-cols-12 lg:gap-8">
+          <div className="grid gap-4 sm:gap-6 lg:grid-cols-12 lg:gap-8">
             {tarotCourse ? (
               <Reveal className="lg:col-span-7" delay={0.04}>
                 <StandardCourseCard
                   course={tarotCourse}
                   variant="crimson"
-                  aspect="aspect-[16/10]"
+                  aspect="aspect-[16/9] sm:aspect-[16/10]"
                 />
               </Reveal>
             ) : null}
@@ -468,7 +468,7 @@ export default function CourseCatalogExplorer({
                 <StandardCourseCard
                   course={wellbeingCourse}
                   variant="outline"
-                  aspect="aspect-[4/3]"
+                  aspect="aspect-[16/9] sm:aspect-[4/3]"
                 />
               </Reveal>
             ) : null}
@@ -477,55 +477,55 @@ export default function CourseCatalogExplorer({
           {/* Row 2: Obsidian Double-Bezel Sanctuary Panel — Shri Vidya Immersion */}
           {shriVidyaCourse ? (
             <Reveal delay={0.08}>
-              <div className="rounded-[2rem] bg-[#1c1917] p-2 ring-1 ring-[#ddb829]/30 shadow-[0_38px_90px_-42px_rgba(28,25,23,0.75)]">
+              <div className="rounded-2xl bg-[#1c1917] p-1.5 ring-1 ring-[#ddb829]/30 shadow-[0_28px_70px_-40px_rgba(28,25,23,0.7)] sm:rounded-[2rem] sm:p-2 sm:shadow-[0_38px_90px_-42px_rgba(28,25,23,0.75)]">
                 <article
                   id={shriVidyaCourse.slug}
-                  className="group relative grid items-center gap-7 overflow-hidden rounded-[calc(2rem-0.5rem)] bg-[#221d1a] p-4 text-white shadow-[inset_0_1px_1px_rgba(255,255,255,0.08)] sm:p-8 lg:grid-cols-[0.88fr_1.12fr] lg:gap-12 lg:p-10"
+                  className="group relative grid items-center gap-3.5 overflow-hidden rounded-[calc(1rem-0.375rem)] bg-[#221d1a] p-3 text-white shadow-[inset_0_1px_1px_rgba(255,255,255,0.08)] sm:gap-7 sm:rounded-[calc(2rem-0.5rem)] sm:p-8 lg:grid-cols-[0.88fr_1.12fr] lg:gap-12 lg:p-10"
                 >
                   <div
                     aria-hidden="true"
-                    className="pointer-events-none absolute -right-24 -top-24 size-96 rounded-full bg-[#ddb829]/10 blur-3xl"
+                    className="pointer-events-none hidden sm:block absolute -right-24 -top-24 size-96 rounded-full bg-[#ddb829]/10 blur-3xl"
                   />
 
-                  <div className="relative aspect-[4/3] overflow-hidden rounded-[1.25rem] bg-[#fdf8f0] p-4 ring-1 ring-[#ddb829]/35 sm:p-6 lg:order-2">
+                  <div className="relative aspect-[16/10] overflow-hidden rounded-xl bg-[#fdf8f0] p-2.5 ring-1 ring-[#ddb829]/35 sm:aspect-[4/3] sm:rounded-[1.25rem] sm:p-6 lg:order-2">
                     <Image
                       src={getCourseImage(shriVidyaCourse)}
                       alt={shriVidyaCourse.title}
                       fill
                       sizes="(max-width: 1024px) 100vw, 44vw"
-                      className="object-contain p-4 transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-[1.03] sm:p-6"
+                      className="object-contain p-2.5 transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-[1.03] sm:p-6"
                     />
                   </div>
 
                   <div className="relative z-10 flex flex-col lg:order-1">
-                    <div className="flex flex-wrap items-baseline justify-between gap-2 border-b border-[#ddb829]/25 pb-4">
-                      <span className="text-xs font-semibold uppercase tracking-[0.18em] text-[#f0d060]">
+                    <div className="flex flex-wrap items-baseline justify-between gap-2 border-b border-[#ddb829]/25 pb-2.5 sm:pb-4">
+                      <span className="text-[10.5px] font-semibold uppercase tracking-[0.14em] text-[#f0d060] sm:text-xs sm:tracking-[0.18em]">
                         {COURSE_TRACK_LABEL[shriVidyaCourse.slug]}
                       </span>
-                      <span className="font-serif text-xl tabular-nums text-[#f0d060] sm:text-2xl">
+                      <span className="font-serif text-lg tabular-nums text-[#f0d060] sm:text-2xl">
                         {getCoursePriceLabel(shriVidyaCourse)}
                       </span>
                     </div>
 
-                    <h3 className="mt-5 font-serif text-2xl leading-tight text-white sm:text-4xl">
+                    <h3 className="mt-2.5 font-serif text-xl leading-snug text-white sm:mt-5 sm:text-4xl sm:leading-tight">
                       {shriVidyaCourse.title}
                     </h3>
 
-                    <p className="mt-1.5 text-xs font-medium tracking-[0.04em] text-[#d6cfc2]/80">
+                    <p className="mt-1 text-[11px] font-medium tracking-[0.04em] text-[#d6cfc2]/80 sm:mt-1.5 sm:text-xs">
                       {shriVidyaCourse.duration}
                     </p>
 
-                    <p className="mt-3 max-w-xl text-pretty text-sm leading-6 text-[#d6cfc2] sm:mt-4 sm:text-base sm:leading-7">
+                    <p className="mt-1.5 max-w-xl text-pretty text-[13px] leading-[1.55] text-[#d6cfc2] sm:mt-4 sm:text-base sm:leading-7">
                       {shriVidyaCourse.description}
                     </p>
 
-                    <ul className="mt-6 grid gap-3 sm:grid-cols-2">
+                    <ul className="mt-3 grid gap-1.5 sm:mt-6 sm:grid-cols-2 sm:gap-3">
                       {shriVidyaCourse.highlights.map((highlight) => (
                         <li
                           key={highlight}
-                          className="flex items-start gap-2.5 text-sm leading-6 text-[#efe5d2]"
+                          className="flex items-start gap-2 text-xs leading-5 text-[#efe5d2] sm:gap-2.5 sm:text-sm sm:leading-6"
                         >
-                          <span className="mt-1 grid size-4.5 shrink-0 place-items-center rounded-full bg-[#ddb829] text-[#1c1917]">
+                          <span className="mt-0.5 grid size-4 shrink-0 place-items-center rounded-full bg-[#ddb829] text-[#1c1917] sm:mt-1 sm:size-4.5">
                             <Check className="size-2.5" strokeWidth={2.75} />
                           </span>
                           <span>{highlight}</span>
@@ -535,7 +535,7 @@ export default function CourseCatalogExplorer({
 
                     <SyllabusDrawer course={shriVidyaCourse} dark />
 
-                    <div className="mt-7">
+                    <div className="mt-4 sm:mt-7">
                       <CourseActionButton
                         href={`/courses/${shriVidyaCourse.slug}`}
                         variant="gold"
@@ -548,13 +548,13 @@ export default function CourseCatalogExplorer({
           ) : null}
 
           {/* Row 3: Inverse 5/7 Bento — Advanced Chakra + Aishwarya Siddhi */}
-          <div className="grid gap-6 lg:grid-cols-12 lg:gap-8">
+          <div className="grid gap-4 sm:gap-6 lg:grid-cols-12 lg:gap-8">
             {chakraCourse ? (
               <Reveal className="lg:col-span-5" delay={0.05}>
                 <StandardCourseCard
                   course={chakraCourse}
                   variant="outline"
-                  aspect="aspect-square"
+                  aspect="aspect-[16/10] sm:aspect-square"
                   imageFit="contain-light"
                 />
               </Reveal>
@@ -562,12 +562,12 @@ export default function CourseCatalogExplorer({
 
             {aishwaryaCourse ? (
               <Reveal className="lg:col-span-7" delay={0.1}>
-                <div className="h-full rounded-[2rem] bg-[#efe5d2]/75 p-2 ring-1 ring-[#c7a23b]/35 shadow-[0_32px_70px_-48px_rgba(107,11,11,0.45)] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:ring-[#c9a520]">
+                <div className="h-full rounded-2xl bg-[#efe5d2]/75 p-1.5 ring-1 ring-[#c7a23b]/35 shadow-[0_24px_55px_-40px_rgba(107,11,11,0.4)] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:ring-[#c9a520] sm:rounded-[2rem] sm:p-2 sm:shadow-[0_32px_70px_-48px_rgba(107,11,11,0.45)]">
                   <article
                     id={aishwaryaCourse.slug}
-                    className="group grid h-full gap-6 overflow-hidden rounded-[calc(2rem-0.5rem)] bg-[#fffdf9] p-4 shadow-[inset_0_1px_1px_rgba(255,255,255,0.9)] sm:grid-cols-[0.72fr_1.28fr] sm:p-7"
+                    className="group grid h-full gap-3.5 overflow-hidden rounded-[calc(1rem-0.375rem)] bg-[#fffdf9] p-3 shadow-[inset_0_1px_1px_rgba(255,255,255,0.9)] sm:grid-cols-[0.72fr_1.28fr] sm:gap-6 sm:rounded-[calc(2rem-0.5rem)] sm:p-7"
                   >
-                    <div className="relative aspect-[3/4] overflow-hidden rounded-[1.25rem] bg-[#efe5d2] sm:h-full sm:min-h-[340px]">
+                    <div className="relative aspect-[16/10] overflow-hidden rounded-xl bg-[#efe5d2] sm:aspect-[3/4] sm:h-full sm:min-h-[340px] sm:rounded-[1.25rem]">
                       <Image
                         src={getCourseImage(aishwaryaCourse)}
                         alt={aishwaryaCourse.title}
@@ -578,34 +578,34 @@ export default function CourseCatalogExplorer({
                     </div>
 
                     <div className="flex flex-col">
-                      <div className="flex flex-wrap items-baseline justify-between gap-2 border-b border-[#efe5d2] pb-4">
-                        <span className="text-xs font-semibold uppercase tracking-[0.16em] text-[#a8871a]">
+                      <div className="flex flex-wrap items-baseline justify-between gap-2 border-b border-[#efe5d2] pb-2.5 sm:pb-4">
+                        <span className="text-[10.5px] font-semibold uppercase tracking-[0.14em] text-[#a8871a] sm:text-xs sm:tracking-[0.16em]">
                           {COURSE_TRACK_LABEL[aishwaryaCourse.slug]}
                         </span>
-                        <span className="font-serif text-xl tabular-nums text-[#981313] sm:text-2xl">
+                        <span className="font-serif text-lg tabular-nums text-[#981313] sm:text-2xl">
                           {getCoursePriceLabel(aishwaryaCourse)}
                         </span>
                       </div>
 
-                      <h3 className="mt-5 font-serif text-2xl leading-tight text-[#292524] transition-colors duration-300 group-hover:text-[#981313] sm:text-3xl">
+                      <h3 className="mt-2.5 font-serif text-xl leading-snug text-[#292524] transition-colors duration-300 group-hover:text-[#981313] sm:mt-5 sm:text-3xl sm:leading-tight">
                         {aishwaryaCourse.title}
                       </h3>
 
-                      <p className="mt-1.5 text-xs font-medium tracking-[0.04em] text-[#57534e]">
+                      <p className="mt-1 text-[11px] font-medium tracking-[0.04em] text-[#57534e] sm:mt-1.5 sm:text-xs">
                         {aishwaryaCourse.duration}
                       </p>
 
-                      <p className="mt-3 text-pretty text-sm leading-6 text-[#57534e] sm:text-base sm:leading-7">
+                      <p className="mt-1.5 text-pretty text-[13px] leading-[1.55] text-[#57534e] sm:mt-3 sm:text-base sm:leading-7">
                         {aishwaryaCourse.description}
                       </p>
 
-                      <ul className="mt-5 space-y-2.5">
+                      <ul className="mt-3 space-y-1.5 sm:mt-5 sm:space-y-2.5">
                         {aishwaryaCourse.highlights.slice(0, 3).map((item) => (
                           <li
                             key={item}
-                            className="flex items-start gap-2.5 text-sm leading-6 text-[#292524]"
+                            className="flex items-start gap-2 text-xs leading-5 text-[#292524] sm:gap-2.5 sm:text-sm sm:leading-6"
                           >
-                            <span className="mt-1 grid size-4.5 shrink-0 place-items-center rounded-full bg-[#faf3dc] text-[#8b0f0f] ring-1 ring-[#ddb829]/55">
+                            <span className="mt-0.5 grid size-4 shrink-0 place-items-center rounded-full bg-[#faf3dc] text-[#8b0f0f] ring-1 ring-[#ddb829]/55 sm:mt-1 sm:size-4.5">
                               <Check className="size-2.5" strokeWidth={2.5} />
                             </span>
                             <span>{item}</span>
@@ -615,7 +615,7 @@ export default function CourseCatalogExplorer({
 
                       <SyllabusDrawer course={aishwaryaCourse} />
 
-                      <div className="mt-auto pt-7">
+                      <div className="mt-auto pt-4 sm:pt-7">
                         <CourseActionButton
                           href={`/courses/${aishwaryaCourse.slug}`}
                           variant="crimson"
@@ -631,13 +631,13 @@ export default function CourseCatalogExplorer({
           {/* Row 4: Horizontal Editorial Reading Strip — Soul Purpose Reading */}
           {soulPurposeCourse ? (
             <Reveal delay={0.08}>
-              <div className="rounded-[2rem] bg-[#efe5d2]/75 p-2 ring-1 ring-[#c7a23b]/35 shadow-[0_32px_70px_-48px_rgba(107,11,11,0.45)] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:ring-[#c9a520]">
+              <div className="rounded-2xl bg-[#efe5d2]/75 p-1.5 ring-1 ring-[#c7a23b]/35 shadow-[0_24px_55px_-40px_rgba(107,11,11,0.4)] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:ring-[#c9a520] sm:rounded-[2rem] sm:p-2 sm:shadow-[0_32px_70px_-48px_rgba(107,11,11,0.45)]">
                 <article
                   id={soulPurposeCourse.slug}
-                  className="group grid items-center gap-7 rounded-[calc(2rem-0.5rem)] bg-[#fffdf9] p-4 shadow-[inset_0_1px_1px_rgba(255,255,255,0.9)] sm:p-8 lg:grid-cols-12 lg:gap-12 lg:p-10"
+                  className="group grid items-center gap-3.5 rounded-[calc(1rem-0.375rem)] bg-[#fffdf9] p-3 shadow-[inset_0_1px_1px_rgba(255,255,255,0.9)] sm:gap-7 sm:rounded-[calc(2rem-0.5rem)] sm:p-8 lg:grid-cols-12 lg:gap-12 lg:p-10"
                 >
                   <div className="relative lg:col-span-5">
-                    <div className="relative aspect-[4/3] overflow-hidden rounded-[1.25rem] bg-[#efe5d2] lg:aspect-[5/4]">
+                    <div className="relative aspect-[16/9] overflow-hidden rounded-xl bg-[#efe5d2] sm:aspect-[4/3] sm:rounded-[1.25rem] lg:aspect-[5/4]">
                       <Image
                         src={getCourseImage(soulPurposeCourse)}
                         alt={soulPurposeCourse.title}
@@ -649,34 +649,34 @@ export default function CourseCatalogExplorer({
                   </div>
 
                   <div className="flex flex-col lg:col-span-7">
-                    <div className="flex flex-wrap items-baseline justify-between gap-2 border-b border-[#efe5d2] pb-4">
-                      <span className="text-xs font-semibold uppercase tracking-[0.18em] text-[#a8871a]">
+                    <div className="flex flex-wrap items-baseline justify-between gap-2 border-b border-[#efe5d2] pb-2.5 sm:pb-4">
+                      <span className="text-[10.5px] font-semibold uppercase tracking-[0.14em] text-[#a8871a] sm:text-xs sm:tracking-[0.18em]">
                         {COURSE_TRACK_LABEL[soulPurposeCourse.slug]}
                       </span>
-                      <span className="font-serif text-xl tabular-nums text-[#981313] sm:text-2xl">
+                      <span className="font-serif text-lg tabular-nums text-[#981313] sm:text-2xl">
                         {getCoursePriceLabel(soulPurposeCourse)}
                       </span>
                     </div>
 
-                    <h3 className="mt-5 font-serif text-2xl leading-tight text-[#292524] transition-colors duration-300 group-hover:text-[#981313] sm:text-4xl">
+                    <h3 className="mt-2.5 font-serif text-xl leading-snug text-[#292524] transition-colors duration-300 group-hover:text-[#981313] sm:mt-5 sm:text-4xl sm:leading-tight">
                       {soulPurposeCourse.title}
                     </h3>
 
-                    <p className="mt-1.5 text-xs font-medium tracking-[0.04em] text-[#57534e]">
+                    <p className="mt-1 text-[11px] font-medium tracking-[0.04em] text-[#57534e] sm:mt-1.5 sm:text-xs">
                       {soulPurposeCourse.duration}
                     </p>
 
-                    <p className="mt-3 max-w-2xl text-pretty text-base leading-7 text-[#57534e] sm:mt-4 sm:text-lg sm:leading-8">
+                    <p className="mt-1.5 max-w-2xl text-pretty text-[13px] leading-[1.55] text-[#57534e] sm:mt-4 sm:text-lg sm:leading-8">
                       {soulPurposeCourse.description}
                     </p>
 
-                    <ul className="mt-6 grid gap-3 sm:grid-cols-2">
+                    <ul className="mt-3 grid gap-1.5 sm:mt-6 sm:grid-cols-2 sm:gap-3">
                       {soulPurposeCourse.highlights.map((highlight) => (
                         <li
                           key={highlight}
-                          className="flex items-start gap-2.5 text-sm leading-6 text-[#292524]"
+                          className="flex items-start gap-2 text-xs leading-5 text-[#292524] sm:gap-2.5 sm:text-sm sm:leading-6"
                         >
-                          <span className="mt-1 grid size-4.5 shrink-0 place-items-center rounded-full bg-[#faf3dc] text-[#8b0f0f] ring-1 ring-[#ddb829]/55">
+                          <span className="mt-0.5 grid size-4 shrink-0 place-items-center rounded-full bg-[#faf3dc] text-[#8b0f0f] ring-1 ring-[#ddb829]/55 sm:mt-1 sm:size-4.5">
                             <Check className="size-2.5" strokeWidth={2.5} />
                           </span>
                           <span>{highlight}</span>
@@ -684,17 +684,17 @@ export default function CourseCatalogExplorer({
                       ))}
                     </ul>
 
-                    <div className="mt-7 flex flex-wrap items-center gap-4">
+                    <div className="mt-4 flex flex-wrap items-center gap-3 sm:mt-7 sm:gap-4">
                       <CourseActionButton
                         href={`/courses/${soulPurposeCourse.slug}`}
                         variant="crimson"
                       />
                       <Link
                         href="/mentoring"
-                        className="inline-flex min-h-11 items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-[#6b0b0b] underline underline-offset-4 transition-colors hover:text-[#a81414]"
+                        className="inline-flex min-h-9 items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.1em] text-[#6b0b0b] underline underline-offset-4 transition-colors hover:text-[#a81414] sm:min-h-11 sm:text-xs sm:tracking-[0.14em]"
                       >
                         Compare with 1-on-1 mentoring
-                        <ArrowRight className="size-3.5" strokeWidth={1.6} />
+                        <ArrowRight className="size-3 sm:size-3.5" strokeWidth={1.6} />
                       </Link>
                     </div>
                   </div>
@@ -704,7 +704,7 @@ export default function CourseCatalogExplorer({
           ) : null}
         </div>
       ) : (
-        <div className="mt-10 grid gap-6 sm:mt-12 md:grid-cols-2 lg:gap-8">
+        <div className="mt-5 grid gap-4 sm:mt-12 sm:gap-6 md:grid-cols-2 lg:gap-8">
           {filteredCourses.map((course) => (
             <StandardCourseCard
               key={course.slug}
@@ -715,7 +715,7 @@ export default function CourseCatalogExplorer({
                   ? "crimson"
                   : "outline"
               }
-              aspect="aspect-[4/3]"
+              aspect="aspect-[16/9] sm:aspect-[4/3]"
               imageFit={
                 course.slug === "shri-vidya" ||
                 course.slug === "advanced-chakra"

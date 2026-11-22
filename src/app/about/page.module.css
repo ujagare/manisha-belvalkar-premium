@@ -70,10 +70,32 @@
   to { rotate: 360deg; }
 }
 
-@media (max-width: 560px) {
-  .heroArt { padding: 14px 12px 0; max-width: 340px; margin-inline: auto; }
-  .plinth { margin-inline: -8px; }
-  .plinth::after { right: -4px; left: -4px; }
+@media (max-width: 639px) {
+  .heroArt {
+    padding: 8px 8px 0;
+    max-width: 224px;
+    margin-inline: auto;
+  }
+  .mandala {
+    width: 132%;
+    opacity: 0.24;
+  }
+  .jharokha {
+    aspect-ratio: 5 / 6;
+    filter: drop-shadow(0 20px 28px rgb(0 0 0 / 0.42));
+  }
+  .jharokhaInner {
+    inset: 6px;
+  }
+  .plinth {
+    height: 11px;
+    margin-inline: -6px;
+  }
+  .plinth::after {
+    right: -3px;
+    left: -3px;
+    height: 5px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

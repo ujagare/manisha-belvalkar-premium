@@ -294,15 +294,39 @@ export type Database = {
           },
         ];
       };
-      /** Physical fulfilment / tracking per order. */
+      /** Physical fulfilment / Shiprocket tracking per order. */
       shipments: {
         Row: {
           id: string;
           order_id: string;
           address_id: string | null;
+          provider: string;
+          shiprocket_order_id: number | null;
+          shiprocket_shipment_id: number | null;
+          courier_company_id: number | null;
+          awb_code: string | null;
           carrier: string | null;
           tracking_number: string | null;
           tracking_url: string | null;
+          pickup_location: string | null;
+          pickup_scheduled_date: string | null;
+          pickup_token_number: string | null;
+          etd: string | null;
+          weight_kg: number;
+          length_cm: number;
+          breadth_cm: number;
+          height_cm: number;
+          shipping_charge_subunits: number;
+          label_url: string | null;
+          manifest_url: string | null;
+          invoice_url: string | null;
+          current_status: string | null;
+          current_status_id: number | null;
+          last_location: string | null;
+          tracking_events: Json;
+          last_synced_at: string | null;
+          rto_reason: string | null;
+          cancelled_at: string | null;
           status: string;
           shipped_at: string | null;
           delivered_at: string | null;
@@ -313,9 +337,33 @@ export type Database = {
           id?: string;
           order_id: string;
           address_id?: string | null;
+          provider?: string;
+          shiprocket_order_id?: number | null;
+          shiprocket_shipment_id?: number | null;
+          courier_company_id?: number | null;
+          awb_code?: string | null;
           carrier?: string | null;
           tracking_number?: string | null;
           tracking_url?: string | null;
+          pickup_location?: string | null;
+          pickup_scheduled_date?: string | null;
+          pickup_token_number?: string | null;
+          etd?: string | null;
+          weight_kg?: number;
+          length_cm?: number;
+          breadth_cm?: number;
+          height_cm?: number;
+          shipping_charge_subunits?: number;
+          label_url?: string | null;
+          manifest_url?: string | null;
+          invoice_url?: string | null;
+          current_status?: string | null;
+          current_status_id?: number | null;
+          last_location?: string | null;
+          tracking_events?: Json;
+          last_synced_at?: string | null;
+          rto_reason?: string | null;
+          cancelled_at?: string | null;
           status?: string;
           shipped_at?: string | null;
           delivered_at?: string | null;
@@ -326,9 +374,33 @@ export type Database = {
           id?: string;
           order_id?: string;
           address_id?: string | null;
+          provider?: string;
+          shiprocket_order_id?: number | null;
+          shiprocket_shipment_id?: number | null;
+          courier_company_id?: number | null;
+          awb_code?: string | null;
           carrier?: string | null;
           tracking_number?: string | null;
           tracking_url?: string | null;
+          pickup_location?: string | null;
+          pickup_scheduled_date?: string | null;
+          pickup_token_number?: string | null;
+          etd?: string | null;
+          weight_kg?: number;
+          length_cm?: number;
+          breadth_cm?: number;
+          height_cm?: number;
+          shipping_charge_subunits?: number;
+          label_url?: string | null;
+          manifest_url?: string | null;
+          invoice_url?: string | null;
+          current_status?: string | null;
+          current_status_id?: number | null;
+          last_location?: string | null;
+          tracking_events?: Json;
+          last_synced_at?: string | null;
+          rto_reason?: string | null;
+          cancelled_at?: string | null;
           status?: string;
           shipped_at?: string | null;
           delivered_at?: string | null;
@@ -344,6 +416,59 @@ export type Database = {
             referencedColumns: ["id"];
           },
         ];
+      };
+      shipment_events: {
+        Row: {
+          id: string;
+          provider: string;
+          event_key: string;
+          awb_code: string | null;
+          shiprocket_order_id: number | null;
+          status_code: number | null;
+          status_label: string | null;
+          payload: Json;
+          processed_at: string | null;
+          error: string | null;
+          received_at: string;
+        };
+        Insert: {
+          id?: string;
+          provider?: string;
+          event_key: string;
+          awb_code?: string | null;
+          shiprocket_order_id?: number | null;
+          status_code?: number | null;
+          status_label?: string | null;
+          payload: Json;
+          processed_at?: string | null;
+          error?: string | null;
+          received_at?: string;
+        };
+        Update: {
+          processed_at?: string | null;
+          error?: string | null;
+        };
+        Relationships: [];
+      };
+      shiprocket_tokens: {
+        Row: {
+          id: string;
+          token: string;
+          expires_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          token: string;
+          expires_at: string;
+          updated_at?: string;
+        };
+        Update: {
+          token?: string;
+          expires_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
       };
       /** A user's enrollment in a course (My Courses library). */
       course_enrollments: {

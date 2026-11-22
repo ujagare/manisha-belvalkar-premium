@@ -13,6 +13,12 @@ import {
 } from "@/lib/bookings";
 import { buildSessionIcs } from "@/lib/ics";
 import { brand } from "@/lib/data";
+import { isShiprocketConfigured, serverEnv } from "@/lib/env";
+import {
+  cancelShiprocketOrder,
+  ensureShipmentRecord,
+  pushOrderToShiprocket,
+} from "@/lib/shiprocket";
 
 type AdminClient = ReturnType<typeof createAdminClient>;
 
@@ -174,6 +180,16 @@ export async function activateOrderFulfilment(admin: AdminClient, order: OrderRe
         }
       }
     }
+
+    // 4b. Physical shipment preparation & optional Shiprocket auto-sync (never fails payment capture)
+    try {
+      await ensureShipmentRecord(admin, order.id);
+      if (isShiprocketConfigured() && serverEnv.shiprocketAutoPush()) {
+        await pushOrderToShiprocket(admin, order.id);
+      }
+    } catch (shipErr) {
+      console.error("[fulfillment:shiprocket]", { orderId: order.id, shipErr });
+    }
   }
 
   await assignOrderInvoiceNumber(admin, order.id);
@@ -323,6 +339,31 @@ export async function revokeOrderFulfilment(admin: AdminClient, orderId: string,
         });
       }
     }
+  }
+
+  // 6. Cancel open Shiprocket shipment if order refunded before delivery
+  const { data: shipment } = await admin
+    .from("shipments")
+    .select("id,shiprocket_order_id,status")
+    .eq("order_id", orderId)
+    .maybeSingle();
+
+  if (shipment && !["delivered", "returned", "cancelled"].includes(shipment.status)) {
+    if (shipment.shiprocket_order_id && isShiprocketConfigured()) {
+      await cancelShiprocketOrder(shipment.shiprocket_order_id).catch((err) =>
+        console.warn("[fulfillment:shiprocket-cancel]", orderId, err),
+      );
+    }
+    const now = new Date().toISOString();
+    await admin
+      .from("shipments")
+      .update({
+        status: "cancelled",
+        current_status: "Cancelled (Refund Processed)",
+        cancelled_at: now,
+        updated_at: now,
+      })
+      .eq("id", shipment.id);
   }
 }
 

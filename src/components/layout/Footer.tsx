@@ -105,7 +105,7 @@ export default function Footer() {
         />
         <svg
           viewBox="0 0 500 500"
-          className="pointer-events-none absolute left-1/2 top-1/2 h-[740px] w-[740px] -translate-x-1/2 -translate-y-1/2 animate-spin-slow text-gold opacity-70 drop-shadow-[0_0_34px_rgba(221,184,41,0.55)] motion-reduce:animate-none"
+          className="pointer-events-none hidden sm:block absolute left-1/2 top-1/2 h-[740px] w-[740px] -translate-x-1/2 -translate-y-1/2 animate-spin-slow text-gold opacity-70 drop-shadow-[0_0_34px_rgba(221,184,41,0.55)] motion-reduce:animate-none"
           style={{ animationDuration: "95s" }}
           aria-hidden="true"
         >
@@ -125,19 +125,19 @@ export default function Footer() {
           aria-hidden="true"
         />
 
-        <div className="relative mx-auto max-w-5xl px-5 py-7 text-center sm:px-8 sm:py-9 lg:py-10">
+        <div className="relative mx-auto max-w-5xl px-4 py-6 text-center sm:px-8 sm:py-9 lg:py-10">
           <Reveal>
-            <div className="eyebrow mb-3 flex items-center justify-center gap-3 text-gold-light sm:mb-5 sm:gap-4">
-              <span className="hairline-gold w-8 sm:w-12" />
-              <Sparkles className="h-4 w-4" />
+            <div className="eyebrow mb-2 flex items-center justify-center gap-2.5 text-gold-light sm:mb-5 sm:gap-4">
+              <span className="hairline-gold w-6 sm:w-12" />
+              <Sparkles className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
               Begin Your Journey
-              <Sparkles className="h-4 w-4" />
-              <span className="hairline-gold w-8 sm:w-12" />
+              <Sparkles className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+              <span className="hairline-gold w-6 sm:w-12" />
             </div>
           </Reveal>
 
           <Reveal delay={0.1}>
-            <h2 className="font-display text-[1.45rem] font-bold leading-[1.12] tracking-tight text-white sm:text-3xl lg:text-4xl">
+            <h2 className="font-display text-xl font-bold leading-[1.15] tracking-tight text-white sm:text-3xl lg:text-4xl">
               It is your own commitment
               <br />
               <span className="font-serif font-medium italic text-gold-light">
@@ -147,28 +147,28 @@ export default function Footer() {
           </Reveal>
 
           <Reveal delay={0.2}>
-            <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-white/75 sm:mt-4 sm:text-base">
+            <p className="mx-auto mt-2.5 max-w-md text-xs leading-relaxed text-white/75 sm:mt-4 sm:max-w-xl sm:text-base">
               Take the first step toward clarity, alignment, and purpose.
               Manisha is here to illuminate your path.
             </p>
           </Reveal>
 
           <Reveal delay={0.3}>
-            <div className="mt-5 flex flex-wrap items-center justify-center gap-3 sm:mt-7 sm:gap-4">
+            <div className="mt-4 grid grid-cols-2 gap-2.5 sm:mt-7 sm:flex sm:flex-wrap sm:items-center sm:justify-center sm:gap-4">
               <a
                 href={brand.whatsappHref}
                 target="_blank"
                 rel="noreferrer"
-                className="group inline-flex min-h-11 items-center gap-2 rounded-full bg-gold px-5 py-2.5 text-sm font-semibold text-primary-deeper shadow-[0_16px_40px_-12px_rgba(221,184,41,0.7)] transition-all duration-500 hover:-translate-y-0.5 hover:bg-gold-light hover:shadow-[0_20px_50px_-12px_rgba(221,184,41,0.9)] sm:px-6 sm:py-3"
+                className="group inline-flex min-h-10 items-center justify-center gap-1.5 rounded-lg bg-gold px-3.5 py-2 text-xs font-semibold text-primary-deeper transition-colors duration-150 hover:bg-gold-light sm:min-h-11 sm:gap-2 sm:rounded-full sm:px-6 sm:py-3 sm:text-sm"
               >
-                <MessageCircle className="h-4 w-4" />
+                <MessageCircle className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 Book a Session
               </a>
               <a
                 href="/contact"
-                className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/40 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur transition-all duration-500 hover:-translate-y-0.5 hover:border-gold hover:bg-white/10 sm:px-6 sm:py-3"
+                className="inline-flex min-h-10 items-center justify-center gap-1.5 rounded-lg border border-white/35 px-3.5 py-2 text-xs font-semibold text-white transition-colors duration-150 hover:border-gold hover:bg-white/10 sm:min-h-11 sm:gap-2 sm:rounded-full sm:px-6 sm:py-3 sm:text-sm"
               >
-                <Heart className="h-4 w-4 text-gold-light" />
+                <Heart className="h-3.5 w-3.5 text-gold-light sm:h-4 sm:w-4" />
                 Ask a Question
               </a>
             </div>
@@ -205,10 +205,10 @@ export default function Footer() {
           aria-hidden="true"
         />
 
-        <div className="relative mx-auto max-w-[92rem] px-5 pb-6 pt-8 sm:px-8 sm:pt-10 lg:px-12 lg:pt-12">
-          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,0.9fr)_minmax(0,1.05fr)_minmax(0,1fr)] lg:gap-10 xl:gap-14">
+        <div className="relative mx-auto max-w-[92rem] px-4 pb-5 pt-6 sm:px-8 sm:pt-10 lg:px-12 lg:pt-12">
+          <div className="grid grid-cols-2 gap-x-5 gap-y-6 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,0.9fr)_minmax(0,1.05fr)_minmax(0,1fr)] lg:gap-10 xl:gap-14">
             {/* Brand column */}
-            <Reveal delay={0}>
+            <Reveal delay={0} className="col-span-2 lg:col-span-1">
               <Link
                 href="/"
                 className="flex flex-wrap items-center gap-2.5 font-display text-2xl font-bold tracking-tight text-white transition-colors hover:text-gold-light sm:gap-3 xl:text-[1.7rem]"
@@ -248,15 +248,15 @@ export default function Footer() {
 
             {/* Navigate */}
             <Reveal delay={0.1}>
-              <h2 className="mb-3.5 font-serif text-lg font-semibold text-white">
+              <h2 className="mb-2.5 font-serif text-base font-semibold text-white sm:mb-3.5 sm:text-lg">
                 Navigate
               </h2>
-              <ul className="grid grid-cols-2 gap-x-6 gap-y-2.5">
+              <ul className="grid grid-cols-1 gap-y-1.5 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-2.5">
                 {navigation.map((item) => (
                   <li key={item.href}>
                     <Link
                       href={item.href}
-                      className="group inline-flex items-center gap-1.5 text-sm text-ivory/65 transition-colors duration-300 hover:text-gold"
+                      className="group inline-flex items-center gap-1.5 text-xs text-ivory/65 transition-colors duration-200 hover:text-gold sm:text-sm"
                     >
                       <span className="h-px w-0 bg-gold transition-all duration-300 group-hover:w-4" />
                       {item.label}
@@ -268,15 +268,15 @@ export default function Footer() {
 
             {/* Offerings */}
             <Reveal delay={0.2}>
-              <h2 className="mb-3.5 font-serif text-lg font-semibold text-white">
+              <h2 className="mb-2.5 font-serif text-base font-semibold text-white sm:mb-3.5 sm:text-lg">
                 Offerings
               </h2>
-              <ul className="space-y-2.5">
+              <ul className="space-y-1.5 sm:space-y-2.5">
                 {services.slice(0, 3).map((s) => (
                   <li key={s.slug}>
                     <Link
                       href={`/services/${s.slug}`}
-                      className="group inline-flex items-center gap-1.5 text-sm text-ivory/65 transition-colors duration-300 hover:text-gold"
+                      className="group inline-flex items-center gap-1.5 text-xs text-ivory/65 transition-colors duration-200 hover:text-gold sm:text-sm"
                     >
                       <span className="h-px w-0 bg-gold transition-all duration-300 group-hover:w-4" />
                       {s.title}
@@ -287,7 +287,7 @@ export default function Footer() {
                   <li key={c.slug}>
                     <Link
                       href={`/courses/${c.slug}`}
-                      className="group inline-flex items-center gap-1.5 text-sm text-ivory/65 transition-colors duration-300 hover:text-gold"
+                      className="group inline-flex items-center gap-1.5 text-xs text-ivory/65 transition-colors duration-200 hover:text-gold sm:text-sm"
                     >
                       <span className="h-px w-0 bg-gold transition-all duration-300 group-hover:w-4" />
                       {c.title}
@@ -297,7 +297,7 @@ export default function Footer() {
                 <li>
                   <Link
                     href="/products"
-                    className="group inline-flex items-center gap-1.5 text-sm text-ivory/65 transition-colors duration-300 hover:text-gold"
+                    className="group inline-flex items-center gap-1.5 text-xs text-ivory/65 transition-colors duration-200 hover:text-gold sm:text-sm"
                   >
                     <span className="h-px w-0 bg-gold transition-all duration-300 group-hover:w-4" />
                     Products
@@ -307,7 +307,7 @@ export default function Footer() {
             </Reveal>
 
             {/* Contact */}
-            <Reveal delay={0.3}>
+            <Reveal delay={0.3} className="col-span-2 lg:col-span-1">
               <h2 className="mb-3.5 font-serif text-lg font-semibold text-white">
                 Connect
               </h2>
@@ -387,6 +387,7 @@ export default function Footer() {
             className="mt-7 flex flex-wrap justify-center gap-x-5 gap-y-2.5 border-t border-white/10 pt-5 text-xs text-ivory/60 sm:mt-8 sm:gap-x-8 sm:gap-y-2"
           >
             <Link className="transition-colors hover:text-gold" href="/how-it-works">How it works</Link>
+            <Link className="transition-colors hover:text-gold" href="/track-order">Track order</Link>
             <Link className="transition-colors hover:text-gold" href="/faq">FAQ</Link>
             <Link className="transition-colors hover:text-gold" href="/testimonials">Client experiences</Link>
             <Link className="transition-colors hover:text-gold" href="/events">Live events</Link>

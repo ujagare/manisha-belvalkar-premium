@@ -1,7 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, MessageCircle, Moon } from "lucide-react";
-import Reveal from "@/components/ui/Reveal";
-import SacredSectionBackdrop from "@/components/home/SacredSectionBackdrop";
+import { ArrowRight, ChevronDown } from "lucide-react";
 
 const faqs = [
   {
@@ -12,22 +10,22 @@ const faqs = [
   {
     question: "Can I book if I am outside Mumbai or Pune?",
     answer:
-      "Yes. Many offerings are available online through WhatsApp, Zoom or distance healing, so you can receive guidance from anywhere.",
+      "Yes. Many offerings are available online through private video room, WhatsApp, or distance healing, so you can receive guidance from anywhere.",
   },
   {
     question: "Are Tarot readings predictive or guidance based?",
     answer:
-      "The readings are designed for clarity, self-understanding and conscious choices. They help you understand patterns and take grounded next steps.",
+      "The readings are designed for clarity, self-understanding, and conscious choices. They help you understand patterns and take grounded next steps.",
   },
   {
     question: "How do I confirm my booking?",
     answer:
-      "Choose the offering you want, share your details and continue on WhatsApp. The final timing and payment confirmation happen directly with the team.",
+      "Choose your offering, complete secure checkout or share your details on WhatsApp, and receive immediate confirmation along with preparation notes.",
   },
   {
     question: "Can I gift a deck, ritual or session?",
     answer:
-      "Yes. Shop items and selected sessions can be gifted. Mention it while enquiring so the packaging or booking can be arranged with care.",
+      "Yes. Shop items and selected sessions can be gifted. Mention it while ordering so gift-ready sacred packaging or scheduling can be arranged.",
   },
 ];
 
@@ -43,115 +41,76 @@ const faqSchema = {
 
 export default function HomeFAQ() {
   return (
-    <section className="relative overflow-hidden bg-[#211815] py-12 sm:py-20 lg:py-32 text-white">
+    <section className="border-t border-white/10 bg-[#1c1917] py-10 text-[#fdf8f0] sm:py-16 lg:py-24">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
-      <SacredSectionBackdrop motif="petals" className="opacity-[0.12]" />
-      <div
-        className="absolute inset-0 bg-cover bg-center opacity-25"
-        style={{ backgroundImage: "url('/images/page-heroes/mentoring-hero.webp')" }}
-        aria-hidden="true"
-      />
-      <div className="absolute inset-0 bg-[linear-gradient(115deg,rgba(28,25,23,0.98)_0%,rgba(44,28,24,0.92)_46%,rgba(107,11,11,0.72)_100%)]" />
-      <div className="absolute left-0 top-0 h-px w-full bg-gradient-to-r from-transparent via-gold/60 to-transparent" />
 
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
-        <div className="grid gap-8 sm:gap-12 lg:grid-cols-[0.82fr_1.18fr] lg:items-start lg:gap-16">
-          <Reveal>
-            <div className="lg:sticky lg:top-28">
-              <div>
-                <div className="eyebrow mb-3 sm:mb-5 flex items-center gap-3 sm:gap-4 text-gold-light">
-                  <span className="hairline-gold w-8 sm:w-10" />
-                  Premium FAQ
-                </div>
-                <h2 className="font-display text-[1.85rem] font-bold leading-[1.08] text-white sm:text-5xl lg:text-6xl">
-                  Before you begin,{" "}
-                  <span className="text-gold-shimmer">feel clear</span>
-                </h2>
-                <p className="mt-3 sm:mt-6 max-w-xl text-sm sm:text-base lg:text-lg leading-relaxed text-white/68">
-                  A refined guide to sessions, online bookings, gifts and sacred
-                  tools before you choose your next step.
-                </p>
-              </div>
+      <div className="mx-auto max-w-6xl px-4 sm:px-8">
+        <div className="grid gap-8 lg:grid-cols-[0.82fr_1.18fr] lg:items-start lg:gap-16">
+          <div className="lg:sticky lg:top-28">
+            <p className="text-xs text-[#b8afa2] sm:text-sm">Common questions</p>
+            <h2 className="mt-2 font-display text-[1.75rem] font-medium leading-[1.1] tracking-[-0.02em] text-[#fdf8f0] sm:text-4xl">
+              Before you begin, feel clear
+            </h2>
+            <p className="mt-3 max-w-md text-sm leading-6 text-[#b8afa2] sm:text-base sm:leading-7">
+              Clear answers on consultations, online sessions, gifting, and sacred tools before you choose your next step.
+            </p>
 
-              <div className="mt-6 sm:mt-10 overflow-hidden rounded-2xl sm:rounded-[2rem] border border-gold/25 bg-white/[0.08] shadow-[0_35px_90px_-45px_rgba(0,0,0,0.75)] backdrop-blur-xl">
-                <div className="relative min-h-[210px] sm:min-h-[320px] bg-cover bg-center" style={{ backgroundImage: "url(/images/healing-candle-therapy.webp)" }}>
-                  <div className="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/45 to-transparent" />
-                  <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-7">
-                    <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-gold-light backdrop-blur-md">
-                      <Moon className="h-4 w-4" />
-                      Gentle first step
-                    </div>
-                    <p className="font-display text-2xl font-bold leading-tight text-white">
-                      Not sure what to book?
-                    </p>
-                    <p className="mt-3 max-w-sm text-sm leading-relaxed text-white/72">
-                      Share your intention and the team will guide you toward
-                      the right session, ritual or shop item.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="grid divide-y divide-gold/15 sm:grid-cols-2 sm:divide-x sm:divide-y-0">
-                  <Link
-                    href="/contact"
-                    className="group flex items-center justify-between gap-4 p-5 text-sm font-semibold text-gold-light transition-colors hover:bg-white/[0.06] hover:text-gold"
-                  >
-                    Ask before booking
-                    <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-                  </Link>
-                  <Link
-                    href="/products"
-                    className="group flex items-center justify-between gap-4 p-5 text-sm font-semibold text-white/78 transition-colors hover:bg-white/[0.06] hover:text-white"
-                  >
-                    Explore the shop
-                    <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-                  </Link>
-                </div>
-              </div>
+            <div className="mt-5 flex flex-wrap gap-2.5 sm:mt-7 sm:gap-3">
+              <Link
+                href="/contact"
+                className="inline-flex h-10 items-center gap-2 rounded-lg bg-primary px-4 text-xs font-medium text-white transition-colors duration-150 hover:bg-primary-dark sm:h-11 sm:px-5 sm:text-sm"
+              >
+                Ask before booking
+                <ArrowRight className="h-4 w-4" strokeWidth={1.5} />
+              </Link>
+              <Link
+                href="/products"
+                className="inline-flex h-10 items-center gap-2 rounded-lg border border-white/15 bg-white/5 px-4 text-xs font-medium text-[#fdf8f0] transition-colors duration-150 hover:bg-white/10 sm:h-11 sm:px-5 sm:text-sm"
+              >
+                Explore shop
+              </Link>
             </div>
-          </Reveal>
-
-          <div className="overflow-hidden rounded-[2rem] border border-white/12 bg-white/[0.07] shadow-[0_40px_110px_-60px_rgba(0,0,0,0.8)] backdrop-blur-xl">
-            <div className="flex items-center justify-between border-b border-white/12 px-5 py-4 sm:px-7">
-              <div className="flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.24em] text-gold-light">
-                <MessageCircle className="h-4 w-4" />
-                Asked often
-              </div>
-              <span className="hidden text-xs uppercase tracking-[0.22em] text-white/38 sm:inline">
-                Clear answers
-              </span>
-            </div>
-
-            {faqs.map((item, index) => (
-              <Reveal key={item.question} delay={index * 0.07}>
-                <article className="group grid gap-2 sm:gap-6 border-b border-white/10 px-4 py-4 sm:px-7 sm:py-7 transition-colors duration-300 last:border-b-0 hover:bg-white/[0.045] sm:grid-cols-[4.5rem_1fr]">
-                  <div className="flex items-center gap-3 sm:block">
-                    <span className="font-display text-3xl font-bold text-gold/80 sm:text-4xl">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-                    <span className="h-px w-12 bg-gradient-to-r from-gold/70 to-transparent sm:mt-3 sm:block" />
-                  </div>
-                  <div>
-                    <h3 className="font-display text-xl font-bold leading-snug text-white transition-colors duration-300 group-hover:text-gold-light sm:text-2xl">
-                      {item.question}
-                    </h3>
-                    <p className="mt-3 max-w-2xl text-sm leading-relaxed text-white/64 sm:text-base">
-                      {item.answer}
-                    </p>
-                  </div>
-                </article>
-              </Reveal>
-            ))}
           </div>
 
-          <div className="mt-8 flex justify-end lg:col-start-2">
-            <Link href="/faq" className="group inline-flex items-center gap-2 text-sm font-semibold text-gold-light transition-colors hover:text-gold">
-              Browse all questions
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </Link>
+          <div className="divide-y divide-white/10 border-y border-white/10">
+            {faqs.map((item, index) => (
+              <details
+                key={item.question}
+                open={index === 0}
+                className="group py-3.5 sm:py-5"
+              >
+                <summary className="flex cursor-pointer list-none items-start justify-between gap-4 text-left [&::-webkit-details-marker]:hidden">
+                  <div className="flex items-baseline gap-3 sm:gap-5">
+                    <span className="font-mono text-xs tabular-nums text-[#b8afa2]">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <span className="font-display text-base font-medium leading-snug text-[#fdf8f0] transition-colors duration-150 group-hover:text-gold-light sm:text-xl">
+                      {item.question}
+                    </span>
+                  </div>
+                  <ChevronDown
+                    className="mt-1 h-4 w-4 shrink-0 text-[#b8afa2] transition-transform duration-150 group-open:rotate-180"
+                    strokeWidth={1.5}
+                  />
+                </summary>
+                <p className="mt-2.5 pl-7 text-sm leading-6 text-[#c7bfb2] sm:pl-10 sm:text-base sm:leading-7">
+                  {item.answer}
+                </p>
+              </details>
+            ))}
+
+            <div className="flex justify-end pt-4 sm:pt-5">
+              <Link
+                href="/faq"
+                className="inline-flex items-center gap-2 text-xs font-medium text-[#e6dfd4] transition-colors duration-150 hover:text-gold-light sm:text-sm"
+              >
+                Browse all questions
+                <ArrowRight className="h-4 w-4" strokeWidth={1.5} />
+              </Link>
+            </div>
           </div>
         </div>
       </div>

@@ -116,16 +116,14 @@ function Marker({
   return (
     <span
       data-marker
-      className={`inline-flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.2em] ${
-        light ? "text-[#e7c968]" : "text-[#981313]"
-      }`}
+      className={`inline-flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.2em] ${light ? "text-[#e7c968]" : "text-[#981313]"
+        }`}
     >
       <span
         data-marker-line
         aria-hidden="true"
-        className={`h-px w-7 origin-left ${
-          light ? "bg-[#e7c968]" : "bg-[#981313]"
-        }`}
+        className={`h-px w-7 origin-left ${light ? "bg-[#e7c968]" : "bg-[#981313]"
+          }`}
       />
       <span data-marker-label>{children}</span>
     </span>
@@ -1457,17 +1455,17 @@ export default function ServicesChoreography({
       {/* 2. PATHWAYS INTRO, INTERACTIVE GUIDANCE FINDER & GRID */}
       <section
         id="paths"
-        className="relative scroll-mt-20 px-4 py-12 sm:px-10 sm:py-20 lg:py-32"
+        className="relative scroll-mt-20 px-4 py-8 sm:px-10 sm:py-20 lg:py-32"
       >
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute right-0 top-0 h-80 w-80 rounded-full bg-[radial-gradient(circle,rgba(217,185,87,0.14)_0%,transparent_70%)] sm:h-96 sm:w-96"
+          className="pointer-events-none hidden sm:block absolute right-0 top-0 h-80 w-80 rounded-full bg-[radial-gradient(circle,rgba(217,185,87,0.14)_0%,transparent_70%)] sm:h-96 sm:w-96"
         />
         <div className="relative mx-auto max-w-7xl">
           <div className="max-w-3xl">
             <h2
               data-split-heading
-              className="font-serif text-[1.95rem] leading-[1.06] tracking-[-0.03em] sm:text-5xl lg:text-6xl"
+              className="font-serif text-[1.55rem] leading-[1.08] tracking-[-0.025em] sm:text-5xl sm:leading-[1.06] sm:tracking-[-0.03em] lg:text-6xl"
             >
               You do not need to know the service.
               <span className="block text-[#a81414]">
@@ -1479,21 +1477,21 @@ export default function ServicesChoreography({
           {/* Interactive Guidance Finder - lets visitors match their present need in one tap */}
           <div
             data-guidance-finder
-            className="mt-7 rounded-2xl border border-[#d8c8ae] bg-[#fffdf9] p-4 shadow-[0_24px_55px_-38px_rgba(107,11,11,0.3)] sm:mt-10 sm:rounded-[1.75rem] sm:p-6 lg:p-7"
+            className="mt-4 rounded-2xl border border-[#d8c8ae] bg-[#fffdf9] p-3 shadow-[0_20px_45px_-34px_rgba(107,11,11,0.28)] sm:mt-10 sm:rounded-[1.75rem] sm:p-6 sm:shadow-[0_24px_55px_-38px_rgba(107,11,11,0.3)] lg:p-7"
           >
-            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+            <div className="flex flex-col gap-2.5 sm:gap-4 lg:flex-row lg:items-center lg:justify-between">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#981313]">
+                <p className="text-[10.5px] font-semibold uppercase tracking-[0.16em] text-[#981313] sm:text-xs sm:tracking-[0.18em]">
                   Quick session matcher
                 </p>
-                <p className="mt-1 font-serif text-lg text-[#241b17] sm:text-xl">
+                <p className="mt-0.5 font-serif text-[0.98rem] leading-snug text-[#241b17] sm:mt-1 sm:text-xl">
                   Tap what feels closest right now
                 </p>
               </div>
               <div
                 role="tablist"
                 aria-label="Choose what brings you here"
-                className="hide-scrollbar flex items-center gap-2 overflow-x-auto pb-1 lg:flex-wrap lg:pb-0"
+                className="grid grid-cols-2 gap-1.5 sm:flex sm:flex-wrap sm:items-center sm:gap-2"
               >
                 {intentRecommendations.map((item) => {
                   const active = item.id === selectedIntent;
@@ -1504,11 +1502,10 @@ export default function ServicesChoreography({
                       role="tab"
                       aria-selected={active}
                       onClick={() => setSelectedIntent(item.id)}
-                      className={`inline-flex min-h-10 shrink-0 cursor-pointer items-center whitespace-nowrap rounded-full px-4 py-2 text-xs font-semibold transition-all duration-300 active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 ${
-                        active
+                      className={`inline-flex min-h-9 cursor-pointer items-center justify-center truncate rounded-full px-2.5 py-1.5 text-[11px] font-semibold transition-all duration-300 active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 sm:min-h-10 sm:shrink-0 sm:whitespace-nowrap sm:px-4 sm:py-2 sm:text-xs ${active
                           ? "bg-[#6b0b0b] text-[#fdf8f0] shadow-[0_12px_28px_-14px_rgba(107,11,11,0.75)] focus-visible:outline-[#6b0b0b]"
                           : "border border-[#d8c8ae] bg-[#faf6ef] text-[#523d34] hover:border-[#c5a146] hover:bg-[#faf3dc] focus-visible:outline-[#a8871a]"
-                      }`}
+                        }`}
                     >
                       {item.chip}
                     </button>
@@ -1521,10 +1518,10 @@ export default function ServicesChoreography({
               <div
                 key={activeRecommendation.id}
                 role="tabpanel"
-                className={`${styles.finderPanelEnter} mt-4 flex flex-col justify-between gap-4 rounded-xl border border-[#e5dcc6] bg-[#f8f3e9] p-4 sm:mt-5 sm:flex-row sm:items-center sm:rounded-2xl sm:p-5`}
+                className={`${styles.finderPanelEnter} mt-3 flex flex-col justify-between gap-3 rounded-xl border border-[#e5dcc6] bg-[#f8f3e9] p-3 sm:mt-5 sm:flex-row sm:items-center sm:gap-4 sm:rounded-2xl sm:p-5`}
               >
                 <div className="min-w-0 max-w-2xl">
-                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-semibold uppercase tracking-[0.16em] text-[#a8871a]">
+                  <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#a8871a] sm:gap-x-3 sm:gap-y-1 sm:text-xs sm:tracking-[0.16em]">
                     <span>{activeRecommendation.discipline}</span>
                     <span aria-hidden="true" className="text-[#c5a146]">
                       ·
@@ -1533,28 +1530,28 @@ export default function ServicesChoreography({
                       {activeRecommendation.meta}
                     </span>
                   </div>
-                  <h3 className="mt-1.5 font-serif text-xl leading-snug text-[#241b17] sm:text-2xl">
+                  <h3 className="mt-1 font-serif text-lg leading-snug text-[#241b17] sm:mt-1.5 sm:text-2xl">
                     {activeRecommendation.title}
                   </h3>
-                  <p className="mt-1.5 text-sm leading-6 text-[#5f4a3f] sm:text-base">
+                  <p className="mt-1 text-xs leading-5 text-[#5f4a3f] sm:mt-1.5 sm:text-base sm:leading-6">
                     {activeRecommendation.reason}
                   </p>
                 </div>
 
-                <div className="flex shrink-0 flex-wrap items-center gap-2.5 sm:gap-3">
+                <div className="grid grid-cols-2 gap-2 sm:flex sm:shrink-0 sm:flex-wrap sm:items-center sm:gap-3">
                   <Link
                     href={activeRecommendation.href}
-                    className="group/match inline-flex min-h-11 items-center gap-2.5 whitespace-nowrap rounded-full bg-[#a81414] px-5 py-2.5 text-xs font-bold uppercase tracking-[0.14em] text-white transition-colors duration-300 hover:bg-[#6b0b0b] active:scale-[0.98]"
+                    className="group/match inline-flex min-h-10 items-center justify-center gap-1 rounded-full bg-[#a81414] px-2.5 py-2 text-center text-[10px] font-bold uppercase leading-tight tracking-[0.04em] text-white transition-colors duration-300 hover:bg-[#6b0b0b] active:scale-[0.98] sm:min-h-11 sm:gap-2.5 sm:whitespace-nowrap sm:px-5 sm:py-2.5 sm:text-xs sm:tracking-[0.14em]"
                   >
                     <span>{activeRecommendation.ctaLabel}</span>
-                    <ArrowRight className={`${styles.ctaArrow} size-4`} />
+                    <ArrowRight className={`${styles.ctaArrow} size-3 shrink-0 sm:size-4`} />
                   </Link>
                   <button
                     type="button"
                     onClick={() =>
                       scrollToSection(activeRecommendation.sectionHref)
                     }
-                    className="inline-flex min-h-11 cursor-pointer items-center gap-1.5 whitespace-nowrap rounded-full border border-[#c7a23b]/60 bg-white px-4 py-2.5 text-xs font-semibold text-[#6b0b0b] transition-colors hover:bg-[#faf3dc] active:scale-[0.98]"
+                    className="inline-flex min-h-10 cursor-pointer items-center justify-center gap-1 rounded-full border border-[#c7a23b]/60 bg-white px-2.5 py-2 text-center text-[10.5px] font-semibold leading-tight text-[#6b0b0b] transition-colors hover:bg-[#faf3dc] active:scale-[0.98] sm:min-h-11 sm:gap-1.5 sm:whitespace-nowrap sm:px-4 sm:py-2.5 sm:text-xs"
                   >
                     Jump to section
                   </button>
@@ -1565,7 +1562,7 @@ export default function ServicesChoreography({
 
           <div
             data-paths-grid
-            className="relative mt-6 grid gap-4 sm:mt-10 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4"
+            className="relative mt-4 grid grid-cols-2 gap-2.5 sm:mt-10 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4"
           >
             {pathways.map((path, index) => {
               const Icon = path.icon;
@@ -1573,32 +1570,32 @@ export default function ServicesChoreography({
               const cardContent = (
                 <>
                   <div className="flex items-start justify-between">
-                    <Icon className="size-5 text-[#a81414] sm:size-6" />
-                    <span className="text-xs font-semibold tracking-[0.18em] text-[#a8871a] tabular-nums">
+                    <Icon className="size-4 text-[#a81414] sm:size-6" />
+                    <span className="text-[10.5px] font-semibold tracking-[0.16em] text-[#a8871a] tabular-nums sm:text-xs sm:tracking-[0.18em]">
                       0{index + 1}
                     </span>
                   </div>
-                  <div className="mt-auto pt-5 sm:pt-10">
-                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#a8871a]">
+                  <div className="mt-auto pt-3 sm:pt-10">
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-[#a8871a] sm:text-xs sm:tracking-[0.18em]">
                       {path.eyebrow}
                     </p>
-                    <h3 className="mt-2 font-serif text-2xl leading-tight sm:mt-3 sm:text-3xl">
+                    <h3 className="mt-1 font-serif text-[1.02rem] leading-tight sm:mt-3 sm:text-3xl">
                       {path.title}
                     </h3>
-                    <p className="mt-2.5 text-sm leading-6 text-[#5f4a3f] sm:mt-4 sm:text-base sm:leading-7">
+                    <p className="mt-1.5 text-[11.5px] leading-[1.45] text-[#5f4a3f] sm:mt-4 sm:text-base sm:leading-7">
                       {path.text}
                     </p>
                     <ArrowUpRight
-                      className={`${styles.ctaArrowDiagonal} mt-4 size-5 text-[#a81414] sm:mt-6`}
+                      className={`${styles.ctaArrowDiagonal} mt-2.5 size-4 text-[#a81414] sm:mt-6 sm:size-5`}
                     />
                   </div>
                 </>
               );
 
-              const cardClasses = `${styles.cardSurface} ${styles.spotlightCard} group flex h-full flex-col rounded-xl border border-[#d8c8ae] bg-white p-5 shadow-[0_24px_40px_-30px_rgba(107,11,11,0.25)] hover:border-[#c5a146] hover:shadow-[0_24px_40px_-28px_rgba(107,11,11,0.4)] active:scale-[0.99] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#a81414] sm:min-h-[280px] sm:rounded-md sm:p-8`;
+              const cardClasses = `${styles.cardSurface} ${styles.spotlightCard} group flex h-full flex-col rounded-xl border border-[#d8c8ae] bg-white p-3.5 shadow-[0_18px_32px_-26px_rgba(107,11,11,0.22)] hover:border-[#c5a146] hover:shadow-[0_24px_40px_-28px_rgba(107,11,11,0.4)] active:scale-[0.99] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#a81414] sm:min-h-[280px] sm:rounded-md sm:p-8 sm:shadow-[0_24px_40px_-30px_rgba(107,11,11,0.25)]`;
 
               return (
-                <div key={path.title} data-paths-card>
+                <div key={path.title} data-paths-card className="h-full">
                   {isHash ? (
                     <a
                       href={path.href}
@@ -1674,11 +1671,10 @@ export default function ServicesChoreography({
                     type="button"
                     aria-label={`View reading ${idx + 1}: ${service.title}`}
                     onClick={() => stepReadingSpread(idx)}
-                    className={`h-2 rounded-full transition-all duration-300 ${
-                      idx === activeReadingIndex
+                    className={`h-2 rounded-full transition-all duration-300 ${idx === activeReadingIndex
                         ? "w-7 bg-[#981313]"
                         : "w-2 bg-[#981313]/25"
-                    }`}
+                      }`}
                   />
                 ))}
                 <span className="ml-2 text-xs font-semibold tracking-[0.16em] text-[#6b0b0b] tabular-nums">
@@ -1723,11 +1719,10 @@ export default function ServicesChoreography({
               >
                 <article
                   onPointerMove={updateSpotlight}
-                  className={`${styles.cardSurface} ${styles.spotlightCard} group relative flex h-full flex-col rounded-t-[10rem] rounded-b-2xl border p-2 sm:min-h-[35rem] sm:rounded-t-[999px] sm:rounded-b-xl sm:p-2.5 ${
-                    service.mostBooked
+                  className={`${styles.cardSurface} ${styles.spotlightCard} group relative flex h-full flex-col rounded-t-[10rem] rounded-b-2xl border p-2 sm:min-h-[35rem] sm:rounded-t-[999px] sm:rounded-b-xl sm:p-2.5 ${service.mostBooked
                       ? "border-[#6b0b0b] bg-[#6b0b0b] text-white shadow-[0_35px_70px_-35px_rgba(107,11,11,0.75)]"
                       : "border-[#d8c8ae] bg-[#fffdf9] shadow-[0_24px_60px_-42px_rgba(107,11,11,0.55)] hover:border-[#c5a146]"
-                  }`}
+                    }`}
                 >
                   {service.mostBooked && (
                     <span className="absolute left-1/2 top-0 z-10 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-full bg-[#ddb829] px-4 py-1.5 text-[0.65rem] font-bold uppercase tracking-[0.16em] text-[#371d17] sm:py-2">
@@ -1735,47 +1730,41 @@ export default function ServicesChoreography({
                     </span>
                   )}
                   <div
-                    className={`flex h-full flex-col rounded-t-[9.5rem] rounded-b-xl border px-4 pb-4 pt-9 text-center sm:rounded-t-[999px] sm:rounded-b-lg sm:px-5 sm:pb-5 sm:pt-14 ${
-                      service.mostBooked
+                    className={`flex h-full flex-col rounded-t-[9.5rem] rounded-b-xl border px-4 pb-4 pt-9 text-center sm:rounded-t-[999px] sm:rounded-b-lg sm:px-5 sm:pb-5 sm:pt-14 ${service.mostBooked
                         ? "border-[#ddb829]"
                         : "border-[#c9a520]"
-                    }`}
+                      }`}
                   >
                     <span
-                      className={`font-serif text-xs tracking-[0.28em] tabular-nums sm:text-sm ${
-                        service.mostBooked ? "text-[#e4c665]" : "text-[#8f0e0e]"
-                      }`}
+                      className={`font-serif text-xs tracking-[0.28em] tabular-nums sm:text-sm ${service.mostBooked ? "text-[#e4c665]" : "text-[#8f0e0e]"
+                        }`}
                     >
                       {String(index + 1).padStart(2, "0")}
                     </span>
                     <Sparkles
-                      className={`mx-auto mt-3 size-7 stroke-[1.2] sm:mt-5 sm:size-10 ${
-                        service.mostBooked ? "text-[#e4c665]" : "text-[#a81414]"
-                      }`}
+                      className={`mx-auto mt-3 size-7 stroke-[1.2] sm:mt-5 sm:size-10 ${service.mostBooked ? "text-[#e4c665]" : "text-[#a81414]"
+                        }`}
                     />
                     <h3 className="mt-3 font-serif text-2xl leading-tight sm:mt-5 sm:text-3xl">
                       {service.title}
                     </h3>
                     <p
-                      className={`mt-3 text-sm leading-6 sm:mt-5 sm:text-[0.95rem] sm:leading-7 ${
-                        service.mostBooked ? "text-white/75" : "text-[#5f4a3f]"
-                      }`}
+                      className={`mt-3 text-sm leading-6 sm:mt-5 sm:text-[0.95rem] sm:leading-7 ${service.mostBooked ? "text-white/75" : "text-[#5f4a3f]"
+                        }`}
                     >
                       {service.description}
                     </p>
                     <div
-                      className={`mt-5 flex items-end justify-between border-t pt-4 text-left sm:mt-auto sm:pt-5 ${
-                        service.mostBooked
+                      className={`mt-5 flex items-end justify-between border-t pt-4 text-left sm:mt-auto sm:pt-5 ${service.mostBooked
                           ? "border-[#ddb829]/35"
                           : "border-[#6b0b0b]/12"
-                      }`}
+                        }`}
                     >
                       <span
-                        className={`flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.1em] sm:gap-2 ${
-                          service.mostBooked
+                        className={`flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.1em] sm:gap-2 ${service.mostBooked
                             ? "text-[#f0d77c]"
                             : "text-[#6b0b0b]"
-                        }`}
+                          }`}
                       >
                         <Clock className="size-3.5" /> {service.duration}
                       </span>
@@ -1785,11 +1774,10 @@ export default function ServicesChoreography({
                     </div>
                     <Link
                       href={`/services/${service.slug}`}
-                      className={`mt-4 inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-5 text-xs font-bold uppercase tracking-[0.15em] transition-colors active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-4 sm:mt-5 sm:min-h-12 ${
-                        service.mostBooked
+                      className={`mt-4 inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-5 text-xs font-bold uppercase tracking-[0.15em] transition-colors active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-4 sm:mt-5 sm:min-h-12 ${service.mostBooked
                           ? "bg-[#ddb829] text-[#371d17] hover:bg-[#f0d060] focus-visible:outline-[#f0d060]"
                           : "bg-[#a81414] text-white hover:bg-[#6b0b0b] focus-visible:outline-[#a81414]"
-                      }`}
+                        }`}
                     >
                       Reserve session{" "}
                       <ArrowRight className={`${styles.ctaArrow} size-4`} />
@@ -1959,18 +1947,16 @@ export default function ServicesChoreography({
                           key={service.slug}
                           href={`#healing-card-${idx}`}
                           onClick={() => setActiveHealingIndex(idx)}
-                          className={`group flex items-center justify-between gap-3 rounded-xl px-3 py-2 text-left text-sm transition-all duration-300 ${
-                            isActive
+                          className={`group flex items-center justify-between gap-3 rounded-xl px-3 py-2 text-left text-sm transition-all duration-300 ${isActive
                               ? "bg-white/10 text-white"
                               : "text-[#efe5d2]/70 hover:bg-white/5 hover:text-white"
-                          }`}
+                            }`}
                         >
                           <span className="flex min-w-0 items-center gap-2.5">
                             <span
                               aria-hidden="true"
-                              className={`size-1.5 shrink-0 rounded-full transition-colors ${
-                                isActive ? "bg-[#ddb829]" : "bg-white/25"
-                              }`}
+                              className={`size-1.5 shrink-0 rounded-full transition-colors ${isActive ? "bg-[#ddb829]" : "bg-white/25"
+                                }`}
                             />
                             <span className="truncate font-serif">
                               {service.title}
@@ -2005,16 +1991,14 @@ export default function ServicesChoreography({
                         data-healing-pill={idx}
                         href={`#healing-card-${idx}`}
                         onClick={() => setActiveHealingIndex(idx)}
-                        className={`inline-flex min-h-9 shrink-0 items-center gap-2 whitespace-nowrap rounded-xl px-3 py-1.5 text-xs font-semibold transition-all duration-300 ${
-                          isActive
+                        className={`inline-flex min-h-9 shrink-0 items-center gap-2 whitespace-nowrap rounded-xl px-3 py-1.5 text-xs font-semibold transition-all duration-300 ${isActive
                             ? "bg-[#ddb829] text-[#241b17] shadow-sm"
                             : "bg-white/8 text-[#efe5d2] hover:bg-white/14"
-                        }`}
+                          }`}
                       >
                         <span
-                          className={`text-[10px] tracking-[0.16em] tabular-nums ${
-                            isActive ? "text-[#6b0b0b]" : "text-[#f0d060]"
-                          }`}
+                          className={`text-[10px] tracking-[0.16em] tabular-nums ${isActive ? "text-[#6b0b0b]" : "text-[#f0d060]"
+                            }`}
                         >
                           0{idx + 1}
                         </span>

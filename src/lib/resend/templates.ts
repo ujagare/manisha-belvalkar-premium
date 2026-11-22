@@ -232,3 +232,89 @@ export function requestConfirmationEmail(input: {
     `),
   };
 }
+
+/** Customer notification when a physical order is dispatched via Shiprocket / courier. */
+export function shipmentDispatchedEmail(input: {
+  name: string;
+  orderRef: string;
+  items: string;
+  carrier: string;
+  awbCode: string;
+  etdLabel: string | null;
+  trackUrl: string;
+}): { subject: string; html: string } {
+  const rows = [
+    { label: "Order Ref", value: input.orderRef },
+    { label: "Items", value: input.items },
+    { label: "Courier Partner", value: input.carrier },
+    { label: "AWB / Tracking No.", value: input.awbCode },
+  ];
+  if (input.etdLabel) rows.push({ label: "Estimated Delivery", value: input.etdLabel });
+
+  return {
+    subject: `Your order ${input.orderRef} has been shipped!`,
+    html: layout("Your Parcel Is on Its Way", `
+      <p style="margin:0 0 8px;font-size:16px;color:#2b2118;">Dear ${escapeHtml(input.name).trim() || "there"},</p>
+      <p style="margin:0 0 16px;font-size:14px;line-height:1.7;color:#2b2118;">Great news! Your order has been carefully packed and handed over to <strong>${escapeHtml(input.carrier)}</strong> for delivery.</p>
+      ${detailsTable(rows)}
+      <div style="margin:24px 0;">
+        <a href="${input.trackUrl}" style="display:inline-block;padding:12px 26px;border-radius:999px;background:#6b0b0b;color:#ffffff;font-size:13px;font-weight:700;text-decoration:none;">Track Your Shipment Live</a>
+      </div>
+      <p style="margin:0;font-size:12px;line-height:1.6;color:#7a6b5a;">Courier scans typically update within a few hours of pickup. You can check live milestones anytime using your AWB number on our Track Order page.</p>
+      <p style="margin:16px 0 0;font-size:14px;line-height:1.7;color:#2b2118;">With love &amp; light,<br>Dr. Manisha Belvalkar</p>
+    `),
+  };
+}
+
+/** Customer notification when parcel is Out for Delivery. */
+export function shipmentOutForDeliveryEmail(input: {
+  name: string;
+  orderRef: string;
+  items: string;
+  carrier: string;
+  awbCode: string;
+  trackUrl: string;
+}): { subject: string; html: string } {
+  return {
+    subject: `Out for delivery today — Order ${input.orderRef}`,
+    html: layout("Out for Delivery Today", `
+      <p style="margin:0 0 8px;font-size:16px;color:#2b2118;">Dear ${escapeHtml(input.name).trim() || "there"},</p>
+      <p style="margin:0 0 16px;font-size:14px;line-height:1.7;color:#2b2118;">Your order <strong>${escapeHtml(input.items)}</strong> is out for delivery today with <strong>${escapeHtml(input.carrier)}</strong>. Please keep your phone reachable for the delivery partner.</p>
+      ${detailsTable([
+        { label: "Order Ref", value: input.orderRef },
+        { label: "Courier Partner", value: input.carrier },
+        { label: "AWB / Tracking No.", value: input.awbCode },
+      ])}
+      <div style="margin:24px 0;">
+        <a href="${input.trackUrl}" style="display:inline-block;padding:12px 26px;border-radius:999px;background:#6b0b0b;color:#ffffff;font-size:13px;font-weight:700;text-decoration:none;">View Live Delivery Status</a>
+      </div>
+      <p style="margin:12px 0 0;font-size:14px;line-height:1.7;color:#2b2118;">With love &amp; light,<br>Dr. Manisha Belvalkar</p>
+    `),
+  };
+}
+
+/** Customer notification when parcel is Delivered. */
+export function shipmentDeliveredEmail(input: {
+  name: string;
+  orderRef: string;
+  items: string;
+  awbCode: string;
+  orderUrl: string;
+}): { subject: string; html: string } {
+  return {
+    subject: `Delivered — Order ${input.orderRef}`,
+    html: layout("Your Order Has Been Delivered", `
+      <p style="margin:0 0 8px;font-size:16px;color:#2b2118;">Dear ${escapeHtml(input.name).trim() || "there"},</p>
+      <p style="margin:0 0 16px;font-size:14px;line-height:1.7;color:#2b2118;">Your order <strong>${escapeHtml(input.items)}</strong> has been marked delivered. We hope it brings clarity, peace, and abundance into your space.</p>
+      ${detailsTable([
+        { label: "Order Ref", value: input.orderRef },
+        { label: "AWB / Tracking No.", value: input.awbCode },
+      ])}
+      <div style="margin:24px 0;">
+        <a href="${input.orderUrl}" style="display:inline-block;padding:12px 26px;border-radius:999px;background:#6b0b0b;color:#ffffff;font-size:13px;font-weight:700;text-decoration:none;">View Order Details</a>
+      </div>
+      <p style="margin:0;font-size:12px;line-height:1.6;color:#7a6b5a;">If you notice any transit damage or missing items, please reply within 48 hours with unboxing photos so our team can help promptly.</p>
+      <p style="margin:16px 0 0;font-size:14px;line-height:1.7;color:#2b2118;">With love &amp; light,<br>Dr. Manisha Belvalkar</p>
+    `),
+  };
+}

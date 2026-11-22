@@ -88,16 +88,16 @@ function Ornament({ animated = false }: { animated?: boolean }) {
   return (
     <span
       aria-hidden="true"
-      className="inline-flex items-center gap-3 text-[#ddb829]"
+      className="inline-flex items-center gap-2 text-[#ddb829] sm:gap-3"
     >
       <span
         data-ornament-line={animated ? "true" : undefined}
-        className="h-px w-10 origin-right bg-current will-change-transform"
+        className="h-px w-7 origin-right bg-current will-change-transform sm:w-10"
       />
-      <Sparkles className="size-4 stroke-[1.4]" />
+      <Sparkles className="size-3.5 stroke-[1.4] sm:size-4" />
       <span
         data-ornament-line={animated ? "true" : undefined}
-        className="h-px w-10 origin-left bg-current will-change-transform"
+        className="h-px w-7 origin-left bg-current will-change-transform sm:w-10"
       />
     </span>
   );
@@ -481,32 +481,32 @@ export default function AboutChoreography({
       {/* 1. Attention — Hero */}
       <header
         data-hero-section
-        className="relative isolate overflow-hidden bg-[#6b0b0b] px-4 pb-12 pt-8 text-white sm:min-h-[calc(100dvh-4rem)] sm:px-8 sm:pb-20 sm:pt-14 lg:pb-24 lg:pt-20"
+        className="relative isolate overflow-hidden bg-[#6b0b0b] px-4 pb-8 pt-6 text-white sm:min-h-[calc(100dvh-4rem)] sm:px-8 sm:pb-20 sm:pt-14 lg:pb-24 lg:pt-20"
       >
         <div
           aria-hidden="true"
-          className="absolute inset-3 border border-[#ddb829]/20 sm:inset-8"
+          className="absolute inset-2.5 border border-[#ddb829]/20 sm:inset-8"
         />
         <div
           aria-hidden="true"
-          className="absolute -left-28 top-20 size-96 rounded-full bg-[#b41414]/35 blur-3xl"
+          className="hidden sm:block absolute -left-28 top-20 size-96 rounded-full bg-[#b41414]/35 blur-3xl"
         />
-        <div className="relative mx-auto grid max-w-[1200px] items-center gap-8 sm:min-h-[calc(100dvh-11rem)] sm:gap-14 lg:grid-cols-[1.02fr_0.98fr] lg:gap-24">
-          <div className="pt-2 lg:pt-0">
+        <div className="relative mx-auto grid max-w-[1200px] items-center gap-6 sm:min-h-[calc(100dvh-11rem)] sm:gap-14 lg:grid-cols-[1.02fr_0.98fr] lg:gap-24">
+          <div className="pt-1 lg:pt-0">
             <p
               data-hero-eyebrow
-              className="text-xs font-semibold uppercase tracking-[0.28em] text-[#f0d060]"
+              className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#f0d060] sm:text-xs sm:tracking-[0.28em]"
             >
               About Manisha
             </p>
 
-            <h1 className="mt-4 max-w-2xl text-balance font-serif text-[2.2rem] leading-[1.06] tracking-[-0.035em] sm:mt-6 sm:text-6xl lg:text-[4.75rem]">
-              <span className="block overflow-hidden pb-1">
+            <h1 className="mt-2.5 max-w-2xl text-balance font-serif text-[1.9rem] leading-[1.06] tracking-[-0.03em] sm:mt-6 sm:text-6xl sm:tracking-[-0.035em] lg:text-[4.75rem]">
+              <span className="block overflow-hidden pb-0.5 sm:pb-1">
                 <span data-hero-line className="inline-block will-change-transform">
                   Wisdom shaped by a
                 </span>
               </span>
-              <span className="block overflow-hidden pb-1">
+              <span className="block overflow-hidden pb-0.5 sm:pb-1">
                 <span
                   data-hero-line
                   className="inline-block italic text-[#f0d060] will-change-transform"
@@ -516,13 +516,13 @@ export default function AboutChoreography({
               </span>
             </h1>
 
-            <div data-hero-ornament className="mt-5 sm:mt-8">
+            <div data-hero-ornament className="mt-3.5 sm:mt-8">
               <Ornament />
             </div>
 
             <p
               data-hero-copy
-              className="mt-4 max-w-xl text-base leading-7 text-[#efe5d2] sm:mt-7 sm:text-lg sm:leading-8"
+              className="mt-3 max-w-xl text-sm leading-6 text-[#efe5d2] sm:mt-7 sm:text-lg sm:leading-8"
             >
               For over 30 years, Manisha has helped people meet uncertainty with
               clarity, self-trust and grounded spiritual guidance.
@@ -530,40 +530,41 @@ export default function AboutChoreography({
 
             <div
               data-hero-cta
-              className="mt-6 flex flex-wrap gap-3 sm:mt-9 sm:gap-4"
+              className="mt-4 grid grid-cols-2 gap-2 sm:mt-9 sm:flex sm:flex-wrap sm:gap-4"
             >
               <Link
                 href="/contact"
-                className="group inline-flex min-h-12 items-center justify-between gap-4 whitespace-nowrap rounded-full bg-[#ddb829] py-2 pl-6 pr-2.5 text-sm font-bold text-[#3b2118] shadow-[0_18px_38px_-16px_rgba(221,184,41,0.55)] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-0.5 hover:bg-[#f0d060] active:scale-[0.98] sm:min-h-13 sm:pl-7 sm:pr-3"
+                className="group inline-flex min-h-10 items-center justify-center gap-1.5 rounded-full bg-[#ddb829] px-2.5 py-2 text-center text-[11px] font-bold leading-tight text-[#3b2118] shadow-[0_18px_38px_-16px_rgba(221,184,41,0.55)] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-0.5 hover:bg-[#f0d060] active:scale-[0.98] sm:min-h-13 sm:justify-between sm:gap-4 sm:whitespace-nowrap sm:pl-7 sm:pr-3 sm:text-sm"
               >
                 <span>Work with Manisha</span>
-                <span className="grid size-8 place-items-center rounded-full bg-[#3b2118]/12 transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-x-0.5 group-hover:-translate-y-px group-hover:scale-105">
+                <ArrowRight className="size-3 shrink-0 sm:hidden" strokeWidth={1.8} />
+                <span className="hidden size-8 place-items-center rounded-full bg-[#3b2118]/12 transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-x-0.5 group-hover:-translate-y-px group-hover:scale-105 sm:grid">
                   <ArrowRight className="size-4" strokeWidth={1.7} />
                 </span>
               </Link>
               <Link
                 href="#disciplines"
-                className="inline-flex min-h-12 items-center whitespace-nowrap rounded-full border border-[#f0d060]/55 px-6 py-3 text-sm font-semibold text-white transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-0.5 hover:border-[#f0d060] hover:text-[#f0d060] active:scale-[0.98] sm:min-h-13 sm:px-7"
+                className="inline-flex min-h-10 items-center justify-center rounded-full border border-[#f0d060]/55 px-2.5 py-2 text-center text-[11px] font-semibold leading-tight text-white transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-0.5 hover:border-[#f0d060] hover:text-[#f0d060] active:scale-[0.98] sm:min-h-13 sm:whitespace-nowrap sm:px-7 sm:py-3 sm:text-sm"
               >
                 Explore her practice
               </Link>
             </div>
 
-            <dl className="mt-8 grid max-w-2xl grid-cols-3 border-y border-[#ddb829]/25 py-4 sm:mt-12 sm:py-6">
+            <dl className="mt-5 grid max-w-2xl grid-cols-3 border-y border-[#ddb829]/25 py-3 sm:mt-12 sm:py-6">
               {stats.map(([value, label], index) => (
                 <div
                   key={label}
                   data-hero-stat
                   className={
                     index
-                      ? "border-l border-[#ddb829]/25 px-3 sm:px-6"
-                      : "pr-3 sm:pr-6"
+                      ? "border-l border-[#ddb829]/25 px-2.5 sm:px-6"
+                      : "pr-2.5 sm:pr-6"
                   }
                 >
-                  <dt className="font-serif text-2xl tabular-nums text-[#f0d060] sm:text-4xl">
+                  <dt className="font-serif text-xl tabular-nums text-[#f0d060] sm:text-4xl">
                     {value}
                   </dt>
-                  <dd className="mt-1 text-[0.62rem] uppercase leading-4 tracking-[0.1em] text-white/65 sm:text-xs sm:leading-5">
+                  <dd className="mt-0.5 text-[0.58rem] uppercase leading-3.5 tracking-[0.08em] text-white/65 sm:mt-1 sm:text-xs sm:leading-5 sm:tracking-[0.1em]">
                     {label}
                   </dd>
                 </div>
@@ -580,14 +581,14 @@ export default function AboutChoreography({
                   alt="Dr. Manisha Belvalkar seated with her Tarot cards"
                   fill
                   priority
-                  sizes="(max-width: 1024px) 90vw, 470px"
+                  sizes="(max-width: 640px) 224px, (max-width: 1024px) 90vw, 470px"
                   className={`${styles.jharokhaImage} object-[50%_35%]`}
                 />
-                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#3a0909] via-[#3a0909]/20 to-transparent px-5 pb-5 pt-16 sm:px-7 sm:pb-7 sm:pt-24">
-                  <p className="font-serif text-lg sm:text-xl">
+                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#3a0909] via-[#3a0909]/25 to-transparent px-3.5 pb-3.5 pt-10 sm:px-7 sm:pb-7 sm:pt-24">
+                  <p className="font-serif text-sm sm:text-xl">
                     Dr. Manisha Belvalkar
                   </p>
-                  <p className="mt-0.5 text-[0.65rem] uppercase tracking-[0.16em] text-[#f0d060] sm:mt-1 sm:text-xs">
+                  <p className="mt-0.5 text-[0.56rem] uppercase tracking-[0.14em] text-[#f0d060] sm:mt-1 sm:text-xs sm:tracking-[0.16em]">
                     PhD in Tarot Reading
                   </p>
                 </div>
@@ -596,13 +597,13 @@ export default function AboutChoreography({
             <div className={styles.plinth} aria-hidden="true" />
             <div
               data-hero-badge
-              className="absolute bottom-10 right-1 grid size-20 place-items-center rounded-full border border-[#ddb829] bg-[#8b0f0f] text-center shadow-xl will-change-transform sm:-right-8 sm:bottom-20 sm:size-24"
+              className="absolute bottom-5 -right-2 grid size-14 place-items-center rounded-full border border-[#ddb829] bg-[#8b0f0f] text-center shadow-xl will-change-transform sm:-right-8 sm:bottom-20 sm:size-24"
             >
               <div>
-                <b className="block font-serif text-2xl tabular-nums text-[#f0d060] sm:text-3xl">
+                <b className="block font-serif text-lg leading-none tabular-nums text-[#f0d060] sm:text-3xl">
                   30+
                 </b>
-                <span className="text-[0.6rem] uppercase tracking-[0.18em] sm:text-[0.65rem]">
+                <span className="text-[0.5rem] uppercase tracking-[0.14em] sm:text-[0.65rem] sm:tracking-[0.18em]">
                   Years
                 </span>
               </div>
@@ -614,9 +615,9 @@ export default function AboutChoreography({
       {/* 2. Scrubbed Manifesto Strip */}
       <section
         data-manifesto-section
-        className="border-b border-[#6b0b0b]/10 bg-[#efe5d2] px-4 py-12 sm:px-8 sm:py-16 lg:py-24"
+        className="border-b border-[#6b0b0b]/10 bg-[#efe5d2] px-4 py-6 sm:px-8 sm:py-16 lg:py-24"
       >
-        <blockquote className="mx-auto flex max-w-5xl flex-col items-center gap-4 text-center font-serif text-2xl leading-tight text-[#6b0b0b] sm:gap-6 sm:text-4xl lg:flex-row lg:justify-center lg:text-5xl">
+        <blockquote className="mx-auto flex max-w-5xl flex-col items-center gap-2.5 text-center font-serif text-[1.2rem] leading-snug text-[#6b0b0b] sm:gap-6 sm:text-4xl sm:leading-tight lg:flex-row lg:justify-center lg:text-5xl">
           <Ornament animated />
           <span className="text-balance">
             {manifestoWordsFirst.map((word, index) => (
@@ -642,19 +643,21 @@ export default function AboutChoreography({
               ))}
             </em>
           </span>
-          <Ornament animated />
+          <span className="hidden sm:inline-flex">
+            <Ornament animated />
+          </span>
         </blockquote>
       </section>
 
       {/* 3. Practice Narrative + Scrubbed Arch Reveal */}
       <section
         data-practice-section
-        className="px-4 py-14 sm:px-8 sm:py-24 lg:py-32"
+        className="px-4 py-8 sm:px-8 sm:py-24 lg:py-32"
       >
-        <div className="mx-auto grid max-w-[1200px] items-center gap-8 sm:gap-14 lg:grid-cols-[0.82fr_1.18fr] lg:gap-24">
+        <div className="mx-auto grid max-w-[1200px] items-center gap-5 sm:gap-14 lg:grid-cols-[0.82fr_1.18fr] lg:gap-24">
           <div
             data-practice-frame
-            className="mx-auto w-full max-w-[320px] will-change-transform sm:max-w-[420px] lg:mx-0"
+            className="mx-auto w-full max-w-[200px] will-change-transform sm:max-w-[420px] lg:mx-0"
           >
             <div className={styles.jharokha}>
               <div className={styles.jharokhaInner}>
@@ -663,7 +666,7 @@ export default function AboutChoreography({
                   src="/images/manisha-about-practice.webp"
                   alt="Manisha Belvalkar during a Tarot reading"
                   fill
-                  sizes="(max-width: 1024px) 100vw, 420px"
+                  sizes="(max-width: 640px) 200px, (max-width: 1024px) 420px, 420px"
                   className={`${styles.jharokhaImage} object-[50%_28%] will-change-transform`}
                 />
               </div>
@@ -676,15 +679,15 @@ export default function AboutChoreography({
             </div>
             <h2
               data-practice-copy
-              className="mt-5 max-w-3xl text-balance font-serif text-[1.85rem] leading-[1.06] tracking-[-0.03em] sm:mt-7 sm:text-5xl lg:text-6xl"
+              className="mt-3 max-w-3xl text-balance font-serif text-[1.6rem] leading-[1.08] tracking-[-0.025em] sm:mt-7 sm:text-5xl sm:leading-[1.06] sm:tracking-[-0.03em] lg:text-6xl"
             >
               A practice built on{" "}
               <em className="text-[#a81414]">attention, study and care.</em>
             </h2>
-            <div className="mt-5 max-w-[42rem] space-y-4 text-sm leading-7 text-[#67564d] sm:mt-8 sm:space-y-5 sm:text-lg sm:leading-8">
+            <div className="mt-3.5 max-w-[42rem] space-y-3 text-[13.5px] leading-6 text-[#67564d] sm:mt-8 sm:space-y-5 sm:text-lg sm:leading-8">
               <p
                 data-practice-copy
-                className="first-letter:float-left first-letter:mr-3 first-letter:font-serif first-letter:text-6xl first-letter:leading-[0.8] first-letter:text-[#a81414]"
+                className="first-letter:float-left first-letter:mr-2 first-letter:font-serif first-letter:text-4xl first-letter:leading-[0.85] first-letter:text-[#a81414] sm:first-letter:mr-3 sm:first-letter:text-6xl sm:first-letter:leading-[0.8]"
               >
                 Manisha&apos;s work began with a deep curiosity about the unseen
                 patterns that influence everyday life. That curiosity grew into
@@ -699,7 +702,7 @@ export default function AboutChoreography({
               </p>
               <p
                 data-practice-copy
-                className="border-l-2 border-[#ddb829] pl-6 font-serif text-xl italic text-[#6b0b0b]"
+                className="border-l-2 border-[#ddb829] pl-3.5 font-serif text-base italic leading-6 text-[#6b0b0b] sm:pl-6 sm:text-xl sm:leading-normal"
               >
                 The intention is simple: to help each person understand where
                 they are, recognise what is asking to change and move forward
@@ -714,15 +717,15 @@ export default function AboutChoreography({
       <section
         id="disciplines"
         data-disciplines-section
-        className="bg-[#fdf8f0] px-4 py-14 sm:px-8 sm:py-24 lg:py-32"
+        className="bg-[#fdf8f0] px-4 py-8 sm:px-8 sm:py-24 lg:py-32"
       >
         <div className="mx-auto max-w-[1200px]">
           <div data-discipline-head className="mx-auto max-w-3xl text-center">
-            <h2 className="text-balance font-serif text-[1.85rem] leading-[1.06] tracking-[-0.03em] sm:text-5xl lg:text-6xl">
+            <h2 className="text-balance font-serif text-[1.6rem] leading-[1.08] tracking-[-0.025em] sm:text-5xl sm:leading-[1.06] sm:tracking-[-0.03em] lg:text-6xl">
               Four disciplines.{" "}
               <em className="text-[#a81414]">One thoughtful approach.</em>
             </h2>
-            <p className="mx-auto mt-3 max-w-2xl text-sm leading-7 text-[#67564d] sm:mt-6 sm:text-lg sm:leading-8">
+            <p className="mx-auto mt-2 max-w-2xl text-[13.5px] leading-6 text-[#67564d] sm:mt-6 sm:text-lg sm:leading-8">
               Every practice offers a different way to understand the present and
               make the next decision with care.
             </p>
@@ -730,24 +733,24 @@ export default function AboutChoreography({
 
           <div
             data-disciplines-grid
-            className="mt-10 grid grid-flow-dense gap-5 sm:mt-14 sm:gap-6 md:grid-cols-2 lg:grid-cols-4"
+            className="mt-6 grid grid-cols-2 grid-flow-dense gap-2.5 sm:mt-14 sm:gap-6 md:grid-cols-2 lg:grid-cols-4"
           >
             {expertise.map((item) => (
               <div key={item.title} data-discipline-card className="h-full">
-                <article className="group h-full rounded-[1.75rem] bg-[#efe5d2]/75 p-1.5 ring-1 ring-[#c7a23b]/35 shadow-[0_28px_60px_-42px_rgba(107,11,11,0.45)] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-1.5 hover:ring-[#ddb829]">
-                  <div className="relative flex h-full flex-col items-center overflow-hidden rounded-[calc(1.75rem-0.375rem)] bg-white px-5 py-7 text-center shadow-[inset_0_1px_1px_rgba(255,255,255,0.9)] sm:px-6 sm:py-10">
-                    <div className="relative grid size-14 place-items-center rounded-full bg-[#6b0b0b] text-[#ddb829] ring-1 ring-[#ddb829] ring-offset-4 ring-offset-white transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-105 group-hover:rotate-3 sm:size-16">
-                      <item.icon className="size-6 sm:size-7" strokeWidth={1.25} />
+                <article className="group h-full rounded-[1.15rem] bg-[#efe5d2]/75 p-1 ring-1 ring-[#c7a23b]/35 shadow-[0_20px_44px_-32px_rgba(107,11,11,0.4)] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-1.5 hover:ring-[#ddb829] sm:rounded-[1.75rem] sm:p-1.5 sm:shadow-[0_28px_60px_-42px_rgba(107,11,11,0.45)]">
+                  <div className="relative flex h-full flex-col items-center overflow-hidden rounded-[calc(1.15rem-0.25rem)] bg-white px-3 py-4 text-center shadow-[inset_0_1px_1px_rgba(255,255,255,0.9)] sm:rounded-[calc(1.75rem-0.375rem)] sm:px-6 sm:py-10">
+                    <div className="relative grid size-10 place-items-center rounded-full bg-[#6b0b0b] text-[#ddb829] ring-1 ring-[#ddb829] ring-offset-2 ring-offset-white transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-105 group-hover:rotate-3 sm:size-16 sm:ring-offset-4">
+                      <item.icon className="size-4 sm:size-7" strokeWidth={1.25} />
                     </div>
-                    <h3 className="mt-5 font-serif text-xl leading-tight text-[#292524] transition-colors duration-300 group-hover:text-[#981313] sm:mt-7 sm:text-2xl">
+                    <h3 className="mt-3 font-serif text-[1rem] leading-snug text-[#292524] transition-colors duration-300 group-hover:text-[#981313] sm:mt-7 sm:text-2xl sm:leading-tight">
                       {item.title}
                     </h3>
-                    <p className="mt-2.5 text-sm leading-6 text-[#67564d] sm:mt-4 sm:leading-7">
+                    <p className="mt-1.5 text-[11.5px] leading-[1.45] text-[#67564d] sm:mt-4 sm:text-sm sm:leading-7">
                       {item.text}
                     </p>
                     <span
                       aria-hidden="true"
-                      className="mt-auto block h-px w-12 origin-center scale-x-0 border-b border-[#ddb829] pt-6 transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-x-100"
+                      className="mt-auto hidden h-px w-12 origin-center scale-x-0 border-b border-[#ddb829] pt-6 transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-x-100 sm:block"
                     />
                   </div>
                 </article>
@@ -760,20 +763,20 @@ export default function AboutChoreography({
       {/* 5. Desire — Three Decades Journey Timeline with Scroll-Drawn Gold Track */}
       <section
         data-journey-section
-        className="bg-[#1c1917] px-4 py-14 text-white sm:px-8 sm:py-24 lg:py-32"
+        className="bg-[#1c1917] px-4 py-8 text-white sm:px-8 sm:py-24 lg:py-32"
       >
         <div className="mx-auto max-w-[1200px]">
           <div data-journey-head>
-            <p className="text-xs font-semibold uppercase tracking-[0.26em] text-[#ddb829]">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#ddb829] sm:text-xs sm:tracking-[0.26em]">
               The journey
             </p>
-            <h2 className="mt-3 max-w-3xl text-balance font-serif text-[1.85rem] leading-[1.06] tracking-[-0.03em] sm:mt-5 sm:text-5xl lg:text-6xl">
+            <h2 className="mt-2 max-w-3xl text-balance font-serif text-[1.6rem] leading-[1.08] tracking-[-0.025em] sm:mt-5 sm:text-5xl sm:leading-[1.06] sm:tracking-[-0.03em] lg:text-6xl">
               Three decades of{" "}
               <em className="text-[#f0d060]">learning and service.</em>
             </h2>
           </div>
 
-          <div data-journey-list className="relative mt-10 sm:mt-14">
+          <div data-journey-list className="relative mt-6 sm:mt-14">
             <div
               aria-hidden="true"
               className="absolute left-0 right-0 top-0 hidden h-px bg-[#ddb829]/20 lg:block"
@@ -784,24 +787,24 @@ export default function AboutChoreography({
               className="absolute left-0 right-0 top-0 hidden h-px origin-left bg-gradient-to-r from-[#ddb829] via-[#f0d060] to-[#ddb829] will-change-transform lg:block"
             />
 
-            <ol className="grid gap-7 sm:gap-10 md:grid-cols-2 lg:grid-cols-4 lg:gap-0">
+            <ol className="grid grid-cols-2 gap-x-4 gap-y-5 sm:gap-10 md:grid-cols-2 lg:grid-cols-4 lg:gap-0">
               {milestones.map(([year, title, text]) => (
                 <li
                   key={year}
                   data-journey-item
-                  className="relative border-t border-[#ddb829]/35 pt-6 sm:pt-8 lg:border-t-0 lg:px-6 lg:first:pl-0"
+                  className="relative border-t border-[#ddb829]/35 pt-4 sm:pt-8 lg:border-t-0 lg:px-6 lg:first:pl-0"
                 >
                   <span
                     data-journey-node
-                    className="absolute -top-2.5 left-0 grid size-5 place-items-center rounded-full border border-[#ddb829] bg-[#1c1917] shadow-[0_0_16px_rgba(221,184,41,0.45)] after:size-2 after:rounded-full after:bg-[#ddb829] lg:left-6 lg:first:left-0"
+                    className="absolute -top-2 left-0 grid size-4 place-items-center rounded-full border border-[#ddb829] bg-[#1c1917] shadow-[0_0_16px_rgba(221,184,41,0.45)] after:size-1.5 after:rounded-full after:bg-[#ddb829] sm:-top-2.5 sm:size-5 sm:after:size-2 lg:left-6 lg:first:left-0"
                   />
-                  <time className="font-serif text-3xl italic tabular-nums text-[#f0d060] sm:text-4xl">
+                  <time className="font-serif text-xl italic tabular-nums text-[#f0d060] sm:text-4xl">
                     {year}
                   </time>
-                  <h3 className="mt-3 font-serif text-xl sm:mt-5 sm:text-2xl">
+                  <h3 className="mt-1.5 font-serif text-[0.98rem] leading-snug sm:mt-5 sm:text-2xl">
                     {title}
                   </h3>
-                  <p className="mt-2 text-sm leading-6 text-[#d6cfc2] sm:mt-3 sm:leading-7">
+                  <p className="mt-1.5 text-[11.5px] leading-[1.5] text-[#d6cfc2] sm:mt-3 sm:text-sm sm:leading-7">
                     {text}
                   </p>
                 </li>
@@ -814,20 +817,20 @@ export default function AboutChoreography({
       {/* 6. Pinned Editorial Reading Beat — A Life In Practice */}
       <section
         data-life-section
-        className="relative overflow-hidden bg-[#fdf8f0] px-4 py-14 sm:px-8 sm:py-24 lg:py-32"
+        className="relative overflow-hidden bg-[#fdf8f0] px-4 py-8 sm:px-8 sm:py-24 lg:py-32"
       >
         <div
           data-life-inner
-          className="relative mx-auto grid max-w-[1200px] items-center gap-8 sm:gap-14 lg:grid-cols-[1.15fr_0.85fr] lg:gap-24"
+          className="relative mx-auto grid max-w-[1200px] items-center gap-5 sm:gap-14 lg:grid-cols-[1.15fr_0.85fr] lg:gap-24"
         >
           <div data-life-left>
-            <p className="text-xs font-semibold uppercase tracking-[0.26em] text-[#a8871a]">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#a8871a] sm:text-xs sm:tracking-[0.26em]">
               Beyond the sessions
             </p>
-            <h2 className="mt-3 font-serif text-[2rem] leading-[1.02] tracking-[-0.03em] sm:mt-5 sm:text-6xl lg:text-7xl">
+            <h2 className="mt-2 font-serif text-[1.7rem] leading-[1.04] tracking-[-0.025em] sm:mt-5 sm:text-6xl sm:leading-[1.02] sm:tracking-[-0.03em] lg:text-7xl">
               A life <em className="text-[#a81414]">in practice.</em>
             </h2>
-            <blockquote className="mt-6 border-l-2 border-[#ddb829] pl-4 font-serif text-xl italic leading-[1.45] text-[#8b0f0f] sm:mt-10 sm:pl-7 sm:text-3xl lg:text-4xl">
+            <blockquote className="mt-4 border-l-2 border-[#ddb829] pl-3.5 font-serif text-[1.05rem] italic leading-[1.45] text-[#8b0f0f] sm:mt-10 sm:pl-7 sm:text-3xl lg:text-4xl">
               {lifeQuoteWords.map((word, index) => (
                 <span
                   key={`lq-${index}`}
@@ -839,18 +842,18 @@ export default function AboutChoreography({
                 </span>
               ))}
             </blockquote>
-            <p className="mt-4 max-w-xl text-sm leading-7 text-[#57534e] sm:mt-7 sm:text-base sm:leading-8">
+            <p className="mt-3 max-w-xl text-[13.5px] leading-6 text-[#57534e] sm:mt-7 sm:text-base sm:leading-8">
               A glimpse of Manisha as a practitioner, teacher and woman whose
               work has grown through decades of study, recognition and lived
               spiritual practice.
             </p>
-            <div className="mt-6 flex items-center gap-4 sm:mt-10 sm:gap-5">
-              <Sparkles className="size-7 text-[#a8871a] sm:size-8" strokeWidth={1.2} />
+            <div className="mt-4 flex items-center gap-3 sm:mt-10 sm:gap-5">
+              <Sparkles className="size-5 shrink-0 text-[#a8871a] sm:size-8" strokeWidth={1.2} />
               <div>
-                <b className="font-serif text-xl sm:text-2xl">
+                <b className="font-serif text-base sm:text-2xl">
                   Presence before prescription.
                 </b>
-                <p className="mt-0.5 text-sm text-[#57534e] sm:mt-1">
+                <p className="mt-0.5 text-xs text-[#57534e] sm:mt-1 sm:text-sm">
                   Warm, grounded and deeply attentive.
                 </p>
               </div>
@@ -859,7 +862,7 @@ export default function AboutChoreography({
 
           <div
             data-life-art
-            className="mx-auto w-full max-w-[300px] will-change-transform sm:max-w-[400px]"
+            className="mx-auto w-full max-w-[196px] will-change-transform sm:max-w-[400px]"
           >
             <div className={styles.jharokha}>
               <div className={styles.jharokhaInner}>
@@ -867,7 +870,7 @@ export default function AboutChoreography({
                   src="/images/manisha/manisha-about-presence.webp"
                   alt="Manisha Belvalkar in a personal portrait"
                   fill
-                  sizes="(max-width: 1024px) 100vw, 400px"
+                  sizes="(max-width: 640px) 196px, (max-width: 1024px) 400px, 400px"
                   className={`${styles.jharokhaImage} object-[50%_15%]`}
                 />
               </div>
@@ -879,14 +882,14 @@ export default function AboutChoreography({
       {/* 7. Recognition, Press & Haptic CTA */}
       <section
         data-recognition-section
-        className="bg-[#6b0b0b] px-4 py-14 text-white sm:px-8 sm:py-24 lg:py-32"
+        className="bg-[#6b0b0b] px-4 py-8 text-white sm:px-8 sm:py-24 lg:py-32"
       >
         <div className="mx-auto max-w-[1200px]">
           <div data-recognition-head className="mx-auto max-w-3xl text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.26em] text-[#ddb829]">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#ddb829] sm:text-xs sm:tracking-[0.26em]">
               A recognised voice
             </p>
-            <h2 className="mt-3 text-balance font-serif text-[1.85rem] leading-[1.06] tracking-[-0.03em] sm:mt-5 sm:text-5xl lg:text-6xl">
+            <h2 className="mt-2 text-balance font-serif text-[1.6rem] leading-[1.08] tracking-[-0.025em] sm:mt-5 sm:text-5xl sm:leading-[1.06] sm:tracking-[-0.03em] lg:text-6xl">
               A journey <em className="text-[#f0d060]">honoured</em> through
               recognition.
             </h2>
@@ -894,11 +897,11 @@ export default function AboutChoreography({
 
           <div
             data-award-row
-            className="mt-8 grid items-center gap-6 border-y border-[#a8871a]/30 py-7 sm:mt-14 sm:gap-12 sm:py-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-20 lg:py-14"
+            className="mt-5 grid items-center gap-4 border-y border-[#a8871a]/30 py-5 sm:mt-14 sm:gap-12 sm:py-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-20 lg:py-14"
           >
             <div
               data-award-frame
-              className="relative aspect-[3/2] overflow-hidden border-[4px] border-[#ddb829] bg-white shadow-[0_28px_70px_-42px_rgba(107,11,11,0.6)] will-change-transform sm:border-[6px]"
+              className="relative aspect-[16/10] overflow-hidden border-[3px] border-[#ddb829] bg-white shadow-[0_28px_70px_-42px_rgba(107,11,11,0.6)] will-change-transform sm:aspect-[3/2] sm:border-[6px]"
             >
               <Image
                 src="/images/manisha-health-magazine.webp"
@@ -910,21 +913,22 @@ export default function AboutChoreography({
             </div>
 
             <div data-award-copy>
-              <Award className="size-8 text-[#ddb829] sm:size-9" strokeWidth={1.3} />
-              <h3 className="mt-4 font-serif text-2xl leading-tight sm:mt-6 sm:text-4xl lg:text-5xl">
+              <Award className="size-6 text-[#ddb829] sm:size-9" strokeWidth={1.3} />
+              <h3 className="mt-2.5 font-serif text-xl leading-tight sm:mt-6 sm:text-4xl lg:text-5xl">
                 {award?.title ?? "International Excellence Award"}
               </h3>
-              <p className="mt-3 text-base leading-7 text-[#efe5d2] sm:mt-6 sm:text-lg sm:leading-8">
+              <p className="mt-2 text-[13.5px] leading-6 text-[#efe5d2] sm:mt-6 sm:text-lg sm:leading-8">
                 {award?.description ??
                   "An honour recognising her mastery and years of dedicated service."}
               </p>
-              <div className="mt-6 flex flex-wrap gap-3 sm:mt-9 sm:gap-4">
+              <div className="mt-4 grid grid-cols-2 gap-2 sm:mt-9 sm:flex sm:flex-wrap sm:gap-4">
                 <Link
                   href="/contact"
-                  className="group inline-flex min-h-12 items-center justify-between gap-4 whitespace-nowrap rounded-full bg-[#ddb829] py-2 pl-6 pr-2.5 text-sm font-semibold text-[#292524] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-0.5 hover:bg-[#f0d060] active:scale-[0.98] sm:min-h-13 sm:pl-7 sm:pr-3"
+                  className="group inline-flex min-h-10 items-center justify-center gap-1 rounded-full bg-[#ddb829] px-2.5 py-2 text-center text-[11px] font-semibold leading-tight text-[#292524] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-0.5 hover:bg-[#f0d060] active:scale-[0.98] sm:min-h-13 sm:justify-between sm:gap-4 sm:whitespace-nowrap sm:pl-7 sm:pr-3 sm:text-sm"
                 >
                   <span>Begin a conversation</span>
-                  <span className="grid size-8 place-items-center rounded-full bg-[#292524]/12 transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-x-0.5 group-hover:-translate-y-px group-hover:scale-105">
+                  <ArrowRight className="size-3 shrink-0 sm:hidden" strokeWidth={1.8} />
+                  <span className="hidden size-8 place-items-center rounded-full bg-[#292524]/12 transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-x-0.5 group-hover:-translate-y-px group-hover:scale-105 sm:grid">
                     <ArrowRight className="size-4" strokeWidth={1.7} />
                   </span>
                 </Link>
@@ -932,7 +936,7 @@ export default function AboutChoreography({
                   href={whatsappHref}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex min-h-12 items-center whitespace-nowrap rounded-full border border-[#f0d060]/60 px-6 py-3 text-sm font-semibold text-white transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-0.5 hover:border-[#f0d060] hover:text-[#f0d060] active:scale-[0.98] sm:min-h-13 sm:px-7"
+                  className="inline-flex min-h-10 items-center justify-center rounded-full border border-[#f0d060]/60 px-2.5 py-2 text-center text-[11px] font-semibold leading-tight text-white transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-0.5 hover:border-[#f0d060] hover:text-[#f0d060] active:scale-[0.98] sm:min-h-13 sm:whitespace-nowrap sm:px-7 sm:py-3 sm:text-sm"
                 >
                   Message on WhatsApp
                 </a>
@@ -940,11 +944,11 @@ export default function AboutChoreography({
             </div>
           </div>
 
-          <div className="mt-10 sm:mt-16">
-            <h3 className="font-serif text-2xl sm:text-3xl">In the press</h3>
+          <div className="mt-6 sm:mt-16">
+            <h3 className="font-serif text-xl sm:text-3xl">In the press</h3>
             <div
               data-press-grid
-              className="mt-5 grid gap-6 sm:mt-8 sm:gap-7 md:grid-cols-2"
+              className="mt-3.5 grid grid-cols-2 gap-3 sm:mt-8 sm:gap-7"
             >
               {[
                 [
@@ -961,18 +965,18 @@ export default function AboutChoreography({
                 ],
               ].map(([src, alt, title, caption]) => (
                 <figure key={src} data-press-figure className="group">
-                  <div className="relative aspect-[4/5] overflow-hidden border-[4px] border-[#ddb829] bg-white sm:border-[5px]">
+                  <div className="relative aspect-[4/4.6] overflow-hidden border-[3px] border-[#ddb829] bg-white sm:aspect-[4/5] sm:border-[5px]">
                     <Image
                       src={src}
                       alt={alt}
                       fill
-                      sizes="(max-width: 768px) 100vw, 50vw"
+                      sizes="(max-width: 768px) 46vw, 50vw"
                       className="object-cover object-top transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-[1.03]"
                     />
                   </div>
-                  <figcaption className="flex items-end justify-between gap-4 border-b border-[#ddb829]/30 py-3.5 transition-colors duration-300 group-hover:border-[#f0d060] sm:py-5">
-                    <b className="font-serif text-lg sm:text-xl">{title}</b>
-                    <span className="text-[0.68rem] uppercase tracking-[0.15em] text-[#ddb829] sm:text-xs">
+                  <figcaption className="flex flex-col gap-0.5 border-b border-[#ddb829]/30 py-2.5 transition-colors duration-300 group-hover:border-[#f0d060] sm:flex-row sm:items-end sm:justify-between sm:gap-4 sm:py-5">
+                    <b className="font-serif text-sm leading-snug sm:text-xl">{title}</b>
+                    <span className="text-[0.6rem] uppercase tracking-[0.12em] text-[#ddb829] sm:text-xs sm:tracking-[0.15em]">
                       {caption}
                     </span>
                   </figcaption>

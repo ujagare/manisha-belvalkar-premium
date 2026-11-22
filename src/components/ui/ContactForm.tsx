@@ -150,10 +150,10 @@ export default function ContactForm({ manualMode = false }: { manualMode?: boole
 
   const getFieldClasses = (field: FieldName) => {
     const hasError = touched[field] && Boolean(fieldErrors[field]);
-    return `w-full rounded-xl border px-4 py-3 text-base sm:text-sm text-[#1c1917] placeholder:text-[#78716c] transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] focus:bg-white focus:outline-none focus:ring-2 ${
+    return `w-full rounded-lg border px-3.5 py-2.5 text-sm text-charcoal placeholder:text-warmgray/60 transition-colors duration-150 focus:bg-white focus:outline-none focus:ring-2 ${
       hasError
-        ? "border-[#981313] bg-[#fbecec]/35 focus:border-[#981313] focus:ring-[#b41414]/20"
-        : "border-[#d8ccb5] bg-[#fdf8f0]/65 focus:border-[#a8871a] focus:ring-[#ddb829]/30"
+        ? "border-primary bg-primary-soft/35 focus:border-primary focus:ring-primary/15"
+        : "border-charcoal/12 bg-ivory/40 focus:border-charcoal/40 focus:ring-charcoal/10"
     }`;
   };
 
@@ -172,27 +172,27 @@ export default function ContactForm({ manualMode = false }: { manualMode?: boole
       <div
         role="status"
         aria-live="polite"
-        className="mt-6 rounded-2xl border border-[#c7a23b]/45 bg-[#fdf8f0] p-6 sm:p-8"
+        className="mt-6 rounded-xl border border-charcoal/10 bg-ivory p-6"
       >
         <div className="flex items-start gap-4">
-          <span className="grid size-10 shrink-0 place-items-center rounded-full bg-[#faf3dc] text-[#8b0f0f] ring-1 ring-[#ddb829]/60">
-            <Check className="size-5" strokeWidth={1.8} />
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-charcoal/10 bg-white text-[#16a34a]">
+            <Check className="h-4 w-4" strokeWidth={1.75} />
           </span>
           <div className="min-w-0 flex-1">
-            <p className="font-serif text-xl font-semibold text-[#1c1917] sm:text-2xl">
-              Your enquiry has been received.
+            <p className="font-display text-xl font-medium text-charcoal">
+              Enquiry received
             </p>
-            <p className="mt-2 text-sm leading-6 text-[#57534e]">
+            <p className="mt-2 text-sm leading-6 text-warmgray">
               A confirmation email has been sent to{" "}
-              <span className="font-medium text-[#292524]">{submittedSnapshot.email}</span>.
+              <span className="font-medium text-charcoal">{submittedSnapshot.email}</span>.
               Dr. Manisha&apos;s desk responds personally within 24 hours.
             </p>
-            <div className="mt-4 inline-flex items-center gap-2 rounded-lg border border-[#d8ccb5] bg-white px-3.5 py-2 text-xs font-semibold tracking-wider text-[#292524] tabular-nums">
-              <span className="text-[#67564d]">Reference:</span>
+            <div className="mt-4 inline-flex items-center gap-2 rounded-md border border-charcoal/10 bg-white px-3 py-1.5 font-mono text-xs tabular-nums text-charcoal">
+              <span className="text-warmgray">Reference</span>
               <span>{reference}</span>
             </div>
             {error ? (
-              <p role="alert" className="mt-3 text-sm text-[#981313]">
+              <p role="alert" className="mt-3 text-sm text-primary">
                 {error}
               </p>
             ) : null}
@@ -201,15 +201,15 @@ export default function ContactForm({ manualMode = false }: { manualMode?: boole
                 href={whatsappHref}
                 target="_blank"
                 rel="noreferrer"
-                className="group inline-flex min-h-11 items-center gap-2.5 rounded-full bg-[#1c1917] px-5 py-2.5 text-sm font-semibold text-white transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] hover:bg-[#6b0b0b] active:scale-[0.98]"
+                className="inline-flex h-11 items-center gap-2 rounded-lg bg-primary px-4 text-sm font-medium text-white transition-colors duration-150 hover:bg-primary-dark active:scale-[0.98]"
               >
-                <MessageCircle className="size-4 text-[#f0d060]" strokeWidth={1.6} />
-                <span>Share reference on WhatsApp</span>
+                <MessageCircle className="h-4 w-4" strokeWidth={1.5} />
+                <span>Share on WhatsApp</span>
               </a>
               <button
                 type="button"
                 onClick={resetForm}
-                className="inline-flex min-h-11 items-center rounded-full border border-[#d8ccb5] px-5 py-2.5 text-sm font-medium text-[#292524] transition-colors duration-300 hover:border-[#a8871a] hover:bg-white"
+                className="inline-flex h-11 items-center rounded-lg border border-charcoal/12 bg-white px-4 text-sm font-medium text-charcoal transition-colors duration-150 hover:bg-ivory"
               >
                 Write another note
               </button>
@@ -221,7 +221,7 @@ export default function ContactForm({ manualMode = false }: { manualMode?: boole
   }
 
   return (
-    <form className="mt-6 space-y-5 sm:mt-8 sm:space-y-6" onSubmit={handleSubmit} noValidate>
+    <form className="mt-6 space-y-5" onSubmit={handleSubmit} noValidate>
       {/* Honeypot trap — invisible to humans, filled by bots. */}
       <div
         aria-hidden="true"
@@ -238,10 +238,10 @@ export default function ContactForm({ manualMode = false }: { manualMode?: boole
         />
       </div>
 
-      {/* Optional context selector */}
+      {/* Optional topic selector */}
       <fieldset>
-        <legend className="mb-2.5 block text-sm font-medium text-[#292524]">
-          Area of interest <span className="text-[#67564d] font-normal">(optional)</span>
+        <legend className="mb-2 block text-sm font-medium text-charcoal">
+          Area of interest <span className="font-normal text-warmgray">(optional)</span>
         </legend>
         <div className="flex flex-wrap gap-2">
           {TOPICS.map((item) => {
@@ -252,13 +252,13 @@ export default function ContactForm({ manualMode = false }: { manualMode?: boole
                 type="button"
                 aria-pressed={active}
                 onClick={() => setTopic(active ? "" : item)}
-                className={`inline-flex min-h-9 items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-xs font-medium transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] active:scale-[0.98] ${
+                className={`inline-flex h-9 items-center gap-1.5 rounded-lg border px-3 text-xs font-medium transition-colors duration-150 active:scale-[0.98] ${
                   active
-                    ? "border-[#1c1917] bg-[#1c1917] text-[#fdf8f0] shadow-sm"
-                    : "border-[#d8ccb5] bg-[#fdf8f0]/75 text-[#292524] hover:border-[#a8871a] hover:bg-white"
+                    ? "border-charcoal bg-charcoal text-ivory"
+                    : "border-charcoal/12 bg-ivory/50 text-charcoal hover:border-charcoal/30 hover:bg-white"
                 }`}
               >
-                {active ? <Check className="size-3 text-[#f0d060]" strokeWidth={2.2} /> : null}
+                {active ? <Check className="h-3.5 w-3.5" strokeWidth={1.75} /> : null}
                 <span>{item}</span>
               </button>
             );
@@ -266,9 +266,9 @@ export default function ContactForm({ manualMode = false }: { manualMode?: boole
         </div>
       </fieldset>
 
-      <div className="grid gap-5 sm:grid-cols-2">
+      <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <label htmlFor="name" className="mb-1.5 block text-sm font-medium text-[#292524]">
+          <label htmlFor="name" className="mb-1.5 block text-sm font-medium text-charcoal">
             Full name
           </label>
           <input
@@ -280,20 +280,20 @@ export default function ContactForm({ manualMode = false }: { manualMode?: boole
             placeholder="Asha Kulkarni"
             aria-invalid={Boolean(touched.name && fieldErrors.name)}
             aria-describedby={touched.name && fieldErrors.name ? "name-error" : undefined}
-            className={getFieldClasses("name")}
+            className={`${getFieldClasses("name")} h-11`}
             value={form.name}
             onChange={(event) => handleChange("name", event.target.value)}
             onBlur={() => handleBlur("name")}
           />
           {touched.name && fieldErrors.name ? (
-            <p id="name-error" className="mt-1.5 text-xs font-medium text-[#981313]">
+            <p id="name-error" className="mt-1.5 text-xs font-medium text-primary">
               {fieldErrors.name}
             </p>
           ) : null}
         </div>
 
         <div>
-          <label htmlFor="phone" className="mb-1.5 block text-sm font-medium text-[#292524]">
+          <label htmlFor="phone" className="mb-1.5 block text-sm font-medium text-charcoal">
             Phone or WhatsApp
           </label>
           <input
@@ -305,13 +305,13 @@ export default function ContactForm({ manualMode = false }: { manualMode?: boole
             placeholder="+91 98200 12345"
             aria-invalid={Boolean(touched.phone && fieldErrors.phone)}
             aria-describedby={touched.phone && fieldErrors.phone ? "phone-error" : undefined}
-            className={getFieldClasses("phone")}
+            className={`${getFieldClasses("phone")} h-11 font-mono tabular-nums`}
             value={form.phone}
             onChange={(event) => handleChange("phone", event.target.value)}
             onBlur={() => handleBlur("phone")}
           />
           {touched.phone && fieldErrors.phone ? (
-            <p id="phone-error" className="mt-1.5 text-xs font-medium text-[#981313]">
+            <p id="phone-error" className="mt-1.5 text-xs font-medium text-primary">
               {fieldErrors.phone}
             </p>
           ) : null}
@@ -319,7 +319,7 @@ export default function ContactForm({ manualMode = false }: { manualMode?: boole
       </div>
 
       <div>
-        <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-[#292524]">
+        <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-charcoal">
           Email address
         </label>
         <input
@@ -331,28 +331,28 @@ export default function ContactForm({ manualMode = false }: { manualMode?: boole
           placeholder="asha@example.com"
           aria-invalid={Boolean(touched.email && fieldErrors.email)}
           aria-describedby={touched.email && fieldErrors.email ? "email-error" : undefined}
-          className={getFieldClasses("email")}
+          className={`${getFieldClasses("email")} h-11`}
           value={form.email}
           onChange={(event) => handleChange("email", event.target.value)}
           onBlur={() => handleBlur("email")}
         />
         {touched.email && fieldErrors.email ? (
-          <p id="email-error" className="mt-1.5 text-xs font-medium text-[#981313]">
+          <p id="email-error" className="mt-1.5 text-xs font-medium text-primary">
             {fieldErrors.email}
           </p>
         ) : null}
       </div>
 
       <div>
-        <label htmlFor="message" className="mb-1.5 block text-sm font-medium text-[#292524]">
-          Your message
+        <label htmlFor="message" className="mb-1.5 block text-sm font-medium text-charcoal">
+          Message
         </label>
         <textarea
           id="message"
           name="message"
           rows={4}
           required
-          placeholder="Share what you are seeking guidance on, and whether you prefer Mumbai, Pune, or an online session."
+          placeholder="Your question and preferred city or online slot"
           aria-invalid={Boolean(touched.message && fieldErrors.message)}
           aria-describedby={touched.message && fieldErrors.message ? "message-error" : "message-hint"}
           className={`${getFieldClasses("message")} resize-y`}
@@ -361,23 +361,23 @@ export default function ContactForm({ manualMode = false }: { manualMode?: boole
           onBlur={() => handleBlur("message")}
         />
         {touched.message && fieldErrors.message ? (
-          <p id="message-error" className="mt-1.5 text-xs font-medium text-[#981313]">
+          <p id="message-error" className="mt-1.5 text-xs font-medium text-primary">
             {fieldErrors.message}
           </p>
         ) : (
-          <p id="message-hint" className="mt-1.5 text-xs text-[#67564d]">
+          <p id="message-hint" className="mt-1.5 text-xs text-warmgray">
             Preferred days or city help us suggest the earliest suitable slot.
           </p>
         )}
       </div>
 
-      <label className="flex cursor-pointer items-start gap-3 text-xs leading-5 text-[#57534e]">
+      <label className="flex cursor-pointer items-start gap-3 text-xs leading-5 text-warmgray">
         <input
           type="checkbox"
           required
           checked={consent}
           onChange={(event) => setConsent(event.target.checked)}
-          className="mt-0.5 size-4 shrink-0 rounded border-[#d8ccb5] accent-[#b41414]"
+          className="mt-0.5 h-4 w-4 shrink-0 rounded border-charcoal/20 accent-[var(--color-primary)]"
         />
         <span>
           I consent to my details being stored and used solely to respond to this enquiry.
@@ -387,7 +387,7 @@ export default function ContactForm({ manualMode = false }: { manualMode?: boole
       {error ? (
         <p
           role="alert"
-          className="rounded-xl border border-[#b41414]/25 bg-[#fbecec]/60 px-4 py-3 text-sm text-[#8b0f0f]"
+          className="rounded-lg border border-primary/20 bg-primary-soft px-4 py-3 text-sm text-primary"
         >
           {error}
         </p>
@@ -397,20 +397,17 @@ export default function ContactForm({ manualMode = false }: { manualMode?: boole
         <button
           type="submit"
           disabled={isSubmitting || !consent}
-          className="group inline-flex min-h-12 w-full items-center justify-between gap-4 whitespace-nowrap rounded-full bg-[#b41414] py-2.5 pl-6 pr-2.5 text-sm font-semibold text-white shadow-[0_18px_40px_-18px_rgba(180,20,20,0.85)] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-0.5 hover:bg-[#8b0f0f] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#a81414] disabled:cursor-not-allowed disabled:opacity-55 disabled:hover:translate-y-0 sm:min-h-13 sm:pl-7 sm:pr-3"
+          className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-primary px-6 text-sm font-medium text-white transition-colors duration-150 hover:bg-primary-dark active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-55"
         >
-          <span>{isSubmitting ? "Sending enquiry..." : "Send enquiry"}</span>
-          <span className="grid size-8 place-items-center rounded-full bg-white/15 transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-x-0.5 group-hover:-translate-y-px group-hover:scale-105">
-            <ArrowUpRight className="size-4" strokeWidth={1.6} />
-          </span>
+          <span>{isSubmitting ? "Sending enquiry" : "Send enquiry"}</span>
+          <ArrowUpRight className="h-4 w-4" strokeWidth={1.5} />
         </button>
 
-        <p className="mt-4 text-center text-xs leading-5 text-[#67564d]">
+        <p className="mt-4 text-center text-xs leading-5 text-warmgray">
           Handled confidentially. Read our{" "}
-          <Link href="/privacy-policy" className="font-medium text-[#8b0f0f] underline-offset-4 hover:underline">
-            Privacy policy
+          <Link href="/privacy-policy" className="font-medium text-charcoal underline underline-offset-4 hover:text-primary">
+            privacy policy
           </Link>
-          .
         </p>
       </div>
     </form>

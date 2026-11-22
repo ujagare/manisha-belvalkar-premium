@@ -31,7 +31,24 @@ export const serverEnv = {
   dailyApiKey: () => read("DAILY_API_KEY"),
   /** Optional Daily.co subdomain (e.g. manishabelvalkar.daily.co). */
   dailyDomain: () => read("DAILY_DOMAIN"),
+  /** Shiprocket API user email & password (server-only). */
+  shiprocketEmail: () => read("SHIPROCKET_EMAIL"),
+  shiprocketPassword: () => read("SHIPROCKET_PASSWORD"),
+  /** Shiprocket registered pickup location nickname (default: "Primary"). */
+  shiprocketPickupLocation: () => read("SHIPROCKET_PICKUP_LOCATION") ?? "Primary",
+  /** Origin warehouse 6-digit Indian PIN code (Pune/Mumbai default). */
+  shiprocketPickupPincode: () => read("SHIPROCKET_PICKUP_PINCODE") ?? "411001",
+  /** Shared secret token verified against incoming Shiprocket `x-api-key` webhook header. */
+  shiprocketWebhookToken: () => read("SHIPROCKET_WEBHOOK_TOKEN"),
+  /** Optional Shiprocket custom channel ID. */
+  shiprocketChannelId: () => read("SHIPROCKET_CHANNEL_ID"),
+  /** Auto-push paid physical orders to Shiprocket immediately on payment capture. */
+  shiprocketAutoPush: () => (read("SHIPROCKET_AUTO_PUSH") ?? "true").toLowerCase() !== "false",
 };
+
+export function isShiprocketConfigured() {
+  return Boolean(serverEnv.shiprocketEmail() && serverEnv.shiprocketPassword());
+}
 
 export function isDailyConfigured() {
   return Boolean(serverEnv.dailyApiKey());

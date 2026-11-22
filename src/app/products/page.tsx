@@ -26,6 +26,8 @@ const images: Record<string, string> = {
   "tarot-reading": "/images/products-reference/tarot.webp",
 };
 
+const portraitRituals = new Set(["good-luck-rituals", "good-health-rituals", "tarot-reading"]);
+
 const pick = (products: Product[], slugs: string[]) => slugs.map((slug) => products.find((p) => p.slug === slug)).filter((p): p is Product => Boolean(p));
 
 function Actions({ product, dark = false }: { product: Product; dark?: boolean }) {
@@ -50,7 +52,9 @@ export default async function ProductsPage() {
 
   return <main className={styles.page}>
     <section className={styles.hero} id="top" aria-labelledby="products-title">
-      <Image src="/images/products-reference/hero.webp" alt="Shakti Oracle Cards with their companion guidebook" fill priority sizes="100vw" className={styles.heroImage} />
+      <div className={styles.heroMedia}>
+        <Image src="/images/products-reference/hero.webp" alt="Shakti Oracle Cards with their companion guidebook" fill priority sizes="100vw" className={styles.heroImage} />
+      </div>
       <div className={styles.heroShade} />
       <div className={styles.wrap}>
         <nav className={styles.breadcrumbs} aria-label="Breadcrumb"><Link href="/">Home</Link><span>/</span><span>Products</span></nav>
@@ -64,11 +68,11 @@ export default async function ProductsPage() {
 
     <nav className={styles.categories} aria-label="Product categories"><div className={styles.wrap}><Link href="#wisdom"><i>01</i> Deck & Book</Link><Link href="#tools"><i>02</i> Sacred Tools & Frames</Link><Link href="#rituals"><i>03</i> Rituals & Guidance</Link></div></nav>
 
-    <section className={styles.section} id="wisdom" aria-labelledby="wisdom-title"><div className={styles.wrap}>
+    <section className={`${styles.section} ${styles.wisdomSection}`} id="wisdom" aria-labelledby="wisdom-title"><div className={styles.wrap}>
       <header className={styles.sectionHead}><p className={styles.index}>01</p><div><p className={styles.eyebrow}>Sacred wisdom</p><h2 id="wisdom-title">Deck & <em>Book</em></h2></div><p>Sacred 52-card oracle deck and companion guidebook inspired by the 51 Shakti Peethas.</p></header>
       <div className={styles.features}>{wisdom.map((product, i) => <article className={`${styles.feature} ${i ? styles.reverse : ""}`} key={product.slug}>
-        <Link className={`${styles.featureMedia} ${i === 0 ? styles.stage : ""}`} href={`/products/${product.slug}`}><span className={styles.badge}><Star />{product.badge}</span><Image src={images[product.slug]} alt={product.title} fill sizes="(max-width: 899px) 100vw, 52vw" /></Link>
-        <div className={styles.featureBody}><p className={styles.eyebrow}>{i === 0 ? "Featured · Card Deck" : "Shakti Book"}</p><h3>{i === 0 ? <>SHAKTI <em>Oracle Deck</em></> : <>SHAKTI guidebook for <em>daily practice</em></>}</h3><p className={styles.lede}>{product.description}</p><ul className={styles.checks}>{product.details.slice(0, 3).map((d) => <li key={d}><Star />{d}</li>)}</ul><div className={styles.priceRow}><strong>{formatINR(product.price)}</strong><span>incl. all taxes</span></div><Actions product={product} /></div>
+        <Link className={`${styles.featureMedia} ${i === 0 ? styles.stage : ""}`} href={`/products/${product.slug}`}><span className={styles.badge}><Star />{product.badge}</span><Image src={images[product.slug]} alt={product.title} fill sizes="(max-width: 699px) 100vw, 270px" /></Link>
+        <div className={styles.featureBody}><p className={styles.eyebrow}>{i === 0 ? "Featured · Card Deck" : "Shakti Book"}</p><h3>{i === 0 ? <>SHAKTI <em>Oracle Deck</em></> : <>SHAKTI guidebook for <em>daily practice</em></>}</h3><p className={styles.lede}>{product.description}</p><ul className={styles.checks}>{product.details.slice(0, 3).map((d) => <li key={d}><Star />{d}</li>)}</ul><div className={styles.featureFoot}><div className={styles.priceRow}><strong>{formatINR(product.price)}</strong><span>incl. all taxes</span></div><Actions product={product} /></div></div>
       </article>)}</div>
     </div></section>
 
@@ -76,14 +80,14 @@ export default async function ProductsPage() {
 
     <section className={styles.section} id="tools" aria-labelledby="tools-title"><div className={styles.wrap}>
       <header className={styles.sectionHead}><p className={styles.index}>02</p><div><p className={styles.eyebrow}>Sacred tools & frames</p><h2 id="tools-title">For your <em>sacred space</em></h2></div><p>Authentic Himalayan crystal magic salt and intention-infused Vastu healing frames for your sacred space.</p></header>
-      <div className={styles.toolGrid}>{tools.map((product) => <article className={styles.toolCard} key={product.slug}><Link className={styles.toolMedia} href={`/products/${product.slug}`}><span className={styles.badge}><Star />{product.badge}</span><Image src={images[product.slug]} alt={product.title} fill sizes="(max-width: 699px) 100vw, 50vw" /></Link><div className={styles.toolBody}><p className={styles.eyebrow}>Rituals & tools</p><h3><Link href={`/products/${product.slug}`}>{product.title}</Link></h3><p className={styles.lede}>{product.subtitle}</p><div className={styles.toolFoot}><div><strong>{formatINR(product.price)}</strong><span>incl. all taxes</span></div><Actions product={product} /></div></div></article>)}</div>
+      <div className={styles.toolGrid}>{tools.map((product) => <article className={styles.toolCard} key={product.slug}><Link className={styles.toolMedia} href={`/products/${product.slug}`}><span className={styles.badge}><Star />{product.badge}</span><Image src={images[product.slug]} alt={product.title} fill sizes="(max-width: 539px) 100vw, 50vw" className={product.slug === "vastu-healing-frames" ? styles.vastuImage : undefined} /></Link><div className={styles.toolBody}><p className={styles.eyebrow}>Rituals & tools</p><h3><Link href={`/products/${product.slug}`}>{product.title}</Link></h3><p className={styles.lede}>{product.subtitle}</p><div className={styles.toolFoot}><div><strong>{formatINR(product.price)}</strong><span>incl. all taxes</span></div><Actions product={product} /></div></div></article>)}</div>
     </div></section>
 
     <section className={styles.trust} aria-label="Why shop with us"><div className={styles.wrap}>{trust.map(([Icon, title, copy]) => <article key={title}><span><Icon /></span><h3>{title}</h3><p>{copy}</p></article>)}</div></section>
 
     <section className={styles.rituals} id="rituals" aria-labelledby="rituals-title"><div className={styles.wrap}>
       <header className={`${styles.sectionHead} ${styles.darkHead}`}><p className={styles.index}>03</p><div><p className={styles.eyebrow}>Energy work & guidance</p><h2 id="rituals-title">Rituals & <em>Tarot</em></h2></div><p>Guided abundance, good luck, health and protection rituals, plus personal Tarot Reading.</p></header>
-      <div className={styles.ritualList}>{rituals.map((product, i) => <article className={styles.ritual} key={product.slug}><span className={styles.ritualIndex}>{String(i + 1).padStart(2, "0")}</span><Link className={styles.ritualMedia} href={`/products/${product.slug}`}><Image src={images[product.slug]} alt={product.title} fill sizes="(max-width: 1039px) 100vw, 190px" /></Link><div className={styles.ritualBody}><p className={styles.tags}><span>{product.slug === "tarot-reading" ? "Personal guidance" : "Sacred ritual"}</span><span>{product.slug === "tarot-reading" ? "Tarot" : "Energy healing"}</span></p><h3><Link href={`/products/${product.slug}`}>{product.title}</Link></h3><p className={styles.lede}>{product.subtitle}</p><ul className={styles.checks}>{product.details.slice(0, 3).map((d) => <li key={d}><Star />{d}</li>)}</ul></div><div className={styles.ritualBuy}><p>Offering price</p><strong>{formatINR(product.price)}</strong><Actions product={product} dark /></div></article>)}</div>
+      <div className={styles.ritualList}>{rituals.map((product, i) => <article className={styles.ritual} key={product.slug}><span className={styles.ritualIndex}>{String(i + 1).padStart(2, "0")}</span><Link className={`${styles.ritualMedia} ${portraitRituals.has(product.slug) ? styles.ritualPortrait : ""}`} href={`/products/${product.slug}`}><Image src={images[product.slug]} alt={product.title} fill sizes="(max-width: 699px) 100vw, (max-width: 1039px) 45vw, 190px" /></Link><div className={styles.ritualBody}><p className={styles.tags}><span>{product.slug === "tarot-reading" ? "Personal guidance" : "Sacred ritual"}</span><span>{product.slug === "tarot-reading" ? "Tarot" : "Energy healing"}</span></p><h3><Link href={`/products/${product.slug}`}>{product.title}</Link></h3><p className={styles.lede}>{product.subtitle}</p><ul className={styles.checks}>{product.details.slice(0, 3).map((d) => <li key={d}><Star />{d}</li>)}</ul></div><div className={styles.ritualBuy}><p>Offering price</p><strong>{formatINR(product.price)}</strong><Actions product={product} dark /></div></article>)}</div>
     </div></section>
   </main>;
 }
