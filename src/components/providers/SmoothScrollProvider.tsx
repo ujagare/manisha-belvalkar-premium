@@ -104,11 +104,11 @@ export default function SmoothScrollProvider({
       const lenis = new Lenis({
         duration: isCoarsePointer ? 0.95 : 1.15,
         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        // Smooth wheel interpolation on desktop. On phones let the browser own
+        // touch scrolling — Lenis's experimental syncTouch intercepts every
+        // touchmove and causes stutter / stuck scrolling on iOS Safari.
         smoothWheel: true,
-        syncTouch: true,
-        syncTouchLerp: 0.095,
-        touchInertiaExponent: 1.65,
-        touchMultiplier: 1.15,
+        syncTouch: false,
         wheelMultiplier: 0.95,
         allowNestedScroll: true,
         prevent: (node) =>

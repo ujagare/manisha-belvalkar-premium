@@ -163,9 +163,35 @@ export default function GlobalScrollMotion() {
             })
             .slice(0, 12);
 
-          sectionImages.forEach((image) => {
+          // clip-path inset() repaints the whole bitmap on every scrub frame —
+          // on phones that halves the frame rate. Phones get a transform/opacity
+          // reveal instead (same editorial settle, GPU-composited); desktop
+          // keeps the exact services-style curtain.
+          const useGpuReveal = window.matchMedia("(max-width: 639px)").matches;
+          const mobileImages = useGpuReveal ? sectionImages.slice(0, 5) : sectionImages;
+          mobileImages.forEach((image) => {
             // Already on screen (or its trigger has already passed) — no curtain.
             if (alreadyVisible(image)) return;
+
+            if (useGpuReveal) {
+              // Phones: one short GPU-only entrance per image (no per-frame
+              // scrub). Scrubbing 12 large bitmaps halves the scroll frame rate.
+              const tween = gsap.fromTo(
+                image,
+                { opacity: 0.4, y: 24, scale: 1.03 },
+                {
+                  opacity: 1,
+                  y: 0,
+                  scale: 1,
+                  duration: 0.7,
+                  ease: MOTION_TOKENS.ease.settle,
+                  scrollTrigger: { trigger: image, start: "top 88%", once: true },
+                },
+              );
+              tweens.add(tween);
+              return;
+            }
+
             const timeline = gsap.timeline({
               scrollTrigger: {
                 trigger: image,
