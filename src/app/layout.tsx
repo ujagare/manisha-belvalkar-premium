@@ -7,6 +7,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import IntroLoader from "@/components/layout/IntroLoader";
 import CustomCursor from "@/components/ui/CustomCursor";
+import GlobalScrollMotion from "@/components/ui/GlobalScrollMotion";
 import SmoothScrollProvider from "@/components/providers/SmoothScrollProvider";
 import CartProvider from "@/components/cart/CartProvider";
 import { cn } from "@/lib/utils";
@@ -187,6 +188,7 @@ export default async function RootLayout({
         />
         <CartProvider>
           <SmoothScrollProvider>
+            <GlobalScrollMotion />
             <CustomCursor />
             <Navbar />
             <main id="main-content" className="flex-1" tabIndex={-1}>{children}</main>
