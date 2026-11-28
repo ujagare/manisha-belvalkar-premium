@@ -1,7 +1,8 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { gsap, ScrollTrigger, SplitText, useGSAP } from "@/lib/gsap";
+import { useEffect } from "react";
+import { gsap, ScrollTrigger, SplitText } from "@/lib/gsap";
 import { MOTION_TOKENS } from "@/lib/motion";
 
 /**
@@ -36,8 +37,9 @@ const MAIN_COMPACT_ROUTES = [
 export default function GlobalScrollMotion() {
   const pathname = usePathname() ?? "";
 
-  useGSAP(
-    () => {
+  /* Passive effect: this component sits next to <main>, so a layout effect
+   * would mutate page DOM before those client components hydrate. */
+  useEffect(() => {
       const isMainCompactRoute = MAIN_COMPACT_ROUTES.includes(pathname);
       document.documentElement.dataset.internalPage = isMainCompactRoute
         ? "false"
@@ -222,12 +224,20 @@ export default function GlobalScrollMotion() {
         });
       };
 
-      const observer = new MutationObserver(() => initialize(observer));
+      let hydrationReady = false;
+      const observer = new MutationObserver(() => {
+        if (hydrationReady) initialize(observer);
+      });
       observer.observe(main, { childList: true, subtree: true });
-      initialize(observer);
+      // Wait for React to finish hydrating the streamed page before touching DOM.
+      const initTimer = window.setTimeout(() => {
+        hydrationReady = true;
+        initialize(observer);
+      }, 400);
 
       return () => {
         cancelled = true;
+        window.clearTimeout(initTimer);
         delete document.documentElement.dataset.internalPage;
         observer.disconnect();
         imageLoadHandlers.forEach((off) => off());
@@ -242,9 +252,7 @@ export default function GlobalScrollMotion() {
         splits.forEach((split) => split.revert());
         mm.revert();
       };
-    },
-    { dependencies: [pathname], revertOnUpdate: true },
-  );
+  }, [pathname]);
 
   return null;
 }

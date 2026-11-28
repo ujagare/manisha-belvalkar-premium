@@ -188,11 +188,12 @@ export default async function RootLayout({
         />
         <CartProvider>
           <SmoothScrollProvider>
-            <GlobalScrollMotion />
             <CustomCursor />
             <Navbar />
             <main id="main-content" className="flex-1" tabIndex={-1}>{children}</main>
             <Footer />
+            {/* Mounted after <main> so its effect runs after the page subtree hydrates. */}
+            <GlobalScrollMotion />
           </SmoothScrollProvider>
         </CartProvider>
       </body>
