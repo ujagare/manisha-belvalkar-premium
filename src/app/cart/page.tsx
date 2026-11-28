@@ -19,7 +19,7 @@ const PRODUCT_IMAGE_MAP: Record<string, string> = {
   "good-luck-rituals": "/images/products-reference/luck.webp",
   "good-health-rituals": "/images/products-reference/health.webp",
   "protection-rituals": "/images/products-reference/protection.webp",
-  "tarot-reading": "/images/products-reference/tarot.webp",
+  "tarot-reading": "/images/products-reference/golden-yantra-candlelight.webp",
 };
 
 const CURATED_SLUGS = [

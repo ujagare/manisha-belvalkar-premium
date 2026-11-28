@@ -817,7 +817,7 @@ export const products: Product[] = [
       "A personal Tarot reading for clear, reflective guidance around your present questions, patterns and next steps.",
     price: 24000,
     badge: "Reading",
-    image: "/images/home-cards/tarot-consultation.webp",
+    image: "/images/products-reference/golden-yantra-candlelight.webp",
     details: [
       "Personal Tarot guidance",
       "Clarity for present questions",

@@ -24,7 +24,7 @@ const images: Record<string, string> = {
   "good-luck-rituals": "/images/products-reference/luck.webp",
   "good-health-rituals": "/images/products-reference/health.webp",
   "protection-rituals": "/images/products-reference/protection.webp",
-  "tarot-reading": "/images/products-reference/tarot.webp",
+  "tarot-reading": "/images/products-reference/golden-yantra-candlelight.webp",
 };
 
 const portraitRituals = new Set(["good-luck-rituals", "good-health-rituals", "tarot-reading"]);

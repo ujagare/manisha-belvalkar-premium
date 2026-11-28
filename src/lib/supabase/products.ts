@@ -46,6 +46,11 @@ const seoOverridesBySlug = new Map(
   ]),
 );
 
+/** Curated imagery for products whose DB row still points at an older asset. */
+const imageOverridesBySlug = new Map<string, string>([
+  ["tarot-reading", "/images/products-reference/golden-yantra-candlelight.webp"],
+]);
+
 /** Map a DB row (numeric → string, jsonb → Json) onto the UI Product shape. */
 function toProduct(row: ProductRow): Product {
   const seo = seoOverridesBySlug.get(row.slug);
@@ -60,10 +65,12 @@ function toProduct(row: ProductRow): Product {
     price: Number(row.price),
     salePrice: row.sale_price != null ? Number(row.sale_price) : undefined,
     badge: row.badge ?? undefined,
-    image: (row.image ?? "/images/spiritual-golden-texture.webp").replace(
-      /\.(png|jpe?g|avif)$/i,
-      ".webp",
-    ),
+    image:
+      imageOverridesBySlug.get(row.slug) ??
+      (row.image ?? "/images/spiritual-golden-texture.webp").replace(
+        /\.(png|jpe?g|avif)$/i,
+        ".webp",
+      ),
     details: Array.isArray(row.details)
       ? row.details.filter((d): d is string => typeof d === "string")
       : [],
