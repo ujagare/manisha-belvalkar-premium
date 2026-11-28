@@ -32,6 +32,7 @@ export default function Reveal({
 
   return (
     <motion.div
+      data-reveal
       className={className}
       initial={{ opacity: 0, ...(reduce ? {} : { filter: "blur(8px)" }), ...offset }}
       whileInView={{ opacity: 1, x: 0, y: 0, filter: "blur(0px)" }}
