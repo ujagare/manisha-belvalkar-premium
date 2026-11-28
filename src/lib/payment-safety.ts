@@ -45,6 +45,104 @@ export function successfulPaymentStatus(status: string) {
   return status === "captured";
 }
 
+export function isProtectedCheckoutPath(pathname: string, paymentsConfigured: boolean) {
+  return paymentsConfigured && pathname.startsWith("/checkout");
+}
+
+export function resolveWebhookEventId(
+  payload: Record<string, unknown>,
+  headerEventId?: string | null,
+): string | null {
+  const eventType = typeof payload.event === "string" ? payload.event.trim() : "";
+  if (!eventType) return null;
+
+  const root = payload.payload as {
+    payment?: { entity?: { id?: unknown } };
+    refund?: { entity?: { id?: unknown } };
+    dispute?: { entity?: { id?: unknown } };
+    order?: { entity?: { id?: unknown } };
+  } | undefined;
+
+  const cleanId = (value: unknown) =>
+    typeof value === "string" && /^[A-Za-z0-9_-]{4,100}$/.test(value.trim()) ? value.trim() : null;
+
+  let entityId: string | null = null;
+  if (eventType.startsWith("refund.")) {
+    entityId = cleanId(root?.refund?.entity?.id);
+  } else if (eventType.startsWith("payment.dispute.")) {
+    entityId = cleanId(root?.dispute?.entity?.id);
+  } else if (eventType.startsWith("payment.")) {
+    entityId = cleanId(root?.payment?.entity?.id);
+  } else if (eventType.startsWith("order.")) {
+    entityId = cleanId(root?.order?.entity?.id);
+  } else {
+    entityId =
+      cleanId(root?.refund?.entity?.id) ??
+      cleanId(root?.dispute?.entity?.id) ??
+      cleanId(root?.payment?.entity?.id) ??
+      cleanId(root?.order?.entity?.id);
+  }
+
+  if (entityId) {
+    return `${eventType}:${entityId}`;
+  }
+
+  const trimmedHeader = typeof headerEventId === "string" ? headerEventId.trim() : "";
+  if (/^[A-Za-z0-9_.:-]{8,128}$/.test(trimmedHeader)) {
+    return trimmedHeader;
+  }
+
+  return null;
+}
+
+export function evaluateWebhookPaymentTransition(input: {
+  existing: { status?: string | null; amount_subunits: number; currency: string } | null;
+  incomingStatus: string;
+  incomingAmount?: number;
+  incomingCurrency?: string;
+}): "apply" | "skip" | "mismatch" | "missing" {
+  if (!input.existing) return "missing";
+  if (input.existing.status === "refunded") return "skip";
+  if (input.existing.status === "captured" && input.incomingStatus !== "captured") {
+    return "skip";
+  }
+  if (input.incomingStatus === "failed") {
+    return "apply";
+  }
+  if (
+    input.incomingAmount !== input.existing.amount_subunits ||
+    input.incomingCurrency !== input.existing.currency
+  ) {
+    return "mismatch";
+  }
+  return "apply";
+}
+
+export async function collectPaginatedRazorpayItems<T extends { id: string }>(
+  fetchPage: (params: { count: number; skip: number }) => Promise<T[]>,
+  options?: { pageSize?: number; maxPages?: number },
+): Promise<T[]> {
+  const pageSize = Math.min(100, Math.max(1, options?.pageSize ?? 100));
+  const maxPages = Math.max(1, options?.maxPages ?? 10);
+  const collected: T[] = [];
+  const seenIds = new Set<string>();
+
+  for (let page = 0; page < maxPages; page += 1) {
+    const batch = await fetchPage({ count: pageSize, skip: page * pageSize });
+    let added = 0;
+    for (const item of batch) {
+      if (!seenIds.has(item.id)) {
+        seenIds.add(item.id);
+        collected.push(item);
+        added += 1;
+      }
+    }
+    if (batch.length < pageSize || added === 0) break;
+  }
+
+  return collected;
+}
+
 export function assertDatabaseSuccess(
   result: { error?: { message?: string } | null },
   operation: string,

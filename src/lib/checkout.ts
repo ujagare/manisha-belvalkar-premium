@@ -1,6 +1,7 @@
-import { services, courses, healingServices, mentoringAreas } from "@/lib/data";
+import { services, healingServices, mentoringAreas } from "@/lib/data";
 import type { OrderItemType } from "@/lib/supabase/database.types";
 import { getProductBySlug } from "@/lib/supabase/products";
+import { getCourseBySlug } from "@/lib/supabase/courses";
 import { isServerConfigured } from "@/lib/env";
 import { createAdminClient } from "@/lib/supabase/admin";
 
@@ -45,7 +46,7 @@ export async function getCatalogItem(
   }
 
   if (type === "course") {
-    const c = courses.find((x) => x.slug === slug);
+    const c = await getCourseBySlug(slug);
     if (!c) return null;
     const price = c.price && c.price > 0 ? c.price : null;
     return {

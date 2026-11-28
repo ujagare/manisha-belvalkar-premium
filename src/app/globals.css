@@ -189,12 +189,95 @@ html.lenis body {
   background: var(--color-primary);
 }
 
-/* Hide native cursor when custom cursor is active */
+/* Hide native cursor when custom cursor is active (preserve I-beam on text inputs) */
 @media (pointer: fine) {
   body.has-custom-cursor,
   body.has-custom-cursor * {
     cursor: none !important;
   }
+
+  body.has-custom-cursor textarea,
+  body.has-custom-cursor [contenteditable="true"],
+  body.has-custom-cursor input:not([type="checkbox"]):not([type="radio"]):not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="range"]):not([type="file"]) {
+    cursor: text !important;
+  }
+
+  body.has-custom-cursor iframe {
+    cursor: auto !important;
+  }
+}
+
+/* Sacred Luxury Custom Cursor — GPU-only transform & opacity choreography */
+.sacred-cursor {
+  opacity: 0;
+  transition: opacity 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.sacred-cursor[data-visible="true"] {
+  opacity: 1;
+}
+
+.sacred-cursor-star {
+  transform: translate(-50%, -50%) rotate(0deg) scale(1);
+  filter:
+    drop-shadow(0 1px 2px rgba(28, 25, 23, 0.34))
+    drop-shadow(0 0 7px rgba(221, 184, 41, 0.45));
+  transition:
+    transform 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.sacred-cursor-halo {
+  transform: translate(-50%, -50%) scale(1);
+  border-radius: 9999px;
+  background: radial-gradient(
+    circle,
+    rgba(221, 184, 41, 0) 0%,
+    rgba(221, 184, 41, 0) 100%
+  );
+  filter: drop-shadow(0 1px 3px rgba(28, 25, 23, 0.18));
+  transition:
+    transform 0.48s cubic-bezier(0.32, 0.72, 0, 1),
+    opacity 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+  opacity: 0.78;
+}
+
+.sacred-cursor-halo-svg {
+  animation: spin-slow 26s linear infinite;
+}
+
+/* Interactive hover: star rotates into diamond compass & halo blooms */
+.sacred-cursor[data-hover="true"] .sacred-cursor-star {
+  transform: translate(-50%, -50%) rotate(45deg) scale(1.18);
+}
+
+.sacred-cursor[data-hover="true"] .sacred-cursor-halo {
+  transform: translate(-50%, -50%) scale(1.42);
+  opacity: 1;
+  background: radial-gradient(
+    circle,
+    rgba(221, 184, 41, 0.16) 0%,
+    rgba(180, 20, 20, 0.05) 62%,
+    transparent 76%
+  );
+}
+
+/* Haptic press feedback */
+.sacred-cursor[data-pressed="true"] .sacred-cursor-star {
+  transform: translate(-50%, -50%) rotate(45deg) scale(0.82);
+}
+
+.sacred-cursor[data-pressed="true"] .sacred-cursor-halo {
+  transform: translate(-50%, -50%) scale(0.84);
+  opacity: 0.95;
+}
+
+/* Text-entry fields: tuck custom cursor gently while native I-beam leads */
+.sacred-cursor[data-text="true"] .sacred-cursor-star,
+.sacred-cursor[data-text="true"] .sacred-cursor-halo {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.5);
 }
 
 /* ============ Reusable premium utilities ============ */

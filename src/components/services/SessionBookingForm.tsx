@@ -8,6 +8,7 @@ import {
   CalendarDays,
   Check,
   Clock3,
+  Globe,
   Loader2,
   MapPin,
   MessageCircle,
@@ -16,6 +17,7 @@ import {
   Video,
 } from "lucide-react";
 import { sessionWhatsAppMessage, whatsappUrl } from "@/lib/manual-flow";
+import { formatVisitorLocalDateTime, isOutsideIst, useVisitorTimezone } from "@/lib/timezone";
 import type { OrderItemType } from "@/lib/supabase/database.types";
 
 const FORMATS = [
@@ -63,6 +65,8 @@ export default function SessionBookingForm({ type, slug, title, manualMode = fal
   const [pending, startTransition] = useTransition();
   const [availabilitySlots, setAvailabilitySlots] = useState<AvailabilitySlot[]>([]);
   const draftHydrated = useRef(false);
+  const visitorTz = useVisitorTimezone();
+  const showLocalTz = isOutsideIst(visitorTz);
 
   const manualDates = useMemo(() => {
     const result: string[] = [];
@@ -265,7 +269,14 @@ export default function SessionBookingForm({ type, slug, title, manualMode = fal
 
         {step === 1 ? (
           <section aria-labelledby="time-heading">
-            <p className="text-xs font-semibold text-gold-deep">Step 2 of 4 · Times shown in IST</p>
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <p className="text-xs font-semibold text-gold-deep">Step 2 of 4 · Times shown in IST</p>
+              {showLocalTz ? (
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-gold-soft/75 px-3 py-1 text-[11px] font-semibold text-gold-deep">
+                  <Globe className="h-3.5 w-3.5" /> Local time: {visitorTz}
+                </span>
+              ) : null}
+            </div>
             <h3 id="time-heading" className="mt-1.5 sm:mt-2 font-display text-xl sm:text-2xl font-semibold text-charcoal">Choose your preferred time</h3>
             <p className="mt-1.5 sm:mt-2 text-sm text-warmgray">These are preferred windows. Your exact appointment is confirmed personally by the team.</p>
             <div className="mt-5 sm:mt-7 flex gap-2 overflow-x-auto pb-1 sm:grid sm:grid-cols-7 sm:overflow-visible sm:pb-0">
@@ -277,7 +288,20 @@ export default function SessionBookingForm({ type, slug, title, manualMode = fal
             <div className={`mt-5 sm:mt-7 transition-opacity ${date ? "opacity-100" : "pointer-events-none opacity-35"}`}>
               <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-warmgray"><Clock3 className="h-4 w-4" /> Preferred start time</p>
               <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">
-                {times.map((value) => <button key={value} type="button" onClick={() => { setTime(value); setError(null); }} className={`min-h-11 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-sm font-semibold tabular-nums ring-1 transition ${time === value ? "bg-primary text-white ring-primary" : "bg-white text-charcoal ring-parchment hover:ring-gold"}`}>{value} <span className="text-[10px] font-normal opacity-65">IST</span></button>)}
+                {times.map((value) => {
+                  const slotIso = date
+                    ? (manualMode
+                        ? `${date}T${value}:00+05:30`
+                        : availabilitySlots.find((s) => slotDate(s.starts_at) === date && slotTime(s.starts_at) === value)?.starts_at ?? `${date}T${value}:00+05:30`)
+                    : null;
+                  const localTime = formatVisitorLocalDateTime(slotIso, visitorTz, { timeOnly: true });
+                  return (
+                    <button key={value} type="button" onClick={() => { setTime(value); setError(null); }} className={`min-h-11 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-sm font-semibold tabular-nums ring-1 transition ${time === value ? "bg-primary text-white ring-primary" : "bg-white text-charcoal ring-parchment hover:ring-gold"}`}>
+                      <span className="block">{value} <span className="text-[10px] font-normal opacity-65">IST</span></span>
+                      {localTime ? <span className={`mt-0.5 block text-[11px] font-normal ${time === value ? "text-gold-light" : "text-warmgray"}`}>{localTime}</span> : null}
+                    </button>
+                  );
+                })}
               </div>
             </div>
           </section>
@@ -302,7 +326,23 @@ export default function SessionBookingForm({ type, slug, title, manualMode = fal
             <dl className="mt-5 sm:mt-7 divide-y divide-parchment overflow-hidden rounded-2xl bg-ivory/45 px-4 sm:px-5 ring-1 ring-parchment">
               <div className="flex items-center justify-between gap-4 py-3 sm:py-4"><dt className="text-sm text-warmgray">Session</dt><dd className="text-right text-sm font-semibold text-charcoal">{title}</dd></div>
               <div className="flex items-center justify-between gap-4 py-3 sm:py-4"><dt className="text-sm text-warmgray">Format</dt><dd className="text-right text-sm font-semibold text-charcoal">{selectedFormat.label} · {selectedFormat.detail}</dd></div>
-              <div className="flex items-center justify-between gap-4 py-3 sm:py-4"><dt className="text-sm text-warmgray">Preferred time</dt><dd className="text-right text-sm font-semibold text-charcoal">{displayDate(date)} · {time} IST</dd></div>
+              <div className="flex items-center justify-between gap-4 py-3 sm:py-4">
+                <dt className="text-sm text-warmgray">Preferred time</dt>
+                <dd className="text-right text-sm font-semibold text-charcoal">
+                  <span>{displayDate(date)} · {time} IST</span>
+                  {date && time && showLocalTz ? (
+                    <span className="mt-0.5 block text-xs font-normal text-gold-deep">
+                      Your time:{" "}
+                      {formatVisitorLocalDateTime(
+                        manualMode
+                          ? `${date}T${time}:00+05:30`
+                          : availabilitySlots.find((s) => slotDate(s.starts_at) === date && slotTime(s.starts_at) === time)?.starts_at ?? `${date}T${time}:00+05:30`,
+                        visitorTz,
+                      )}
+                    </span>
+                  ) : null}
+                </dd>
+              </div>
               <div className="flex items-start justify-between gap-6 py-3 sm:py-4"><dt className="text-sm text-warmgray">Intention</dt><dd className="max-w-sm text-right text-sm leading-6 text-charcoal">{notes || "I’ll share during the session"}</dd></div>
             </dl>
             <div className="mt-4 sm:mt-5 flex items-start gap-3 rounded-2xl bg-gold-soft/50 p-3.5 sm:p-4 text-xs leading-5 text-gold-deep"><ShieldCheck className="mt-0.5 h-4 w-4 shrink-0" /><p>{paymentRequired ? "The appointment is confirmed only after Razorpay reports a captured payment." : "Submitting creates a booking request, not a confirmed appointment. The team will contact you before any payment."}</p></div>

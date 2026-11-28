@@ -57,6 +57,10 @@ yarn-error.log*
 # browser test artifacts
 .playwright-mcp/
 
+# local agent/editor scratch (may contain session tokens)
+.superpowers/
+.vscode/
+
 # vercel
 .vercel
 

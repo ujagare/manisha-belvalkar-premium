@@ -6,7 +6,8 @@ import { ArrowRight, ArrowUpRight } from "lucide-react";
 import CourseCatalogExplorer from "@/components/courses/CourseCatalogExplorer";
 import GsapReveal from "@/components/ui/GsapReveal";
 import Reveal from "@/components/ui/Reveal";
-import { brand, courses } from "@/lib/data";
+import { brand } from "@/lib/data";
+import { getCourses } from "@/lib/supabase/courses";
 
 export const metadata: Metadata = {
   title: "Tarot & Chakra Courses, Mumbai & Pune",
@@ -80,7 +81,8 @@ function SectionMarker({
   );
 }
 
-export default function CoursesPage() {
+export default async function CoursesPage() {
+  const courses = await getCourses();
   return (
     <div className="overflow-x-clip bg-[#fdf8f0] text-[#292524]">
       {/* 1. Editorial Split Hero — fits initial viewport cleanly */}
@@ -163,12 +165,12 @@ export default function CoursesPage() {
               <div className="rounded-t-[999px] rounded-b-[1.5rem] bg-[#efe5d2]/85 p-1.5 ring-1 ring-[#c7a23b]/45 sm:rounded-b-[2rem] sm:p-2">
                 <div className="relative aspect-[4/3.5] overflow-hidden rounded-t-[999px] rounded-b-[1.25rem] bg-[#1c1917] sm:aspect-[4/4.2] sm:rounded-b-[1.5rem]">
                   <Image
-                    src="/images/page-heroes/courses-hero.webp"
-                    alt="Handcrafted study books, brass oil lamp and learning cards in warm light"
+                    src="/images/manisha/manisha-courses-hero.webp"
+                    alt="Dr. Manisha Belvalkar — Spiritual Mentor and Tarot Teacher"
                     fill
                     priority
                     sizes="(max-width: 1024px) 248px, 470px"
-                    className="object-cover object-center"
+                    className="object-cover object-[50%_16%]"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#241612]/35 via-transparent to-transparent" />
                 </div>

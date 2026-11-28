@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, Check, MessageCircle, CalendarDays, UserRound, PlayCircle, Lock, Clock3 } from "lucide-react";
-import { courses } from "@/lib/data";
+import { getCourses, getCourseBySlug } from "@/lib/supabase/courses";
 import { formatINR } from "@/lib/utils";
 import { metaDescription } from "@/lib/seo";
 import Reveal from "@/components/ui/Reveal";
@@ -14,13 +14,14 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  const courses = await getCourses();
   return courses.map((c) => ({ slug: c.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const course = courses.find((c) => c.slug === slug);
+  const course = await getCourseBySlug(slug);
   if (!course) return { title: "Course not found" };
   return {
     title: course.seoTitle ?? course.title,
@@ -32,7 +33,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function CourseDetailPage({ params }: Props) {
   const { slug } = await params;
-  const course = courses.find((c) => c.slug === slug);
+  const course = await getCourseBySlug(slug);
   if (!course) notFound();
 
   const courseSchema = {
@@ -121,11 +122,19 @@ export default async function CourseDetailPage({ params }: Props) {
                       Enroll Now
                     </Button>
                   )}
-                  {course.curriculum?.some((m) => m.lessons.some((l) => l.free)) ? (
-                    <Button href={`/learn/${course.slug}/${course.curriculum.flatMap(m=>m.lessons).find(l=>l.free)!.id}`} size="lg" variant="outline">
-                      Preview free lesson
-                    </Button>
-                  ) : null}
+                  {(() => {
+                    const freeLesson = course.curriculum?.flatMap((m) => m.lessons).find((l) => l.free);
+                    if (!freeLesson) return null;
+                    return (freeLesson.hasVideo || freeLesson.videoUrl) ? (
+                      <Button href={`/learn/${course.slug}/${freeLesson.id}`} size="lg" variant="outline">
+                        Preview free lesson
+                      </Button>
+                    ) : (
+                      <Button href={`/courses/${course.slug}#curriculum`} size="lg" variant="outline">
+                        Preview syllabus
+                      </Button>
+                    );
+                  })()}
                   <Button href="/contact" size="lg" variant="outline">
                     Ask about this course
                   </Button>
@@ -197,7 +206,7 @@ export default async function CourseDetailPage({ params }: Props) {
 
       {/* Curriculum (engine for recorded learning) */}
       {course.curriculum && course.curriculum.length ? (
-        <section className="py-12 sm:py-20 lg:py-24">
+        <section id="curriculum" className="scroll-mt-24 py-12 sm:py-20 lg:py-24">
           <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-10">
             <Reveal className="text-center">
               <div className="eyebrow mb-2.5 text-gold-dark sm:mb-4">Course curriculum</div>

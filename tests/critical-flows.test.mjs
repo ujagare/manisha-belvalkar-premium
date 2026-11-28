@@ -14,14 +14,19 @@ import {
 } from "../src/lib/manual-flow.ts";
 import {
   assertDatabaseSuccess,
+  collectPaginatedRazorpayItems,
   defaultAvailabilityStarts,
+  evaluateWebhookPaymentTransition,
   isAsyncHealingItem,
+  isProtectedCheckoutPath,
   isWithinModificationWindow,
+  resolveWebhookEventId,
   sessionCheckoutIssue,
   successfulPaymentStatus,
 } from "../src/lib/payment-safety.ts";
 import { convertInrToSubunits, formatCurrencySubunits, normalizeCurrency } from "../src/lib/currency.ts";
 import { buildSessionIcs } from "../src/lib/ics.ts";
+import { formatVisitorLocalDateTime, isOutsideIst } from "../src/lib/timezone.ts";
 
 test("product order keeps its item, total, customer and delivery details", () => {
   const message = purchaseWhatsAppMessage({ reference: "ORDER-1", kind: "product", item: "Shakti Oracle Deck", total: "₹2,499", name: "Asha", email: "asha@example.com", details: "Delivery: Mumbai 400028" });
@@ -172,4 +177,131 @@ test("session calendar invite builds valid RFC 5545 VCALENDAR output", () => {
   assert.match(ics, /DTSTART:20261201T043000Z/);
   assert.match(ics, /\/account\/bookings\/booking-123\/room/);
   assert.match(ics, /END:VCALENDAR/);
+});
+
+test("Razorpay webhook event ID derives deterministically from event + entity ID and rejects missing identifiers", () => {
+  assert.equal(
+    resolveWebhookEventId({
+      event: "payment.captured",
+      payload: { payment: { entity: { id: "pay_12345678" } } },
+    }, null),
+    "payment.captured:pay_12345678",
+  );
+  assert.equal(
+    resolveWebhookEventId({
+      event: "refund.processed",
+      payload: {
+        payment: { entity: { id: "pay_12345678" } },
+        refund: { entity: { id: "rfnd_99999999" } },
+      },
+    }, null),
+    "refund.processed:rfnd_99999999",
+  );
+  assert.equal(
+    resolveWebhookEventId({
+      event: "payment.dispute.created",
+      payload: {
+        payment: { entity: { id: "pay_12345678" } },
+        dispute: { entity: { id: "disp_88888888" } },
+      },
+    }, null),
+    "payment.dispute.created:disp_88888888",
+  );
+  assert.equal(
+    resolveWebhookEventId({ event: "settlement.processed", payload: {} }, "evt_header_12345"),
+    "evt_header_12345",
+  );
+  assert.equal(resolveWebhookEventId({ event: "payment.captured", payload: {} }, null), null);
+  assert.equal(resolveWebhookEventId({ payload: {} }, "evt_header_12345"), null);
+});
+
+test("webhook payment transitions relax amount check on failed events and protect captured orders", () => {
+  const existingCreated = { status: "created", amount_subunits: 249900, currency: "INR" };
+  assert.equal(
+    evaluateWebhookPaymentTransition({
+      existing: existingCreated,
+      incomingStatus: "failed",
+      incomingAmount: 10000,
+      incomingCurrency: "USD",
+    }),
+    "apply",
+  );
+  assert.equal(
+    evaluateWebhookPaymentTransition({
+      existing: existingCreated,
+      incomingStatus: "captured",
+      incomingAmount: 10000,
+      incomingCurrency: "INR",
+    }),
+    "mismatch",
+  );
+  assert.equal(
+    evaluateWebhookPaymentTransition({
+      existing: { status: "captured", amount_subunits: 249900, currency: "INR" },
+      incomingStatus: "failed",
+      incomingAmount: 249900,
+      incomingCurrency: "INR",
+    }),
+    "skip",
+  );
+  assert.equal(
+    evaluateWebhookPaymentTransition({
+      existing: null,
+      incomingStatus: "failed",
+      incomingAmount: 249900,
+      incomingCurrency: "INR",
+    }),
+    "missing",
+  );
+});
+
+test("paid checkout gate protects every /checkout route including products when payments are configured", () => {
+  assert.equal(isProtectedCheckoutPath("/checkout/product/shakti-oracle-deck", true), true);
+  assert.equal(isProtectedCheckoutPath("/checkout/cart", true), true);
+  assert.equal(isProtectedCheckoutPath("/checkout/service/vastu", true), true);
+  assert.equal(isProtectedCheckoutPath("/checkout/product/shakti-oracle-deck", false), false);
+  assert.equal(isProtectedCheckoutPath("/products/shakti-oracle-deck", true), false);
+});
+
+test("Razorpay order payment collection paginates across pages using count and skip", async () => {
+  const allItems = Array.from({ length: 12 }, (_, index) => ({
+    id: `pay_${index + 1}`,
+    status: index === 11 ? "captured" : "failed",
+  }));
+  const seenParams = [];
+  const collected = await collectPaginatedRazorpayItems(
+    async ({ count, skip }) => {
+      seenParams.push({ count, skip });
+      return allItems.slice(skip, skip + count);
+    },
+    { pageSize: 5, maxPages: 5 },
+  );
+  assert.equal(collected.length, 12);
+  assert.equal(collected.at(-1)?.id, "pay_12");
+  assert.deepEqual(seenParams, [
+    { count: 5, skip: 0 },
+    { count: 5, skip: 5 },
+    { count: 5, skip: 10 },
+  ]);
+});
+
+test("USD conversion rounds up cleanly and honors explicit server rate override for client parity", () => {
+  assert.equal(convertInrToSubunits(8500, "USD", 85), 10000);
+  assert.equal(convertInrToSubunits(8501, "USD", 85), 10100);
+  assert.equal(convertInrToSubunits(8600, "USD", 85), 10200);
+  assert.equal(formatCurrencySubunits(convertInrToSubunits(8600, "USD", 85), "USD"), "$102");
+});
+
+test("visitor local timezone formatter suppresses IST duplicates and converts NRI/international zones", () => {
+  const slotIso = "2026-12-01T04:30:00.000Z"; // 10:00 AM IST
+  assert.equal(isOutsideIst("Asia/Kolkata"), false);
+  assert.equal(isOutsideIst("Asia/Calcutta"), false);
+  assert.equal(isOutsideIst("America/New_York"), true);
+  assert.equal(formatVisitorLocalDateTime(slotIso, "Asia/Kolkata"), null);
+
+  const nyFull = formatVisitorLocalDateTime(slotIso, "America/New_York");
+  assert.ok(nyFull && nyFull.includes("11:30"), `Expected 11:30 previous night in EST, got: ${nyFull}`);
+
+  const nyTimeOnly = formatVisitorLocalDateTime(slotIso, "America/New_York", { timeOnly: true });
+  assert.ok(nyTimeOnly && nyTimeOnly.includes("11:30"), `Expected 11:30 timeOnly in EST, got: ${nyTimeOnly}`);
 });

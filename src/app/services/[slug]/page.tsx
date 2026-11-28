@@ -162,15 +162,18 @@ export default async function ServiceDetailPage({ params }: Props) {
             </div>
 
             <Reveal direction="left" delay={0.15}>
-              <div className="gold-border-gradient relative overflow-hidden rounded-2xl sm:rounded-[28px]">
-                <Image
-                  src={service.image}
-                  alt={service.title}
-                  width={900}
-                  height={1000}
-                  className="h-64 w-full object-cover sm:h-96 lg:h-[480px]"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-charcoal/40 to-transparent" />
+              <div className="rounded-2xl border border-gold/45 bg-parchment/75 p-1.5 shadow-[0_28px_70px_-38px_rgba(62,38,25,0.45)] sm:rounded-[2rem] sm:p-2">
+                <div className="relative aspect-[4/3.5] overflow-hidden rounded-[calc(1rem-0.25rem)] bg-charcoal sm:aspect-[16/11] sm:rounded-[calc(2rem-0.5rem)] lg:aspect-auto lg:h-[490px]">
+                  <Image
+                    src={service.image}
+                    alt={service.title}
+                    fill
+                    priority
+                    sizes="(max-width: 1024px) 100vw, 48vw"
+                    className="object-cover object-center"
+                  />
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-charcoal/25 via-transparent to-transparent" />
+                </div>
               </div>
             </Reveal>
           </div>

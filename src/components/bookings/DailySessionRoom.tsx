@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, CalendarDays, Clock3, Headphones, Loader2, LockKeyhole, ShieldCheck, Video } from "lucide-react";
+import { ArrowLeft, CalendarDays, Clock3, Globe, Headphones, Loader2, LockKeyhole, ShieldCheck, Video } from "lucide-react";
+import { formatVisitorLocalDateTime, useVisitorTimezone } from "@/lib/timezone";
 
 interface DailySessionRoomProps {
   bookingId: string;
@@ -21,6 +22,9 @@ export default function DailySessionRoom({
   const [error, setError] = useState<string | null>(null);
   const [opensAt, setOpensAt] = useState<string | null>(null);
   const [session, setSession] = useState<{ roomUrl: string; token: string; isOwner: boolean } | null>(null);
+  const visitorTz = useVisitorTimezone();
+  const localStart = formatVisitorLocalDateTime(startsAtIso, visitorTz, { includeYear: true });
+  const localOpensAt = formatVisitorLocalDateTime(opensAt, visitorTz);
 
   const formattedStart = startsAtIso
     ? `${new Date(startsAtIso).toLocaleString("en-IN", {
@@ -113,6 +117,11 @@ export default function DailySessionRoom({
           <div>
             <p className="text-xs text-warmgray">Scheduled Time</p>
             <p className="mt-0.5 font-semibold text-charcoal">{formattedStart}</p>
+            {localStart ? (
+              <p className="mt-1 flex items-center gap-1 text-xs font-medium text-gold-deep">
+                <Globe className="h-3.5 w-3.5 shrink-0" /> Your local time: {localStart}
+              </p>
+            ) : null}
           </div>
         </div>
         <div className="flex items-start gap-2.5">
@@ -144,7 +153,7 @@ export default function DailySessionRoom({
                 dateStyle: "medium",
                 timeStyle: "short",
               })}{" "}
-              IST
+              IST{localOpensAt ? ` (${localOpensAt} your time)` : ""}
             </p>
           ) : null}
         </div>

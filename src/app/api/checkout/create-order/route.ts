@@ -47,12 +47,10 @@ export async function POST(request: Request) {
     if (!user) return apiError("UNAUTHORIZED", "Please sign in to continue to secure payment.", 401);
     const body = await readJsonObject(request);
 
-    const guestEmail =
-      typeof body.guestEmail === "string" && /.+@.+\..+/.test(body.guestEmail.trim())
-        ? body.guestEmail.trim().slice(0, 320)
+    const customerName =
+      typeof body.customerName === "string" && body.customerName.trim()
+        ? body.customerName.trim().slice(0, 100)
         : null;
-    const guestName =
-      typeof body.guestName === "string" ? body.guestName.trim().slice(0, 100) : null;
     const rateKey = user.id;
     if (!(await consumeRateLimit(request, "checkout", 8, 600, rateKey))) {
       return apiError("RATE_LIMITED", "Too many checkout attempts. Please try again shortly.", 429);
@@ -255,8 +253,13 @@ export async function POST(request: Request) {
       .from("orders")
       .insert({
         user_id: user.id,
-        guest_email: guestEmail ?? user.email ?? null,
-        guest_name: guestName ?? (user.user_metadata?.full_name as string | undefined) ?? (user.user_metadata?.name as string | undefined) ?? null,
+        guest_email: user.email ?? null,
+        guest_name:
+          (user.user_metadata?.full_name as string | undefined) ??
+          (user.user_metadata?.name as string | undefined) ??
+          customerName ??
+          pendingAddress?.recipient_name ??
+          null,
         item_type: primary.type,
         item_slug: primary.slug,
         item_title: orderTitle,

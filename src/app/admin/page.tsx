@@ -14,6 +14,7 @@ export default async function AdminPage() {
     "bookings",
     "payments",
     "enquiries",
+    "community_applications",
     "event_registrations",
     "course_enrollments",
     "distance_healing_cases",
@@ -45,6 +46,16 @@ export default async function AdminPage() {
                 <p className="mt-2 font-display text-3xl sm:text-4xl font-bold text-primary">{count}</p>
                 <p className="mt-3 text-xs font-semibold text-primary">Open shipping desk →</p>
               </Link>
+            ) : name === "bookings" ? (
+              <Link
+                href="/admin/bookings"
+                key={name}
+                className="rounded-2xl border border-gold/40 bg-white p-5 sm:p-6 transition hover:border-gold"
+              >
+                <p className="text-sm text-warmgray">Live Sessions &amp; Aftercare Desk</p>
+                <p className="mt-2 font-display text-3xl sm:text-4xl font-bold text-primary">{count}</p>
+                <p className="mt-3 text-xs font-semibold text-primary">Join video rooms &amp; send aftercare →</p>
+              </Link>
             ) : name === "distance_healing_cases" ? (
               <Link
                 href="/admin/distance-healing"
@@ -54,6 +65,26 @@ export default async function AdminPage() {
                 <p className="text-sm text-warmgray">Distance Healing queue</p>
                 <p className="mt-2 font-display text-3xl sm:text-4xl font-bold text-primary">{count}</p>
                 <p className="mt-3 text-xs font-semibold text-primary">Open workflow →</p>
+              </Link>
+            ) : name === "community_applications" ? (
+              <Link
+                href="/admin/community"
+                key={name}
+                className="rounded-2xl border border-gold/40 bg-white p-5 sm:p-6 transition hover:border-gold"
+              >
+                <p className="text-sm text-warmgray">Magic Community applications</p>
+                <p className="mt-2 font-display text-3xl sm:text-4xl font-bold text-primary">{count}</p>
+                <p className="mt-3 text-xs font-semibold text-primary">Open applications desk →</p>
+              </Link>
+            ) : name === "course_enrollments" ? (
+              <Link
+                href="/admin/courses"
+                key={name}
+                className="rounded-2xl border border-gold/40 bg-white p-5 sm:p-6 transition hover:border-gold"
+              >
+                <p className="text-sm text-warmgray">Recorded Courses &amp; DRM Studio</p>
+                <p className="mt-2 font-display text-3xl sm:text-4xl font-bold text-primary">{count}</p>
+                <p className="mt-3 text-xs font-semibold text-primary">Manage series, videos &amp; security →</p>
               </Link>
             ) : (
               <article key={name} className="rounded-2xl border border-parchment bg-white p-5 sm:p-6">

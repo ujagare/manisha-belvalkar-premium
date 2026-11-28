@@ -17,6 +17,7 @@ import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { isPaymentsConfigured, isServerConfigured } from "@/lib/env";
 import { getCurrentUser, getMyAddresses } from "@/lib/supabase/session";
 import { getCatalogItem, orderTypes } from "@/lib/checkout";
+import { usdExchangeRate } from "@/lib/currency";
 import CheckoutForm from "@/components/checkout/CheckoutForm";
 import type { OrderItemType } from "@/lib/supabase/database.types";
 import { shouldUseManualFlow } from "@/lib/manual-flow";
@@ -246,6 +247,7 @@ export default async function CheckoutPage({ params, searchParams }: Props) {
                 manualMode={manualMode}
                 strictPayment={isDistanceHealing && paymentsConfigured}
                 initialSession={initialSession}
+                usdRate={usdExchangeRate()}
               />
             </div>
           </aside>

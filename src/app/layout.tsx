@@ -158,7 +158,7 @@ export default async function RootLayout({
         "antialiased",
       )}
     >
-      <body className="grain min-h-screen flex flex-col" suppressHydrationWarning>
+      <body id="top" className="grain min-h-screen flex flex-col" suppressHydrationWarning>
         <IntroLoader />
         <noscript>
           <iframe

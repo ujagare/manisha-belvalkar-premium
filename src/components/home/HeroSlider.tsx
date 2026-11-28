@@ -32,7 +32,7 @@ const navigationSlides = [
     description:
       "Move from uncertainty toward grounded choices through personal consultations, energy healing and longer mentoring journeys.",
     primary: { label: "Explore services", href: "/services" },
-    secondary: { label: "Book a session", href: "/contact" },
+    secondary: { label: "Book a session", href: "/services#paths" },
     links: [
       { label: "Healing", detail: "Restore your balance", href: "/healing" },
       { label: "Mentoring", detail: "Guided transformation", href: "/mentoring" },

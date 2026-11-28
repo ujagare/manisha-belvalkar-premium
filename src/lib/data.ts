@@ -31,23 +31,51 @@ export interface Service extends SeoOverrides {
   mostBooked?: boolean;
 }
 
+export type CourseVideoProvider =
+  | "supabase_private"
+  | "vdocipher"
+  | "bunny"
+  | "external_signed";
+
+export interface CourseLessonResource {
+  title: string;
+  url: string;
+}
+
 export interface CourseLesson {
   id: string;
   title: string;
   duration: string;
+  durationSeconds?: number;
   description?: string;
-  /** Optional pre-recorded video/src. Leave empty until a real file is added. */
+  /** Structured practice guide / mantra notes shown inside the classroom. */
+  notesMarkdown?: string;
+  /** Optional supplementary workbooks/links unlocked for enrolled learners. */
+  resources?: CourseLessonResource[];
+  /**
+   * Optional static fallback media URL. Production courses store private paths
+   * and DRM IDs in `course_lesson_media` and never ship raw URLs to clients.
+   */
   videoUrl?: string;
+  /** Safe flag indicating recorded media is ready in the private vault. */
+  hasVideo?: boolean;
+  /** Underlying playback engine (defaults to private signed vault stream). */
+  videoProvider?: CourseVideoProvider;
   /** Free/preview lesson watchable before enrolling. */
   free?: boolean;
 }
 
 export interface CourseModule {
+  id?: string;
   module: string;
+  description?: string;
+  /** Optional cohort drip delay in days after student enrollment. */
+  unlockOffsetDays?: number;
   lessons: CourseLesson[];
 }
 
 export interface Course extends SeoOverrides {
+  id?: string;
   slug: string;
   title: string;
   duration: string;
@@ -58,6 +86,10 @@ export interface Course extends SeoOverrides {
   /** Optional price in INR — when set, the course is buyable online. */
   price?: number;
   pricingOptions?: { label: string; price: number; format: string }[];
+  /** Track grouping used by the course catalog filter. */
+  trackCategory?: "practitioner" | "sadhana";
+  /** Eyebrow label shown on course cards. */
+  trackLabel?: string;
   /** Optional recorded curriculum shown on the detail page and in the player. */
   curriculum?: CourseModule[];
 }
@@ -347,7 +379,7 @@ export const services: Service[] = [
       "Actionable steps to align with your purpose",
       "Personalized guidance & remedies",
     ],
-    image: "/images/tarot.webp",
+    image: "/images/soul-purpose-reading.webp",
   },
   {
     slug: "tarot-consultation-30",
@@ -1080,7 +1112,7 @@ export const mentoringAreas: MentoringArea[] = [
       "Empowered, conscious decision-making",
       "Clear next steps after every session",
     ],
-    image: "/images/mentoring/tarot-mentoring.webp",
+    image: "/images/mentoring/three-devi-cards-by-candlelight.webp",
   },
   {
     slug: "soul-purpose-reading",
@@ -1097,7 +1129,7 @@ export const mentoringAreas: MentoringArea[] = [
       "Practical guidance for aligned action",
       "Personalised remedies and reflection points",
     ],
-    image: "/images/mentoring/soul-purpose.webp",
+    image: "/images/mentoring/antique-brass-compass-on-walnut.webp",
   },
   {
     slug: "clarity-alignment",
@@ -1113,7 +1145,7 @@ export const mentoringAreas: MentoringArea[] = [
       "Practical solutions for a brighter future",
       "Support for purpose-led transformation",
     ],
-    image: "/images/mentoring/clarity-alignment.webp",
+    image: "/images/mentoring/walking-toward-the-luminous-garden.webp",
   },
 ];
 
@@ -1127,6 +1159,7 @@ export interface HealingService extends SeoOverrides {
   format?: string;
   features: string[];
   image: string;
+  imagePosition?: string;
 }
 
 export const healingIntro =
@@ -1203,7 +1236,8 @@ export const legacyHealingServices: HealingService[] = [
       "Release limiting beliefs",
       "Create positive mental patterns",
     ],
-    image: "/images/spiritual-golden-texture.webp",
+    image: "/images/quiet-guided-meditation-session.webp",
+    imagePosition: "50% 38%",
   },
   {
     slug: "positive-energy",
@@ -1296,7 +1330,8 @@ export const healingServices: HealingService[] = [
       "Release limiting beliefs",
       "Create positive mental patterns",
     ],
-    image: "/images/mind-reprogramming.webp",
+    image: "/images/quiet-guided-meditation-session.webp",
+    imagePosition: "50% 38%",
   },
 ];
 

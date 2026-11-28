@@ -4,6 +4,7 @@ export {
   orderConfirmationEmail,
   bookingAdminEmail,
   sessionReminderEmail,
+  sessionAftercareEmail,
   paymentDisputeAdminEmail,
   shipmentDispatchedEmail,
   shipmentOutForDeliveryEmail,

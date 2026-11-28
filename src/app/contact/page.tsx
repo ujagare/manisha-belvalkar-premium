@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
-import { ArrowDown, ArrowUpRight, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
+import { ArrowDown, ArrowUpRight, Clock, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 import { brand } from "@/lib/data";
 import ContactForm from "@/components/ui/ContactForm";
 import { isServerConfigured } from "@/lib/env";
@@ -73,8 +72,8 @@ export default function ContactPage() {
   return (
     <div className="bg-ivory text-charcoal">
       {/* 1. Compact Editorial Split Hero */}
-      <section className="bg-[#fdfbf7] px-4 pb-9 pt-20 sm:px-8 sm:pb-20 sm:pt-28">
-        <div className="mx-auto grid max-w-6xl items-center gap-7 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
+      <section className="bg-[#fdfbf7] px-4 pb-10 pt-20 sm:px-8 sm:pb-16 sm:pt-28">
+        <div className="mx-auto grid max-w-6xl items-center gap-7 lg:grid-cols-[1.12fr_0.88fr] lg:gap-14">
           <div className="max-w-xl">
             <div className="flex items-center gap-2.5 text-xs text-warmgray sm:gap-3 sm:text-sm">
               <span aria-hidden="true" className="h-px w-6 bg-primary sm:w-8" />
@@ -107,46 +106,49 @@ export default function ContactPage() {
                 <span>WhatsApp</span>
               </a>
             </div>
-
-            <dl className="mt-6 grid grid-cols-3 gap-3 border-t border-charcoal/10 pt-4 sm:mt-10 sm:gap-6 sm:pt-6">
-              <div>
-                <dt className="text-[11px] text-warmgray sm:text-xs">Studios</dt>
-                <dd className="mt-0.5 text-xs font-medium text-charcoal sm:mt-1 sm:text-sm">Mumbai &amp; Pune</dd>
-              </div>
-              <div>
-                <dt className="text-[11px] text-warmgray sm:text-xs">Online</dt>
-                <dd className="mt-0.5 text-xs font-medium text-charcoal sm:mt-1 sm:text-sm">Video &amp; call</dd>
-              </div>
-              <div>
-                <dt className="text-[11px] text-warmgray sm:text-xs">Direct line</dt>
-                <dd className="mt-0.5 font-mono text-[11px] font-medium tabular-nums text-charcoal sm:mt-1 sm:text-sm">
-                  {brand.phone}
-                </dd>
-              </div>
-            </dl>
           </div>
 
-          {/* Compact framed portrait on mobile, tall portrait on desktop */}
-          <figure className="mx-auto w-full max-w-md overflow-hidden rounded-xl border border-charcoal/10 bg-white shadow-[0_8px_24px_rgba(28,25,23,0.06)] sm:rounded-2xl">
-            <div className="relative aspect-[16/10] bg-charcoal/5 sm:aspect-[4/4.6]">
-              <Image
-                src="/images/manisha/manisha-contact-portrait.webp"
-                alt="Dr. Manisha Belvalkar — Spiritual Mentor"
-                fill
-                priority
-                sizes="(max-width: 1024px) 100vw, 448px"
-                className="object-cover object-[50%_18%]"
-              />
-            </div>
-            <figcaption className="border-t border-charcoal/10 bg-[#fdfbf7] p-4 sm:p-6">
-              <p className="font-display text-sm leading-6 text-charcoal sm:text-base">
+          {/* Private Consultation Desk Summary Card (no portrait) */}
+          <div className="rounded-2xl border border-charcoal/10 bg-ivory/70 p-1.5 shadow-[0_20px_50px_-36px_rgba(28,25,23,0.22)] sm:rounded-[1.35rem] sm:p-2">
+            <div className="rounded-xl border border-charcoal/8 bg-white p-5 sm:rounded-2xl sm:p-7">
+              <div className="flex flex-wrap items-center justify-between gap-2 border-b border-charcoal/10 pb-3.5">
+                <span className="text-xs font-medium text-primary">
+                  Dr. Manisha Belvalkar&apos;s desk
+                </span>
+                <span className="inline-flex items-center gap-1.5 text-xs text-warmgray">
+                  <Clock className="h-3.5 w-3.5 text-primary" strokeWidth={1.6} />
+                  Replies within 24 hrs
+                </span>
+              </div>
+
+              <p className="mt-4 font-display text-base leading-relaxed text-charcoal sm:text-lg">
                 “Every enquiry is read with care and answered personally with clear next steps within 24 hours.”
               </p>
-              <p className="mt-2 text-xs text-warmgray sm:mt-3">
-                Dr. Manisha Belvalkar&apos;s desk
-              </p>
-            </figcaption>
-          </figure>
+
+              <dl className="mt-5 grid grid-cols-2 gap-x-4 gap-y-3.5 border-t border-charcoal/10 pt-4 sm:gap-x-6">
+                <div>
+                  <dt className="text-[11px] text-warmgray sm:text-xs">Studios</dt>
+                  <dd className="mt-0.5 text-xs font-medium text-charcoal sm:text-sm">Mumbai &amp; Pune</dd>
+                </div>
+                <div>
+                  <dt className="text-[11px] text-warmgray sm:text-xs">Online</dt>
+                  <dd className="mt-0.5 text-xs font-medium text-charcoal sm:text-sm">Worldwide video &amp; call</dd>
+                </div>
+                <div>
+                  <dt className="text-[11px] text-warmgray sm:text-xs">Hours (IST)</dt>
+                  <dd className="mt-0.5 text-xs font-medium text-charcoal sm:text-sm">Mon–Sat · 10 AM – 7 PM</dd>
+                </div>
+                <div>
+                  <dt className="text-[11px] text-warmgray sm:text-xs">Direct line</dt>
+                  <dd className="mt-0.5 font-mono text-[11px] font-medium tabular-nums text-charcoal sm:text-sm">
+                    <a href={brand.phoneHref} className="transition-colors hover:text-primary">
+                      {brand.phone}
+                    </a>
+                  </dd>
+                </div>
+              </dl>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -183,9 +185,8 @@ export default function ContactPage() {
                         <span>{item.label}</span>
                       </div>
                       <p
-                        className={`mt-1 break-words text-sm font-medium text-charcoal transition-colors duration-150 group-hover:text-primary sm:mt-1.5 sm:text-base ${
-                          item.tabular ? "font-mono tabular-nums" : ""
-                        }`}
+                        className={`mt-1 break-words text-sm font-medium text-charcoal transition-colors duration-150 group-hover:text-primary sm:mt-1.5 sm:text-base ${item.tabular ? "font-mono tabular-nums" : ""
+                          }`}
                       >
                         {item.value}
                       </p>

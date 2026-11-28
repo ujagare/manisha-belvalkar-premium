@@ -51,7 +51,7 @@ export default async function ProductsPage() {
   ] as const;
 
   return <main className={styles.page}>
-    <section className={styles.hero} id="top" aria-labelledby="products-title">
+    <section className={styles.hero} aria-labelledby="products-title">
       <div className={styles.heroMedia}>
         <Image src="/images/products-reference/hero.webp" alt="Shakti Oracle Cards with their companion guidebook" fill priority sizes="100vw" className={styles.heroImage} />
       </div>

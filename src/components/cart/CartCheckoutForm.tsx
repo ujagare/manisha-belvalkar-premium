@@ -106,6 +106,10 @@ export default function CartCheckoutForm({ userEmail, userName, addresses, manua
       setError(`Order ${reference} is prepared but not saved online. Please send the WhatsApp message to confirm it.`);
       return;
     }
+    if (!userEmail) {
+      router.push("/login?next=%2Fcheckout%2Fcart");
+      return;
+    }
     startTransition(async () => {
       const response = await fetch("/api/checkout/create-order", {
         method: "POST",

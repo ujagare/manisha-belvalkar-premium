@@ -60,7 +60,7 @@ export default function HomeFAQ() {
 
             <div className="mt-5 flex flex-wrap gap-2.5 sm:mt-7 sm:gap-3">
               <Link
-                href="/contact"
+                href="/faq"
                 className="inline-flex h-10 items-center gap-2 rounded-lg bg-primary px-4 text-xs font-medium text-white transition-colors duration-150 hover:bg-primary-dark sm:h-11 sm:px-5 sm:text-sm"
               >
                 Ask before booking

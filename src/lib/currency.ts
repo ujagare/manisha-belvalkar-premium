@@ -4,9 +4,19 @@ export const SUPPORTED_CURRENCIES: readonly SupportedCurrency[] = ["INR", "USD"]
 
 const DEFAULT_USD_EXCHANGE_RATE = 85;
 
+function sanitizeExchangeRate(value: unknown): number | null {
+  if (typeof value === "string" && !value.trim()) return null;
+  if (value === null || value === undefined) return null;
+  const parsed = Number(value);
+  return Number.isFinite(parsed) && parsed >= 50 && parsed <= 200 ? parsed : null;
+}
+
 export function usdExchangeRate(): number {
-  const raw = Number(process.env.NEXT_PUBLIC_USD_EXCHANGE_RATE ?? process.env.RAZORPAY_USD_RATE);
-  return Number.isFinite(raw) && raw >= 50 && raw <= 200 ? raw : DEFAULT_USD_EXCHANGE_RATE;
+  return (
+    sanitizeExchangeRate(process.env.NEXT_PUBLIC_USD_EXCHANGE_RATE) ??
+    sanitizeExchangeRate(process.env.RAZORPAY_USD_RATE) ??
+    DEFAULT_USD_EXCHANGE_RATE
+  );
 }
 
 export function normalizeCurrency(value: unknown): SupportedCurrency {
@@ -19,9 +29,14 @@ export function normalizeCurrency(value: unknown): SupportedCurrency {
  * - INR: paise (rupees * 100)
  * - USD: cents (rounded to whole USD dollars so international pricing stays clean, min $1)
  */
-export function convertInrToSubunits(inrAmount: number, currency: SupportedCurrency): number {
+export function convertInrToSubunits(
+  inrAmount: number,
+  currency: SupportedCurrency,
+  rateOverride?: number,
+): number {
   if (currency === "USD") {
-    const dollars = Math.max(1, Math.ceil(inrAmount / usdExchangeRate()));
+    const rate = sanitizeExchangeRate(rateOverride) ?? usdExchangeRate();
+    const dollars = Math.max(1, Math.ceil(inrAmount / rate));
     return dollars * 100;
   }
   return Math.round(inrAmount * 100);

@@ -19,17 +19,6 @@ import Reveal from "@/components/ui/Reveal";
 
 type PathwayFilter = "all" | "practitioner" | "sadhana" | "syllabus";
 
-const FILTER_OPTIONS: {
-  id: PathwayFilter;
-  label: string;
-  count: number;
-}[] = [
-  { id: "all", label: "All pathways", count: 6 },
-  { id: "practitioner", label: "Tarot & 1-on-1", count: 3 },
-  { id: "sadhana", label: "Sadhana & Lineage", count: 3 },
-  { id: "syllabus", label: "With Preview Lessons", count: 2 },
-];
-
 const COURSE_IMAGE_OVERRIDE: Record<string, string> = {
   "professional-tarot-reader": "/images/mentoring/tarot-mentoring.webp",
 };
@@ -54,6 +43,18 @@ const SADHANA_SLUGS = new Set([
   "advanced-chakra",
   "aishwarya-siddhi",
 ]);
+
+function isPractitionerCourse(course: Course): boolean {
+  if (course.trackCategory === "practitioner") return true;
+  if (course.trackCategory === "sadhana") return false;
+  return PRACTITIONER_SLUGS.has(course.slug);
+}
+
+function isSadhanaCourse(course: Course): boolean {
+  if (course.trackCategory === "sadhana") return true;
+  if (course.trackCategory === "practitioner") return false;
+  return SADHANA_SLUGS.has(course.slug);
+}
 
 function getCourseImage(course: Course): string {
   return COURSE_IMAGE_OVERRIDE[course.slug] ?? course.image;
@@ -119,7 +120,7 @@ function SyllabusDrawer({
 
         {freeLesson ? (
           <Link
-            href={`/learn/${course.slug}/${freeLesson.id}`}
+            href={`/courses/${course.slug}#curriculum`}
             className={`inline-flex min-h-9 items-center gap-1.5 text-[11px] font-semibold underline underline-offset-4 transition-colors sm:min-h-10 sm:text-xs ${
               dark
                 ? "text-[#f0d060] hover:text-white"
@@ -127,7 +128,7 @@ function SyllabusDrawer({
             }`}
           >
             <PlayCircle className="size-3 sm:size-3.5" strokeWidth={1.7} />
-            Preview free lesson
+            View full syllabus
           </Link>
         ) : null}
       </div>
@@ -313,7 +314,7 @@ function StandardCourseCard({
         <div className="mt-3.5 flex flex-1 flex-col sm:mt-6">
           <div className="flex flex-wrap items-baseline justify-between gap-2 border-b border-[#efe5d2] pb-2.5 sm:pb-4">
             <span className="text-[10.5px] font-semibold uppercase tracking-[0.14em] text-[#a8871a] sm:text-xs sm:tracking-[0.16em]">
-              {COURSE_TRACK_LABEL[course.slug] ?? course.duration}
+              {course.trackLabel ?? COURSE_TRACK_LABEL[course.slug] ?? course.duration}
             </span>
             <span className="font-serif text-lg tabular-nums text-[#981313] sm:text-2xl">
               {getCoursePriceLabel(course)}
@@ -388,6 +389,39 @@ export default function CourseCatalogExplorer({
 }) {
   const [activeFilter, setActiveFilter] = useState<PathwayFilter>("all");
 
+  const filterOptions: {
+    id: PathwayFilter;
+    label: string;
+    count: number;
+  }[] = [
+    { id: "all", label: "All pathways", count: courses.length },
+    {
+      id: "practitioner",
+      label: "Tarot & 1-on-1",
+      count: courses.filter(isPractitionerCourse).length,
+    },
+    {
+      id: "sadhana",
+      label: "Sadhana & Lineage",
+      count: courses.filter(isSadhanaCourse).length,
+    },
+    {
+      id: "syllabus",
+      label: "Recorded Series",
+      count: courses.filter((c) => Boolean(c.curriculum?.length)).length,
+    },
+  ];
+
+  const featuredSlugs = new Set([
+    "professional-tarot-reader",
+    "personalized-wellbeing",
+    "shri-vidya",
+    "advanced-chakra",
+    "aishwarya-siddhi",
+    "soul-purpose-reading-course",
+  ]);
+  const extraCourses = courses.filter((c) => !featuredSlugs.has(c.slug));
+
   const tarotCourse = courses.find(
     (c) => c.slug === "professional-tarot-reader",
   );
@@ -403,10 +437,10 @@ export default function CourseCatalogExplorer({
 
   const filteredCourses = courses.filter((course) => {
     if (activeFilter === "practitioner") {
-      return PRACTITIONER_SLUGS.has(course.slug);
+      return isPractitionerCourse(course);
     }
     if (activeFilter === "sadhana") {
-      return SADHANA_SLUGS.has(course.slug);
+      return isSadhanaCourse(course);
     }
     if (activeFilter === "syllabus") {
       return Boolean(course.curriculum?.length);
@@ -422,7 +456,7 @@ export default function CourseCatalogExplorer({
         role="group"
         aria-label="Filter courses by study format"
       >
-        {FILTER_OPTIONS.map((option) => {
+        {filterOptions.map((option) => {
           const isActive = activeFilter === option.id;
           return (
             <button
@@ -701,6 +735,20 @@ export default function CourseCatalogExplorer({
                 </article>
               </div>
             </Reveal>
+          ) : null}
+
+          {extraCourses.length > 0 ? (
+            <div className="grid gap-4 sm:gap-6 md:grid-cols-2 lg:gap-8">
+              {extraCourses.map((course, idx) => (
+                <Reveal key={course.slug} delay={0.05 * (idx + 1)}>
+                  <StandardCourseCard
+                    course={course}
+                    variant="crimson"
+                    aspect="aspect-[16/9] sm:aspect-[4/3]"
+                  />
+                </Reveal>
+              ))}
+            </div>
           ) : null}
         </div>
       ) : (

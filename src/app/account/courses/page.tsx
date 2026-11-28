@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { ArrowLeft, ArrowRight, BookOpen, Clock3, GraduationCap, Play, Sparkles } from "lucide-react";
-import { courses } from "@/lib/data";
+import { getCourses } from "@/lib/supabase/courses";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { getCurrentUser, getMyCourseProgress, getMyEnrollments } from "@/lib/supabase/session";
 
@@ -14,8 +14,11 @@ export default async function MyCoursesPage() {
   if (!user) redirect("/login?next=/account/courses");
 
   const configured = isSupabaseConfigured();
-  const enrollments = configured ? await getMyEnrollments(50) : [];
-  const progressRows = configured ? await getMyCourseProgress() : [];
+  const [courses, enrollments, progressRows] = await Promise.all([
+    getCourses(),
+    configured ? getMyEnrollments(50) : Promise.resolve([]),
+    configured ? getMyCourseProgress() : Promise.resolve([]),
+  ]);
   const enrolledSlugs = new Set(enrollments.filter((item) => ["active", "completed"].includes(item.status)).map((item) => item.course_slug));
   const enrolledCourses = courses.filter((course) => enrolledSlugs.has(course.slug));
 

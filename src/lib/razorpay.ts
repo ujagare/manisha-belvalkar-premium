@@ -1,6 +1,7 @@
 import "server-only";
 import { createHmac } from "node:crypto";
 import { serverEnv } from "@/lib/env";
+import { collectPaginatedRazorpayItems } from "@/lib/payment-safety";
 import { constantTimeEqualHex } from "@/lib/security";
 
 import type { SupportedCurrency } from "@/lib/currency";
@@ -76,25 +77,31 @@ export async function createRazorpayRefund(paymentId: string, input?: {
   return (await response.json()) as { id: string; amount: number; currency: string; status: string; payment_id: string };
 }
 
+type RazorpayOrderPayment = {
+  id: string;
+  order_id: string;
+  amount: number;
+  currency: string;
+  status: "created" | "authorized" | "captured" | "refunded" | "failed";
+  method?: string;
+};
+
 export async function fetchRazorpayOrderPayments(orderId: string) {
   const { keyId, keySecret } = credentials();
-  const response = await fetch(`${API}/orders/${encodeURIComponent(orderId)}/payments`, {
-    headers: { Authorization: `Basic ${Buffer.from(`${keyId}:${keySecret}`).toString("base64")}` },
-    signal: AbortSignal.timeout(10_000),
-    cache: "no-store",
+  const authHeader = `Basic ${Buffer.from(`${keyId}:${keySecret}`).toString("base64")}`;
+  return collectPaginatedRazorpayItems<RazorpayOrderPayment>(async ({ count, skip }) => {
+    const response = await fetch(
+      `${API}/orders/${encodeURIComponent(orderId)}/payments?count=${count}&skip=${skip}`,
+      {
+        headers: { Authorization: authHeader },
+        signal: AbortSignal.timeout(10_000),
+        cache: "no-store",
+      },
+    );
+    if (!response.ok) throw new Error(`Razorpay order payments fetch failed (${response.status})`);
+    const data = (await response.json()) as { items?: RazorpayOrderPayment[] };
+    return data.items ?? [];
   });
-  if (!response.ok) throw new Error(`Razorpay order payments fetch failed (${response.status})`);
-  const data = (await response.json()) as {
-    items?: Array<{
-      id: string;
-      order_id: string;
-      amount: number;
-      currency: string;
-      status: "created" | "authorized" | "captured" | "refunded" | "failed";
-      method?: string;
-    }>;
-  };
-  return data.items ?? [];
 }
 
 export function verifyCheckoutSignature(orderId: string, paymentId: string, signature: string) {

@@ -1,4 +1,3 @@
-import { createHash } from "node:crypto";
 import { apiError, apiSuccess } from "@/lib/api";
 import { verifyWebhookSignature } from "@/lib/razorpay";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -8,7 +7,11 @@ import {
   revokeOrderFulfilment,
   releaseReservedInventory,
 } from "@/lib/fulfillment";
-import { assertDatabaseSuccess } from "@/lib/payment-safety";
+import {
+  assertDatabaseSuccess,
+  evaluateWebhookPaymentTransition,
+  resolveWebhookEventId,
+} from "@/lib/payment-safety";
 import { paymentDisputeAdminEmail, sendEmail } from "@/lib/resend";
 import { brand } from "@/lib/data";
 import { formatCurrencySubunits, normalizeCurrency } from "@/lib/currency";
@@ -37,8 +40,11 @@ export async function POST(request: Request) {
   try { payload = JSON.parse(raw) as Record<string, unknown>; }
   catch { return apiError("BAD_REQUEST", "Invalid webhook payload.", 400); }
 
-  const eventType = typeof payload.event === "string" ? payload.event : "unknown";
-  const eventId = request.headers.get("x-razorpay-event-id") ?? createHash("sha256").update(raw).digest("hex");
+  const eventType = typeof payload.event === "string" && payload.event.trim() ? payload.event.trim() : "";
+  const eventId = resolveWebhookEventId(payload, request.headers.get("x-razorpay-event-id"));
+  if (!eventType || !eventId) {
+    return apiError("BAD_REQUEST", "Missing webhook event identifier.", 400);
+  }
   const admin = createAdminClient();
   const { error: eventError } = await admin.from("payment_events").insert({
     provider: "razorpay", event_id: eventId, event_type: eventType, payload,
@@ -63,38 +69,46 @@ export async function POST(request: Request) {
     if (payment?.order_id) {
       const status = eventType === "payment.captured" ? "captured" : eventType === "payment.failed" ? "failed" : payment.status;
       if (status && ["authorized", "captured", "failed"].includes(status)) {
-        const paymentRecord = await admin.from("payments").select("amount_subunits,currency").eq("provider_order_id", payment.order_id).maybeSingle();
+        const paymentRecord = await admin.from("payments").select("status,amount_subunits,currency").eq("provider_order_id", payment.order_id).maybeSingle();
         assertDatabaseSuccess(paymentRecord, "Webhook payment lookup");
-        if (!paymentRecord.data || payment.amount !== paymentRecord.data.amount_subunits || payment.currency !== paymentRecord.data.currency) {
+        const transition = evaluateWebhookPaymentTransition({
+          existing: paymentRecord.data,
+          incomingStatus: status,
+          incomingAmount: payment.amount,
+          incomingCurrency: payment.currency,
+        });
+        if (transition === "missing" || transition === "mismatch") {
           throw new Error("Webhook payment amount or currency does not match the order.");
         }
-        const paymentUpdate = await admin.from("payments").update({
-          provider_payment_id: payment.id ?? null,
-          status,
-          method: payment.method ?? null,
-          captured_at: status === "captured" ? new Date().toISOString() : null,
-          updated_at: new Date().toISOString(),
-        }).eq("provider_order_id", payment.order_id);
-        assertDatabaseSuccess(paymentUpdate, "Webhook payment update");
-        const orderUpdate = await admin.from("orders").update({
-          payment_status: status === "captured" ? "paid" : status,
-          status: status === "captured" ? "confirmed" : status === "failed" ? "cancelled" : "pending",
-          updated_at: new Date().toISOString(),
-        }).eq("gateway_order_id", payment.order_id);
-        assertDatabaseSuccess(orderUpdate, "Webhook order update");
+        if (transition === "apply") {
+          const paymentUpdate = await admin.from("payments").update({
+            provider_payment_id: payment.id ?? null,
+            status,
+            method: payment.method ?? null,
+            captured_at: status === "captured" ? new Date().toISOString() : null,
+            updated_at: new Date().toISOString(),
+          }).eq("provider_order_id", payment.order_id);
+          assertDatabaseSuccess(paymentUpdate, "Webhook payment update");
+          const orderUpdate = await admin.from("orders").update({
+            payment_status: status === "captured" ? "paid" : status,
+            status: status === "captured" ? "confirmed" : status === "failed" ? "cancelled" : "pending",
+            updated_at: new Date().toISOString(),
+          }).eq("gateway_order_id", payment.order_id);
+          assertDatabaseSuccess(orderUpdate, "Webhook order update");
 
-        const { data: order } = await admin
-          .from("orders")
-          .select("id,user_id,item_type,item_slug,item_title,amount,amount_subunits,currency,guest_email,guest_name")
-          .eq("gateway_order_id", payment.order_id)
-          .maybeSingle();
+          const { data: order } = await admin
+            .from("orders")
+            .select("id,user_id,item_type,item_slug,item_title,amount,amount_subunits,currency,guest_email,guest_name")
+            .eq("gateway_order_id", payment.order_id)
+            .maybeSingle();
 
-        if (order) {
-          if (status === "captured") {
-            await activateOrderFulfilment(admin, order);
-          } else if (status === "failed") {
-            await releaseReservedInventory(admin, order.id);
-            await releasePendingSessionBooking(admin, order.id);
+          if (order) {
+            if (status === "captured") {
+              await activateOrderFulfilment(admin, order);
+            } else if (status === "failed") {
+              await releaseReservedInventory(admin, order.id);
+              await releasePendingSessionBooking(admin, order.id);
+            }
           }
         }
       }

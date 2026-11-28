@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { Loader2, MessageCircle } from "lucide-react";
+import { ArrowUpRight, CheckCircle2, Loader2, MessageCircle } from "lucide-react";
 import { leadWhatsAppMessage, manualReference, whatsappUrl } from "@/lib/manual-flow";
 import { cn } from "@/lib/utils";
 
@@ -11,6 +11,12 @@ interface LeadCaptureFormProps {
   manualMode?: boolean;
   hideHeading?: boolean;
   className?: string;
+}
+
+interface SubmissionState {
+  reference: string;
+  message: string;
+  whatsappHref: string;
 }
 
 export default function LeadCaptureForm({
@@ -24,23 +30,28 @@ export default function LeadCaptureForm({
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [intention, setIntention] = useState("");
+  const [companyWebsite, setCompanyWebsite] = useState("");
   const [consent, setConsent] = useState(false);
-  const [result, setResult] = useState<string | null>(null);
+  const [submission, setSubmission] = useState<SubmissionState | null>(null);
   const [pending, startTransition] = useTransition();
 
-  function prepareWhatsApp(reference: string, saved: boolean) {
-    window.open(
-      whatsappUrl(
-        leadWhatsAppMessage({ reference, kind, source, name, email, phone, intention }),
-      ),
-      "_blank",
-      "noopener,noreferrer",
+  function prepareWhatsApp(reference: string, saved: boolean, emailed = false) {
+    const href = whatsappUrl(
+      leadWhatsAppMessage({ reference, kind, source, name, email, phone, intention }),
     );
-    setResult(
-      saved
-        ? `Request saved · ${reference}. Send the prepared WhatsApp message to complete onboarding.`
-        : `Request prepared · ${reference}. Send the WhatsApp message to confirm with our team.`,
-    );
+    try {
+      window.open(href, "_blank", "noopener,noreferrer");
+    } catch {
+      // Fallback link is rendered below when mobile/Safari blocks async popups.
+    }
+    const emailNote = emailed ? " A confirmation copy has also been sent to your email." : "";
+    setSubmission({
+      reference,
+      whatsappHref: href,
+      message: saved
+        ? `Request saved (${reference}).${emailNote} Send the prepared WhatsApp message so Dr. Manisha's team can share membership details personally.`
+        : `Request prepared (${reference}). Tap below to open WhatsApp and confirm with Dr. Manisha's team.`,
+    });
   }
 
   function submit(event: React.FormEvent) {
@@ -57,11 +68,24 @@ export default function LeadCaptureForm({
         const response = await fetch("/api/leads", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ kind, source, name, email, phone, intention, consent }),
+          body: JSON.stringify({
+            kind,
+            source,
+            name,
+            email,
+            phone,
+            intention,
+            consent,
+            company_website: companyWebsite,
+          }),
         });
         const data = await response.json().catch(() => null);
         if (response.ok) {
-          prepareWhatsApp(data?.reference ?? manualReference("REQUEST"), true);
+          prepareWhatsApp(
+            data?.reference ?? manualReference("REQUEST"),
+            true,
+            Boolean(data?.emailed),
+          );
           return;
         }
         prepareWhatsApp(manualReference("REQUEST"), false);
@@ -161,6 +185,18 @@ export default function LeadCaptureForm({
         </div>
       ) : null}
 
+      <div className="sr-only" aria-hidden="true">
+        <label htmlFor={`lead-website-${kind}`}>Website</label>
+        <input
+          id={`lead-website-${kind}`}
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          value={companyWebsite}
+          onChange={(event) => setCompanyWebsite(event.target.value)}
+        />
+      </div>
+
       <label className="flex cursor-pointer items-start gap-3 text-xs leading-5 text-warmgray">
         <input
           required
@@ -174,13 +210,26 @@ export default function LeadCaptureForm({
         </span>
       </label>
 
-      {result ? (
-        <p
-          className="rounded-lg border border-charcoal/12 bg-ivory px-4 py-3 text-sm leading-6 text-charcoal"
+      {submission ? (
+        <div
+          className="space-y-3 rounded-xl border border-primary/20 bg-ivory p-4 text-sm leading-6 text-charcoal"
           role="status"
         >
-          {result}
-        </p>
+          <div className="flex items-start gap-2.5">
+            <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-primary" strokeWidth={1.75} aria-hidden="true" />
+            <p>{submission.message}</p>
+          </div>
+          <a
+            href={submission.whatsappHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-lg border border-primary/30 bg-white px-4 text-xs font-semibold text-primary transition-colors hover:bg-primary hover:text-white sm:w-auto"
+          >
+            <MessageCircle className="h-3.5 w-3.5" strokeWidth={1.6} aria-hidden="true" />
+            <span>Open WhatsApp if it didn&apos;t open automatically</span>
+            <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={1.6} aria-hidden="true" />
+          </a>
+        </div>
       ) : null}
 
       <button

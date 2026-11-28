@@ -44,7 +44,29 @@ export const serverEnv = {
   shiprocketChannelId: () => read("SHIPROCKET_CHANNEL_ID"),
   /** Auto-push paid physical orders to Shiprocket immediately on payment capture. */
   shiprocketAutoPush: () => (read("SHIPROCKET_AUTO_PUSH") ?? "true").toLowerCase() !== "false",
+  /**
+   * Secret key for short-lived HMAC course video stream tokens & session locks.
+   * Falls back to INVOICE_LINK_SECRET / SUPABASE_SERVICE_ROLE_KEY when unset.
+   */
+  courseStreamSecret: () =>
+    read("COURSE_STREAM_SECRET") ??
+    read("INVOICE_LINK_SECRET") ??
+    read("SUPABASE_SECRET_KEY") ??
+    read("SUPABASE_SERVICE_ROLE_KEY"),
+  /** VdoCipher API Secret for Widevine + FairPlay hardware DRM & server-baked watermark OTPs. */
+  vdocipherApiSecret: () => read("VDOCIPHER_API_SECRET"),
+  /** Bunny Stream Embed View Token Authentication Key (optional). */
+  bunnyStreamSigningKey: () => read("BUNNY_STREAM_SIGNING_KEY"),
+  /** Maximum distinct devices allowed per student account (default: 2 — e.g. laptop + phone). */
+  courseMaxDevices: () => {
+    const parsed = Number.parseInt(read("COURSE_MAX_DEVICES") ?? "2", 10);
+    return Number.isFinite(parsed) && parsed >= 1 && parsed <= 10 ? parsed : 2;
+  },
 };
+
+export function isVdoCipherConfigured() {
+  return Boolean(serverEnv.vdocipherApiSecret());
+}
 
 export function isShiprocketConfigured() {
   return Boolean(serverEnv.shiprocketEmail() && serverEnv.shiprocketPassword());

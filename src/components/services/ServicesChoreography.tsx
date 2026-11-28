@@ -67,7 +67,7 @@ const pathways = [
     eyebrow: "Growth",
     title: "I want deeper support",
     text: "For ongoing guidance, spiritual practice and intentional personal transformation.",
-    href: "#mentoring",
+    href: "/mentoring",
   },
   {
     icon: BookOpen,
@@ -206,7 +206,7 @@ export default function ServicesChoreography({
           : "60 minutes",
         reason:
           "Ideal when multiple questions overlap across career, relationships or timing and you want clear perspective.",
-        ctaLabel: "Reserve session",
+        ctaLabel: "View session",
         href: tarot60 ? `/services/${tarot60.slug}` : "/services",
         sectionHref: "#readings",
       },
@@ -236,7 +236,7 @@ export default function ServicesChoreography({
         href: primaryMentoring
           ? `/mentoring/${primaryMentoring.slug}`
           : "/mentoring",
-        sectionHref: "#mentoring",
+        sectionHref: undefined,
       },
       {
         id: "immersion" as const,
@@ -857,27 +857,6 @@ export default function ServicesChoreography({
           }
         });
 
-        // Mentoring top rule draws smoothly on scroll (mobile + desktop)
-        const mentoringRule = root.querySelector<HTMLElement>(
-          "[data-mentoring-rule]",
-        );
-        if (mentoringRule) {
-          gsap.fromTo(
-            mentoringRule,
-            { scaleX: 0 },
-            {
-              scaleX: 1,
-              ease: "none",
-              scrollTrigger: {
-                trigger: "#mentoring",
-                start: "top 88%",
-                end: "top 42%",
-                scrub: 0.8,
-              },
-            },
-          );
-        }
-
         // Featured Journey: scrubbed curtain clipPath + zoom settle + continuous parallax (mobile + desktop)
         const featuredEl = root.querySelector<HTMLElement>(
           "[data-featured-section]",
@@ -1058,27 +1037,6 @@ export default function ServicesChoreography({
             });
 
           root
-            .querySelectorAll<HTMLElement>("[data-mentoring-card]")
-            .forEach((card, index) => {
-              gsap.fromTo(
-                card,
-                { y: 26 + index * 16, opacity: 0.5 },
-                {
-                  y: 0,
-                  opacity: 1,
-                  ease: "none",
-                  scrollTrigger: {
-                    trigger: "[data-mentoring-grid]",
-                    start: "top 92%",
-                    end: "top 54%",
-                    scrub: 0.75,
-                    invalidateOnRefresh: true,
-                  },
-                },
-              );
-            });
-
-          root
             .querySelectorAll<HTMLElement>("[data-step-item]")
             .forEach((step, index) => {
               gsap.fromTo(
@@ -1155,48 +1113,6 @@ export default function ServicesChoreography({
               },
             );
           }
-
-          // Mentoring cards scrubbed entrance + clip-path portrait wipe on mobile
-          root
-            .querySelectorAll<HTMLElement>("[data-mentoring-card]")
-            .forEach((card) => {
-              gsap.fromTo(
-                card,
-                { y: 24, scale: 0.97, opacity: 0.4 },
-                {
-                  y: 0,
-                  scale: 1,
-                  opacity: 1,
-                  ease: "none",
-                  scrollTrigger: {
-                    trigger: card,
-                    start: "top 95%",
-                    end: "top 66%",
-                    scrub: 0.65,
-                  },
-                },
-              );
-
-              const thumb = card.querySelector<HTMLElement>(
-                "[data-mentoring-thumb]",
-              );
-              if (thumb) {
-                gsap.fromTo(
-                  thumb,
-                  { clipPath: "inset(100% 0% 0% 0%)" },
-                  {
-                    clipPath: "inset(0% 0% 0% 0%)",
-                    ease: "none",
-                    scrollTrigger: {
-                      trigger: card,
-                      start: "top 92%",
-                      end: "top 62%",
-                      scrub: 0.65,
-                    },
-                  },
-                );
-              }
-            });
 
           // What Happens Next scrubbed elevation per step on mobile
           root
@@ -1546,15 +1462,25 @@ export default function ServicesChoreography({
                     <span>{activeRecommendation.ctaLabel}</span>
                     <ArrowRight className={`${styles.ctaArrow} size-3 shrink-0 sm:size-4`} />
                   </Link>
-                  <button
-                    type="button"
-                    onClick={() =>
-                      scrollToSection(activeRecommendation.sectionHref)
-                    }
-                    className="inline-flex min-h-10 cursor-pointer items-center justify-center gap-1 rounded-full border border-[#c7a23b]/60 bg-white px-2.5 py-2 text-center text-[10.5px] font-semibold leading-tight text-[#6b0b0b] transition-colors hover:bg-[#faf3dc] active:scale-[0.98] sm:min-h-11 sm:gap-1.5 sm:whitespace-nowrap sm:px-4 sm:py-2.5 sm:text-xs"
-                  >
-                    Jump to section
-                  </button>
+                  {activeRecommendation.sectionHref ? (
+                    <button
+                      type="button"
+                      onClick={() =>
+                        activeRecommendation.sectionHref &&
+                        scrollToSection(activeRecommendation.sectionHref)
+                      }
+                      className="inline-flex min-h-10 cursor-pointer items-center justify-center gap-1 rounded-full border border-[#c7a23b]/60 bg-white px-2.5 py-2 text-center text-[10.5px] font-semibold leading-tight text-[#6b0b0b] transition-colors hover:bg-[#faf3dc] active:scale-[0.98] sm:min-h-11 sm:gap-1.5 sm:whitespace-nowrap sm:px-4 sm:py-2.5 sm:text-xs"
+                    >
+                      Jump to section
+                    </button>
+                  ) : (
+                    <Link
+                      href="/mentoring"
+                      className="inline-flex min-h-10 items-center justify-center gap-1 rounded-full border border-[#c7a23b]/60 bg-white px-2.5 py-2 text-center text-[10.5px] font-semibold leading-tight text-[#6b0b0b] transition-colors hover:bg-[#faf3dc] active:scale-[0.98] sm:min-h-11 sm:gap-1.5 sm:whitespace-nowrap sm:px-4 sm:py-2.5 sm:text-xs"
+                    >
+                      All mentoring
+                    </Link>
+                  )}
                 </div>
               </div>
             )}
@@ -1779,7 +1705,7 @@ export default function ServicesChoreography({
                           : "bg-[#a81414] text-white hover:bg-[#6b0b0b] focus-visible:outline-[#a81414]"
                         }`}
                     >
-                      Reserve session{" "}
+                      View session{" "}
                       <ArrowRight className={`${styles.ctaArrow} size-4`} />
                     </Link>
                   </div>
@@ -2058,6 +1984,11 @@ export default function ServicesChoreography({
                                 alt={service.title}
                                 fill
                                 sizes="(max-width: 640px) 92vw, (max-width: 1024px) 40vw, 340px"
+                                style={
+                                  service.imagePosition
+                                    ? { objectPosition: service.imagePosition }
+                                    : undefined
+                                }
                                 className={`${styles.hoverZoomMedia} object-cover`}
                               />
                             </div>
@@ -2127,94 +2058,7 @@ export default function ServicesChoreography({
         </div>
       </section>
 
-      {/* 6. MENTORING - EDITORIAL PORTRAITS & SCRUBBED WAVE */}
-      <section
-        id="mentoring"
-        className="relative scroll-mt-20 bg-[#f0e6d7] px-4 py-12 sm:px-10 sm:py-20 lg:py-32"
-      >
-        <div
-          data-mentoring-rule
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 top-0 h-1 origin-left bg-[#8f0e0e] will-change-transform"
-        />
-        <div className="mx-auto max-w-7xl">
-          <div className="max-w-3xl">
-            <h2
-              data-split-heading
-              className="font-serif text-[1.9rem] leading-[1.06] tracking-[-0.03em] sm:text-5xl lg:text-6xl"
-            >
-              A deeper practice, held over time.
-            </h2>
-            <p
-              data-scrub-words
-              className="mt-4 max-w-2xl text-base leading-7 text-[#644d43] sm:mt-7 sm:text-lg sm:leading-8"
-            >
-              For those who want to move beyond a single answer and build
-              discernment, self-trust and a grounded spiritual practice.
-            </p>
-          </div>
-
-          <div
-            data-mentoring-grid
-            className="mt-8 grid gap-4 sm:mt-14 lg:grid-cols-3 lg:gap-px lg:bg-[#6b0b0b]/14"
-          >
-            {mentoringAreas.map((area, index) => (
-              <div key={area.slug} data-mentoring-card className="h-full">
-                <Link
-                  href={`/mentoring/${area.slug}`}
-                  onPointerMove={updateSpotlight}
-                  className={`${styles.hoverZoomFrame} ${styles.spotlightCard} group flex h-full flex-col overflow-hidden rounded-2xl border border-[#d8c8ae] bg-[#fffdf8] p-4 transition-colors hover:bg-white active:scale-[0.99] focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-[#a81414] lg:rounded-none lg:border-0 lg:p-8`}
-                >
-                  <div
-                    data-mentoring-thumb
-                    className="relative aspect-[16/10] w-full overflow-hidden rounded-xl bg-[#efe5d2]"
-                  >
-                    <Image
-                      src={area.image}
-                      alt={area.title}
-                      fill
-                      sizes="(max-width: 1024px) 92vw, 30vw"
-                      className={`${styles.hoverZoomMedia} object-cover object-center`}
-                    />
-                    <div
-                      aria-hidden="true"
-                      className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#1c1917]/40 via-transparent to-transparent"
-                    />
-                    <span className="absolute left-3 top-3 rounded-full bg-[#1c1917]/85 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#f0d060]">
-                      Path 0{index + 1}
-                    </span>
-                  </div>
-
-                  <h3 className="mt-5 font-serif text-2xl leading-tight sm:mt-7 sm:text-3xl">
-                    {area.title}
-                  </h3>
-                  <p className="mt-2.5 text-sm leading-6 text-[#523d34] sm:mt-4 sm:text-base sm:leading-7">
-                    {area.short}
-                  </p>
-
-                  {area.features.length > 0 && (
-                    <ul className="mt-4 space-y-1.5 border-t border-[#efe5d2] pt-3.5 text-xs leading-5 text-[#5f4a3f]">
-                      {area.features.slice(0, 2).map((feat) => (
-                        <li key={feat} className="flex items-start gap-2">
-                          <Check className="mt-0.5 size-3.5 shrink-0 text-[#a81414]" />
-                          <span>{feat}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-
-                  <span className="mt-5 flex items-center gap-2 pt-3 text-sm font-semibold text-[#8f0e0e] lg:mt-auto lg:pt-7">
-                    Discover this path
-                    <ArrowRight className={`${styles.ctaArrow} size-4`} />
-                  </span>
-                </Link>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 7. FEATURED JOURNEY - SCRUBBED CURTAIN REVEAL & PARALLAX (MOBILE + DESKTOP) */}
+      {/* 6. FEATURED JOURNEY - SCRUBBED CURTAIN REVEAL & PARALLAX (MOBILE + DESKTOP) */}
       {featuredCourse && (
         <section
           id="signature-journey"

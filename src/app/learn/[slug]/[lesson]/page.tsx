@@ -1,39 +1,69 @@
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
-import { courses } from "@/lib/data";
-import { courseForViewer, flattenLessons } from "@/lib/course-content";
 import CoursePlayer from "@/components/course/CoursePlayer";
-import { getCurrentUser, getMyCourseProgress, hasCourseAccess } from "@/lib/supabase/session";
+import { courseForViewer, flattenLessons } from "@/lib/course-content";
+import { getCourseBySlug } from "@/lib/supabase/courses";
+import {
+  getCurrentUser,
+  getMyCourseEnrollment,
+  getMyCourseNotes,
+  getMyCourseProgress,
+} from "@/lib/supabase/session";
+
+export const dynamic = "force-dynamic";
 
 interface Props {
   params: Promise<{ slug: string; lesson: string }>;
 }
 
-export async function generateStaticParams() {
-  return courses
-    .filter((c) => c.curriculum?.length)
-    .flatMap((c) => flattenLessons(c).map((l) => ({ slug: c.slug, lesson: l.id })));
-}
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug, lesson } = await params;
-  const course = courses.find((c) => c.slug === slug);
-  const found = course ? flattenLessons(course).find((l) => l.id === lesson) : null;
+  const course = await getCourseBySlug(slug);
+  const found = course
+    ? flattenLessons(course).find((l) => l.id === lesson)
+    : null;
   if (!course || !found) return { title: "Lesson not found" };
-  return { title: `${found.title} — ${course.title}`, robots: { index: false, follow: false } };
+  return {
+    title: `${found.title} — ${course.title}`,
+    robots: { index: false, follow: false },
+  };
 }
 
 export default async function LessonPage({ params }: Props) {
   const { slug, lesson } = await params;
-  const course = courses.find((c) => c.slug === slug);
+  const course = await getCourseBySlug(slug);
   if (!course) notFound();
-  const selectedLesson = flattenLessons(course).find((item) => item.id === lesson);
+
+  const selectedLesson = flattenLessons(course).find(
+    (item) => item.id === lesson,
+  );
   if (!selectedLesson) notFound();
+
   const user = await getCurrentUser();
-  const fullAccess = user ? await hasCourseAccess(slug) : false;
-  if (!selectedLesson.free && !user) redirect(`/login?next=${encodeURIComponent(`/learn/${slug}/${lesson}`)}`);
-  if (!selectedLesson.free && !fullAccess) redirect(`/courses/${slug}?access=required`);
-  const progress = fullAccess ? await getMyCourseProgress(slug) : [];
-  // Only entitled lessons may carry their media URL into the client payload.
-  return <CoursePlayer course={courseForViewer(course, fullAccess)} initialLessonId={lesson} hasFullAccess={fullAccess} initialProgress={progress} />;
+  const enrollment = user ? await getMyCourseEnrollment(slug) : null;
+  const fullAccess = Boolean(enrollment);
+
+  if (!selectedLesson.free && !user) {
+    redirect(`/login?next=${encodeURIComponent(`/learn/${slug}/${lesson}`)}`);
+  }
+  if (!selectedLesson.free && !fullAccess) {
+    redirect(`/courses/${slug}?access=required`);
+  }
+
+  const [progress, notes] = fullAccess
+    ? await Promise.all([getMyCourseProgress(slug), getMyCourseNotes(slug)])
+    : [[], []];
+
+  const enrolledAt = enrollment?.enrolled_at ?? enrollment?.created_at ?? null;
+
+  return (
+    <CoursePlayer
+      course={courseForViewer(course, fullAccess, enrolledAt)}
+      initialLessonId={lesson}
+      hasFullAccess={fullAccess}
+      enrolledAtIso={enrolledAt}
+      initialProgress={progress}
+      initialNotes={notes}
+    />
+  );
 }

@@ -208,6 +208,22 @@ export async function hasCourseAccess(courseSlug: string): Promise<boolean> {
   return Boolean(data);
 }
 
+/** Fetch active enrollment details (including enrolled_at for drip modules). */
+export async function getMyCourseEnrollment(courseSlug: string) {
+  const supabase = await createClient();
+  const user = await getCurrentUser();
+  if (!user) return null;
+  const { data } = await supabase
+    .from("course_enrollments")
+    .select("id,course_slug,status,enrolled_at,created_at")
+    .eq("user_id", user.id)
+    .eq("course_slug", courseSlug)
+    .in("status", ["active", "completed"])
+    .limit(1)
+    .maybeSingle();
+  return data ?? null;
+}
+
 /** Progress rows used by the learning library and recorded-course player. */
 export async function getMyCourseProgress(courseSlug?: string) {
   const supabase = await createClient();
@@ -220,6 +236,19 @@ export async function getMyCourseProgress(courseSlug?: string) {
     .order("last_watched_at", { ascending: false });
   if (courseSlug) query = query.eq("course_slug", courseSlug);
   const { data } = await query;
+  return data ?? [];
+}
+
+/** Personal learner notes per lesson inside a course. */
+export async function getMyCourseNotes(courseSlug: string) {
+  const supabase = await createClient();
+  const user = await getCurrentUser();
+  if (!user) return [];
+  const { data } = await supabase
+    .from("course_lesson_notes")
+    .select("lesson_id,content,updated_at")
+    .eq("user_id", user.id)
+    .eq("course_slug", courseSlug);
   return data ?? [];
 }
 

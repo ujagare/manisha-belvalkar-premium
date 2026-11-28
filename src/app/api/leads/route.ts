@@ -4,7 +4,11 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { isSameOriginRequest } from "@/lib/security";
 import { sendEmail } from "@/lib/resend/client";
-import { enquiryAdminEmail, requestConfirmationEmail } from "@/lib/resend/templates";
+import {
+  communityApplicationAdminEmail,
+  enquiryAdminEmail,
+  requestConfirmationEmail,
+} from "@/lib/resend/templates";
 import { brand } from "@/lib/data";
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -90,13 +94,42 @@ export async function POST(request: Request) {
       return apiSuccess({ reference: data.id.slice(0, 8) }, 201);
     }
     if (kind === "community") {
+      const intention = textValue(body.intention, 1500);
       if (!name || (!email && !phone)) return apiError("BAD_REQUEST", "Name and contact details are required.", 422);
+      if (isGibberish(name, 8) || (intention && isGibberish(intention))) {
+        return apiSuccess({ dropped: true }, 201);
+      }
       const { data, error } = await admin.from("community_applications").insert({
         user_id: user?.id ?? null, name, email: email || null, phone: phone || null,
-        intention: textValue(body.intention, 1500) || null, consented_at: new Date().toISOString(),
+        intention: intention || null, consented_at: new Date().toISOString(),
       }).select("id").single();
       if (error) throw error;
-      return apiSuccess({ reference: data.id.slice(0, 8) }, 201);
+      const reference = data.id.slice(0, 8);
+      const { subject, html } = communityApplicationAdminEmail({
+        name,
+        email: email || null,
+        phone: phone || null,
+        intention: intention || null,
+        reference,
+      });
+      const adminEmail = await sendEmail({ to: brand.email, subject, html });
+      let customerEmailSent = false;
+      if (email) {
+        const contactSummary = [email, phone].filter(Boolean).join(" · ");
+        const details = [
+          { label: "Contact", value: contactSummary },
+          ...(intention ? [{ label: "Intention", value: intention }] : []),
+        ];
+        const customer = requestConfirmationEmail({
+          name,
+          reference,
+          requestType: "Magic Community invitation request",
+          summary: intention || "Magic Community by-invitation membership",
+          details,
+        });
+        customerEmailSent = (await sendEmail({ to: email, subject: customer.subject, html: customer.html })).ok;
+      }
+      return apiSuccess({ reference, emailed: customerEmailSent, adminNotified: adminEmail.ok }, 201);
     }
     return apiError("BAD_REQUEST", "Unknown submission type.", 422);
   } catch (error) {

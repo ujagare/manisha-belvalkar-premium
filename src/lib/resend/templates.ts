@@ -79,6 +79,31 @@ export function enquiryAdminEmail(input: {
   };
 }
 
+/** Admin notification for a new Magic Community membership application. */
+export function communityApplicationAdminEmail(input: {
+  name: string;
+  email: string | null;
+  phone: string | null;
+  intention: string | null;
+  reference: string;
+}): { subject: string; html: string } {
+  const rows = [
+    { label: "Name", value: input.name },
+    { label: "Email", value: input.email ?? "—" },
+    { label: "Phone / WhatsApp", value: input.phone ?? "—" },
+    { label: "Reference", value: input.reference },
+    { label: "Intention", value: input.intention || "—" },
+  ];
+  return {
+    subject: `New Magic Community request — ${input.name} (${input.reference})`,
+    html: layout("New Magic Community Request", `
+      <p style="margin:0 0 8px;font-size:16px;color:#2b2118;">Namaste 🙏 A seeker has requested an invitation to the Magic Community:</p>
+      ${detailsTable(rows)}
+      <p style="margin:24px 0 0;font-size:13px;color:#9b8a75;">Review and update application status in <strong>Admin → Community Applications</strong>, or reply directly via WhatsApp/email to share membership details.</p>
+    `),
+  };
+}
+
 /** Order/booking confirmation sent to the customer after a successful payment. */
 export function orderConfirmationEmail(input: {
   name: string;
@@ -145,6 +170,37 @@ export function sessionReminderEmail(input: {
         <a href="${input.joinUrl}" style="display:inline-block;padding:12px 24px;border-radius:999px;background:#6b0b0b;color:#ffffff;font-size:13px;font-weight:700;text-decoration:none;">Enter Private Video Room</a>
       </div>
       <p style="margin:0;font-size:13px;line-height:1.6;color:#5c4d3e;">Your private room opens 15 minutes before start time. Please test your camera and microphone from a quiet space.</p>
+    `),
+  };
+}
+
+/** Post-session remedies & aftercare note sent to the client after a live or in-person session. */
+export function sessionAftercareEmail(input: {
+  name: string;
+  title: string;
+  sessionDateLabel: string | null;
+  aftercareNotes: string;
+  bookingsUrl: string;
+}): { subject: string; html: string } {
+  const rows = [{ label: "Session", value: input.title }];
+  if (input.sessionDateLabel) {
+    rows.push({ label: "Session Date", value: input.sessionDateLabel });
+  }
+  return {
+    subject: `Your Session Aftercare & Guidance — ${input.title}`,
+    html: layout("Post-Session Guidance & Aftercare", `
+      <p style="margin:0 0 8px;font-size:16px;color:#2b2118;">Dear ${escapeHtml(input.name).trim() || "there"},</p>
+      <p style="margin:0 0 16px;font-size:14px;line-height:1.7;color:#2b2118;">Thank you for holding space together during your <strong>${escapeHtml(input.title)}</strong>. Below are your personalized post-session practices, remedies, and gentle aftercare notes:</p>
+      ${detailsTable(rows)}
+      <div style="margin:20px 0;padding:20px;border-radius:12px;background:#faf7f2;border:1px solid #eee3d3;border-left:4px solid #b41414;">
+        <p style="margin:0 0 8px;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#8a1c1c;">Guidance &amp; Remedies</p>
+        <p style="margin:0;font-size:14px;line-height:1.75;color:#2b2118;white-space:pre-line;">${escapeHtml(input.aftercareNotes)}</p>
+      </div>
+      <div style="margin:24px 0;">
+        <a href="${escapeHtml(input.bookingsUrl)}" style="display:inline-block;padding:12px 24px;border-radius:999px;background:#6b0b0b;color:#ffffff;font-size:13px;font-weight:700;text-decoration:none;">View in My Bookings</a>
+      </div>
+      <p style="margin:0;font-size:12px;line-height:1.6;color:#7a6b5a;">Drink plenty of water over the next 24 hours and allow your energy to settle gently. These notes remain saved permanently in your account under My Bookings.</p>
+      <p style="margin:14px 0 0;font-size:14px;line-height:1.7;color:#2b2118;">With love &amp; light,<br>Dr. Manisha Belvalkar</p>
     `),
   };
 }

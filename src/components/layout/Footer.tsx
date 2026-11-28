@@ -7,6 +7,7 @@ import { useRef } from "react";
 import {
   ArrowUp,
   ArrowUpRight,
+  CalendarDays,
   Heart,
   LogIn,
   Mail,
@@ -155,15 +156,13 @@ export default function Footer() {
 
           <Reveal delay={0.3}>
             <div className="mt-4 grid grid-cols-2 gap-2.5 sm:mt-7 sm:flex sm:flex-wrap sm:items-center sm:justify-center sm:gap-4">
-              <a
-                href={brand.whatsappHref}
-                target="_blank"
-                rel="noreferrer"
+              <Link
+                href="/services#paths"
                 className="group inline-flex min-h-10 items-center justify-center gap-1.5 rounded-lg bg-gold px-3.5 py-2 text-xs font-semibold text-primary-deeper transition-colors duration-150 hover:bg-gold-light sm:min-h-11 sm:gap-2 sm:rounded-full sm:px-6 sm:py-3 sm:text-sm"
               >
-                <MessageCircle className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                <CalendarDays className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 Book a Session
-              </a>
+              </Link>
               <a
                 href="/contact"
                 className="inline-flex min-h-10 items-center justify-center gap-1.5 rounded-lg border border-white/35 px-3.5 py-2 text-xs font-semibold text-white transition-colors duration-150 hover:border-gold hover:bg-white/10 sm:min-h-11 sm:gap-2 sm:rounded-full sm:px-6 sm:py-3 sm:text-sm"
@@ -370,15 +369,13 @@ export default function Footer() {
                 </li>
               </ul>
 
-              <a
-                href={brand.whatsappHref}
-                target="_blank"
-                rel="noreferrer"
+              <Link
+                href="/how-it-works"
                 className="group mt-3 inline-flex items-center gap-2 rounded-full border border-gold/40 px-6 py-3 text-sm font-medium text-gold transition-all duration-300 hover:bg-gold hover:text-primary-deeper"
               >
                 Start your journey
                 <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </a>
+              </Link>
             </Reveal>
           </div>
 

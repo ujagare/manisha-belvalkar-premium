@@ -1,18 +1,19 @@
 import type { MetadataRoute } from "next";
 import {
   services,
-  courses,
   healingServices,
   mentoringAreas,
   products,
 } from "@/lib/data";
 import { insights } from "@/lib/insights";
+import { getCourses } from "@/lib/supabase/courses";
 
 const BASE = "https://www.manishabelvalkar.com";
 const SITE_UPDATED = new Date("2026-10-16T00:00:00.000Z");
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = SITE_UPDATED;
+  const courses = await getCourses();
 
   const staticPages: MetadataRoute.Sitemap = [
     { url: `${BASE}/`, lastModified: now, changeFrequency: "weekly", priority: 1 },

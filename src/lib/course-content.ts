@@ -1,4 +1,5 @@
 import type { Course, CourseLesson } from "@/lib/data";
+import { isModuleUnlockedByDrip } from "@/lib/course-security";
 
 /** Flatten a course's curriculum modules into a single ordered lesson list. */
 export function flattenLessons(course: Course): CourseLesson[] {
@@ -16,22 +17,43 @@ export function findLesson(course: Course, lessonId: string): CourseLesson | und
 }
 
 /**
- * The course shape that may be handed to the client player.
+ * Sanitizes a Course before serializing into any React Server Component or
+ * client bundle.
  *
- * The whole course object is serialised into the RSC payload, so without this
- * a preview visitor would receive the `videoUrl` of every paid lesson. Lesson
- * titles, durations and ordering are always safe to send; the media URL is only
- * kept for lessons the viewer is actually entitled to play.
+ * ZERO-LEAK INVARIANT:
+ * - Raw `videoUrl` is ALWAYS stripped — even for enrolled students! Media
+ *   playback is authorized strictly one lesson at a time through
+ *   `POST /api/courses/playback` (which enforces active enrollment, device cap,
+ *   single-stream session lock, and short-lived HMAC / DRM tokens).
+ * - Paid lesson `notesMarkdown` and `resources` are stripped unless the viewer
+ *   owns full access or the lesson is marked `free` AND its module drip window
+ *   has opened.
  */
-export function courseForViewer(course: Course, hasFullAccess: boolean): Course {
-  if (hasFullAccess || !course.curriculum) return course;
+export function courseForViewer(
+  course: Course,
+  hasFullAccess: boolean,
+  enrolledAtIso?: string | null,
+): Course {
+  if (!course.curriculum) return course;
   return {
     ...course,
-    curriculum: course.curriculum.map((module) => ({
-      ...module,
-      lessons: module.lessons.map((lesson) =>
-        lesson.free ? lesson : { ...lesson, videoUrl: undefined },
-      ),
-    })),
+    curriculum: course.curriculum.map((module) => {
+      const drip = isModuleUnlockedByDrip(module.unlockOffsetDays, enrolledAtIso);
+      const moduleUnlocked = hasFullAccess && drip.unlocked;
+      return {
+        ...module,
+        lessons: module.lessons.map((lesson) => {
+          const canReadContent = Boolean(lesson.free || moduleUnlocked);
+          const hasVideo = Boolean(lesson.hasVideo || lesson.videoUrl);
+          return {
+            ...lesson,
+            hasVideo,
+            videoUrl: undefined,
+            notesMarkdown: canReadContent ? lesson.notesMarkdown : undefined,
+            resources: canReadContent ? lesson.resources : undefined,
+          };
+        }),
+      };
+    }),
   };
 }

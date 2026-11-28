@@ -663,11 +663,11 @@ export default function AboutChoreography({
               <div className={styles.jharokhaInner}>
                 <Image
                   data-practice-img
-                  src="/images/manisha-about-practice.webp"
-                  alt="Manisha Belvalkar during a Tarot reading"
+                  src="/images/manisha/manisha-shakti-book-arch.webp"
+                  alt="Dr. Manisha Belvalkar holding her book Shakti: Symbols & Guidance"
                   fill
                   sizes="(max-width: 640px) 200px, (max-width: 1024px) 420px, 420px"
-                  className={`${styles.jharokhaImage} object-[50%_28%] will-change-transform`}
+                  className={`${styles.jharokhaImage} object-[53%_12%] will-change-transform`}
                 />
               </div>
             </div>

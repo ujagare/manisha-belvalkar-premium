@@ -15,6 +15,7 @@ import { isAsyncHealingItem } from "@/lib/payment-safety";
 import type { OrderItemType } from "@/lib/supabase/database.types";
 import type { UserAddress } from "@/lib/supabase/models";
 import { sendManualConfirmation } from "@/lib/manual-flow";
+import { formatVisitorLocalDateTime, isOutsideIst, useVisitorTimezone } from "@/lib/timezone";
 import PincodeChecker from "@/components/shipping/PincodeChecker";
 
 declare global {
@@ -72,6 +73,7 @@ export default function CheckoutForm({
   manualMode,
   strictPayment = false,
   initialSession,
+  usdRate,
 }: {
   type: OrderItemType;
   slug: string;
@@ -84,6 +86,7 @@ export default function CheckoutForm({
   manualMode: boolean;
   strictPayment?: boolean;
   initialSession?: { slotId: string; format: string; notes: string };
+  usdRate?: number;
 }) {
   const router = useRouter();
   const isPhysicalProduct = type === "product";
@@ -116,6 +119,7 @@ export default function CheckoutForm({
   const [sessionNotes, setSessionNotes] = useState(initialSession?.notes ?? "");
   const [idempotencyKey, setIdempotencyKey] = useState(() => crypto.randomUUID().replaceAll("-", ""));
   const [isPending, startTransition] = useTransition();
+  const visitorTz = useVisitorTimezone();
 
   function refreshIdempotencyKey() {
     setIdempotencyKey(crypto.randomUUID().replaceAll("-", ""));
@@ -139,8 +143,8 @@ export default function CheckoutForm({
   }, [needsLiveSlot, manualMode, sessionFormat]);
 
   const selectedSavedAddress = addresses.find((entry) => entry.id === selectedAddress);
-  const displayUnitLabel = price ? formatCurrencySubunits(convertInrToSubunits(price, currency), currency) : priceLabel;
-  const totalLabel = price ? formatCurrencySubunits(convertInrToSubunits(price, currency) * quantity, currency) : priceLabel;
+  const displayUnitLabel = price ? formatCurrencySubunits(convertInrToSubunits(price, currency, usdRate), currency) : priceLabel;
+  const totalLabel = price ? formatCurrencySubunits(convertInrToSubunits(price, currency, usdRate) * quantity, currency) : priceLabel;
   const addressPayload = useMemo(() => {
     if (!isPhysicalProduct) return null;
     if (selectedSavedAddress) return { savedAddressId: selectedSavedAddress.id };
@@ -154,7 +158,7 @@ export default function CheckoutForm({
 
   function validate() {
     const nextErrors: Record<string, string> = {};
-    const activeName = userEmail ? userName?.trim() ?? "" : guestName.trim();
+    const activeName = userName?.trim() || guestName.trim();
     const activeEmail = userEmail || guestEmail.trim();
     if (!activeName) nextErrors.name = "Please enter your full name.";
     if (!/^\S+@\S+\.\S+$/.test(activeEmail)) nextErrors.email = "Enter a valid email address.";
@@ -188,11 +192,15 @@ export default function CheckoutForm({
   function handleConfirm() {
     setError(null);
     if (!validate()) return;
-    const activeName = userEmail ? userName?.trim() ?? "" : guestName.trim();
+    const activeName = userName?.trim() || guestName.trim();
     const activeEmail = userEmail || guestEmail.trim();
 
     if (manualMode && strictPayment) {
       setError("Distance Healing requires a verified online payment before photograph submission.");
+      return;
+    }
+    if (!manualMode && !userEmail) {
+      router.push(`/login?next=${encodeURIComponent(window.location.pathname + window.location.search)}`);
       return;
     }
     if (manualMode) {
@@ -242,8 +250,7 @@ export default function CheckoutForm({
         slug,
         quantity,
         currency,
-        guestEmail: userEmail ? "" : activeEmail,
-        guestName: userEmail ? "" : activeName,
+        customerName: activeName,
         address: addressPayload,
         customerDetails: isCourse ? {
           phone: courseDetails.phone.trim(),
@@ -373,7 +380,7 @@ export default function CheckoutForm({
       <div className="mt-5 grid gap-4 sm:grid-cols-2">
         <div>
           <label htmlFor="checkout-name" className="mb-2 block text-xs font-semibold text-charcoal">Full name</label>
-          <input id="checkout-name" value={userEmail ? userName ?? "" : guestName} onChange={(event) => { setGuestName(event.target.value); setFieldErrors((current) => ({ ...current, name: "" })); }} readOnly={Boolean(userEmail)} autoComplete="name" className={cn(inputClass, userEmail && "bg-ivory/70", fieldErrors.name && "border-primary")} />
+          <input id="checkout-name" value={userName?.trim() ? userName : guestName} onChange={(event) => { setGuestName(event.target.value); setFieldErrors((current) => ({ ...current, name: "" })); }} readOnly={Boolean(userEmail && userName?.trim())} autoComplete="name" className={cn(inputClass, userEmail && userName?.trim() && "bg-ivory/70", fieldErrors.name && "border-primary")} />
           {fieldErrors.name ? <p className="mt-1.5 text-xs text-primary">{fieldErrors.name}</p> : null}
         </div>
         <div>
@@ -391,7 +398,38 @@ export default function CheckoutForm({
           </div>
           <div className="mt-5 grid gap-4">
             <div><label htmlFor="session-format" className="mb-2 block text-xs font-semibold text-charcoal">Format</label><select id="session-format" value={sessionFormat} onChange={(event) => { setSessionFormat(event.target.value); setSessionSlotId(""); refreshIdempotencyKey(); }} className={inputClass}><option value="online">Online (Private Daily.co Video Room)</option><option value="mumbai">Mumbai</option><option value="pune">Pune</option><option value="other">Other / to be confirmed</option></select></div>
-            <div><label htmlFor="session-slot" className="mb-2 block text-xs font-semibold text-charcoal">Available time</label><select id="session-slot" value={sessionSlotId} onChange={(event) => { setSessionSlotId(event.target.value); setFieldErrors((current) => ({ ...current, sessionSlot: "" })); refreshIdempotencyKey(); }} aria-invalid={Boolean(fieldErrors.sessionSlot)} className={cn(inputClass, fieldErrors.sessionSlot && "border-primary")}><option value="">Select a time</option>{sessionSlots.map((slot) => <option key={slot.id} value={slot.id}>{new Date(slot.starts_at).toLocaleString("en-IN", { timeZone: "Asia/Kolkata", weekday: "short", day: "numeric", month: "short", hour: "numeric", minute: "2-digit" })} IST</option>)}</select>{fieldErrors.sessionSlot ? <p className="mt-1.5 text-xs text-primary">{fieldErrors.sessionSlot}</p> : null}{!sessionSlots.length ? <p className="mt-1.5 text-xs text-warmgray">No open times for this format. Please choose another format or contact the team.</p> : null}</div>
+            <div>
+              <label htmlFor="session-slot" className="mb-2 block text-xs font-semibold text-charcoal">Available time</label>
+              <select
+                id="session-slot"
+                value={sessionSlotId}
+                onChange={(event) => {
+                  setSessionSlotId(event.target.value);
+                  setFieldErrors((current) => ({ ...current, sessionSlot: "" }));
+                  refreshIdempotencyKey();
+                }}
+                aria-invalid={Boolean(fieldErrors.sessionSlot)}
+                className={cn(inputClass, fieldErrors.sessionSlot && "border-primary")}
+              >
+                <option value="">Select a time</option>
+                {sessionSlots.map((slot) => {
+                  const istLabel = `${new Date(slot.starts_at).toLocaleString("en-IN", { timeZone: "Asia/Kolkata", weekday: "short", day: "numeric", month: "short", hour: "numeric", minute: "2-digit" })} IST`;
+                  const localLabel = formatVisitorLocalDateTime(slot.starts_at, visitorTz);
+                  return (
+                    <option key={slot.id} value={slot.id}>
+                      {localLabel ? `${istLabel} (Your time: ${localLabel})` : istLabel}
+                    </option>
+                  );
+                })}
+              </select>
+              {isOutsideIst(visitorTz) ? (
+                <p className="mt-1.5 flex items-center gap-1.5 text-xs text-gold-deep">
+                  <Globe className="h-3.5 w-3.5 shrink-0" /> Showing India Standard Time (IST) alongside your local time ({visitorTz}).
+                </p>
+              ) : null}
+              {fieldErrors.sessionSlot ? <p className="mt-1.5 text-xs text-primary">{fieldErrors.sessionSlot}</p> : null}
+              {!sessionSlots.length ? <p className="mt-1.5 text-xs text-warmgray">No open times for this format. Please choose another format or contact the team.</p> : null}
+            </div>
             <div><label htmlFor="session-notes" className="mb-2 block text-xs font-semibold text-charcoal">What would you like support with? <span className="font-normal text-warmgray">(optional)</span></label><textarea id="session-notes" value={sessionNotes} onChange={(event) => setSessionNotes(event.target.value)} maxLength={1500} rows={4} className="w-full rounded-xl border border-parchment bg-white px-4 py-3 text-sm text-charcoal outline-none focus:border-gold-dark focus:ring-4 focus:ring-gold/10" /></div>
           </div>
         </div>

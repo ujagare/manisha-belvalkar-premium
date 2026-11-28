@@ -131,7 +131,7 @@ export default function MentoringPage() {
                     <ArrowRight className="size-3.5 shrink-0 sm:size-4" />
                   </Link>
                   <Link
-                    href="/contact"
+                    href="/mentoring/tarot-mentoring"
                     className="inline-flex min-h-10 items-center justify-center gap-1.5 rounded-full border border-[#a8871a] px-2.5 py-2 text-center text-[11px] font-semibold uppercase leading-tight tracking-[0.06em] text-[#292524] transition-colors duration-200 hover:bg-[#ddb829] hover:text-[#1c1917] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#a8871a] sm:min-h-14 sm:whitespace-nowrap sm:px-8 sm:py-4 sm:text-sm sm:tracking-[0.12em]"
                   >
                     Book session
@@ -353,7 +353,7 @@ export default function MentoringPage() {
                           href={`/mentoring/${area.slug}`}
                           className="inline-flex min-h-10 items-center justify-center gap-1 rounded-full border border-[#d8c8ae] px-2 py-2 text-center text-[10px] font-semibold uppercase leading-tight tracking-[0.04em] text-[#6b0b0b] transition-colors hover:border-[#c9a520] hover:bg-[#faf3dc] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#a8871a] sm:min-h-12 sm:gap-1.5 sm:whitespace-nowrap sm:px-5 sm:py-3 sm:text-xs sm:tracking-[0.14em]"
                         >
-                          <span>Reserve session</span>
+                          <span>View session</span>
                           <ArrowUpRight className="size-3 shrink-0 sm:size-3.5" />
                         </Link>
                       </div>
@@ -461,7 +461,7 @@ export default function MentoringPage() {
               </p>
               <div className="mt-4 flex flex-wrap items-center gap-2 sm:mt-9 sm:gap-4">
                 <Link
-                  href="/contact"
+                  href="/mentoring#pathways"
                   className="inline-flex min-h-10 items-center justify-center gap-2 rounded-full bg-[#ddb829] px-4 py-2 text-xs font-semibold text-[#292524] transition hover:-translate-y-0.5 hover:bg-[#f0d060] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#f0d060] sm:min-h-12 sm:gap-3 sm:px-7 sm:py-3 sm:text-sm"
                 >
                   Find your mentoring path <ArrowRight className="size-3.5 sm:size-4" />

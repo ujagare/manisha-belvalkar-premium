@@ -1,6 +1,6 @@
 import { apiError, apiSuccess, readJsonObject } from "@/lib/api";
-import { courses } from "@/lib/data";
 import { flattenLessons } from "@/lib/course-content";
+import { getCourseBySlug } from "@/lib/supabase/courses";
 import { createClient } from "@/lib/supabase/server";
 import { isSameOriginRequest } from "@/lib/security";
 
@@ -13,7 +13,7 @@ export async function POST(request: Request) {
   const body = await readJsonObject(request);
   const courseSlug = typeof body.courseSlug === "string" ? body.courseSlug : "";
   const lessonId = typeof body.lessonId === "string" ? body.lessonId : "";
-  const course = courses.find((item) => item.slug === courseSlug);
+  const course = await getCourseBySlug(courseSlug);
   if (!course || !flattenLessons(course).some((lesson) => lesson.id === lessonId)) {
     return apiError("BAD_REQUEST", "Unknown course lesson.", 422);
   }

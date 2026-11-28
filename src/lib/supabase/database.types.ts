@@ -562,6 +562,8 @@ export type Database = {
           reschedule_count: number | null;
           reminder_24h_sent_at: string | null;
           reminder_1h_sent_at: string | null;
+          aftercare_notes: string | null;
+          aftercare_sent_at: string | null;
           status: string;
           created_at: string;
           updated_at: string;
@@ -586,6 +588,8 @@ export type Database = {
           reschedule_count?: number | null;
           reminder_24h_sent_at?: string | null;
           reminder_1h_sent_at?: string | null;
+          aftercare_notes?: string | null;
+          aftercare_sent_at?: string | null;
           status?: string;
           created_at?: string;
           updated_at?: string;
@@ -610,6 +614,8 @@ export type Database = {
           reschedule_count?: number | null;
           reminder_24h_sent_at?: string | null;
           reminder_1h_sent_at?: string | null;
+          aftercare_notes?: string | null;
+          aftercare_sent_at?: string | null;
           status?: string;
           created_at?: string;
           updated_at?: string;
@@ -719,6 +725,318 @@ export type Database = {
           created_at?: string;
           updated_at?: string;
         };
+        Relationships: [];
+      };
+      courses: {
+        Row: {
+          id: string;
+          slug: string;
+          title: string;
+          description: string | null;
+          delivery_format: string;
+          amount_subunits: number | null;
+          currency: string;
+          duration_label: string | null;
+          image: string | null;
+          highlights: Json;
+          suitable_for: Json;
+          pricing_options: Json;
+          track_category: string;
+          track_label: string | null;
+          seo_title: string | null;
+          seo_description: string | null;
+          sort_order: number;
+          is_active: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          slug: string;
+          title: string;
+          description?: string | null;
+          delivery_format?: string;
+          amount_subunits?: number | null;
+          currency?: string;
+          duration_label?: string | null;
+          image?: string | null;
+          highlights?: Json;
+          suitable_for?: Json;
+          pricing_options?: Json;
+          track_category?: string;
+          track_label?: string | null;
+          seo_title?: string | null;
+          seo_description?: string | null;
+          sort_order?: number;
+          is_active?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          slug?: string;
+          title?: string;
+          description?: string | null;
+          delivery_format?: string;
+          amount_subunits?: number | null;
+          currency?: string;
+          duration_label?: string | null;
+          image?: string | null;
+          highlights?: Json;
+          suitable_for?: Json;
+          pricing_options?: Json;
+          track_category?: string;
+          track_label?: string | null;
+          seo_title?: string | null;
+          seo_description?: string | null;
+          sort_order?: number;
+          is_active?: boolean;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      course_modules: {
+        Row: {
+          id: string;
+          course_slug: string;
+          title: string;
+          description: string | null;
+          sort_order: number;
+          unlock_offset_days: number;
+          is_published: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          course_slug: string;
+          title: string;
+          description?: string | null;
+          sort_order?: number;
+          unlock_offset_days?: number;
+          is_published?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          course_slug?: string;
+          title?: string;
+          description?: string | null;
+          sort_order?: number;
+          unlock_offset_days?: number;
+          is_published?: boolean;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      course_lessons: {
+        Row: {
+          id: string;
+          module_id: string;
+          course_slug: string;
+          lesson_slug: string;
+          title: string;
+          duration_label: string;
+          duration_seconds: number | null;
+          description: string | null;
+          notes_markdown: string | null;
+          resources: Json;
+          is_free_preview: boolean;
+          video_provider: string;
+          has_video: boolean;
+          sort_order: number;
+          is_published: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          module_id: string;
+          course_slug: string;
+          lesson_slug: string;
+          title: string;
+          duration_label?: string;
+          duration_seconds?: number | null;
+          description?: string | null;
+          notes_markdown?: string | null;
+          resources?: Json;
+          is_free_preview?: boolean;
+          video_provider?: string;
+          has_video?: boolean;
+          sort_order?: number;
+          is_published?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          module_id?: string;
+          course_slug?: string;
+          lesson_slug?: string;
+          title?: string;
+          duration_label?: string;
+          duration_seconds?: number | null;
+          description?: string | null;
+          notes_markdown?: string | null;
+          resources?: Json;
+          is_free_preview?: boolean;
+          video_provider?: string;
+          has_video?: boolean;
+          sort_order?: number;
+          is_published?: boolean;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      course_lesson_media: {
+        Row: {
+          lesson_id: string;
+          course_slug: string;
+          lesson_slug: string;
+          video_provider: string;
+          storage_path: string | null;
+          vdocipher_video_id: string | null;
+          bunny_library_id: string | null;
+          bunny_video_id: string | null;
+          external_source_url: string | null;
+          updated_at: string;
+        };
+        Insert: {
+          lesson_id: string;
+          course_slug: string;
+          lesson_slug: string;
+          video_provider?: string;
+          storage_path?: string | null;
+          vdocipher_video_id?: string | null;
+          bunny_library_id?: string | null;
+          bunny_video_id?: string | null;
+          external_source_url?: string | null;
+          updated_at?: string;
+        };
+        Update: {
+          video_provider?: string;
+          storage_path?: string | null;
+          vdocipher_video_id?: string | null;
+          bunny_library_id?: string | null;
+          bunny_video_id?: string | null;
+          external_source_url?: string | null;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      course_lesson_notes: {
+        Row: {
+          user_id: string;
+          course_slug: string;
+          lesson_id: string;
+          content: string;
+          updated_at: string;
+        };
+        Insert: {
+          user_id: string;
+          course_slug: string;
+          lesson_id: string;
+          content?: string;
+          updated_at?: string;
+        };
+        Update: {
+          content?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      course_registered_devices: {
+        Row: {
+          id: string;
+          user_id: string;
+          device_id_hash: string;
+          device_label: string | null;
+          ip_hash: string | null;
+          first_seen_at: string;
+          last_seen_at: string;
+          is_blocked: boolean;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          device_id_hash: string;
+          device_label?: string | null;
+          ip_hash?: string | null;
+          first_seen_at?: string;
+          last_seen_at?: string;
+          is_blocked?: boolean;
+        };
+        Update: {
+          device_label?: string | null;
+          ip_hash?: string | null;
+          last_seen_at?: string;
+          is_blocked?: boolean;
+        };
+        Relationships: [];
+      };
+      course_playback_sessions: {
+        Row: {
+          id: string;
+          user_id: string;
+          course_slug: string;
+          lesson_id: string;
+          device_id_hash: string;
+          ip_hash: string | null;
+          user_agent: string | null;
+          started_at: string;
+          last_heartbeat_at: string;
+          expires_at: string;
+          revoked_at: string | null;
+          revoke_reason: string | null;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          course_slug: string;
+          lesson_id: string;
+          device_id_hash: string;
+          ip_hash?: string | null;
+          user_agent?: string | null;
+          started_at?: string;
+          last_heartbeat_at?: string;
+          expires_at: string;
+          revoked_at?: string | null;
+          revoke_reason?: string | null;
+        };
+        Update: {
+          lesson_id?: string;
+          last_heartbeat_at?: string;
+          expires_at?: string;
+          revoked_at?: string | null;
+          revoke_reason?: string | null;
+        };
+        Relationships: [];
+      };
+      course_security_events: {
+        Row: {
+          id: number;
+          user_id: string | null;
+          course_slug: string;
+          lesson_id: string | null;
+          event_type: string;
+          severity: string;
+          ip_hash: string | null;
+          device_id_hash: string | null;
+          user_agent: string | null;
+          metadata: Json;
+          created_at: string;
+        };
+        Insert: {
+          user_id?: string | null;
+          course_slug: string;
+          lesson_id?: string | null;
+          event_type: string;
+          severity?: string;
+          ip_hash?: string | null;
+          device_id_hash?: string | null;
+          user_agent?: string | null;
+          metadata?: Json;
+          created_at?: string;
+        };
+        Update: Record<string, never>;
         Relationships: [];
       };
     };

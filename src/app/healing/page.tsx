@@ -140,7 +140,7 @@ export default function HealingPage() {
                     </span>
                   </Link>
                   <Link
-                    href="/contact"
+                    href="/healing/healing-sessions#book-session"
                     className="inline-flex min-h-10 items-center justify-center gap-1.5 rounded-full border border-[#a8871a]/65 bg-transparent px-2.5 py-2 text-center text-[11.5px] font-semibold leading-tight text-[#292524] transition-colors duration-200 hover:border-[#a8871a] hover:bg-[#ddb829] hover:text-[#1c1917] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#a8871a] sm:min-h-13 sm:whitespace-nowrap sm:px-7 sm:text-sm"
                   >
                     Book a session
@@ -512,6 +512,11 @@ export default function HealingPage() {
                       alt={guidedMeditation.title}
                       fill
                       sizes="(max-width: 1024px) 100vw, 44vw"
+                      style={
+                        guidedMeditation.imagePosition
+                          ? { objectPosition: guidedMeditation.imagePosition }
+                          : undefined
+                      }
                       className="object-cover object-center transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-[1.03]"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#1c1917]/55 via-transparent to-transparent" />
@@ -596,7 +601,7 @@ export default function HealingPage() {
               </p>
               <div className="mt-4 grid grid-cols-2 gap-2 sm:mt-10 sm:flex sm:flex-wrap sm:gap-4">
                 <Link
-                  href="/contact"
+                  href="/faq"
                   className="inline-flex min-h-10 items-center justify-center gap-1.5 rounded-full bg-[#ddb829] px-2.5 py-2 text-center text-[11px] font-bold leading-tight text-[#1c1917] transition duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-0.5 hover:bg-[#f0d060] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#f0d060] sm:min-h-13 sm:gap-2 sm:whitespace-nowrap sm:px-7 sm:py-3 sm:text-sm"
                 >
                   <span>Ask before booking</span>
