@@ -638,7 +638,7 @@ export const courses: Course[] = [
       "Anyone exploring recurring patterns and direction",
       "Seekers ready for a deeply personalized reading",
     ],
-    image: "/images/home-cards/tarot-consultation.webp",
+    image: "/images/home-cards/candlelit-oracle-spread.webp",
   },
 ];
 
