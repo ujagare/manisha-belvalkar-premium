@@ -598,4 +598,88 @@ blockquote i {
   .glow-crimson {
     opacity: 0.45;
   }
+
+  /*
+   * Tighter mobile density on every route EXCEPT the ten main pages that are
+   * already compact (/, about, services, shakti, mentoring, healing, courses,
+   * products, community, contact). Marked by GlobalScrollMotion; desktop is
+   * untouched because everything here lives under the <640px breakpoint.
+   */
+  html[data-internal-page="true"] main section:is(
+      [class~="py-12"],
+      [class~="py-16"],
+      [class~="py-20"],
+      [class~="pb-12"],
+      [class~="pb-16"],
+      [class~="pb-20"]
+    ) {
+    padding-bottom: 1.25rem !important;
+  }
+
+  html[data-internal-page="true"] main section:is(
+      [class~="py-12"],
+      [class~="py-16"],
+      [class~="py-20"]
+    ) {
+    padding-top: 1.25rem !important;
+  }
+
+  /* Shorter editorial hero while keeping the sticky-navbar offset intact. */
+  html[data-internal-page="true"] main section.hero-single-tone {
+    min-height: 300px !important;
+  }
+  html[data-internal-page="true"]
+    main
+    section.hero-single-tone
+    [class~="min-h-[260px]"] {
+    min-height: 220px !important;
+    padding-bottom: 1.25rem !important;
+  }
+
+  /* Large desktop gaps become compact 16px stacks on phones. */
+  html[data-internal-page="true"] main :is(
+      [class~="gap-6"],
+      [class~="gap-7"],
+      [class~="gap-8"],
+      [class~="gap-10"],
+      [class~="gap-12"],
+      [class~="gap-14"],
+      [class~="gap-16"]
+    ) {
+    gap: 0.875rem !important;
+  }
+
+  html[data-internal-page="true"] main :is(
+      [class~="space-y-6"],
+      [class~="space-y-7"],
+      [class~="space-y-8"],
+      [class~="space-y-10"]
+    ) > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 0.625rem !important;
+  }
+
+  html[data-internal-page="true"] main :is(
+      [class~="mt-8"],
+      [class~="mt-10"],
+      [class~="mt-12"],
+      [class~="mt-14"]
+    ) {
+    margin-top: 1rem !important;
+  }
+
+  html[data-internal-page="true"] main :is(
+      [class~="mb-8"],
+      [class~="mb-10"],
+      [class~="mb-12"]
+    ) {
+    margin-bottom: 1rem !important;
+  }
+
+  /* Calmer line spacing on long-form internal copy. */
+  html[data-internal-page="true"] main :is(p, li)[class~="leading-7"] {
+    line-height: 1.5rem !important;
+  }
+  html[data-internal-page="true"] main :is(p, li)[class~="leading-8"] {
+    line-height: 1.625rem !important;
+  }
 }

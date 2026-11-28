@@ -17,11 +17,32 @@ import { MOTION_TOKENS } from "@/lib/motion";
  */
 const CHOREOGRAPHED_ROUTES = ["/", "/about", "/services", "/shakti"];
 
+// Ye 10 main routes pehle se compact/responsive hain — unpe extra mobile
+// density nahi lagani. Baaki har route (detail, FAQ, legal, account, checkout…)
+// pe mobile-only tight spacing chalega (globals.css).
+const MAIN_COMPACT_ROUTES = [
+  "/",
+  "/about",
+  "/services",
+  "/shakti",
+  "/mentoring",
+  "/healing",
+  "/courses",
+  "/products",
+  "/community",
+  "/contact",
+];
+
 export default function GlobalScrollMotion() {
   const pathname = usePathname() ?? "";
 
   useGSAP(
     () => {
+      const isMainCompactRoute = MAIN_COMPACT_ROUTES.includes(pathname);
+      document.documentElement.dataset.internalPage = isMainCompactRoute
+        ? "false"
+        : "true";
+
       const isChoreographed = CHOREOGRAPHED_ROUTES.some(
         (route) => pathname === route || pathname.startsWith(`${route}/`),
       );
@@ -207,6 +228,7 @@ export default function GlobalScrollMotion() {
 
       return () => {
         cancelled = true;
+        delete document.documentElement.dataset.internalPage;
         observer.disconnect();
         imageLoadHandlers.forEach((off) => off());
         tweens.forEach((tween) => {
