@@ -674,7 +674,7 @@ export const products: Product[] = [
       "The SHAKTI companion book holds the wisdom of the 51 Shakti Peethas, with guidance created to support your daily spiritual practice.",
     price: 1999,
     badge: "Complete Set",
-    image: "/images/shakti-goddess-oracle-book.png",
+    image: "/images/shakti-goddess-oracle-book.webp",
     details: [
       "Companion guidebook",
       "Daily spiritual practice",
@@ -714,7 +714,7 @@ export const products: Product[] = [
       "A handcrafted Himalayan salt frame for space clearing, protection and gentle energy cleansing, placed at your entrance, altar or meditation corner.",
     price: 699,
     badge: "Handcrafted",
-    image: "/images/magic-salt.png",
+    image: "/images/magic-salt.webp",
     details: [
       "Authentic Himalayan crystal salt",
       "Handcrafted with intention",
@@ -731,7 +731,7 @@ export const products: Product[] = [
       "Intention-led Vastu healing frames created to support harmony, protection and energetic balance in your home or work space.",
     price: 7419,
     badge: "Vastu",
-    image: "/images/vastu-healing-frame.jpeg",
+    image: "/images/vastu-healing-frame.webp",
     details: [
       "For home and work spaces",
       "Created with healing intention",
@@ -748,7 +748,7 @@ export const products: Product[] = [
       "Guided abundance rituals designed to invite prosperity, gratitude and aligned flow into your everyday spiritual practice.",
     price: 15000,
     badge: "Ritual",
-    image: "/images/abundance-ritual.png",
+    image: "/images/abundance-ritual.webp",
     details: [
       "Prosperity-focused ritual guidance",
       "Simple steps for home practice",
@@ -800,7 +800,7 @@ export const products: Product[] = [
       "Guided protection rituals created to support a calm, protected space and stronger energetic boundaries through focused spiritual practice.",
     price: 9999,
     badge: "Ritual",
-    image: "/images/protection-ritual.png",
+    image: "/images/protection-ritual.webp",
     details: [
       "Protection-focused ritual guidance",
       "Supports energetic boundaries",

@@ -149,7 +149,7 @@ values
     'SHAKTI Oracle Deck',
     'Inspired by 51 Shakti Peethas',
     'Inspired by the sacred 51 Shakti Peethas, the Shakti Oracle Cards are a powerful tool for connecting with the divine feminine. Created from Dr. Manisha S. Belvalkar''s profound experiences and meditations with the Goddesses, this beautifully illustrated deck offers daily guidance, positivity, and spiritual insights.',
-    'oracle', 2993, 3533, 'Best Seller', '/images/shakti-cards-and-book.png',
+    'oracle', 2993, 3533, 'Best Seller', '/images/shakti-cards-and-book.webp',
     '["52 oracle cards","Information booklet included","Divine feminine wisdom","Daily guidance & affirmations"]'::jsonb,
     true, 10
   ),
@@ -158,7 +158,7 @@ values
     'SHAKTI Deck + Guidebook',
     'Complete set · Cards & companion book',
     'The complete SHAKTI experience — a beautifully illustrated 52-card oracle deck paired with its companion guidebook, holding the wisdom of the 51 Shakti Peethas for your daily practice. Gift-ready sacred packaging.',
-    'oracle', 2993, 3533, 'Complete Set', '/images/shakti-cards-and-book.png',
+    'oracle', 2993, 3533, 'Complete Set', '/images/shakti-cards-and-book.webp',
     '["52 oracle cards","Companion guidebook included","Gift-ready sacred packaging","Inspired by 51 Shakti Peethas"]'::jsonb,
     false, 15
   ),
@@ -167,7 +167,7 @@ values
     'SHAKTI Combo Pack',
     'Deck + Guidebook · Gift-ready packaging',
     'Gift the divine — the SHAKTI Oracle Deck and guidebook presented together as one sacred combo, handcrafted with intention and blessed before it reaches your altar. A complete spiritual toolkit for daily guidance.',
-    'oracle', 2993, 3533, 'Sacred Combo', '/images/shakti-combo-book.png',
+    'oracle', 2993, 3533, 'Sacred Combo', '/images/shakti-combo-book.webp',
     '["Deck + guidebook combo","Handcrafted with intention","Blessed before shipping","Gift-ready packaging"]'::jsonb,
     false, 16
   ),
@@ -176,7 +176,7 @@ values
     'Sacred Salt Frame',
     'Cleanse your space with Himalayan crystal salt',
     'A handcrafted Himalayan crystal salt frame infused with intention — a living tool for space clearing, protection and gentle energy cleansing. Place it near your entrance, altar or meditation corner to hold your space calm, clear and protected.',
-    'ritual', 899, 1099, 'Handcrafted', '/images/shakti-salt-frame.png',
+    'ritual', 899, 1099, 'Handcrafted', '/images/shakti-salt-frame.webp',
     '["Authentic Himalayan crystal salt","Handcrafted with intention","For space clearing & protection","Altar & décor ready"]'::jsonb,
     false, 50
   )

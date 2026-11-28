@@ -198,7 +198,7 @@ export function ShaktiOracleCollection() {
 
           <div className={`${styles.mediaZoomFrame} relative h-full min-h-[15.5rem] sm:min-h-[34rem] lg:min-h-[42rem]`}>
             <Image
-              src="/images/shakti-goddess-oracle-book.png"
+              src="/images/shakti-goddess-oracle-book.webp"
               alt="Shakti Symbols and Guidance book by Dr. Manisha Belvalkar"
               fill
               sizes="(max-width: 640px) 268px, (max-width: 1024px) 100vw, 48vw"
