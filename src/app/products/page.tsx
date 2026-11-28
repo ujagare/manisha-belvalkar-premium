@@ -6,6 +6,7 @@ import type { Product } from "@/lib/data";
 import { formatINR } from "@/lib/utils";
 import { getProducts } from "@/lib/supabase/products";
 import AddToCartButton from "@/components/cart/AddToCartButton";
+import ProductImageSlider, { type SliderSlide } from "@/components/products/ProductImageSlider";
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
@@ -18,7 +19,7 @@ const images: Record<string, string> = {
   "shakti-oracle-deck": "/images/products-reference/deck.webp",
   "shakti-deck-guidebook": "/images/products-reference/book.webp",
   "sacred-salt-frame": "/images/products-reference/salt.webp",
-  "vastu-healing-frames": "/images/products-reference/vastu.webp",
+  "vastu-healing-frames": "/images/products-reference/vastu-arth-south.webp",
   "abundance-rituals": "/images/products-reference/abundance.webp",
   "good-luck-rituals": "/images/products-reference/luck.webp",
   "good-health-rituals": "/images/products-reference/health.webp",
@@ -27,6 +28,13 @@ const images: Record<string, string> = {
 };
 
 const portraitRituals = new Set(["good-luck-rituals", "good-health-rituals", "tarot-reading"]);
+
+const vastuFrames: SliderSlide[] = [
+  { src: "/images/products-reference/vastu-arth-south.webp", label: "Arth · South" },
+  { src: "/images/products-reference/vastu-khyati-west.webp", label: "Khyati · West" },
+  { src: "/images/products-reference/vastu-lakshya-east.webp", label: "Lakshya · East" },
+  { src: "/images/products-reference/vastu-prapti-north.webp", label: "Prapti · North" },
+];
 
 const pick = (products: Product[], slugs: string[]) => slugs.map((slug) => products.find((p) => p.slug === slug)).filter((p): p is Product => Boolean(p));
 
@@ -80,7 +88,22 @@ export default async function ProductsPage() {
 
     <section className={styles.section} id="tools" aria-labelledby="tools-title"><div className={styles.wrap}>
       <header className={styles.sectionHead}><p className={styles.index}>02</p><div><p className={styles.eyebrow}>Sacred tools & frames</p><h2 id="tools-title">For your <em>sacred space</em></h2></div><p>Authentic Himalayan crystal magic salt and intention-infused Vastu healing frames for your sacred space.</p></header>
-      <div className={styles.toolGrid}>{tools.map((product) => <article className={styles.toolCard} key={product.slug}><Link className={styles.toolMedia} href={`/products/${product.slug}`}><span className={styles.badge}><Star />{product.badge}</span><Image src={images[product.slug]} alt={product.title} fill sizes="(max-width: 539px) 100vw, 50vw" className={product.slug === "vastu-healing-frames" ? styles.vastuImage : undefined} /></Link><div className={styles.toolBody}><p className={styles.eyebrow}>Rituals & tools</p><h3><Link href={`/products/${product.slug}`}>{product.title}</Link></h3><p className={styles.lede}>{product.subtitle}</p><div className={styles.toolFoot}><div><strong>{formatINR(product.price)}</strong><span>incl. all taxes</span></div><Actions product={product} /></div></div></article>)}</div>
+      <div className={styles.toolGrid}>{tools.map((product) => <article className={styles.toolCard} key={product.slug}>
+        {product.slug === "vastu-healing-frames" ? (
+          <ProductImageSlider
+            slides={vastuFrames}
+            href={`/products/${product.slug}`}
+            title={product.title}
+            badgeLabel={product.badge}
+            containerClassName={styles.toolMedia}
+            badgeClassName={styles.badge}
+            imageClassName={styles.vastuImage}
+            sizes="(max-width: 539px) 100vw, 50vw"
+          />
+        ) : (
+          <Link className={styles.toolMedia} href={`/products/${product.slug}`}><span className={styles.badge}><Star />{product.badge}</span><Image src={images[product.slug]} alt={product.title} fill sizes="(max-width: 539px) 100vw, 50vw" /></Link>
+        )}
+        <div className={styles.toolBody}><p className={styles.eyebrow}>Rituals & tools</p><h3><Link href={`/products/${product.slug}`}>{product.title}</Link></h3><p className={styles.lede}>{product.subtitle}</p><div className={styles.toolFoot}><div><strong>{formatINR(product.price)}</strong><span>incl. all taxes</span></div><Actions product={product} /></div></div></article>)}</div>
     </div></section>
 
     <section className={styles.trust} aria-label="Why shop with us"><div className={styles.wrap}>{trust.map(([Icon, title, copy]) => <article key={title}><span><Icon /></span><h3>{title}</h3><p>{copy}</p></article>)}</div></section>
