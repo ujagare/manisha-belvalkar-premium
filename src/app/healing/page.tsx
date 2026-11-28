@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { socialMeta } from "@/lib/seo";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight, Check } from "lucide-react";
@@ -10,10 +11,12 @@ import { brand, healingIntro, healingServices } from "@/lib/data";
 import { formatINR } from "@/lib/utils";
 
 export const metadata: Metadata = {
+
   title: "Energy Healing in Mumbai & Pune",
   description:
     "Energy healing, distance healing and chakra balancing with Dr. Manisha Belvalkar. In-person sessions in Mumbai and Pune, plus distance healing online.",
   alternates: { canonical: "/healing" },
+  ...socialMeta({ title: "Energy Healing in Mumbai & Pune", description: "Energy healing, distance healing and chakra balancing with Dr. Manisha Belvalkar. In-person sessions in Mumbai and Pune, plus distance healing online.", image: "/images/page-heroes/healing-hero.webp", path: "/healing" }),
 };
 
 const heroSummary =
@@ -299,7 +302,7 @@ export default function HealingPage() {
                         fill
                         sizes="(max-width: 1024px) 100vw, 55vw"
                         className="object-cover object-center transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-[1.03]"
-                      />
+                      loading="lazy" />
                     </div>
 
                     <div className="mt-3.5 flex flex-1 flex-col sm:mt-6">
@@ -367,7 +370,7 @@ export default function HealingPage() {
                         fill
                         sizes="(max-width: 1024px) 100vw, 40vw"
                         className="object-cover object-center transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-[1.03]"
-                      />
+                      loading="lazy" />
                     </div>
 
                     <div className="mt-3.5 flex flex-1 flex-col sm:mt-6">
@@ -438,7 +441,7 @@ export default function HealingPage() {
                         fill
                         sizes="(max-width: 1024px) 100vw, 40vw"
                         className="object-cover object-center transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-[1.03]"
-                      />
+                      loading="lazy" />
                     </div>
                   </div>
 
@@ -518,7 +521,7 @@ export default function HealingPage() {
                           : undefined
                       }
                       className="object-cover object-center transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-[1.03]"
-                    />
+                    loading="lazy" />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#1c1917]/55 via-transparent to-transparent" />
                   </div>
 

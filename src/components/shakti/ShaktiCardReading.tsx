@@ -403,6 +403,7 @@ export default function ShaktiCardReading({
                     src="/images/devi-chakra-mandala.webp"
                     alt="Devi chakra mandala"
                     fill
+                    priority
                     sizes="580px"
                     className="object-contain"
                   />
@@ -483,7 +484,7 @@ export default function ShaktiCardReading({
                     aria-label={`Choose face-down card ${index + 1} of ${CARD_COUNT}`}
                     className={`reading-deck-card group absolute left-1/2 top-1/2 aspect-[1060/1484] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-[0.3rem] border border-[#f5d85d]/55 bg-[#8b1c10] shadow-[0_9px_16px_rgba(0,0,0,0.48)] will-change-transform enabled:cursor-pointer enabled:hover:brightness-125 enabled:hover:shadow-[0_18px_36px_rgba(238,198,50,0.4)] sm:w-[6.5rem] lg:w-[7.25rem] ${showBuyButton ? "w-10" : "w-11"}`}
                   >
-                    <Image src="/images/shakti-cards/card-back-cover.webp" alt="Shakti oracle card back design" fill sizes="(max-width: 640px) 44px, 94px" className="object-cover" />
+                    <Image src="/images/shakti-cards/card-back-cover.webp" alt="Shakti oracle card back design" fill sizes="(max-width: 640px) 44px, 94px" className="object-cover" loading="lazy" />
                     <span className="absolute inset-0 bg-gradient-to-br from-white/15 via-transparent to-black/15 opacity-0 transition-opacity duration-300 group-enabled:group-hover:opacity-100" />
                   </button>
                 ))}
@@ -517,10 +518,10 @@ export default function ShaktiCardReading({
                         <div className="home-hero-deck relative w-[7rem] sm:w-[11rem]">
                           <div className="pointer-events-none absolute left-1/2 top-1/2 h-[16rem] w-[16rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(240,198,51,0.19),rgba(180,20,20,0.07)_45%,transparent_70%)] blur-sm sm:h-[22rem] sm:w-[22rem]" />
                           <div className="absolute -left-[40%] top-[8%] hidden aspect-[1060/1484] w-full -rotate-[17deg] overflow-hidden rounded-xl border border-gold/25 opacity-35 shadow-[0_26px_55px_rgba(0,0,0,0.48)] sm:block">
-                            <Image src="/images/shakti-cards/card-back-cover.webp" alt="Shakti oracle card back design" fill sizes="224px" className="object-cover" />
+                            <Image src="/images/shakti-cards/card-back-cover.webp" alt="Shakti oracle card back design" fill sizes="224px" className="object-cover" loading="lazy" />
                           </div>
                           <div className="absolute -right-[40%] top-[8%] hidden aspect-[1060/1484] w-full rotate-[17deg] overflow-hidden rounded-xl border border-gold/25 opacity-35 shadow-[0_26px_55px_rgba(0,0,0,0.48)] sm:block">
-                            <Image src="/images/shakti-cards/card-back-cover.webp" alt="Shakti oracle card back design" fill sizes="224px" className="object-cover" />
+                            <Image src="/images/shakti-cards/card-back-cover.webp" alt="Shakti oracle card back design" fill sizes="224px" className="object-cover" loading="lazy" />
                           </div>
                           <div className="absolute inset-0 translate-x-4 translate-y-3 rounded-xl border border-gold/20 bg-[#30100d] shadow-[0_24px_34px_rgba(0,0,0,0.34)] sm:translate-x-5 sm:translate-y-4" />
                           <div className="absolute inset-0 translate-x-2.5 translate-y-2 rounded-xl border border-gold/25 bg-[#52130e] sm:translate-x-3.5 sm:translate-y-2.5" />
@@ -531,7 +532,7 @@ export default function ShaktiCardReading({
                             aria-label="Shuffle the Shakti oracle deck"
                             className="group relative block aspect-[1060/1484] w-full cursor-pointer overflow-hidden rounded-xl border border-gold-light/80 shadow-[0_32px_68px_rgba(0,0,0,0.75),0_0_50px_rgba(221,184,41,0.22)] transition-transform duration-700 hover:-translate-y-1.5 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold-light active:scale-[0.985]"
                           >
-                            <Image src="/images/shakti-cards/card-back-cover.webp" alt="Shakti card deck cover" fill sizes="(max-width: 639px) 128px, 180px" className="object-cover" />
+                            <Image src="/images/shakti-cards/card-back-cover.webp" alt="Shakti card deck cover" fill sizes="(max-width: 639px) 128px, 180px" className="object-cover" loading="lazy" />
                             <span className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/12 to-transparent transition-opacity duration-500 group-hover:opacity-100" />
                           </button>
                         </div>
@@ -564,10 +565,10 @@ export default function ShaktiCardReading({
                     <div className="home-hero-deck hidden lg:block lg:absolute lg:left-[72%] lg:top-[43%] lg:w-[16rem] lg:-translate-x-1/2 lg:-translate-y-1/2">
                       <div className="pointer-events-none absolute left-1/2 top-1/2 h-[24rem] w-[24rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(240,198,51,0.19),rgba(180,20,20,0.07)_45%,transparent_70%)] blur-sm" />
                       <div className="absolute -left-[42%] top-[8%] aspect-[1060/1484] w-full -rotate-[17deg] overflow-hidden rounded-xl border border-gold/25 opacity-35 shadow-[0_26px_55px_rgba(0,0,0,0.48)]">
-                        <Image src="/images/shakti-cards/card-back-cover.webp" alt="Shakti oracle card back design" fill sizes="224px" className="object-cover" />
+                        <Image src="/images/shakti-cards/card-back-cover.webp" alt="Shakti oracle card back design" fill sizes="224px" className="object-cover" loading="lazy" />
                       </div>
                       <div className="absolute -right-[42%] top-[8%] aspect-[1060/1484] w-full rotate-[17deg] overflow-hidden rounded-xl border border-gold/25 opacity-35 shadow-[0_26px_55px_rgba(0,0,0,0.48)]">
-                        <Image src="/images/shakti-cards/card-back-cover.webp" alt="Shakti oracle card back design" fill sizes="224px" className="object-cover" />
+                        <Image src="/images/shakti-cards/card-back-cover.webp" alt="Shakti oracle card back design" fill sizes="224px" className="object-cover" loading="lazy" />
                       </div>
                       <div className="absolute inset-0 translate-x-5 translate-y-4 rounded-xl border border-gold/20 bg-[#30100d] shadow-[0_24px_34px_rgba(0,0,0,0.34)]" />
                       <div className="absolute inset-0 translate-x-3.5 translate-y-2.5 rounded-xl border border-gold/25 bg-[#52130e]" />
@@ -578,7 +579,7 @@ export default function ShaktiCardReading({
                         aria-label="Shuffle the Shakti oracle deck"
                         className="group relative block aspect-[1060/1484] w-full cursor-pointer overflow-hidden rounded-xl border border-gold-light/80 shadow-[0_38px_75px_rgba(0,0,0,0.75),0_0_55px_rgba(221,184,41,0.22)] transition-transform duration-700 hover:-translate-y-1.5 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold-light active:scale-[0.985]"
                       >
-                        <Image src="/images/shakti-cards/card-back-cover.webp" alt="Shakti card deck cover" fill sizes="256px" className="object-cover" />
+                        <Image src="/images/shakti-cards/card-back-cover.webp" alt="Shakti card deck cover" fill sizes="256px" className="object-cover" loading="lazy" />
                         <span className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/12 to-transparent transition-opacity duration-500 group-hover:opacity-100" />
                       </button>
                       <div className="pointer-events-none absolute left-1/2 top-[calc(100%+1.2rem)] h-3 w-48 -translate-x-1/2 rounded-[50%] bg-black/50 blur-md" />
@@ -603,10 +604,10 @@ export default function ShaktiCardReading({
                   <div className={`home-hero-deck absolute left-1/2 -translate-x-1/2 -translate-y-1/2 sm:top-[60%] sm:w-[12.5rem] lg:left-[72%] lg:top-[43%] lg:w-[16rem] ${showBuyButton ? "top-[63%] w-[5.5rem]" : "top-[56%] w-24"}`}>
                     <div className="pointer-events-none absolute left-1/2 top-1/2 h-[19rem] w-[19rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(240,198,51,0.19),rgba(180,20,20,0.07)_45%,transparent_70%)] blur-sm sm:h-[24rem] sm:w-[24rem]" />
                     <div className="absolute -left-[42%] top-[8%] hidden aspect-[1060/1484] w-full -rotate-[17deg] overflow-hidden rounded-xl border border-gold/25 opacity-35 shadow-[0_26px_55px_rgba(0,0,0,0.48)] sm:block">
-                      <Image src="/images/shakti-cards/card-back-cover.webp" alt="Shakti oracle card back design" fill sizes="224px" className="object-cover" />
+                      <Image src="/images/shakti-cards/card-back-cover.webp" alt="Shakti oracle card back design" fill sizes="224px" className="object-cover" loading="lazy" />
                     </div>
                     <div className="absolute -right-[42%] top-[8%] hidden aspect-[1060/1484] w-full rotate-[17deg] overflow-hidden rounded-xl border border-gold/25 opacity-35 shadow-[0_26px_55px_rgba(0,0,0,0.48)] sm:block">
-                      <Image src="/images/shakti-cards/card-back-cover.webp" alt="Shakti oracle card back design" fill sizes="224px" className="object-cover" />
+                      <Image src="/images/shakti-cards/card-back-cover.webp" alt="Shakti oracle card back design" fill sizes="224px" className="object-cover" loading="lazy" />
                     </div>
                     <div className="absolute inset-0 translate-x-5 translate-y-4 rounded-xl border border-gold/20 bg-[#30100d] shadow-[0_24px_34px_rgba(0,0,0,0.34)]" />
                     <div className="absolute inset-0 translate-x-3.5 translate-y-2.5 rounded-xl border border-gold/25 bg-[#52130e]" />
@@ -617,7 +618,7 @@ export default function ShaktiCardReading({
                       aria-label="Shuffle the Shakti oracle deck"
                       className="group relative block aspect-[1060/1484] w-full cursor-pointer overflow-hidden rounded-xl border border-gold-light/80 shadow-[0_38px_75px_rgba(0,0,0,0.75),0_0_55px_rgba(221,184,41,0.22)] transition-transform duration-700 hover:-translate-y-1.5 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold-light active:scale-[0.985]"
                     >
-                      <Image src="/images/shakti-cards/card-back-cover.webp" alt="Shakti card deck cover" fill sizes="(max-width: 639px) 112px, (max-width: 1023px) 200px, 256px" className="object-cover" />
+                      <Image src="/images/shakti-cards/card-back-cover.webp" alt="Shakti card deck cover" fill sizes="(max-width: 639px) 112px, (max-width: 1023px) 200px, 256px" className="object-cover" loading="lazy" />
                       <span className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/12 to-transparent transition-opacity duration-500 group-hover:opacity-100" />
                     </button>
                     <div className="pointer-events-none absolute left-1/2 top-[calc(100%+1.2rem)] h-3 w-48 -translate-x-1/2 rounded-[50%] bg-black/50 blur-md" />
@@ -662,7 +663,7 @@ export default function ShaktiCardReading({
                   <div className="absolute -inset-9 rounded-[3rem] bg-gold/22 blur-3xl" />
                   <div className="relative rounded-[1.35rem] border border-gold/30 bg-[#1a0606]/70 p-1.5 shadow-[0_45px_100px_rgba(0,0,0,0.72),0_0_55px_rgba(221,184,41,0.22)] sm:p-2">
                     <div className="relative aspect-[2/3] overflow-hidden rounded-xl border border-gold-light/70 bg-gold-soft">
-                      <Image src={shaktiCardImagePath(cardNumber)} alt={`Your selected Shakti card, card ${cardNumber}`} fill sizes="(max-width: 640px) 160px, (max-width: 1023px) 288px, 336px" className="object-contain" />
+                      <Image src={shaktiCardImagePath(cardNumber)} alt={`Your selected Shakti card, card ${cardNumber}`} fill sizes="(max-width: 640px) 160px, (max-width: 1023px) 288px, 336px" className="object-contain" loading="lazy" />
                     </div>
                   </div>
                 </div>

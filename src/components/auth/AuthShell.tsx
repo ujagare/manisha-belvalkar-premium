@@ -87,7 +87,7 @@ export default function AuthShell({
                 width={44}
                 height={44}
                 className="h-10 w-10 sm:h-11 sm:w-11 rounded-full object-cover ring-1 ring-gold/40"
-              />
+              loading="lazy" />
               <span className="font-display text-base sm:text-lg font-bold tracking-tight">
                 Manisha <span className="font-serif italic text-gold">Belvalkar</span>
               </span>

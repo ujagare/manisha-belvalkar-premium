@@ -103,7 +103,7 @@ export default function HomeBelowFold() {
           <AnimatePresence mode="wait" initial={false}>
             <motion.article key={slide.number} initial={{ opacity: 0, x: reduceMotion ? 0 : 24 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: reduceMotion ? 0 : -18 }} transition={{ duration: reduceMotion ? .12 : .55, ease: [0.16, 1, 0.3, 1] }} className="grid sm:min-h-[37rem] lg:grid-cols-[.92fr_1.08fr]" aria-live="polite">
               <div className="relative min-h-[12.5rem] overflow-hidden bg-primary-deeper sm:min-h-[21rem] lg:min-h-full">
-                <Image src={slide.image} alt={slide.alt} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 92vw, 46vw" className={slide.imageClass} />
+                <Image src={slide.image} alt={slide.alt} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 92vw, 46vw" className={slide.imageClass} loading="lazy" />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#2c0908]/80 via-[#2c0908]/10 to-transparent" />
                 <div className="absolute left-4 top-4 grid h-9 w-9 place-items-center rounded-full border border-gold/45 bg-primary-deeper/65 font-serif text-base text-gold-light backdrop-blur-sm sm:left-7 sm:top-7 sm:h-12 sm:w-12 sm:text-2xl">✦</div>
                 <p className="absolute bottom-4 left-4 font-serif text-base italic text-gold-light sm:bottom-8 sm:left-8 sm:text-2xl">Guidance for the soul</p>

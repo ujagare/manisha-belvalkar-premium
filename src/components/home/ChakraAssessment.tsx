@@ -195,7 +195,7 @@ export default function ChakraAssessment() {
         <div className="rounded-2xl bg-[#efe5d2]/80 p-1.5 ring-1 ring-[#c7a23b]/35 shadow-[0_28px_70px_-42px_rgba(92,19,14,0.38)] sm:rounded-[2rem] sm:p-2 sm:shadow-[0_38px_90px_-50px_rgba(92,19,14,0.42)]">
           <div className="grid overflow-hidden rounded-[calc(1rem-0.375rem)] bg-[#fffdf9] sm:rounded-[calc(2rem-0.5rem)] lg:min-h-[38rem] lg:grid-cols-[0.78fr_1.22fr]">
             <div className="relative flex flex-col justify-end min-h-[10.5rem] overflow-hidden bg-[#24110e] sm:min-h-[21rem] lg:min-h-full">
-              <Image src="/images/chakra-energy-diagram.webp" alt="The seven chakra energy centres" fill sizes="(max-width: 1024px) 100vw, 40vw" className="object-cover object-center opacity-90" />
+              <Image src="/images/chakra-energy-diagram.webp" alt="The seven chakra energy centres" fill sizes="(max-width: 1024px) 100vw, 40vw" className="object-cover object-center opacity-90" loading="lazy" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#1c1917] via-[#1c1917]/25 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:via-[#1c1917]/15 lg:to-[#1c1917]/45" />
               <div className="relative z-10 border-t border-[#ddb829]/30 bg-[#1c1917]/88 px-3.5 py-3 text-white backdrop-blur-md sm:px-8 sm:py-6">
                 <div className="flex items-center gap-2 text-[#f0d060] sm:gap-2.5">

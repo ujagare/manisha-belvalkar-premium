@@ -6,7 +6,15 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/api/", "/account/", "/checkout/", "/login", "/signup", "/app/"],
+        disallow: [
+          "/api/",
+          "/account/",
+          "/checkout/",
+          "/login",
+          "/signup",
+          "/app",
+          "/app/",
+        ],
       },
     ],
     sitemap: "https://www.manishabelvalkar.com/sitemap.xml",

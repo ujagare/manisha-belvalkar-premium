@@ -1,11 +1,15 @@
 import type { Metadata } from "next";
+import { socialMeta } from "@/lib/seo";
 import Link from "next/link";
 import { BookOpen, CalendarClock, CircleUserRound, Mail, MessageCircle, PackageSearch, ShieldAlert } from "lucide-react";
 import PageHero from "@/components/ui/PageHero";
 import { brand } from "@/lib/data";
 import SupportTicketForm from "@/components/backend/SupportTicketForm";
 
-export const metadata: Metadata = { title: "Customer Support", description: "Help with bookings, orders, delivery, account access, refunds, and grievances.", alternates: { canonical: "/support" } };
+export const metadata: Metadata = {
+ title: "Customer Support", description: "Help with bookings, orders, delivery, account access, refunds, and grievances.", alternates: { canonical: "/support" },
+  ...socialMeta({ title: "Customer Support", description: "Help with bookings, orders, delivery, account access, refunds, and grievances.", image: "/images/manisha/manisha-connect-portrait.webp", path: "/support" }),
+};
 
 const topics = [
   { icon: CalendarClock, title: "Booking help", text: "Confirmation, timing, format, preparation, cancellation, or rescheduling.", href: "/how-it-works" },

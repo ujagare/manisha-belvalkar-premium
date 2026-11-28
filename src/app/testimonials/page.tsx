@@ -1,10 +1,14 @@
 import type { Metadata } from "next";
+import { socialMeta } from "@/lib/seo";
 import Link from "next/link";
 import { ArrowRight, Quote } from "lucide-react";
 import PageHero from "@/components/ui/PageHero";
 import { testimonials } from "@/lib/data";
 
-export const metadata: Metadata = { title: "Client Experiences & Reviews", description: "Personal reflections and reviews shared by clients of Dr. Manisha Belvalkar — Tarot, healing, mentoring and spiritual guidance.", alternates: { canonical: "/testimonials" } };
+export const metadata: Metadata = {
+ title: "Client Experiences & Reviews", description: "Personal reflections and reviews shared by clients of Dr. Manisha Belvalkar — Tarot, healing, mentoring and spiritual guidance.", alternates: { canonical: "/testimonials" },
+  ...socialMeta({ title: "Client Experiences & Reviews", description: "Personal reflections and reviews shared by clients of Dr. Manisha Belvalkar — Tarot, healing, mentoring and spiritual guidance.", image: "/images/manisha/manisha-excellence-mandala.webp", path: "/testimonials" }),
+};
 
 export default function TestimonialsPage() {
   return <>

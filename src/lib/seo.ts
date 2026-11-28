@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+
 /* ============================================================
    SEO helpers
 
@@ -54,4 +56,40 @@ export function metaDescription(text: string, max: number = DESC_MAX): string {
  */
 export function renderedTitleLength(title: string): number {
   return title.length + TITLE_SUFFIX.length;
+}
+
+/**
+ * Page-specific Open Graph + Twitter tags. The root layout sets the fallback
+ * social card; every indexable page should override it with its own title,
+ * description, canonical URL and hero image so shares don't all look identical.
+ */
+export function socialMeta({
+  title,
+  description,
+  image,
+  path,
+}: {
+  title: string;
+  description: string;
+  image: string;
+  path: string;
+}): Pick<Metadata, "openGraph" | "twitter"> {
+  const url = path.startsWith("/") ? path : `/${path}`;
+  return {
+    openGraph: {
+      title,
+      description,
+      url,
+      siteName: SITE_NAME,
+      type: "website",
+      locale: "en_IN",
+      images: [{ url: image, alt: `${title} — ${SITE_NAME}` }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [image],
+    },
+  };
 }

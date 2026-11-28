@@ -166,7 +166,7 @@ export default async function ServiceDetailPage({ params }: Props) {
                 <div className="relative aspect-[4/3.5] overflow-hidden rounded-[calc(1rem-0.25rem)] bg-charcoal sm:aspect-[16/11] sm:rounded-[calc(2rem-0.5rem)] lg:aspect-auto lg:h-[490px]">
                   <Image
                     src={service.image}
-                    alt={service.title}
+                    alt={`${service.title} session with Dr. Manisha Belvalkar`}
                     fill
                     priority
                     sizes="(max-width: 1024px) 100vw, 48vw"

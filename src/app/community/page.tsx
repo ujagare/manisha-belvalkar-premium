@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { socialMeta } from "@/lib/seo";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -16,10 +17,12 @@ import LeadCaptureForm from "@/components/backend/LeadCaptureForm";
 import { isServerConfigured } from "@/lib/env";
 
 export const metadata: Metadata = {
+
   title: "Magic Community — Monthly Guidance",
   description:
     "Join the Magic Community by Dr. Manisha Belvalkar for monthly moon-cycle guidance, spiritual tips, remedies and member-only offerings.",
   alternates: { canonical: "/community" },
+  ...socialMeta({ title: "Magic Community — Monthly Guidance", description: "Join the Magic Community by Dr. Manisha Belvalkar for monthly moon-cycle guidance, spiritual tips, remedies and member-only offerings.", image: "/images/page-heroes/community-hero.webp", path: "/community" }),
 };
 
 const pillarIcons = [CalendarHeart, Sparkles, Users, HeartHandshake];
@@ -181,7 +184,7 @@ export default function CommunityPage() {
                   fill
                   sizes="(max-width: 1024px) 100vw, 440px"
                   className="object-cover object-center"
-                />
+                loading="lazy" />
               </div>
               <figcaption className="border-t border-charcoal/10 px-4 py-2.5 text-xs leading-5 text-warmgray sm:px-5 sm:py-3">
                 Monthly lunar guidance, simple home remedies, and seasonal ritual notes.

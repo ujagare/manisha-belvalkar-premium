@@ -77,7 +77,7 @@ export default function Navbar() {
               className={cn(
                 "h-8 w-8 rounded-full object-cover ring-1 ring-gold/35 shadow-sm shadow-gold/10 sm:h-9 sm:w-9",
               )}
-            />
+            loading="lazy" />
             <span
               className={cn(
                 "flex items-baseline gap-1 font-display text-base font-bold tracking-tight text-charcoal transition-colors sm:text-lg",

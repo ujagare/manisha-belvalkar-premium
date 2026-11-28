@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
-import { Loader2, MapPin } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import type { UserAddress } from "@/lib/supabase/models";
 import { saveAddressAction } from "@/app/account/addresses/actions";
 import { cn } from "@/lib/utils";

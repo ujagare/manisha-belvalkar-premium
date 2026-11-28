@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { socialMeta } from "@/lib/seo";
 import Link from "next/link";
 import { ArrowDown, ArrowUpRight, Clock, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 import { brand } from "@/lib/data";
@@ -7,10 +8,12 @@ import { isServerConfigured } from "@/lib/env";
 import HomeFAQ from "@/components/home/HomeFAQ";
 
 export const metadata: Metadata = {
+
   title: "Book a Tarot Session in Mumbai",
   description:
     "Book a tarot session in Mumbai with Dr. Manisha Belvalkar. Call +91 99222 46111 or send a message. In-person sessions in Prabhadevi, Pune and online.",
   alternates: { canonical: "/contact" },
+  ...socialMeta({ title: "Book a Tarot Session in Mumbai", description: "Book a tarot session in Mumbai with Dr. Manisha Belvalkar. Call +91 99222 46111 or send a message. In-person sessions in Prabhadevi, Pune and online.", image: "/images/manisha/manisha-contact-portrait.webp", path: "/contact" }),
 };
 
 const enquirySteps = [

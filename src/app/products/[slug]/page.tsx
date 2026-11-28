@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { notFound } from "next/navigation";
+import { permanentRedirect } from "next/navigation";
 import {
   ArrowLeft,
   Check,
@@ -37,7 +37,9 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const product = await getProductBySlug(slug);
-  if (!product) return { title: "Shop item not found" };
+  // Redirect unavailable catalog stubs before anything is streamed, so
+  // crawlers get a real 308 instead of a 200 "Shop item not found" soft 404.
+  if (!product) permanentRedirect("/products");
   return {
     title: product.seoTitle ?? `${product.title} - Shop`,
     description: metaDescription(product.seoDescription ?? product.description),
@@ -59,7 +61,7 @@ const assurance = [
 export default async function ProductDetailPage({ params }: Props) {
   const { slug } = await params;
   const product = await getProductBySlug(slug);
-  if (!product) notFound();
+  if (!product) permanentRedirect("/products");
 
   const meta = categoryMeta(product.category);
 
@@ -117,7 +119,7 @@ export default async function ProductDetailPage({ params }: Props) {
               <Reveal direction="right">
                 <div className="gold-border-gradient relative overflow-hidden rounded-2xl sm:rounded-3xl">
                   <div className="relative h-[280px] w-full sm:h-[420px] lg:h-[500px]">
-                    <Image src={product.image} alt={product.title} fill priority sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" />
+                    <Image src={product.image} alt={`${product.title} — ${product.subtitle}`} fill priority sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" />
                   </div>
                   <div className="absolute inset-0 bg-gradient-to-t from-charcoal/45 to-transparent" />
                   {product.badge ? (

@@ -184,7 +184,7 @@ export default function Hero() {
         className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2"
       >
         <a
-          href="#about"
+          href="/about"
           className="group inline-flex flex-col items-center gap-2 text-[0.6rem] uppercase tracking-[0.25em] text-warmgray/50 transition-colors hover:text-gold-deep"
         >
           Scroll

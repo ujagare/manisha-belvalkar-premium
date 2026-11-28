@@ -668,7 +668,7 @@ export default function AboutChoreography({
                   fill
                   sizes="(max-width: 640px) 200px, (max-width: 1024px) 420px, 420px"
                   className={`${styles.jharokhaImage} object-[53%_12%] will-change-transform`}
-                />
+                loading="lazy" />
               </div>
             </div>
           </div>
@@ -872,7 +872,7 @@ export default function AboutChoreography({
                   fill
                   sizes="(max-width: 640px) 196px, (max-width: 1024px) 400px, 400px"
                   className={`${styles.jharokhaImage} object-[50%_15%]`}
-                />
+                loading="lazy" />
               </div>
             </div>
           </div>
@@ -909,7 +909,7 @@ export default function AboutChoreography({
                 fill
                 sizes="(max-width: 1024px) 100vw, 58vw"
                 className="object-cover"
-              />
+              loading="lazy" />
             </div>
 
             <div data-award-copy>
@@ -972,7 +972,7 @@ export default function AboutChoreography({
                       fill
                       sizes="(max-width: 768px) 46vw, 50vw"
                       className="object-cover object-top transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-[1.03]"
-                    />
+                    loading="lazy" />
                   </div>
                   <figcaption className="flex flex-col gap-0.5 border-b border-[#ddb829]/30 py-2.5 transition-colors duration-300 group-hover:border-[#f0d060] sm:flex-row sm:items-end sm:justify-between sm:gap-4 sm:py-5">
                     <b className="font-serif text-sm leading-snug sm:text-xl">{title}</b>

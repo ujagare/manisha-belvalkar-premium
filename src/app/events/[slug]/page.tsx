@@ -7,7 +7,7 @@ import { brand } from "@/lib/data";
 import { eventOfferings } from "@/lib/phase-two-data";
 import EventRegistrationButton from "@/components/backend/EventRegistrationButton";
 import { isServerConfigured } from "@/lib/env";
-import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
+import { BreadcrumbJsonLd, JsonLd } from "@/components/seo/JsonLd";
 
 interface Props { params: Promise<{ slug: string }> }
 export function generateStaticParams() { return eventOfferings.map((event) => ({ slug: event.slug })); }
@@ -16,7 +16,26 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> { c
 export default async function EventDetailPage({ params }: Props) {
   const { slug } = await params; const event = eventOfferings.find((item) => item.slug === slug); if (!event) notFound();
   const whatsapp = `${brand.whatsappHref.split("?")[0]}?text=${encodeURIComponent(`Hello Manisha, I would like to enquire about the next ${event.title}.`)}`;
+  const eventSchema = {
+    "@context": "https://schema.org",
+    "@type": "Event",
+    name: event.title,
+    description: event.description,
+    image: [`https://www.manishabelvalkar.com${event.image}`],
+    eventAttendanceMode: "https://schema.org/OnlineEventAttendanceMode",
+    eventStatus: "https://schema.org/EventScheduled",
+    location: {
+      "@type": "VirtualLocation",
+      url: `https://www.manishabelvalkar.com/events/${event.slug}`,
+    },
+    organizer: {
+      "@type": "Organization",
+      name: "Manisha Belvalkar",
+      url: "https://www.manishabelvalkar.com",
+    },
+  };
   return <>
+    <JsonLd data={eventSchema} />
     <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Events", path: "/events" }, { name: event.title, path: `/events/${event.slug}` }]} />
     <PageHero eyebrow={event.eyebrow} image={event.image} imageAlt={`Atmosphere for ${event.title}`} title={<>{event.title}</>} subtitle={event.description} />
     <section className="bg-ivory py-12 sm:py-20 lg:py-28"><div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-10"><Link href="/events" className="inline-flex min-h-10 items-center gap-2 text-sm font-medium text-warmgray hover:text-primary"><ArrowLeft className="h-4 w-4" />All live experiences</Link>

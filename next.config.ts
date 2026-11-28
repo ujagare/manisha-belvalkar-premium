@@ -4,6 +4,7 @@ const nextConfig: NextConfig = {
   distDir: process.env.NEXT_DIST_DIR ?? ".next",
   poweredByHeader: false,
   reactStrictMode: true,
+  trailingSlash: false,
   images: {
     formats: ["image/avif", "image/webp"],
     minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days
@@ -17,6 +18,9 @@ const nextConfig: NextConfig = {
     return [
       { source: "/books", destination: "/products", permanent: true },
       { source: "/books/:slug", destination: "/products/:slug", permanent: true },
+      // Catalog stubs that were never published: real 308s, no soft 404s.
+      { source: "/products/shakti-combo-pack", destination: "/products", permanent: true },
+      { source: "/products/whatsapp-workshops", destination: "/products", permanent: true },
     ];
   },
   async headers() {

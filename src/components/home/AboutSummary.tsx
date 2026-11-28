@@ -107,7 +107,7 @@ export default function AboutSummary() {
                     width={1100}
                     height={1653}
                     className="h-full w-full object-cover object-top"
-                  />
+                  loading="lazy" />
                   <div className="absolute inset-0 bg-gradient-to-t from-charcoal/45 via-transparent to-transparent" />
                 </div>
               </div>

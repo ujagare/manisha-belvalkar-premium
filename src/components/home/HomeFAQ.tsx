@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, ChevronDown } from "lucide-react";
+import { JsonLd } from "@/components/seo/JsonLd";
 
 const faqs = [
   {
@@ -42,10 +43,7 @@ const faqSchema = {
 export default function HomeFAQ() {
   return (
     <section className="border-t border-white/10 bg-[#1c1917] py-10 text-[#fdf8f0] sm:py-16 lg:py-24">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
+      <JsonLd data={faqSchema} />
 
       <div className="mx-auto max-w-6xl px-4 sm:px-8">
         <div className="grid gap-8 lg:grid-cols-[0.82fr_1.18fr] lg:items-start lg:gap-16">

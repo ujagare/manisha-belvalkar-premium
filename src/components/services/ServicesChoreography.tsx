@@ -1257,7 +1257,7 @@ export default function ServicesChoreography({
                         fill
                         sizes="(max-width: 640px) 72px, 120px"
                         className="object-cover"
-                      />
+                      loading="lazy" />
                     </span>
                     way
                   </span>
@@ -1317,7 +1317,7 @@ export default function ServicesChoreography({
                     fill
                     sizes="64px"
                     className="object-cover object-[50%_18%]"
-                  />
+                  loading="lazy" />
                 </div>
                 <div className="min-w-0">
                   <p className="font-serif text-sm leading-snug text-[#fdf8f0] sm:text-base">
@@ -1990,7 +1990,7 @@ export default function ServicesChoreography({
                                     : undefined
                                 }
                                 className={`${styles.hoverZoomMedia} object-cover`}
-                              />
+                              loading="lazy" />
                             </div>
                             <div
                               aria-hidden="true"
@@ -2087,7 +2087,7 @@ export default function ServicesChoreography({
                       fill
                       sizes="(max-width: 1024px) 100vw, 50vw"
                       className={`${styles.hoverZoomMedia} object-cover object-[50%_18%]`}
-                    />
+                    loading="lazy" />
                   </div>
                 </div>
               </div>

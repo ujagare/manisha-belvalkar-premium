@@ -32,7 +32,7 @@ export const metadata: Metadata = {
   publisher: "Manisha Belvalkar",
   category: "Spiritual wellbeing",
   verification: {
-    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || undefined,
     other: process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION
       ? { "msvalidate.01": process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION }
       : undefined,
@@ -88,6 +88,7 @@ export const metadata: Metadata = {
 const personSchema = {
   "@context": "https://schema.org",
   "@type": "Person",
+  "@id": "https://www.manishabelvalkar.com/#person",
   name: "Dr. Manisha Belvalkar",
   url: "https://www.manishabelvalkar.com",
   image: "https://www.manishabelvalkar.com/images/manisha/manisha-courses-mentor.webp",
@@ -124,6 +125,7 @@ const personSchema = {
 const orgSchema = {
   "@context": "https://schema.org",
   "@type": "ProfessionalService",
+  "@id": "https://www.manishabelvalkar.com/#organization",
   name: "Manisha Belvalkar — Guidance For the Soul",
   url: "https://www.manishabelvalkar.com",
   image: "https://www.manishabelvalkar.com/images/manisha/manisha-courses-mentor.webp",
@@ -131,13 +133,14 @@ const orgSchema = {
   email: "manishabelvalkar@gmail.com",
   priceRange: "₹899 - ₹25,000",
   areaServed: ["Mumbai", "Pune", "India"],
-  founder: { "@type": "Person", name: "Dr. Manisha Belvalkar" },
+  founder: { "@id": "https://www.manishabelvalkar.com/#person" },
   // sameAs: add real Instagram/Facebook/YouTube profile URLs here when available
 };
 
 const webSchema = {
   "@context": "https://schema.org",
   "@type": "WebSite",
+  "@id": "https://www.manishabelvalkar.com/#website",
   name: "Manisha Belvalkar",
   url: "https://www.manishabelvalkar.com",
   inLanguage: "en-IN",
@@ -151,7 +154,7 @@ export default async function RootLayout({
   const nonce = (await headers()).get("x-nonce") ?? undefined;
   return (
     <html
-      lang="en"
+      lang="en-IN"
       data-scroll-behavior="smooth"
       className={cn(
         lora.variable,

@@ -1,10 +1,14 @@
 import type { Metadata } from "next";
+import { socialMeta } from "@/lib/seo";
 import Link from "next/link";
 import { ArrowRight, ShieldCheck } from "lucide-react";
 import PageHero from "@/components/ui/PageHero";
 import { journeySteps } from "@/lib/phase-two-data";
 
-export const metadata: Metadata = { title: "How It Works", description: "From choosing an offering to confirmation, preparation, delivery, and continued support.", alternates: { canonical: "/how-it-works" } };
+export const metadata: Metadata = {
+ title: "How It Works", description: "From choosing an offering to confirmation, preparation, delivery, and continued support.", alternates: { canonical: "/how-it-works" },
+  ...socialMeta({ title: "How It Works", description: "From choosing an offering to confirmation, preparation, delivery, and continued support.", image: "/images/page-heroes/transformation-hero.webp", path: "/how-it-works" }),
+};
 
 export default function HowItWorksPage() {
   return <>

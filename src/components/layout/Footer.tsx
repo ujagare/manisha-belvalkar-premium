@@ -163,13 +163,13 @@ export default function Footer() {
                 <CalendarDays className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 Book a Session
               </Link>
-              <a
+              <Link
                 href="/contact"
                 className="inline-flex min-h-10 items-center justify-center gap-1.5 rounded-lg border border-white/35 px-3.5 py-2 text-xs font-semibold text-white transition-colors duration-150 hover:border-gold hover:bg-white/10 sm:min-h-11 sm:gap-2 sm:rounded-full sm:px-6 sm:py-3 sm:text-sm"
               >
                 <Heart className="h-3.5 w-3.5 text-gold-light sm:h-4 sm:w-4" />
                 Ask a Question
-              </a>
+              </Link>
             </div>
           </Reveal>
         </div>
@@ -218,7 +218,7 @@ export default function Footer() {
                   width={48}
                   height={48}
                   className="h-10 w-10 shrink-0 rounded-full object-cover ring-1 ring-gold/40 sm:h-11 sm:w-11"
-                />
+                loading="lazy" />
                 <span>
                   Manisha{" "}
                   <span className="font-serif font-normal italic text-gold">

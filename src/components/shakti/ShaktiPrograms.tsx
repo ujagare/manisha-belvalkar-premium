@@ -201,7 +201,7 @@ export default function ShaktiPrograms() {
                     ? "object-contain object-center p-3 sm:p-6"
                     : "object-cover"
                 }`}
-              />
+              loading="lazy" />
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#210b0a]/85 via-[#210b0a]/15 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:via-transparent lg:to-[#210b0a]/60" />
 
               <div className="absolute bottom-3 left-3 z-20 rounded-lg border border-gold/30 bg-[#1a0706]/80 px-3 py-2 text-white backdrop-blur-md sm:bottom-8 sm:left-8 sm:rounded-xl sm:px-5 sm:py-3.5">

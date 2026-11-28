@@ -300,7 +300,7 @@ function StandardCourseCard({
         >
           <Image
             src={imageSrc}
-            alt={course.title}
+            alt={`${course.title} course artwork`}
             fill
             sizes="(max-width: 1024px) 100vw, 48vw"
             className={
@@ -308,7 +308,7 @@ function StandardCourseCard({
                 ? "object-contain p-2.5 transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-[1.02] sm:p-4"
                 : "object-cover object-top transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-[1.03]"
             }
-          />
+          loading="lazy" />
         </div>
 
         <div className="mt-3.5 flex flex-1 flex-col sm:mt-6">
@@ -528,7 +528,7 @@ export default function CourseCatalogExplorer({
                       fill
                       sizes="(max-width: 1024px) 100vw, 44vw"
                       className="object-contain p-2.5 transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-[1.03] sm:p-6"
-                    />
+                    loading="lazy" />
                   </div>
 
                   <div className="relative z-10 flex flex-col lg:order-1">
@@ -608,7 +608,7 @@ export default function CourseCatalogExplorer({
                         fill
                         sizes="(max-width: 640px) 100vw, 24vw"
                         className="object-cover object-top transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-[1.03]"
-                      />
+                      loading="lazy" />
                     </div>
 
                     <div className="flex flex-col">
@@ -678,7 +678,7 @@ export default function CourseCatalogExplorer({
                         fill
                         sizes="(max-width: 1024px) 100vw, 40vw"
                         className="object-cover object-center transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-[1.03]"
-                      />
+                      loading="lazy" />
                     </div>
                   </div>
 

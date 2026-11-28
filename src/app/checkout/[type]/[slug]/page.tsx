@@ -166,11 +166,11 @@ export default async function CheckoutPage({ params, searchParams }: Props) {
                   {item.image ? (
                     <Image
                       src={item.image}
-                      alt={item.title}
+                      alt={`${item.title} product`}
                       fill
                       sizes="(max-width: 640px) 96px, 208px"
                       className="object-cover"
-                    />
+                    loading="lazy" />
                   ) : (
                     <div className="flex h-full min-h-28 items-center justify-center sm:min-h-56">
                       <Sparkles className="h-5 w-5 text-warmgray sm:h-6 sm:w-6" strokeWidth={1.5} />

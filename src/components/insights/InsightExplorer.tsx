@@ -36,7 +36,7 @@ export default function InsightExplorer() {
           {visible.map((article, index) => (
             <article key={article.slug} className={index === 0 && visible.length > 2 ? "md:col-span-2 md:grid md:grid-cols-[1.15fr_.85fr] md:gap-8" : ""}>
               <Link href={`/insights/${article.slug}`} className="group relative block aspect-[16/10] overflow-hidden rounded-2xl sm:rounded-[26px] bg-parchment">
-                <Image src={article.image} alt={article.imageAlt} fill sizes={index === 0 ? "(min-width: 768px) 55vw, 100vw" : "(min-width: 768px) 45vw, 100vw"} className="object-cover transition-transform duration-700 group-hover:scale-[1.035]" />
+                <Image src={article.image} alt={article.imageAlt} fill sizes={index === 0 ? "(min-width: 768px) 55vw, 100vw" : "(min-width: 768px) 45vw, 100vw"} className="object-cover transition-transform duration-700 group-hover:scale-[1.035]" loading="lazy" />
                 <div className="absolute inset-0 bg-gradient-to-t from-charcoal/35 to-transparent" />
               </Link>
               <div className={index === 0 && visible.length > 2 ? "flex flex-col justify-center pt-4 pb-2 md:py-0" : "pt-4 sm:pt-6"}>

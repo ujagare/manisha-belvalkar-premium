@@ -58,6 +58,7 @@ export default function ProductImageSlider({
           alt={index === active ? `${title} — ${slide.label}` : ""}
           fill
           priority={index === 0}
+          loading={index === 0 ? undefined : "lazy"}
           sizes={sizes}
           aria-hidden={index !== active}
           className={`${imageClassName ?? ""} object-cover object-center transition-opacity duration-500 ease-out ${

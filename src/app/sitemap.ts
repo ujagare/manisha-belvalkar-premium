@@ -9,10 +9,14 @@ import { insights } from "@/lib/insights";
 import { getCourses } from "@/lib/supabase/courses";
 
 const BASE = "https://www.manishabelvalkar.com";
-const SITE_UPDATED = new Date("2026-10-16T00:00:00.000Z");
+
+/** Slugs that are catalog stubs only and must never be indexed. */
+const UNPUBLISHED_PRODUCT_SLUGS = new Set(["shakti-combo-pack", "whatsapp-workshops"]);
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const now = SITE_UPDATED;
+  // Each deploy rebuilds the sitemap, so this is the real last-modified time
+  // for static/catalog URLs. Insights below use their own dateModified.
+  const now = new Date();
   const courses = await getCourses();
 
   const staticPages: MetadataRoute.Sitemap = [
@@ -29,7 +33,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE}/collections/ritual`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
     { url: `${BASE}/community`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
     { url: `${BASE}/media`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
-    { url: `${BASE}/live`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
     { url: `${BASE}/contact`, lastModified: now, changeFrequency: "yearly", priority: 0.8 },
     { url: `${BASE}/how-it-works`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE}/faq`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
@@ -75,12 +78,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
-  const productPages: MetadataRoute.Sitemap = products.map((p) => ({
-    url: `${BASE}/products/${p.slug}`,
-    lastModified: now,
-    changeFrequency: "weekly",
-    priority: 0.8,
-  }));
+  const productPages: MetadataRoute.Sitemap = products
+    .filter((p) => !UNPUBLISHED_PRODUCT_SLUGS.has(p.slug))
+    .map((p) => ({
+      url: `${BASE}/products/${p.slug}`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.8,
+    }));
 
   const eventPages: MetadataRoute.Sitemap = [
     "online-guidance-session",

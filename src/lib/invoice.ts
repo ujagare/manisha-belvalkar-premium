@@ -42,7 +42,11 @@ export async function assignOrderInvoiceNumber(
 
   try {
     // Attempt atomic Postgres RPC
-    const { data, error } = await (admin.rpc as any)("next_invoice_number", { fy });
+    const rpc = admin.rpc as unknown as (
+      fn: string,
+      args: Record<string, string>,
+    ) => Promise<{ data: unknown; error: unknown }>;
+    const { data, error } = await rpc("next_invoice_number", { fy });
     if (!error && typeof data === "string") {
       invoiceNumber = data;
     }

@@ -46,7 +46,7 @@ export default function HomeImageCard({
           sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
           className="object-cover transition-transform duration-700 group-hover:scale-[1.06]"
           style={{ objectPosition: imagePosition }}
-        />
+        loading="lazy" />
         <div className="absolute inset-0 bg-gradient-to-t from-charcoal/55 via-transparent to-black/10" />
         <div className="absolute inset-x-5 top-5 flex items-center justify-between">
           {eyebrow ? (

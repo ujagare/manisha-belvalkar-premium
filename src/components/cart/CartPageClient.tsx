@@ -180,7 +180,7 @@ export default function CartPageClient({
                   fill
                   sizes="(max-width: 1024px) 100vw, 480px"
                   className="object-cover object-center"
-                />
+                loading="lazy" />
               </div>
               <div className="mt-6 grid grid-cols-2 gap-4 border-t border-[#efe5d2] pt-5 text-xs text-[#57534e]">
                 <div className="flex items-start gap-2.5">
@@ -227,7 +227,7 @@ export default function CartPageClient({
                     >
                       <Image
                         src={product.image}
-                        alt={product.title}
+                        alt={`${product.title} product`}
                         fill
                         sizes="(max-width: 640px) 100vw, 33vw"
                         className={`transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-[1.04] ${
@@ -235,7 +235,7 @@ export default function CartPageClient({
                             ? "object-contain p-5 drop-shadow-[0_18px_24px_rgba(0,0,0,0.45)]"
                             : "object-cover object-center"
                         }`}
-                      />
+                      loading="lazy" />
                     </Link>
                     <div className="mt-4">
                       <h3 className="font-display text-xl font-medium text-[#210b0a]">
@@ -352,7 +352,7 @@ export default function CartPageClient({
                     >
                       <Image
                         src={item.image}
-                        alt={item.title}
+                        alt={`${item.title} product`}
                         fill
                         sizes="(max-width: 640px) 88px, 120px"
                         className={`transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-[1.04] ${
@@ -360,7 +360,7 @@ export default function CartPageClient({
                             ? "object-contain p-2.5"
                             : "object-cover object-center"
                         }`}
-                      />
+                      loading="lazy" />
                     </Link>
 
                     {/* Title, Unit Price, Tactile 44px Stepper & Remove */}
@@ -591,7 +591,7 @@ export default function CartPageClient({
                 >
                   <Image
                     src={product.image}
-                    alt={product.title}
+                    alt={`${product.title} product`}
                     fill
                     sizes="80px"
                     className={`transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-[1.05] ${
@@ -599,7 +599,7 @@ export default function CartPageClient({
                         ? "object-contain p-2"
                         : "object-cover object-center"
                     }`}
-                  />
+                  loading="lazy" />
                 </Link>
 
                 <div className="flex min-w-0 flex-1 flex-col justify-between gap-2">

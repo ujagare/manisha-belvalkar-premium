@@ -95,7 +95,7 @@ export default function ShaktiNurtures({ pillars }: ShaktiNurturesProps) {
                         fill
                         sizes="(max-width: 1024px) 60vw, 340px"
                         className="object-cover object-center"
-                      />
+                      loading="lazy" />
                       <div className="absolute inset-0 bg-gradient-to-r from-[#5b0c12] via-[#5b0c12]/65 to-transparent" />
                       <div className="absolute inset-0 bg-gradient-to-t from-[#36070a]/70 via-transparent to-[#36070a]/40" />
                     </div>

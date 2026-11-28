@@ -45,7 +45,7 @@ export default function DistanceHealingExperience() {
                     fill
                     sizes="(max-width: 1024px) 320px, 42vw"
                     className="object-cover object-center"
-                  />
+                  loading="lazy" />
                 </div>
               </div>
 

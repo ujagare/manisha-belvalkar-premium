@@ -11,7 +11,8 @@ export const metadata: Metadata = {
   title: "Live Online Sessions & Tarot Workshops",
   description:
     "Join online guidance sessions and interactive live workshops with Dr. Manisha Belvalkar — Tarot, healing and spiritual growth from anywhere in India.",
-  alternates: { canonical: "/live" },
+  alternates: { canonical: "/events" },
+  robots: { index: false, follow: true },
 };
 
 const icons = [Video, Calendar];

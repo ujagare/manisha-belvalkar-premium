@@ -67,6 +67,7 @@ export default async function CategoryPage({ params }: Props) {
   return (
     <>
       <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Shop", path: "/products" }, { name: label, path: `/collections/${category}` }]} />
+      <h1 className="sr-only">{label} collection</h1>
       <PageHero
         eyebrow="Sacred Shop · Collection"
         image="/images/shakti-cards-and-book.webp"

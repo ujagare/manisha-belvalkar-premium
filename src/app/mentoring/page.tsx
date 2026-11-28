@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { socialMeta } from "@/lib/seo";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight, Check, Sparkles } from "lucide-react";
@@ -8,10 +9,12 @@ import Reveal from "@/components/ui/Reveal";
 import { brand, mentoringAreas, mentoringIntro } from "@/lib/data";
 
 export const metadata: Metadata = {
+
   title: "Spiritual Mentoring & Soul Purpose",
   description:
     "Private mentoring through Tarot, soul purpose reading and clarity-alignment with Dr. Manisha Belvalkar. Sessions in Mumbai, Pune and online.",
   alternates: { canonical: "/mentoring" },
+  ...socialMeta({ title: "Spiritual Mentoring & Soul Purpose", description: "Private mentoring through Tarot, soul purpose reading and clarity-alignment with Dr. Manisha Belvalkar. Sessions in Mumbai, Pune and online.", image: "/images/page-heroes/mentoring-hero.webp", path: "/mentoring" }),
 };
 
 const heroIntro =
@@ -294,11 +297,11 @@ export default function MentoringPage() {
                         <div className="relative h-full w-full overflow-hidden rounded-lg sm:rounded-xl">
                           <Image
                             src={area.image}
-                            alt={area.title}
+                            alt={`${area.title} mentoring path`}
                             fill
                             sizes="(max-width: 1024px) 100vw, 42vw"
                             className="object-cover object-center transition-transform duration-700 group-hover:scale-[1.03]"
-                          />
+                          loading="lazy" />
                           <div className="absolute inset-0 bg-gradient-to-t from-[#1c1917]/30 via-transparent to-transparent" />
                         </div>
                       </div>
@@ -440,7 +443,7 @@ export default function MentoringPage() {
               fill
               sizes="(max-width: 1024px) 100vw, 45vw"
               className="object-cover object-center"
-            />
+            loading="lazy" />
             <div className="absolute inset-0 bg-gradient-to-t from-[#1c1917]/65 via-transparent to-transparent lg:bg-gradient-to-r lg:from-transparent lg:via-transparent lg:to-[#1c1917]/40" />
             <span className="absolute bottom-3 left-3 rounded-full bg-[#ddb829] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-[#292524] sm:bottom-6 sm:left-6 sm:px-5 sm:py-2 sm:text-xs sm:tracking-[0.16em]">
               Mumbai · Pune · Online

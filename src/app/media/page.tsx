@@ -49,11 +49,11 @@ export default function MediaPage() {
                       <div className="relative h-52 w-full overflow-hidden sm:h-64 md:h-[380px]">
                         <Image
                           src={item.image}
-                          alt={item.title}
+                          alt={`${item.title} — ${item.outlet}`}
                           fill
                           sizes="(max-width: 768px) 100vw, 50vw"
                           className="object-cover object-[50%_18%] transition-transform duration-1000 ease-out group-hover:scale-[1.05]"
-                        />
+                        loading="lazy" />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent md:bg-gradient-to-r" />
                         <div className="absolute left-3.5 top-3.5 sm:left-5 sm:top-5 flex items-center gap-2 rounded-full bg-white/95 px-3.5 py-1 sm:px-4 sm:py-1.5 shadow-md backdrop-blur">
                           <Newspaper className="h-3.5 w-3.5 text-primary" />

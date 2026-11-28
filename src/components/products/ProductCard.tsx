@@ -47,14 +47,14 @@ export default function ProductCard({ product, className }: ProductCardProps) {
           sizes="(max-width: 640px) 92vw, (max-width: 1024px) 44vw, 30vw"
           className="scale-110 object-cover opacity-35 blur-xl"
           aria-hidden="true"
-        />
+        loading="lazy" />
         <Image
           src={product.image}
-          alt={product.title}
+          alt={`${product.title} — ${product.subtitle}`}
           fill
           sizes="(max-width: 640px) 92vw, (max-width: 1024px) 44vw, 30vw"
           className="object-contain p-2 transition-transform duration-1000 ease-out group-hover:scale-[1.03] sm:p-3"
-        />
+        loading="lazy" />
         {/* Warm gold aura that blooms on hover */}
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_50%_100%,rgba(221,184,41,0.35),transparent_70%)] opacity-0 transition-opacity duration-700 group-hover:opacity-100" />
         {/* Bottom fade into the card body */}

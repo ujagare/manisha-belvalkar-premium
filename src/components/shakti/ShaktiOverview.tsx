@@ -203,7 +203,7 @@ export function ShaktiOracleCollection() {
               fill
               sizes="(max-width: 640px) 268px, (max-width: 1024px) 100vw, 48vw"
               className={`${styles.mediaZoom} object-contain drop-shadow-[0_22px_30px_rgba(68,14,10,0.3)] sm:drop-shadow-[0_34px_42px_rgba(68,14,10,0.34)]`}
-            />
+            loading="lazy" />
           </div>
 
           {/* Artisanal collector's price plaque */}
@@ -283,10 +283,10 @@ export function ShaktiOracleCollection() {
               </strong>
             </span>
             <Link
-              href="/products/shakti-combo-pack"
+              href="/products"
               className="inline-flex items-center gap-1 font-semibold text-primary transition-colors hover:text-primary-dark"
             >
-              Explore combo
+              Explore the shop
               <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
             </Link>
           </div>

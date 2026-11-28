@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { socialMeta } from "@/lib/seo";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
@@ -10,10 +11,12 @@ import { brand } from "@/lib/data";
 import { getCourses } from "@/lib/supabase/courses";
 
 export const metadata: Metadata = {
+
   title: "Tarot & Chakra Courses, Mumbai & Pune",
   description:
     "Learn Tarot reading, chakra therapy and Goddess attunement with Dr. Manisha Belvalkar. One-to-one courses, group workshops and online sessions.",
   alternates: { canonical: "/courses" },
+  ...socialMeta({ title: "Tarot & Chakra Courses, Mumbai & Pune", description: "Learn Tarot reading, chakra therapy and Goddess attunement with Dr. Manisha Belvalkar. One-to-one courses, group workshops and online sessions.", image: "/images/manisha/manisha-courses-hero.webp", path: "/courses" }),
 };
 
 const heroSummary =
@@ -359,7 +362,7 @@ export default async function CoursesPage() {
                 fill
                 sizes="(max-width: 1024px) 100vw, 45vw"
                 className="object-cover object-[50%_20%]"
-              />
+              loading="lazy" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#1c1917]/75 via-transparent to-transparent lg:bg-gradient-to-r lg:from-transparent lg:via-transparent lg:to-[#221d1a]/55" />
               <span className="absolute bottom-3 left-3 rounded-full bg-[#ddb829] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-[#1c1917] sm:bottom-6 sm:left-6 sm:px-5 sm:py-2 sm:text-xs sm:tracking-[0.16em]">
                 Mumbai · Pune · Live Online

@@ -11,6 +11,8 @@ import { isServerConfigured } from "@/lib/env";
 export const metadata: Metadata = {
   title: "SHAKTI App Coming Soon",
   description: `${appTagline} The SHAKTI App is coming soon.`,
+  alternates: { canonical: "/app" },
+  robots: { index: false, follow: true },
 };
 
 export default function AppPage() {

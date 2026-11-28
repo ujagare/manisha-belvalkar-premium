@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
+import { socialMeta } from "@/lib/seo";
 import Link from "next/link";
 import { BookOpenText } from "lucide-react";
 import InsightExplorer from "@/components/insights/InsightExplorer";
 
 export const metadata: Metadata = {
+
   title: "Spiritual Insights & Tarot Guides",
   description: "Grounded guides on spiritual reflection, session preparation, chakra awareness and everyday wellbeing practices by Dr. Manisha Belvalkar.",
   alternates: { canonical: "/insights" },
+  ...socialMeta({ title: "Spiritual Insights & Tarot Guides", description: "Grounded guides on spiritual reflection, session preparation, chakra awareness and everyday wellbeing practices by Dr. Manisha Belvalkar.", image: "/images/manisha/manisha-courses-hero.webp", path: "/insights" }),
 };
 
 export default function InsightsPage() {

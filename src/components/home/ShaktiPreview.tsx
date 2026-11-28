@@ -34,7 +34,7 @@ export default function ShaktiPreview() {
                   fill
                   sizes="(max-width: 1024px) 100vw, 50vw"
                   className="object-cover transition-transform duration-700 ease-out hover:scale-[1.03]"
-                />
+                loading="lazy" />
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-charcoal/55 via-transparent to-transparent" />
 
                 {/* Floating CTA over the image */}

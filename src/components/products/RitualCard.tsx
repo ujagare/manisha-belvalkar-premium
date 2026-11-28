@@ -42,14 +42,14 @@ export default function RitualCard({ product, className }: RitualCardProps) {
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             className="scale-110 object-cover opacity-35 blur-xl"
             aria-hidden="true"
-          />
+          loading="lazy" />
           <Image
             src={product.image}
-            alt={product.title}
+            alt={`${product.title} — ${product.subtitle}`}
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             className="object-contain p-1.5 transition-transform duration-700 ease-out group-hover:scale-[1.03] sm:p-2"
-          />
+          loading="lazy" />
 
           {/* Golden radial ambient aura blooming on hover */}
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_75%_65%_at_50%_100%,rgba(221,184,41,0.32),transparent_70%)] opacity-0 transition-opacity duration-700 group-hover:opacity-100" />
